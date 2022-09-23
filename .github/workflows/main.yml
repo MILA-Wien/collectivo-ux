@@ -1,0 +1,38 @@
+name: Mach Mit Frontend build
+
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    name: Build mach mit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Download dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test:coverage
+
+      - name: Lint application
+        run: yarn lint
+
+      - name: Analyze npm dependencies
+        run: yarn depcheck
+
+      - name: Build
+        run: yarn build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: machmit-build
+          path: dist/
+          retention-days: 1
