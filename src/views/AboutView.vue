@@ -1,15 +1,12 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>{{$t("This is an about page")}}</h1>
     <br />
-    <div>Counter: {{ store.count }}</div>
-    <button @click="increment">Increment</button>
+    <div>{{$t("Counter")}}: {{ store.count }}</div>
+    <button @click="increment">{{$t("Increment")}}</button>
   </div>
 </template>
 <script setup lang="ts">
-
-
-
 import { useCounterStore } from "@/stores/counter";
 const store = useCounterStore();
 store.count++;

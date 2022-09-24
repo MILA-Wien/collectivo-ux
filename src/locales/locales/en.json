@@ -1,3 +1,8 @@
 {
-    "menu.About":"About"
+    "menu.About":"About",
+    "This is an about page":"This is an about page",
+    "Counter":"Counter",
+    "Increment":"Increment"
+
+
 }

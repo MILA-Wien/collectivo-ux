@@ -18,14 +18,12 @@ jobs:
       - name: Download dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run tests
-        run: yarn test:coverage
+      #- name: Run tests
+        #run: yarn test:coverage
+        #run: yarn test:e2e:ci
 
       - name: Lint application
         run: yarn lint
-
-      - name: Analyze npm dependencies
-        run: yarn depcheck
 
       - name: Build
         run: yarn build

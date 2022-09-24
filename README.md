@@ -15,6 +15,11 @@ Then go to `http://localhost:8001/` in your browser to see the app.
 
 ## Development
 
+It needs npm and nodejs to be installed.
+
+Then install yarn with `npm install -g yarn`.
+
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
@@ -22,7 +27,7 @@ Then go to `http://localhost:8001/` in your browser to see the app.
 ### Project Setup
 
 ```sh
-yarn
+yarn install
 ```
 
 #### Compile and Hot-Reload for Development

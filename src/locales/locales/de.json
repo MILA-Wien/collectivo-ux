@@ -1,3 +1,7 @@
 {
-    "menu.About":"Über"
-}
+    "menu.About":"Über",
+    "This is an about page":"Dies ist eine Über-Seite",
+    "Counter":"Zähler",
+    "Increment":"Hinzufügen"
+
+}   
