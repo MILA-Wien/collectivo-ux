@@ -2,8 +2,7 @@ import { mount } from "@vue/test-utils";
 import { createPinia } from "pinia";
 import { test, expect } from "vitest";
 import AboutView from "../AboutView.vue";
-import { setupI18n, loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
-
+import { setupI18n, loadLocaleMessages } from "@/locales/i18n";
 
 test("mount component", async () => {
   expect(AboutView).toBeTruthy();

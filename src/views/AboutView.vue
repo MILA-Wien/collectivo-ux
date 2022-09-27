@@ -1,9 +1,9 @@
 <template>
   <div class="about">
-    <h1>{{$t("This is an about page")}}</h1>
+    <h1>{{ $t("This is an about page") }}</h1>
     <br />
-    <div>{{$t("Counter")}}: {{ store.count }}</div>
-    <button @click="increment">{{$t("Increment")}}</button>
+    <div>{{ $t("Counter") }}: {{ store.count }}</div>
+    <button @click="increment">{{ $t("Increment") }}</button>
   </div>
 </template>
 <script setup lang="ts">
@@ -17,7 +17,6 @@ store.increment();
 const increment = () => {
   store.$patch({ count: store.count + 1 });
 };
-
 </script>
 <style>
 @media (min-width: 1024px) {

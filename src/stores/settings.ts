@@ -15,7 +15,8 @@ export const useSettingsStore = defineStore({
 
   actions: {
     async getVersion() {
-      this.version = await coreVersionFn();},
+      this.version = await coreVersionFn();
+    },
   },
   getters: {},
 });
