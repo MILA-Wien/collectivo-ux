@@ -1,9 +1,8 @@
-# machmit
+# collectivo frontend
 
-Machmit is a vuejs based web application to manage your tasks and shifts.
+A vue.js based web application for [collectivo](https://github.com/MILA-Wien/collectivo).
 
-
-## Run machmit
+## Run collectivo-ux
 
 Run the following command to start the app (it needs docker and docker-compose to be installed):
 
