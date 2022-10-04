@@ -62,7 +62,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       collectivo:
-        image: milawien/collectivo:latest
+        image: milawien/collectivo:pr-main
         env:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASS }}
