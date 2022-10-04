@@ -9,13 +9,13 @@ import "./assets/main.css";
 
 //PrimeVue imports
 import PrimeVue from "primevue/config";
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Password from 'primevue/password';
+import ButtonPrime from "primevue/button";
+import InputTextPrime from "primevue/inputtext";
+import PasswordPrime from "primevue/password";
 
-import "primevue/resources/themes/saga-blue/theme.css"       //theme
-import "primevue/resources/primevue.min.css"                 //core css
-import "primeicons/primeicons.css"                           //icons
+import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/primevue.min.css"; //core css
+import "primeicons/primeicons.css"; //icons
 
 const app = createApp(App);
 const i18n = setupI18n();
@@ -27,8 +27,8 @@ app.use(i18n);
 app.use(createPinia());
 app.use(router);
 app.use(PrimeVue);
-app.component('InputText', InputText);
-app.component('Button', Button);
-app.component('Password', Password);
+app.component("InputTextPrime", InputTextPrime);
+app.component("ButtonPrime", ButtonPrime);
+app.component("PasswordPrime", PasswordPrime);
 
 app.mount("#app");
