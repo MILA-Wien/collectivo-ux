@@ -7,7 +7,12 @@ const api = axios.create({
 
 api.defaults.headers.common["Content-Type"] = "application/json";
 
-export const coreVersionFn = async () => {
-  const response = await api.get("/core/version");
+export const versionFn = async () => {
+  const response = await api.get("/version");
   return response.data;
 };
+
+export const loginFn = async (data) => {
+  const response = await api.post("/auth/login", { username: data.username, password: data.password });
+  return response.data;
+}
