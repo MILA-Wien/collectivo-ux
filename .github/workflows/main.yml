@@ -83,14 +83,15 @@ jobs:
 
       - name: Download dependencies
         run: yarn install --frozen-lockfile
+      
+      - name: ping collectivo
+        run: curl http://localhost:8000/api/v1/collectivo/healthcheck/
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          build: | 
-            yarn build
-            wget http://localhost:8000/
-            
+          build: yarn build
+
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
