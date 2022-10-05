@@ -73,6 +73,11 @@ jobs:
         ports:
           - 8000:8000
     steps:
+      - name: Verify running services
+        run: |
+          echo "${{ toJson(job) }}"
+          docker logs "${{ job.services.collectivo.id }}"
+      
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
