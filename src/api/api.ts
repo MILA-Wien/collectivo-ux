@@ -1,3 +1,4 @@
+import type { LoginData } from '@/api/types';
 import axios from "axios";
 const BASE_URL = "http://localhost:8000/api/";
 
@@ -12,7 +13,10 @@ export const versionFn = async () => {
   return response.data;
 };
 
-export const loginFn = async (data) => {
-  const response = await api.post("/auth/login", { username: data.username, password: data.password });
+export const loginFn = async (data: LoginData) => {
+  const response = await api.post("/auth/login", {
+    username: data.username,
+    password: data.password,
+  });
   return response.data;
-}
+};

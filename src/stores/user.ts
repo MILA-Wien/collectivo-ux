@@ -7,7 +7,6 @@ export type UserStoreState = {
   isLoggedIn: boolean;
 };
 
-
 export const useUserStore = defineStore({
   id: "settings",
   state: () =>
@@ -18,7 +17,7 @@ export const useUserStore = defineStore({
 
   actions: {
     async login(data: LoginData) {
-      this.version = await loginFn(data);
+      this.user = await loginFn(data);
     },
   },
   getters: {},
