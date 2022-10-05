@@ -84,15 +84,21 @@ jobs:
       - name: Download dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build
-        run: yarn build
-
-      - name: Run tests
-        run: yarn test:e2e:ci
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
         with:
-          name: collectivo-test-results
-          path: test-results/
-          retention-days: 1
+          build: | 
+            yarn build
+            wget http://localhost:8000/
+            
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      # Test run video was always captured, so this action uses "always()" condition
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
