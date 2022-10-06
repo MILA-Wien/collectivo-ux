@@ -81,9 +81,10 @@ jobs:
         continue-on-error: true
       - name: Verify running services
         run: |
-          echo "${{ toJson(job) }}" && \
+          echo "${{ toJson(job) }}"
+      - name: Verify collectivo
+        run: |
           docker logs "${{ job.services.collectivo.id }}"
-      
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
@@ -97,11 +98,17 @@ jobs:
       
       - name: ping collectivo
         run: curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 40 collectivo:8000/api/
+      
+      - name: Write the cypress.env.json file 📝
+        run: |
+          echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
+
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
           build: yarn build
+          start: yarn preview
 
       - uses: actions/upload-artifact@v2
         if: failure()
