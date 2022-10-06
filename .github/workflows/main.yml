@@ -84,7 +84,7 @@ jobs:
           echo "${{ toJson(job) }}"
       - name: Verify collectivo
         run: |
-          docker logs "${{ job.services.collectivo.id }}"
+          docker ps -a && docker logs "${{ job.services.collectivo.id }}"
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
