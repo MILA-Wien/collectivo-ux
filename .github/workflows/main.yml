@@ -110,6 +110,7 @@ jobs:
           start: yarn preview
           wait-on: 'http://localhost:8080'
           wait-on-timeout: 120
+          command: npm run test:e2e:ci
 
       - uses: actions/upload-artifact@v2
         if: failure()
