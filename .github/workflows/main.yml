@@ -101,11 +101,11 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          build: yarn build
-          start: export VITE_APP_API=http://localhost:8000 && yarn preview
+          build: yarn build:staging
+          start: yarn preview
           # wait-on: 'http://localhost:8000'
           # wait-on-timeout: 120
-          command: yarn test:e2e:ci
+          # command: yarn test:e2e:ci
 
       - uses: actions/upload-artifact@v2
         if: failure()
