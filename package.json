@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "node-sass": "^7.0.3",
     "pinia": "^2.0.21",
     "primeicons": "^6.0.1",
     "primevue": "^3.17.0",
