@@ -81,7 +81,7 @@ jobs:
         continue-on-error: true
       - name: Verify running services
         run: |
-          echo "${{ toJson(job) }}"
+          echo "${{ toJson(job) }}" && \
           docker logs "${{ job.services.collectivo.id }}"
       
       - name: Setup Node 16
