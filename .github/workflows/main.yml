@@ -105,7 +105,7 @@ jobs:
           start: export VITE_APP_API=http://localhost:8000 && yarn preview
           # wait-on: 'http://localhost:8000'
           # wait-on-timeout: 120
-          command: npm run test:e2e:ci
+          command: yarn test:e2e:ci
 
       - uses: actions/upload-artifact@v2
         if: failure()
