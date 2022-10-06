@@ -98,11 +98,6 @@ jobs:
       - name: Download dependencies
         run: yarn install --frozen-lockfile
       
-      - name: Write the cypress.env.json file 📝
-        run: |
-          echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
-
-
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
