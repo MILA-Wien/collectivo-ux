@@ -56,6 +56,8 @@ jobs:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASS }}
           POSTGRES_DB: ${{ env.DB_NAME }}
+        options: --name db --hostname db
+        
         ports:
           - 5432:5432
         # wait until postgres is ready
@@ -68,15 +70,15 @@ jobs:
         image: milawien/collectivo:pr-main
         options: --name collectivo --hostname collectivo
         env:
-          POSTGRES_USER: ${{ env.DB_USER }}
-          POSTGRES_PASSWORD: ${{ env.DB_PASS }}
-          POSTGRES_DB: ${{ env.DB_NAME }}
-          POSTGRES_HOST: postgres_main
-          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+          DB_USER: ${{ env.DB_USER }}
+          DB_PASS: ${{ env.DB_PASS }}
+          DB_NAME: ${{ env.DB_NAME }}
+          DB_HOST: postgres_main
           DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
         ports:
           - 8000:8000
     steps:
+      - 
       - uses: satackey/action-docker-layer-caching@v0.0.11
       # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
