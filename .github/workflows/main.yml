@@ -66,6 +66,7 @@ jobs:
           --health-retries 5
       collectivo:
         image: milawien/collectivo:pr-main
+        options: --name collectivo --hostname collectivo
         env:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASS }}
@@ -84,7 +85,7 @@ jobs:
           echo "${{ toJson(job) }}"
       - name: Verify collectivo
         run: |
-          docker ps -a && docker logs "${{ job.services.collectivo.id }}"
+          docker ps -a && docker logs collectivo
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
@@ -97,7 +98,7 @@ jobs:
         run: yarn install --frozen-lockfile
       
       - name: ping collectivo
-        run: curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 40 collectivo:8000/api/
+        run: curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 40 http://localhost:8000/api/
       
       - name: Write the cypress.env.json file 📝
         run: |
