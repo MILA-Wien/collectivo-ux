@@ -79,11 +79,6 @@ jobs:
       - uses: satackey/action-docker-layer-caching@v0.0.11
       # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
-      - name: Collect docker logs on failure
-        if: failure()
-        uses: jwalton/gh-docker-logs@v1
-        with:
-          dest: './logs'
       - name: Verify running services
         run: |
           echo "${{ toJson(job) }}"
@@ -128,6 +123,11 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
+      - name: Collect docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v1
+        with:
+          dest: './logs'
       - name: Tar logs
         if: failure()
         run: tar cvzf ./logs.tgz ./logs
