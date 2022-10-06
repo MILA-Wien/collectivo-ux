@@ -56,8 +56,6 @@ jobs:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASS }}
           POSTGRES_DB: ${{ env.DB_NAME }}
-        options: --name db --hostname db
-        
         ports:
           - 5432:5432
         # wait until postgres is ready
@@ -66,6 +64,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          --name db 
+          --hostname db
       collectivo:
         image: milawien/collectivo:pr-main
         options: --name collectivo --hostname collectivo
