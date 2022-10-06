@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, defineAsyncComponent  } from "vue";
 import { createPinia } from "pinia";
 import { setupI18n, loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
 

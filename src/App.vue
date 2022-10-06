@@ -19,6 +19,7 @@ import HelloWorld from "./components/HelloWorld.vue";
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">{{ $t("menu.About") }}</RouterLink>
+        <RouterLink to="/micro">Micro</RouterLink>
       </nav>
     </div>
   </header>
