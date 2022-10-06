@@ -98,9 +98,6 @@ jobs:
       - name: Download dependencies
         run: yarn install --frozen-lockfile
       
-      - name: ping collectivo
-        run: curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 40 http://localhost:8000/api/
-      
       - name: Write the cypress.env.json file 📝
         run: |
           echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
