@@ -102,7 +102,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           build: yarn build
-          start: yarn preview
+          start: VITE_APP_API=http://localhost:8000 yarn preview
           # wait-on: 'http://localhost:8000'
           # wait-on-timeout: 120
           command: npm run test:e2e:ci
