@@ -28,4 +28,15 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
   },
+  build: {
+    target: "esnext",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vue: ["vue"],
+          pinia: ["pinia"],
+        },
+      },
+    },
+  },
 });
