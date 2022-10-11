@@ -5,13 +5,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 <template>
   <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/Mila.png"
-      width="125"
-      height="125"
-    />
+    <img alt="Vue logo" class="logo" src="@/assets/Mila.png" width="125" height="125" />
 
     <div class="wrapper">
       <HelloWorld msg="Mach Mit!" />
@@ -19,11 +13,9 @@ import HelloWorld from "./components/HelloWorld.vue";
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">{{ $t("menu.About") }}</RouterLink>
-        <RouterLink to="/login">{{ $t("menu.Login") }}</RouterLink>
       </nav>
     </div>
   </header>
-
   <RouterView />
 </template>
 

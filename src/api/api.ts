@@ -1,4 +1,4 @@
-import type { LoginData } from '@/api/types';
+import type { LoginData } from "@/api/types";
 import axios from "axios";
 const BASE_URL = "http://localhost:8000/api/";
 

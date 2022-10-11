@@ -15,4 +15,14 @@ export interface User {
   last_login: string;
   date_joined: string;
   token: string;
+  refreshToken: string;
+  tokenParsed: any;
+  userInfo: any;
+  authenticated: boolean;
+  loginUrl: string;
+  logoutUrl: string;
+  registerUrl: string;
+  accountUrl: string;
+  redirectUri: string | undefined;
+  profile: any;
 }
