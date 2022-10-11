@@ -15,7 +15,6 @@ function initKeycloak() {
   const keycloak = new Keycloak(initOptions);
   keycloak.redirectUri = window.location.origin + "/";
   keycloak.onAuthSuccess = () => {
-    console.log("onAuthSuccess");
     store.setToken(keycloak.token);
     store.setRefreshToken(keycloak.refreshToken);
     store.setTokenParsed(keycloak.tokenParsed);

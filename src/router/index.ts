@@ -36,7 +36,6 @@ router.beforeEach(async (to) => {
   const store = await useUserStore();
 
   if (to.meta.requiresAuth && !store.user!.authenticated) {
-    console.log("router.beforeEach", to.meta.requiresAuth, store.user!.authenticated);
     return "/register";
   }
 });

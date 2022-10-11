@@ -18,7 +18,9 @@ import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import { initKeycloak } from "./helpers/keycloak";
 
+const i18n = setupI18n();
 const app = createApp(App);
+app.use(i18n);
 app.use(createPinia());
 
 
@@ -29,8 +31,6 @@ app.component("ButtonPrime", ButtonPrime);
 app.component("PasswordPrime", PasswordPrime);
 
 // init translations
-const i18n = setupI18n();
-app.use(i18n);
 loadLocaleMessages(i18n, "en");
 loadLocaleMessages(i18n, "de");
 setI18nLanguage(i18n, "de");
