@@ -10,9 +10,9 @@ const api = axios.create({
 api.interceptors.request.use(
   function (config) {
     const store = useUserStore();
-    const token = store.user!.token;
+    const token = store.user!.refreshToken;
     if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Token ${token}`;
     }
     return config;
   }, 
@@ -24,14 +24,6 @@ api.interceptors.request.use(
 api.defaults.headers.common["Content-Type"] = "application/json";
 
 export const versionFn = async () => {
-  const response = await api.get("/version");
-  return response.data;
-};
-
-export const loginFn = async (data: LoginData) => {
-  const response = await api.post("/auth/login", {
-    username: data.username,
-    password: data.password,
-  });
+  const response = await api.get("/collectivo/v1/version/");
   return response.data;
 };

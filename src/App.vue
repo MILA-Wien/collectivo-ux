@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import { useUserStore } from "./stores/user";
+const user = useUserStore();
 </script>
 
 <template>
@@ -13,6 +15,7 @@ import HelloWorld from "./components/HelloWorld.vue";
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">{{ $t("menu.About") }}</RouterLink>
+        <a :href="user.user!.logoutUrl" target="_blank" rel="noopener noreferrer">{{ $t("menu.Logout") }}</a>
       </nav>
     </div>
   </header>

@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { loginFn } from "@/api/api";
 import type { User, LoginData } from "@/api/types";
 
 export type UserStoreState = {
@@ -19,9 +18,6 @@ export const useUserStore = defineStore({
     } as UserStoreState),
 
   actions: {
-    async login(data: LoginData) {
-      this.user = await loginFn(data);
-    },
     setToken(token: string | undefined) {
       if (token) {
         this.user!.token = token;

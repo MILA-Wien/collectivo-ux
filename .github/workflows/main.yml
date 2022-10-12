@@ -1,9 +1,9 @@
-name: Mach Mit Frontend build
+name: Collectivo-ux build
 
 on: [push, workflow_dispatch]
 jobs:
   build:
-    name: Build mach mit
+    name: Build collectivo-ux
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +34,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: machmit-build
+          name: collectivo-ux-build
           path: dist/
           retention-days: 1
   test-e2e:

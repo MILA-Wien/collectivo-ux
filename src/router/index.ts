@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from "@/stores/user";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,13 +30,6 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
   ],
-});
-router.beforeEach(async (to) => {
-  const store = await useUserStore();
-
-  if (to.meta.requiresAuth && !store.user!.authenticated) {
-    return "/register";
-  }
 });
 
 export default router;
