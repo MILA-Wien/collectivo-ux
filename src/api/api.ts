@@ -8,6 +8,6 @@ const api = axios.create({
 api.defaults.headers.common["Content-Type"] = "application/json";
 
 export const coreVersionFn = async () => {
-  const response = await api.get("/core/version");
+  const response = await api.get("/collectivo/v1/version");
   return response.data;
 };
