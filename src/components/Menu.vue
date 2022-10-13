@@ -1,13 +1,7 @@
 <template>
     <div>
         <Toast />
-
-        <h5>Inline</h5>
         <Menu :model="items" />
-
-        <h5>Overlay</h5>
-        <Button type="button" label="Toggle" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
-        <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
     </div>
 </template>
 
@@ -21,7 +15,32 @@ export default {
         const menu = ref();
         const items = ref([
             {
-                label: 'Options',
+                label: 'Navigate',
+                items: [{
+                    label: 'Menu',
+                    icon: 'pi pi-bars',
+                    command: () => {
+                        window.location.href = "/menu"
+                    }
+                },
+                {
+                    label: 'About',
+                    icon: 'pi pi-megaphone',
+                    command: () => {
+                        window.location.href = "/about"
+                    }
+                },
+                {
+                    label: 'Version',
+                    icon: 'pi pi-verified',
+                    command: () => {
+                        window.location.href = "/"
+                    }
+                }
+                ]
+            },
+            {
+                label: 'Toasts',
                 items: [{
                     label: 'Update',
                     icon: 'pi pi-refresh',
@@ -38,22 +57,6 @@ export default {
                 }
                 ]
             },
-            {
-                label: 'Navigate',
-                items: [{
-                    label: 'Vue Website',
-                    icon: 'pi pi-external-link',
-                    url: 'https://vuejs.org/'
-                },
-                {
-                    label: 'Router',
-                    icon: 'pi pi-upload',
-                    command: () => {
-                        window.location.hash = "/fileupload"
-                    }
-                }
-                ]
-            }
         ]);
 
         const toggle = (event) => {

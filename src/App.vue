@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+import { RouterView } from "vue-router";
+import Menu from "./views/MenuView.vue";
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/Mila.png" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="Mach Mit!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">{{ $t("menu.About") }}</RouterLink>
-        <RouterLink to="/login">{{ $t("menu.Login") }}</RouterLink>
-        <RouterLink to="/menu">{{ $t("menu.Menu") }}</RouterLink>
-      </nav>
+      <Menu></Menu>
     </div>
   </header>
 
@@ -24,14 +16,16 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 <style scoped>
 header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
   line-height: 1.5;
   max-height: 100vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+
 
 nav {
   width: 100%;
