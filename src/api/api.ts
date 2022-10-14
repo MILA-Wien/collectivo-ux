@@ -11,3 +11,8 @@ export const coreVersionFn = async () => {
   const response = await api.get("/collectivo/v1/version");
   return response.data;
 };
+
+export const coreMenuFn = async () => {
+  const response = await api.get("/collectivo.ux/v1/menus/main_menu");
+  return response.data;
+};
