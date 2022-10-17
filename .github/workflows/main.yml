@@ -106,7 +106,9 @@ jobs:
           # wait-on: 'http://localhost:8000'
           # wait-on-timeout: 120
           # command: yarn test:e2e:ci
-
+      - name: Add hosts to /etc/hosts
+        run: |
+            sudo echo "127.0.0.1 collectivo.local" | sudo tee -a /etc/hosts
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
