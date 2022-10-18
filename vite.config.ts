@@ -12,7 +12,7 @@ export default defineConfig({
       name: 'layout',
       filename: 'remoteEntry.js',
       remotes: {
-        "hello-test": "http://localhost:5001/assets/remoteEntry.js",
+        "test_extension": "http://collectivo.local:8000/static/test_extension/remoteEntry.js",
       },
       shared: ["vue", "pinia"],
     }),
