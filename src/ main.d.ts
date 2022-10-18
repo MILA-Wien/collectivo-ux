@@ -1,2 +1,2 @@
 // each microfrontend namespace must be defined here
-declare module "hello-test/*"{}
+declare module "test_extension/*"{}

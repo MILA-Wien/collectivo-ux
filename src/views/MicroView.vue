@@ -13,6 +13,6 @@
 <script lang="ts" setup>
 // For new versions of webpack
 
-import HelloSingle from 'hello-test/HelloSingle'
-import HelloSingle2 from 'hello-test/HelloSingle2'
+import HelloSingle from 'test_extension/HelloSingle'
+import HelloSingle2 from 'test_extension/HelloSingle2'
 </script>
