@@ -15,6 +15,7 @@ const user = useUserStore();
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">{{ $t("menu.About") }}</RouterLink>
+        <RouterLink to="/micro">Micro</RouterLink>
         <a :href="user.user!.logoutUrl" target="_blank" rel="noopener noreferrer">{{ $t("menu.Logout") }}</a>
       </nav>
     </div>
