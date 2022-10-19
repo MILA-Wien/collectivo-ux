@@ -68,7 +68,7 @@ jobs:
           --hostname db
       collectivo:
         image: milawien/collectivo:pr-main
-        options: --name collectivo --hostname collectivo
+        options: --name collectivo --hostname collectivo.local
         env:
           DB_USER: ${{ env.DB_USER }}
           DB_PASS: ${{ env.DB_PASS }}
@@ -77,6 +77,14 @@ jobs:
           DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
         ports:
           - 8000:8000
+          services:
+      keycloak:
+        image: jboss/keycloak:12.0.4
+        options: --name keycloak --hostname keycloak
+        ports:
+          - 8080:8080
+        volumes:
+          - ./docker/keycloak:/opt/keycloak/data/import:ro
     steps:
       - uses: satackey/action-docker-layer-caching@v0.0.11
       # Ignore the failure of a step and avoid terminating the job.
@@ -97,18 +105,20 @@ jobs:
 
       - name: Download dependencies
         run: yarn install --frozen-lockfile
-      
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "127.0.0.1 collectivo.local" | sudo tee -a /etc/hosts
+          sudo echo "127.0.0.1 collectivo.local" | sudo tee -a /etc/hosts
+          cat /etc/hosts 
+
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
           build: yarn build:staging
-          start: yarn preview
-          # wait-on: 'http://localhost:8000'
-          # wait-on-timeout: 120
-          # command: yarn test:e2e:ci
-      - name: Add hosts to /etc/hosts
-        run: |
-            sudo echo "127.0.0.1 collectivo.local" | sudo tee -a /etc/hosts
+          start: |
+            cat /etc/hosts 
+            yarn preview
+          wait-on: 'http://collectivo.local:4173'
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
