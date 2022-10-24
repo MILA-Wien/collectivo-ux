@@ -2,8 +2,6 @@
 import { useMenuStore } from "@/stores/menu";
 const store = useMenuStore();
 store.getMenu();
-// const dict = store.menu[0];
-// console.log(dict)
 </script>
 
 <template>
@@ -13,6 +11,7 @@ store.getMenu();
         <li v-for="dict in Object.values(store.menu)">
             <li v-for="value, key in Object(dict)">
                 {{ key +' '+  value }}
+                <!-- <RouterLink :to="dict.url"></RouterLink> -->
             </li>
     </li>
         Menu: {{ store.menu }}

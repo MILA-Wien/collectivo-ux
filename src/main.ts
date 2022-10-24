@@ -34,7 +34,7 @@ app.use(ToastService);
 app.component("InputTextPrime", InputTextPrime);
 app.component("Button", Button);
 app.component("PasswordPrime", PasswordPrime);
-app.component("Menu", Menu);
+app.component("PrimeMenu", Menu);
 app.component("Toast", Toast);
 
 

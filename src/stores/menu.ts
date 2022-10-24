@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { coreMenuFn } from "@/api/api";
-import type { Menu } from "@/api/types";
+import type { ExtensionMenu } from "@/api/types";
 
 export type MenuStoreState = {
-  menu: Menu | null;
+  menu: ExtensionMenu | null;
 };
 
 export const useMenuStore = defineStore({
@@ -19,5 +19,6 @@ export const useMenuStore = defineStore({
     },
   },
   getters: {
+    menugetter : (state) => {menu:state.menu},
   },
 });

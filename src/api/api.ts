@@ -13,6 +13,6 @@ export const coreVersionFn = async () => {
 };
 
 export const coreMenuFn = async () => {
-  const response = await api.get("/collectivo.ux/v1/menus/main_menu");
+  const response = await api.get("/ux/v1/menus/");
   return response.data;
 };
