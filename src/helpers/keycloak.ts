@@ -48,6 +48,7 @@ function initKeycloak() {
   keycloak.onTokenExpired = () => {
     console.log("onTokenExpired");
   };
-  keycloak.init({ onLoad: initOptions.onLoad, checkLoginIframe: false });
+  keycloak.init({ onLoad: initOptions.onLoad, checkLoginIframe: false,
+    flow: 'implicit' });
 }
 export { initKeycloak };
