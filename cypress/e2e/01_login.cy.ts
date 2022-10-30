@@ -4,6 +4,6 @@ import "cypress-keycloak";
 describe("Show the Login mask", () => {
   it("visits the app root url", () => {
     cy.visit("/");
-    cy.contains("h1", "Sign in to your account");
+    cy.contains("h1", "Bei Ihrem Konto anmelden");
   });
 });

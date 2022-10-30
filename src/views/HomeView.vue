@@ -6,6 +6,6 @@ const user = useUserStore();
 
 <template>
   <main>
-    <TheWelcome v-if="user.user!.authenticated"/>
+    <TheWelcome v-if="user.user!.authenticated" />
   </main>
 </template>

@@ -19,9 +19,10 @@ export function setI18nLanguage(i18n: any, locale: any) {
 
 export async function loadLocaleMessages(i18n: any, locale: any) {
   // load locale messages with dynamic import
-  import(
-    /* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`
-  ).catch((e) => { console.log("error", e); })
+  import(/* webpackChunkName: "locale-[request]" */ `./locales/${locale}.json`)
+    .catch((e) => {
+      console.log("error", e);
+    })
     .then((messages) => {
       console.log("messages", messages);
       if (messages) {

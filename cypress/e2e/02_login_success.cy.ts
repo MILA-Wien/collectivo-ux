@@ -5,12 +5,11 @@ describe("Login Succesfull", () => {
   it("visits the app root url", () => {
     cy.session("test", () => {
       cy.visit("/");
-      cy.contains("h1", "Sign in to your account");
-      cy.get("input[name=username]").type("test");
+      cy.contains("h1", "Bei Ihrem Konto anmelden");
+      cy.get("input[name=username]").type("test_member_1@example.com");
       cy.get("input[name=password]").type("test").type("{enter}"); // '{enter}' submits the form
       cy.contains("h1", "Mach Mit!");
       cy.get("a").contains("Logout").click();
-    })
-
+    });
   });
 });

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { User, LoginData } from "@/api/types";
+import type { User } from "@/api/types";
 
 export type UserStoreState = {
   user: User | null;

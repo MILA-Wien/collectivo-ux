@@ -1,4 +1,4 @@
-import { createApp, defineAsyncComponent  } from "vue";
+import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { setupI18n, loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
 
@@ -22,7 +22,6 @@ const i18n = setupI18n();
 const app = createApp(App);
 app.use(i18n);
 app.use(createPinia());
-
 
 // PrimeVue
 app.use(PrimeVue);
