@@ -5,7 +5,7 @@ const initOptions = {
   url: "http://keycloak:8080/",
   realm: "collectivo",
   clientId: "collectivo-ux",
-  onLoad: <Keycloak.KeycloakOnLoad>"login-required", // login-required means that the user will be redirected to the login page if not already authenticated
+  onLoad: <Keycloak.KeycloakOnLoad>"check-sso", // login-required means that the user will be redirected to the login page if not already authenticated
 };
 
 function initKeycloak() {
@@ -47,6 +47,14 @@ function initKeycloak() {
   };
   keycloak.onTokenExpired = () => {
     console.log("onTokenExpired");
+  };
+  keycloak.onReady = (authenticated) => {
+    console.log("onReady");
+    if (!authenticated) {
+      keycloak.login({
+        locale: "de",
+      });
+    }
   };
   keycloak.init({
     onLoad: initOptions.onLoad,
