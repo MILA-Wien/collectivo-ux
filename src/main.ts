@@ -1,4 +1,4 @@
-import { createApp, defineAsyncComponent  } from "vue";
+import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { setupI18n, loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
 
@@ -7,14 +7,35 @@ import router from "./router";
 
 import "./assets/main.css";
 
-const app = createApp(App);
+//PrimeVue imports
+import PrimeVue from "primevue/config";
+import ButtonPrime from "primevue/button";
+import InputTextPrime from "primevue/inputtext";
+import PasswordPrime from "primevue/password";
+
+import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/primevue.min.css"; //core css
+import "primeicons/primeicons.css"; //icons
+import { initKeycloak } from "./helpers/keycloak";
+
 const i18n = setupI18n();
+const app = createApp(App);
+app.use(i18n);
+app.use(createPinia());
+
+// PrimeVue
+app.use(PrimeVue);
+app.component("InputTextPrime", InputTextPrime);
+app.component("ButtonPrime", ButtonPrime);
+app.component("PasswordPrime", PasswordPrime);
+
+// init translations
 loadLocaleMessages(i18n, "en");
 loadLocaleMessages(i18n, "de");
 setI18nLanguage(i18n, "de");
 
-app.use(i18n);
-app.use(createPinia());
-app.use(router);
+// init keycloak
+initKeycloak();
 
+app.use(router);
 app.mount("#app");
