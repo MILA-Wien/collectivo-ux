@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { coreMenuFn } from "@/api/api";
+import { coreMenuItemsFn } from "@/api/api";
 import type { ExtensionMenu } from "@/api/types";
 
 export type MenuStoreState = {
@@ -15,7 +15,7 @@ export const useMenuStore = defineStore({
 
   actions: {
     async getMenu() {
-      this.menu = await coreMenuFn();
+      this.menu = await coreMenuItemsFn();
     },
   },
   getters: {

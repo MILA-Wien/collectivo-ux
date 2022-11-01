@@ -10,3 +10,10 @@ export interface ExtensionMenuItem {
   name: String;
   extension: String|null;
 }
+
+export interface MicroFrontendJson {
+  name: String;
+  path: String;
+  type: String;
+  extension: String;
+}

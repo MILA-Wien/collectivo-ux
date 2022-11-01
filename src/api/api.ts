@@ -12,7 +12,12 @@ export const coreVersionFn = async () => {
   return response.data;
 };
 
-export const coreMenuFn = async () => {
-  const response = await api.get("/ux/v1/menus/");
+export const coreMenuItemsFn = async () => {
+  const response = await api.get("/ux/v1/menu-items/");
+  return response.data;
+};
+
+export const coreMicroFrontendsFn = async (name:string) => {
+  const response = await api.get("/ux/v1/microfrontends/"+{name});
   return response.data;
 };

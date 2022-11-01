@@ -8,14 +8,13 @@ store.getMenu();
   <div class="s">
     <div class="s__menu">
       <span v-if="store.menu" class="s__menu__text">
-        <li v-for="dict in Object.values(store.menu)">
-            <li v-for="value, key in Object(dict)">
-                {{ key +' '+  value }}
-                <!-- <RouterLink :to="dict.url"></RouterLink> -->
-            </li>
-    </li>
-        Menu: {{ store.menu }}
-        </span>
+        <p v-for="dict in Object.values(store.menu)">
+          <h2>{{dict.name}}</h2>
+        <li v-for="value, key in Object(dict)">
+          {{ key + ' ' + value }}
+        </li>
+      </p>
+      </span>
       <span v-else class="s__menu__text">Loading...</span>
     </div>
   </div>
