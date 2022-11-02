@@ -10,6 +10,9 @@ import { ref, watch } from "vue";
 import { useMenuStore } from "@/stores/menu";
 import type { MenuItem } from "primevue/menuitem";
 import { storeToRefs } from "pinia";
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 
 const store = useMenuStore();
 store.getMenu(); //Promise
@@ -31,7 +34,7 @@ watch(menu, (currentValue, oldValue) => {
     for (let i = 0; i < localMenu.length; i++) {
       const item = localMenu[i];
       items.value[0].items?.push({
-        label: item.label,
+        label: t(item.label),
         icon: "pi pi-fw pi-plus",
         to: "/extension/" + item.extension + "/" + item.microfrontend,
       });
