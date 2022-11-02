@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = import.meta.env.VITE_APP_API+ "/api/";
+const BASE_URL = import.meta.env.VITE_APP_API + "/api/";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -17,7 +17,7 @@ export const coreMenuItemsFn = async () => {
   return response.data;
 };
 
-export const coreMicroFrontendsFn = async (name:string) => {
-  const response = await api.get("/ux/v1/microfrontends/"+{name});
+export const coreMicroFrontendsFn = async (name: string) => {
+  const response = await api.get("/ux/v1/microfrontends/" + { name });
   return response.data;
 };

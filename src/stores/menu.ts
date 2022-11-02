@@ -19,6 +19,8 @@ export const useMenuStore = defineStore({
     },
   },
   getters: {
-    menugetter : (state) => {menu:state.menu},
+    menugetter: (state) => {
+      state.menu;
+    },
   },
 });

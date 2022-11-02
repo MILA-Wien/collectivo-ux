@@ -1,4 +1,4 @@
-import { createApp, defineAsyncComponent  } from "vue";
+import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { setupI18n, loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
 
@@ -12,9 +12,9 @@ import PrimeVue from "primevue/config";
 import Button from "primevue/button";
 import InputTextPrime from "primevue/inputtext";
 import PasswordPrime from "primevue/password";
-import Menu from 'primevue/menu';
-import ToastService from 'primevue/toastservice';
-import Toast from 'primevue/toast';
+import Menu from "primevue/menu";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
 
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
@@ -32,11 +32,9 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.component("InputTextPrime", InputTextPrime);
-app.component("Button", Button);
+app.component("ButtonPrime", Button);
 app.component("PasswordPrime", PasswordPrime);
 app.component("PrimeMenu", Menu);
-app.component("Toast", Toast);
-
-
+app.component("ToastPrime", Toast);
 
 app.mount("#app");

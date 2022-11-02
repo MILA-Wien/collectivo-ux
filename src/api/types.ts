@@ -8,7 +8,7 @@ export interface ExtensionMenu {
 
 export interface ExtensionMenuItem {
   name: String;
-  extension: String|null;
+  extension: String | null;
 }
 
 export interface MicroFrontendJson {

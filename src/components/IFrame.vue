@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { useMicroFrontendStore, useMenuStore } from "@/stores/menu";
+import { useMenuStore } from "@/stores/menu";
+import { useMicroFrontendStore } from "@/stores/microfrontend";
+import { useRoute } from "vue-router";
 
 const store = useMenuStore();
 store.getMenu(); //Promise
+const route = useRoute();
 
-const store = useMicroFrontendStore();
-store.getMicroFrontend(); //Promise
+const microfrontendStore = useMicroFrontendStore();
+if (typeof route.params.item == "string") {
+  microfrontendStore.getMicroFrontend(route.params.item);
+}
 
 defineProps<{
   src: string;
@@ -18,5 +23,4 @@ defineProps<{
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import Menu from "./views/MenuView.vue";
+import MenuView from "./views/MenuView.vue";
 </script>
 
 <template>
   <header>
-
     <div class="wrapper">
-      <Menu></Menu>
+      <MenuView></MenuView>
     </div>
   </header>
 
@@ -24,8 +23,6 @@ header {
   line-height: 1.5;
   max-height: 100vh;
 }
-
-
 
 nav {
   width: 100%;
