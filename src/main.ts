@@ -9,9 +9,12 @@ import "./assets/main.css";
 
 //PrimeVue imports
 import PrimeVue from "primevue/config";
-import ButtonPrime from "primevue/button";
+import Button from "primevue/button";
 import InputTextPrime from "primevue/inputtext";
 import PasswordPrime from "primevue/password";
+import Menu from "primevue/menu";
+import ToastService from "primevue/toastservice";
+import Toast from "primevue/toast";
 
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
@@ -25,9 +28,12 @@ app.use(createPinia());
 
 // PrimeVue
 app.use(PrimeVue);
+app.use(ToastService);
 app.component("InputTextPrime", InputTextPrime);
-app.component("ButtonPrime", ButtonPrime);
+app.component("ButtonPrime", Button);
 app.component("PasswordPrime", PasswordPrime);
+app.component("PrimeMenu", Menu);
+app.component("ToastPrime", Toast);
 
 // init translations
 loadLocaleMessages(i18n, "en");

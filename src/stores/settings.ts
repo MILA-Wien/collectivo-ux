@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { versionFn } from "@/api/api";
+import { coreVersionFn } from "@/api/api";
 import type { Version } from "@/api/types";
 
 export type SettingsStoreState = {
@@ -15,7 +15,7 @@ export const useSettingsStore = defineStore({
 
   actions: {
     async getVersion() {
-      this.version = await versionFn();
+      this.version = await coreVersionFn();
     },
   },
   getters: {},

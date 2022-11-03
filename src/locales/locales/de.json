@@ -1,8 +1,11 @@
 {
     "menu.About": "Über",
     "menu.Login": "Login",
+    "menu.Menu": "Menu",
     "menu.Logout": "Logout",
     "This is an about page": "Dies ist eine Über-Seite",
     "Counter": "Zähler",
-    "Increment": "Hinzufügen"
+    "Increment": "Hinzufügen",
+    "My membership": "Meine Mitgliedschaft",
+    "Member data": "Mitgliedsdaten"
 }

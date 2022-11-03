@@ -14,6 +14,7 @@ export default defineConfig({
       remotes: {
         test_extension:
           "http://collectivo.local:8000/static/test_extension/remoteEntry.js",
+        members: "http://collectivo.local:8000/static/members/remoteEntry.js",
       },
       shared: ["vue", "pinia"],
     }),

@@ -22,7 +22,17 @@ api.interceptors.request.use(
 );
 api.defaults.headers.common["Content-Type"] = "application/json";
 
-export const versionFn = async () => {
-  const response = await api.get("/collectivo/v1/version/");
+export const coreVersionFn = async () => {
+  const response = await api.get("/collectivo/v1/version");
+  return response.data;
+};
+
+export const coreMenuItemsFn = async () => {
+  const response = await api.get("/ux/v1/menu-items/");
+  return response.data;
+};
+
+export const coreMicroFrontendsFn = async (name: string) => {
+  const response = await api.get("/ux/v1/microfrontends/" + { name });
   return response.data;
 };

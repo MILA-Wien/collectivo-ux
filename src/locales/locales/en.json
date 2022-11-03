@@ -1,7 +1,10 @@
 {
     "menu.About": "About",
     "menu.Login": "Login",
+    "menu.Menu": "Menu",
     "This is an about page": "This is an about page",
     "Counter": "Counter",
-    "Increment": "Increment"
+    "Increment": "Increment",
+    "My Membership": "My Membership"
+
 }
