@@ -1,15 +1,12 @@
-name: Mach Mit Frontend build
+name: Collectivo-ux build
 
 on: [push, workflow_dispatch]
 jobs:
   build:
-    name: Build mach mit
+    name: Build collectivo-ux
     runs-on: ubuntu-latest
 
     steps:
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-      # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
@@ -34,7 +31,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: machmit-build
+          name: collectivo-ux-build
           path: dist/
           retention-days: 1
   test-e2e:
@@ -48,45 +45,13 @@ jobs:
       DB_NAME: djtesting
       POSTGRES_PORT: 5432
       DJANGO_SECRET_KEY: test-key-not-good
-    services:
-      # start a postgres service container
-      postgres_main:
-        image: postgres:12
-        env:
-          POSTGRES_USER: ${{ env.DB_USER }}
-          POSTGRES_PASSWORD: ${{ env.DB_PASS }}
-          POSTGRES_DB: ${{ env.DB_NAME }}
-        ports:
-          - 5432:5432
-        # wait until postgres is ready
-        options:
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-          --name db 
-          --hostname db
-      collectivo:
-        image: milawien/collectivo:pr-main
-        options: --name collectivo --hostname collectivo
-        env:
-          DB_USER: ${{ env.DB_USER }}
-          DB_PASS: ${{ env.DB_PASS }}
-          DB_NAME: ${{ env.DB_NAME }}
-          DB_HOST: postgres_main
-          DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-        ports:
-          - 8000:8000
     steps:
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-      # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
       - name: Verify running services
         run: |
           echo "${{ toJson(job) }}"
       - name: Verify collectivo
         run: |
-          docker ps -a && docker logs collectivo
+          docker ps -a
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
@@ -94,19 +59,30 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@v3
-
+      - name: Setup keycloak
+        run: |
+          docker network create -d bridge collectivo
+          cd ${GITHUB_WORKSPACE}/docker/keycloak && docker build -t keycloak .
+          /usr/bin/docker run -d -p 8080:8080 --network collectivo --name keycloak --hostname keycloak  -e GITHUB_ACTIONS=true -e CI=true keycloak
+            /usr/bin/docker run -d  --network collectivo  -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name db --hostname db -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_DB=djtesting" -e GITHUB_ACTIONS=true -e CI=true postgres:12
       - name: Download dependencies
         run: yarn install --frozen-lockfile
-      
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "127.0.0.1 collectivo.local" | sudo tee -a /etc/hosts
+          sudo echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
+          cat /etc/hosts
+          curl -v http://keycloak:8080
+      - name: Setup collectivo
+        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=postgres" -e "DB_PASS=postgres" -e "DB_NAME=djtesting" -e "DB_HOST=db" -e "DJANGO_SECRET_KEY=test-key-not-good" -e GITHUB_ACTIONS=true -e CI=true milawien/collectivo:pr-main
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
           build: yarn build:staging
-          start: yarn preview
-          # wait-on: 'http://localhost:8000'
-          # wait-on-timeout: 120
-          # command: yarn test:e2e:ci
-
+          start: |
+            cat /etc/hosts 
+            yarn preview
+          wait-on: 'http://collectivo.local:4173'
       - uses: actions/upload-artifact@v2
         if: failure()
         with:

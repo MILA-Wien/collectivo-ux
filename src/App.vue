@@ -9,7 +9,6 @@ import MenuView from "./views/MenuView.vue";
       <MenuView></MenuView>
     </div>
   </header>
-
   <RouterView />
 </template>
 

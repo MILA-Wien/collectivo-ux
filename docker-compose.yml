@@ -1,25 +1,21 @@
 version: "3.9"
 
 services:
-  machmit:
+  collectivo-ux:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: machmit
     restart: always
     ports:
       - "8001:80"
-  backend:
+  collectivo:
     build: https://github.com/MILA-Wien/machmit_backend.git#main
-    container_name: machmit_backend
     ports:
       - "8000:8000"
     volumes:
       - backend:/app
-    command: >
-      sh -c "python manage.py wait_for_db &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+    links:
+      - "keycloak:keycloak"
     environment:
       - DB_HOST=db
       - DB_NAME=db
@@ -27,10 +23,13 @@ services:
       - DB_PASS=changeme
     depends_on:
       - db
+      - keycloak
+    extra_hosts:
+      # Allow for direct communication between services.
+      - host.docker.internal:host-gateway
 
   db:
     image: postgres:13-alpine
-    container_name: machmit_db
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
@@ -38,6 +37,21 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=changeme
 
+  keycloak:
+    image: "quay.io/keycloak/keycloak:19.0.2"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # KEYCLOAK_IMPORT: /var/keycloak/master.json
+    volumes:
+      - ./docker/keycloak:/opt/keycloak/data/import:ro
+    command:
+      start-dev --import-realm
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      # Allow for direct communication between services.
+      - host.docker.internal:host-gateway
 volumes:
   db-data: 
   backend:

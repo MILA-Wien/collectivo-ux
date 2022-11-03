@@ -9,7 +9,7 @@
     <PasswordPrime></PasswordPrime>
     <br />
     <br />
-    <Button label="Login" class="p-button-outlined"></Button>
+    <ButtonPrime label="Login" class="p-button-outlined"></ButtonPrime>
   </div>
 </template>
 

@@ -49,8 +49,15 @@ yarn test:unit
 
 #### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
 
+Add the following to your `/etc/hosts` file:
+
 ```sh
-yarn build
+127.0.0.1 keycloak
+```
+Then run the following command to test the app:
+
+```sh
+yarn build:staging
 yarn test:e2e # or `yarn test:e2e:ci` for headless testing
 ```
 

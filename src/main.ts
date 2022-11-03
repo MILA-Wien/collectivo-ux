@@ -19,16 +19,14 @@ import Toast from "primevue/toast";
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
+import { initKeycloak } from "./helpers/keycloak";
 
-const app = createApp(App);
 const i18n = setupI18n();
-loadLocaleMessages(i18n, "en");
-loadLocaleMessages(i18n, "de");
-setI18nLanguage(i18n, "de");
-
+const app = createApp(App);
 app.use(i18n);
 app.use(createPinia());
-app.use(router);
+
+// PrimeVue
 app.use(PrimeVue);
 app.use(ToastService);
 app.component("InputTextPrime", InputTextPrime);
@@ -37,4 +35,13 @@ app.component("PasswordPrime", PasswordPrime);
 app.component("PrimeMenu", Menu);
 app.component("ToastPrime", Toast);
 
+// init translations
+loadLocaleMessages(i18n, "en");
+loadLocaleMessages(i18n, "de");
+setI18nLanguage(i18n, "de");
+
+// init keycloak
+initKeycloak();
+
+app.use(router);
 app.mount("#app");
