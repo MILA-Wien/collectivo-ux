@@ -9,8 +9,15 @@ import MenuView from "./views/MenuView.vue";
       <MenuView></MenuView>
     </div>
   </header>
-  <RouterView />
+  <div class="content">
+    <RouterView />
+  </div>
 </template>
+<style>
+#app {
+  width: 100%;
+}
+</style>
 
 <style scoped>
 header {
@@ -51,8 +58,7 @@ nav a:first-of-type {
 @media (min-width: 1024px) {
   header {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    margin-top: 30px;
   }
 
   .logo {

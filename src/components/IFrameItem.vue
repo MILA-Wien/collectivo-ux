@@ -5,9 +5,21 @@ defineProps<{
 </script>
 
 <template>
-  <div class="greetings">
-    <iframe :src="src" frameborder="0"></iframe>
+  <div class="iframe-component">
+    <iframe :src="src" frameborder="0" width="100%"></iframe>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.iframe-component {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+iframe {
+  width: 100%;
+  height: 80vh;
+  border: 0;
+}
+</style>

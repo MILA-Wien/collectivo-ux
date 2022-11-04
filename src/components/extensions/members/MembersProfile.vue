@@ -1,13 +1,13 @@
 <script setup lang="ts">
-defineProps<{
-  msg: string;
-}>();
+import { useMembersStore } from '@/stores/members';
+
+ const store = useMembersStore() 
+
 </script>
 
 <template>
   <div class="greetings">
-    <h1>{{ msg }}</h1>
-    <h3>Machmit Starting Point</h3>
+  profile {{store.members}}
   </div>
 </template>
 

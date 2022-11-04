@@ -28,7 +28,7 @@ export const coreVersionFn = async () => {
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/ux/v1/menu-items/");
+  const response = await api.get("/ux/v1/menus/main_menu/items");
   return response.data;
 };
 

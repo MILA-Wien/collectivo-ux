@@ -15,29 +15,15 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
     },
     {
       path: "/micro",
       name: "micro",
-      // route level code-splitting
-      // this generates a separate chunk (micro.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/MicroView.vue"),
     },
     {
-      path: "/iframe",
-      name: "iframe",
-      // route level code-splitting
-      // this generates a separate chunk (micro.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/IFrameView.vue"),
-    },
-    {
-      path: "/extension/:extension/:item",
+      path: "/:extension/:component",
       name: "extension",
       component: () => import("../views/ExtensionView.vue"),
     },
