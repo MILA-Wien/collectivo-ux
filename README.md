@@ -18,6 +18,14 @@ It needs npm and nodejs to be installed.
 
 Then install yarn with `npm install -g yarn`.
 
+### Keycloak credentials
+
+To pass your local keycloak login wall in development mode you need to enter the following user credentials:
+
+Email: `test_member_1@example.com`
+
+Password: `test`
+
 
 ## Recommended IDE Setup
 
