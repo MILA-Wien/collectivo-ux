@@ -24,7 +24,7 @@ Then install yarn with `npm install -g yarn`.
 
 For development mode you need to have a different setup than mentionend above.
 
-1. In your terminal and your [collectivo repository](https://github.com/MILA-Wien/collectivo), please run
+1. In your terminal and your [collectivo repository](https://github.com/MILA-Wien/collectivo), please follow the first three steps of its README and use the following command for step three
 ```bash
 docker compose up -d collectivo db keycloak
 ```
