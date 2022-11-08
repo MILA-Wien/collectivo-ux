@@ -29,7 +29,8 @@ export const useMenuStore = defineStore({
       return (extension: string, component: string) => {
         return state.menu?.menu.find(
           (item: ExtensionMenuItem) =>
-            (item.extension === extension && item.component_name === component) ||
+            (item.extension === extension &&
+              item.component_name === component) ||
             (item.extension === extension && item.item_id === component)
         );
       };
