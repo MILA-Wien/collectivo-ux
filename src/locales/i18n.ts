@@ -24,7 +24,6 @@ export async function loadLocaleMessages(i18n: any, locale: any) {
       console.log("error", e);
     })
     .then((messages) => {
-      console.log("messages", messages);
       if (messages) {
         // set locale and locale message
         i18n.global.setLocaleMessage(locale, messages.default);
