@@ -58,3 +58,9 @@ export const membersMembersPatch = async (member: Member) => {
   const response = await api.patch(`/members/v1/members/${member.id}/`, member);
   return response.data;
 };
+
+// get membership
+export const getMembershipFn = async () => {
+  const response = api.get("/members/v1/me/");
+  return response;
+};

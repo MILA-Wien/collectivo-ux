@@ -66,3 +66,6 @@ export interface Members {
   previous?: string;
   results: Array<Member>;
 }
+export interface Membership {
+  membership: Array<Member>;
+}
