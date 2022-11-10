@@ -5,7 +5,7 @@ const initOptions = {
   url: "http://keycloak:8080/",
   realm: "collectivo",
   clientId: "collectivo-ux",
-  onLoad: <Keycloak.KeycloakOnLoad>"login-required", // login-required means that the user will be redirected to the login page if not already authenticated
+  onLoad: <Keycloak.KeycloakOnLoad>"check-sso", // login-required means that the user will be redirected to the login page if not already authenticated
 };
 
 function initKeycloak() {
@@ -51,17 +51,15 @@ function initKeycloak() {
   keycloak.onReady = (authenticated) => {
     console.log("onReady", authenticated);
     if (!authenticated) {
-      console.log(window.location.toString());
       keycloak.login({
         locale: "de",
-        redirectUri: window.location.toString() + "/",
+        redirectUri: window.location.origin + window.location.pathname + "/",
       });
     }
   };
-  console.log("1", window.location.toString());
 
   return keycloak.init({
-    redirectUri: window.location.toString() + "/",
+    redirectUri: window.location.origin + window.location.pathname + "/",
     onLoad: initOptions.onLoad,
     checkLoginIframe: false,
     flow: "standard",
