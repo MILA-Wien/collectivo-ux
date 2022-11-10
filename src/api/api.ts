@@ -64,6 +64,6 @@ export const membersMembersPatch = async (member: Member) => {
 
 // get membership
 export const getMembershipFn = async () => {
-  const response = api.get("/members/v1/me/");
+  const response = await api.get("/members/v1/me");
   return response;
 };
