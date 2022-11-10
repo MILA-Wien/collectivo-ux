@@ -25,8 +25,8 @@ const i18n = setupI18n();
 const app = createApp(App);
 app.use(createPinia());
 const keycloakInstance = initKeycloak();
-keycloakInstance.then((keycloak) => {
-
+keycloakInstance
+  .then((keycloak) => {
     console.log("keycloakInstance", keycloak);
     app.use(i18n);
     // PrimeVue
@@ -45,7 +45,7 @@ keycloakInstance.then((keycloak) => {
 
     app.use(router);
     app.mount("#app");
-}).catch((e) => {
+  })
+  .catch((e) => {
     console.log("error", e);
-});
-
+  });

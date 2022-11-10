@@ -4,11 +4,11 @@ import { storeToRefs } from "pinia";
 import MenuView from "./views/MenuView.vue";
 import { useUserStore } from "./stores/user";
 const userStore = useUserStore();
-const {user} = storeToRefs(userStore);
+const { user } = storeToRefs(userStore);
 </script>
 
 <template>
-  <div class="app" v-if="user.token!==''">
+  <div class="app" v-if="user?.token !== ''">
     <header>
       <div class="wrapper">
         <MenuView></MenuView>

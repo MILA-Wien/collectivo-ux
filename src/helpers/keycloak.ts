@@ -54,7 +54,7 @@ function initKeycloak() {
       console.log(window.location.toString());
       keycloak.login({
         locale: "de",
-        redirectUri: window.location.toString()+ "/",
+        redirectUri: window.location.toString() + "/",
       });
     }
   };

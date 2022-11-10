@@ -76,7 +76,6 @@ watch(
     );
   }
 );
-
 </script>
 
 <template>
