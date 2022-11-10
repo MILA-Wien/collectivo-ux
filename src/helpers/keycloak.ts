@@ -24,14 +24,14 @@ function initKeycloak() {
     store.setRegisterUrl(keycloak.createRegisterUrl());
     store.setAccountUrl(keycloak.createAccountUrl());
     store.setRedirectUri(keycloak.redirectUri);
-    keycloak
-      .loadUserProfile()
-      .then(function (profile) {
-        store.setProfile(profile);
-      })
-      .catch(function () {
-        console.log("Failed to load user profile");
-      });
+    //   keycloak
+    //     .loadUserProfile()
+    //     .then(function (profile) {
+    //       store.setProfile(profile);
+    //     })
+    //     .catch(function () {
+    //       console.log("Failed to load user profile");
+    //     });
   };
   keycloak.onAuthError = () => {
     console.log("onAuthError");
@@ -49,17 +49,20 @@ function initKeycloak() {
     console.log("onTokenExpired");
   };
   keycloak.onReady = (authenticated) => {
-    console.log("onReady");
+    console.log("onReady", authenticated);
     if (!authenticated) {
       keycloak.login({
         locale: "de",
+        redirectUri: window.location.origin + window.location.pathname + "/",
       });
     }
   };
-  keycloak.init({
+
+  return keycloak.init({
+    redirectUri: window.location.origin + window.location.pathname + "/",
     onLoad: initOptions.onLoad,
     checkLoginIframe: false,
-    flow: "implicit",
+    flow: "standard",
   });
 }
 export { initKeycloak };

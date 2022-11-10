@@ -55,7 +55,10 @@ export const membersMembersPreviousFn = async (previousUrl: string) => {
 };
 
 export const membersMembersPatch = async (member: Member) => {
-  const response = await api.patch(`/members/v1/members/${member.id}/`, member);
+  const response = await api.patch(
+    `/members/v1/members/${member.id}/?limit=10`,
+    member
+  );
   return response.data;
 };
 

@@ -14,14 +14,51 @@ Then go to `http://localhost:8001/` in your browser to see the app.
 
 ## Development
 
-It needs npm and nodejs to be installed.
+### Requirements
+
+Npm and nodejs need to be installed for development.
 
 Then install yarn with `npm install -g yarn`.
+
+### Development mode
+
+For development mode you need to have a different setup than mentionend above.
+
+1. In your terminal and your [collectivo repository](https://github.com/MILA-Wien/collectivo), please follow the first three steps of its README and use the following command for step three
+```bash
+docker compose up -d collectivo db keycloak
+```
+2. Please edit your `/etc/hosts/` file and add the following line
+```bash
+127.0.0.1 keycloak collectivo.local
+```
+3. Add some CORS-disabler Add-On to your browser e.g. [CORS Everywhere](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/) for Firefox or [Allow CORS](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf) for Chrome and start it in development mode
+4. In your terminal run
+```bash
+yarn dev
+```
+and now open the following link in your browser
+```bash
+collectivo.local:5173
+```
+
+5. Enter the user credentials mentioned below and start developing
+
+
+### User credentials
+
+To pass your local keycloak login wall in development mode you need to enter the following user credentials:
+
+Email: `test_member_1@example.com`
+
+Password: `test`
 
 
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+## Useful commands
 
 ### Project Setup
 
@@ -49,10 +86,10 @@ yarn test:unit
 
 #### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
 
-Add the following to your `/etc/hosts` file:
+If not done yet, add the following to your `/etc/hosts` file:
 
 ```sh
-127.0.0.1 keycloak
+127.0.0.1 keycloak collectivo.local
 ```
 Then run the following command to test the app:
 
