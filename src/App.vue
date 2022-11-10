@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import { storeToRefs } from "pinia";
 import MenuView from "./views/MenuView.vue";
+import { useUserStore } from "./stores/user";
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <MenuView></MenuView>
+  <div class="app" v-if="user?.token !== ''">
+    <header>
+      <div class="wrapper">
+        <MenuView></MenuView>
+      </div>
+    </header>
+    <div class="content">
+      <RouterView />
     </div>
-  </header>
-  <div class="content">
-    <RouterView />
   </div>
 </template>
 <style>

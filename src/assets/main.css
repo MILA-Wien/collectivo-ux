@@ -27,7 +27,7 @@ a,
     place-items: center;
   }
 
-  #app {
+  .app {
     display: grid;
     grid-template-columns: 2fr 10fr;
   }

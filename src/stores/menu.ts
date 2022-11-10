@@ -4,6 +4,7 @@ import type { ExtensionMenu, ExtensionMenuItem } from "@/api/types";
 
 export type MenuStoreState = {
   menu: ExtensionMenu | null;
+  menuLoaded: boolean;
 };
 
 export const useMenuStore = defineStore({
@@ -11,6 +12,7 @@ export const useMenuStore = defineStore({
   state: () =>
     ({
       menu: null,
+      menuLoaded: false,
     } as MenuStoreState),
 
   actions: {
@@ -19,6 +21,7 @@ export const useMenuStore = defineStore({
         this.menu = {} as ExtensionMenu;
       }
       this.menu.menu = await coreMenuItemsFn();
+      this.menuLoaded = true;
     },
   },
   getters: {
@@ -26,8 +29,9 @@ export const useMenuStore = defineStore({
       state.menu;
     },
     getMenuItem: (state) => {
+      console.log("state.menu", JSON.stringify(state.menu));
       return (extension: string, component: string) => {
-        return state.menu?.menu.find(
+        return state.menu?.menu?.find(
           (item: ExtensionMenuItem) =>
             (item.extension === extension &&
               item.component_name === component) ||
