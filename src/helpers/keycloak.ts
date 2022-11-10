@@ -5,7 +5,7 @@ const initOptions = {
   url: "http://keycloak:8080/",
   realm: "collectivo",
   clientId: "collectivo-ux",
-  onLoad: <Keycloak.KeycloakOnLoad>"check-sso", // login-required means that the user will be redirected to the login page if not already authenticated
+  onLoad: <Keycloak.KeycloakOnLoad>"login-required", // login-required means that the user will be redirected to the login page if not already authenticated
 };
 
 function initKeycloak() {
@@ -24,14 +24,14 @@ function initKeycloak() {
     store.setRegisterUrl(keycloak.createRegisterUrl());
     store.setAccountUrl(keycloak.createAccountUrl());
     store.setRedirectUri(keycloak.redirectUri);
-    keycloak
-      .loadUserProfile()
-      .then(function (profile) {
-        store.setProfile(profile);
-      })
-      .catch(function () {
-        console.log("Failed to load user profile");
-      });
+    //   keycloak
+    //     .loadUserProfile()
+    //     .then(function (profile) {
+    //       store.setProfile(profile);
+    //     })
+    //     .catch(function () {
+    //       console.log("Failed to load user profile");
+    //     });
   };
   keycloak.onAuthError = () => {
     console.log("onAuthError");
@@ -49,17 +49,22 @@ function initKeycloak() {
     console.log("onTokenExpired");
   };
   keycloak.onReady = (authenticated) => {
-    console.log("onReady");
+    console.log("onReady", authenticated);
     if (!authenticated) {
+      console.log(window.location.toString());
       keycloak.login({
         locale: "de",
+        redirectUri: window.location.toString()+ "/",
       });
     }
   };
-  keycloak.init({
+  console.log("1", window.location.toString());
+
+  return keycloak.init({
+    redirectUri: window.location.toString() + "/",
     onLoad: initOptions.onLoad,
     checkLoginIframe: false,
-    flow: "implicit",
+    flow: "standard",
   });
 }
 export { initKeycloak };

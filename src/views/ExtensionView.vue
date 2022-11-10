@@ -18,26 +18,39 @@ let isIframe = shallowRef(false);
 
 function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
-  const item = menuStore.getMenuItem(extension, component);
-  console.log("item", item);
-  if (item !== null && item) {
-    if (item.action === "component") {
-      isIframe.value = false;
-      import(componentName)
-        .then((module) => {
-          type.value = module.default;
-        })
-        .catch(() => {
-          type.value = ErrorItem;
-        });
-    } else if (item.action === "link" && item.link_source) {
-      iframeSrc.value = item.link_source;
-      isIframe.value = true;
+  if (menuStore.menuLoaded) {
+    const item = menuStore.getMenuItem(extension, component);
+    console.log("item", item);
+    if (item !== null && item) {
+      if (item.action === "component") {
+        isIframe.value = false;
+        import(componentName /* @vite-ignore */) // vite-ignore is required for dynamic imports
+          .then((module) => {
+            type.value = module.default;
+          })
+          .catch(() => {
+            type.value = ErrorItem;
+          });
+      } else if (item.action === "link" && item.link_source) {
+        iframeSrc.value = item.link_source;
+        isIframe.value = true;
+      }
+    } else {
+      type.value = ErrorItem;
     }
-  } else {
-    type.value = ErrorItem;
   }
 }
+watch(
+  () => menuStore.menuLoaded,
+  () => {
+    console.log("menuStore.menu", menuStore.menu);
+    type.value = LoadingItem;
+    getComponent(
+      route.params.extension.toString(),
+      route.params.component.toString()
+    );
+  }
+);
 getComponent(
   route.params.extension.toString(),
   route.params.component.toString()
@@ -63,6 +76,7 @@ watch(
     );
   }
 );
+
 </script>
 
 <template>
