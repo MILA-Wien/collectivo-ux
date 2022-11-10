@@ -5,6 +5,8 @@ import LoadingItem from "../components/LoadingItem.vue";
 import ErrorItem from "../components/ErrorItem.vue";
 import IframeItem from "../components/IFrameItem.vue";
 import { useMenuStore } from "@/stores/menu";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const route = useRoute();
 
@@ -65,8 +67,7 @@ watch(
 
 <template>
   <div class="extension-wrapper">
-    <h1>{{ route.params.extension }}</h1>
-    <p>{{ route.params.item }}</p>
+    <h1>{{ t(route.params.extension.toString()) }}</h1>
     <component :is="type" v-if="!isIframe"></component>
     <IframeItem v-if="isIframe" :src="iframeSrc" />
   </div>

@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { useMembersStore } from '@/stores/members';
+import { useMembersStore } from "@/stores/members";
 
- const store = useMembersStore() 
-
+const store = useMembersStore();
 </script>
 
 <template>
-  <div class="greetings">
-  profile {{store.members}}
-  </div>
+  <div class="greetings">profile {{ store.members }}</div>
 </template>
 
 <style scoped>

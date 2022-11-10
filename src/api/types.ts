@@ -22,7 +22,7 @@ export interface ExtensionMenuItem {
   extension: string;
   parent_item: string | null;
 }
- export interface MicroFrontendJson {
+export interface MicroFrontendJson {
   name: String;
   path: String;
   type: String;
@@ -52,4 +52,17 @@ export interface User {
   accountUrl: string;
   redirectUri: string | undefined;
   profile: any;
+}
+export interface Member {
+  id: number;
+  user_id: string;
+  user_attr: string | null;
+  create_attr: string | null;
+  admin_attr: string | null;
+}
+export interface Members {
+  count?: number;
+  next?: string;
+  previous?: string;
+  results: Array<Member>;
 }
