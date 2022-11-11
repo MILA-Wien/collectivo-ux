@@ -20,7 +20,6 @@ function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
   if (menuStore.menuLoaded) {
     const item = menuStore.getMenuItem(extension, component);
-    console.log("item", item);
     if (item !== null && item) {
       if (item.action === "component") {
         isIframe.value = false;
@@ -43,7 +42,6 @@ function getComponent(extension: string, component: string) {
 watch(
   () => menuStore.menuLoaded,
   () => {
-    console.log("menuStore.menu", menuStore.menu);
     type.value = LoadingItem;
     getComponent(
       route.params.extension.toString(),
