@@ -66,3 +66,12 @@ export interface Members {
   previous?: string;
   results: Array<Member>;
 }
+
+export interface createMembership {
+  user_attr: string | null;
+  create_attr: string | null;
+}
+
+export interface updateMembership {
+  user_attr: string | null;
+}
