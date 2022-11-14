@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { createMembershipFn, getMembershipFn } from "@/api/api";
-import type { Member, Version } from "@/api/types";
+import type { Member, Membership } from "@/api/types";
 
 export type MembershipStoreState = {
-  membership: Member | null;
+  membership: Membership | null;
 };
 
 export const useMembershipStore = defineStore({
@@ -25,9 +25,9 @@ export const useMembershipStore = defineStore({
     async getMembership() {
       await getMembershipFn().then((response) => {
         if (this.membership === null) {
-          this.membership = { id: 0, user_id: "", user_attr: "", create_attr: "", admin_attr: "" };
+          this.membership = { profile: [] };
         }
-        this.membership = response;
+        this.membership = {profile: [response]};
       })
         .catch((error) => {
           console.log("get membership error", error);

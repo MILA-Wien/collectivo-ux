@@ -67,6 +67,10 @@ export interface Members {
   results: Array<Member>;
 }
 
+export interface Membership {
+  profile: Array<Member>;
+}
+
 export interface createMembership {
   user_attr: string | null;
   create_attr: string | null;
