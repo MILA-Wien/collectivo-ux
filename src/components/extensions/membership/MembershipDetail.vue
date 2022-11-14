@@ -3,6 +3,8 @@ import { ref } from "vue";
 import Dialog from "primevue/dialog";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
+import { useMembershipStore } from "@/stores/membership";
+
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -18,8 +20,12 @@ function closeModal() {
   emit("close");
 }
 function save() {
-  emit("change", membership_attributes.value);
-  emit("close");
+    const membershipStore = useMembershipStore();
+    membershipStore.createMembership(membership_attributes.value);
+    console.log(membership_attributes.value);
+//   emit("change", membership_attributes.value);
+//   emit("close");
+
 }
 </script>
 <template>

@@ -71,7 +71,7 @@ export const getMembershipFn = async () => {
 //create membership
 export const createMembershipFn = async (member: createMembership) => {
   const response = await api.post("/members/v1/me", member);
-  return response.data;
+  return response; //or response.data --> figure out
 };
 
 //update membership

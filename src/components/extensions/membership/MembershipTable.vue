@@ -6,8 +6,8 @@ import { useI18n } from "vue-i18n";
 import MembershipDetail from "./MembershipDetail.vue";
 const { t } = useI18n();
 
-const emit = defineEmits(["update:membership", "delete:membership"]);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const emit = defineEmits(["update:membership"]);
+
 const props = defineProps({
   membership: {
     type: Object,
