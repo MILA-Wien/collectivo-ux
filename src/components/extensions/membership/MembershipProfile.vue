@@ -18,8 +18,8 @@ const { membership } = storeToRefs(membershipStore);
 // const { members, membersLoadingError } = storeToRefs(membersStore);
 
 
-function createMembership(membership: Member) {
-  membershipStore.createMembership(membership);
+function updateMembership(membership: Member) {
+  membershipStore.updateMembership(membership);
 }
 </script>
 
@@ -31,7 +31,7 @@ function createMembership(membership: Member) {
     <div v-else class="members-table">
       <MembershipTable
         :membership="membership"
-        @update:member="createMembership($event)"
+        @update:member="updateMembership($event)"
       />
     </div>
   </div>

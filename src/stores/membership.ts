@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { createMembershipFn, getMembershipFn } from "@/api/api";
+import { updateMembershipFn, getMembershipFn } from "@/api/api";
 import type { Member, Membership } from "@/api/types";
 
 export type MembershipStoreState = {
@@ -14,12 +14,11 @@ export const useMembershipStore = defineStore({
   } as MembershipStoreState),
 
   actions: {
-    // WIP: Wrong type for POST-Call
-    async createMembership(membership: Member) {
-      await createMembershipFn(membership).then((response) => {
-        console.log("createMembership", response);
-      }).catch((error) => {
-        console.log("post membership error", error);
+    async updateMembership(membership: Member) {
+      await updateMembershipFn(membership).then((response) => {
+        console.log("updateMembership", response.data);
+      }).catch(error => {
+        console.log("put membership error", error);
       });
     },
     async getMembership() {
@@ -27,7 +26,7 @@ export const useMembershipStore = defineStore({
         if (this.membership === null) {
           this.membership = { profile: [] };
         }
-        this.membership = {profile: [response]};
+        this.membership = { profile: [response] };
       })
         .catch((error) => {
           console.log("get membership error", error);

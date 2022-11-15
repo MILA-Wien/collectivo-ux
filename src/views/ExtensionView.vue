@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { shallowRef, watch } from "vue";
+import { shallowRef, watch, ref } from "vue";
 import LoadingItem from "../components/LoadingItem.vue";
 import ErrorItem from "../components/ErrorItem.vue";
 import IframeItem from "../components/IFrameItem.vue";
@@ -14,7 +14,7 @@ let type = shallowRef(LoadingItem);
 const menuStore = useMenuStore();
 let iframeSrc = shallowRef("");
 let isIframe = shallowRef(false);
-let menuLabel = shallowRef()
+let menuLabel = ref("")
 
 // const name = extensionName.value;
 
@@ -27,7 +27,9 @@ function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
   if (menuStore.menuLoaded) {
     const item = menuStore.getMenuItem(extension, component);
-    menuLabel.value = item?.label
+    if(item?.label) {
+      menuLabel.value = item?.label
+    }
     if (item !== null && item) {
       if (item.action === "component") {
         isIframe.value = false;

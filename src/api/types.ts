@@ -54,11 +54,11 @@ export interface User {
   profile: any;
 }
 export interface Member {
-  id: number;
-  user_id: string;
+  id?: number;
+  user_id?: string;
   user_attr: string | null;
-  create_attr: string | null;
-  admin_attr: string | null;
+  create_attr?: string | null;
+  admin_attr?: string | null;
 }
 export interface Members {
   count?: number;
@@ -69,13 +69,4 @@ export interface Members {
 
 export interface Membership {
   profile: Array<Member>;
-}
-
-export interface createMembership {
-  user_attr: string | null;
-  create_attr: string | null;
-}
-
-export interface updateMembership {
-  user_attr: string | null;
 }

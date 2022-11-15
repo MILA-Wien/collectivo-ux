@@ -21,7 +21,7 @@ function closeModal() {
 }
 function save() {
     const membershipStore = useMembershipStore();
-    membershipStore.createMembership(membership_attributes.value);
+    membershipStore.updateMembership(membership_attributes.value);
     console.log(membership_attributes.value);
 //   emit("change", membership_attributes.value);
 //   emit("close");

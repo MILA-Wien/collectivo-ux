@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
-import type { createMembership, Member, updateMembership } from "./types";
+import type { Member } from "./types";
 const BASE_URL = import.meta.env.VITE_APP_API + "/api/";
 
 const api = axios.create({
@@ -68,14 +68,8 @@ export const getMembershipFn = async () => {
   return response.data;
 };
 
-//create membership
-export const createMembershipFn = async (member: createMembership) => {
-  const response = await api.post("/members/v1/me", member);
-  return response; //or response.data --> figure out
-};
-
 //update membership
-export const updateMembershipFn = async (member: updateMembership) => {
+export const updateMembershipFn = async (member: Member) => {
   const response = await api.put("/members/v1/me", member);
-  return response.data;
+  return response; //or response.data --> figure out
 };
