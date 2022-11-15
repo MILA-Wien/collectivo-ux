@@ -14,12 +14,20 @@ let type = shallowRef(LoadingItem);
 const menuStore = useMenuStore();
 let iframeSrc = shallowRef("");
 let isIframe = shallowRef(false);
+let menuLabel = shallowRef()
+
 // const name = extensionName.value;
+
+function getMenuLabel() {
+  const menuStore = useMenuStore();
+
+}
 
 function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
   if (menuStore.menuLoaded) {
     const item = menuStore.getMenuItem(extension, component);
+    menuLabel.value = item?.label
     if (item !== null && item) {
       if (item.action === "component") {
         isIframe.value = false;
@@ -78,7 +86,7 @@ watch(
 
 <template>
   <div class="extension-wrapper">
-    <h1>{{ t(route.params.extension.toString()) }}</h1>
+    <h1>{{ t(menuLabel) }}</h1>
     <component :is="type" v-if="!isIframe"></component>
     <IframeItem v-if="isIframe" :src="iframeSrc" />
   </div>
