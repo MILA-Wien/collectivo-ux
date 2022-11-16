@@ -29,7 +29,7 @@ export const coreVersionFn = async () => {
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/ux/v1/menus/main_menu/items");
+  const response = await api.get("/menus/v1/menus/main_menu/items");
   return response.data;
 };
 
@@ -60,4 +60,10 @@ export const membersMembersPatch = async (member: Member) => {
     member
   );
   return response.data;
+};
+
+// Dashboard
+export const dashboardTiles = async () => {
+  const response = api.get(`/dashboard/v1/tiles/?limit=10`);
+  return response;
 };
