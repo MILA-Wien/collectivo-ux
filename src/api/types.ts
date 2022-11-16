@@ -66,7 +66,3 @@ export interface Members {
   previous?: string;
   results: Array<Member>;
 }
-
-export interface Membership {
-  profile: Array<Member>;
-}

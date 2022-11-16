@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import type { Member } from "@/api/types";
 import { useMembershipStore } from "@/stores/membership";
 import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
-import MembershipTable from "./MembershipTable.vue";
-// import { useMembersStore } from "@/stores/members";
-
+import { useI18n } from "vue-i18n";
+import InputText from "primevue/inputtext";
+import { ref } from "vue";
 
 const storeVersion = useSettingsStore();
 storeVersion.getVersion();
 const membershipStore = useMembershipStore();
 membershipStore.getMembership();
-// const membersStore = useMembersStore();
+const { t } = useI18n();
 
 
 const { membership } = storeToRefs(membershipStore);
-// const { members, membersLoadingError } = storeToRefs(membersStore);
 
+function updateInputText(event:any, key:string) {
+  console.log("event", event.target.value)
+  if(membership)
+    membership[key as keyof typeof membership] = event.target.value;
+}
 
-function updateMembership(membership: Member) {
-  membershipStore.updateMembership(membership);
+function save() {
+  if (membership.value) {
+    membershipStore.updateMembership(membership.value);
+  }
 }
 </script>
 
@@ -29,12 +34,20 @@ function updateMembership(membership: Member) {
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <MembershipTable
-        :membership="membership"
-        @update:member="updateMembership($event)"
-      />
+      <div v-for="(value, key) in membership " :key="value ? key + value : key" class="field">
+        <strong for="user-attr-{{value}}">{{ key }}</strong>
+        <br />
+        <InputText id="user-attr-{{value}}" type="text" aria-describedby="user-attr-{{value}}-help"
+          @change="updateInputText($event, key)"
+          :value="value"
+          :disabled="value === 'id' || value === 'user_id' || value === 'create_attr' || value === 'admin_attr'" />
+      </div>
+      <br />
+      <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
     </div>
+    <p>{{membership}}</p>
   </div>
+
 </template>
 
 <style scoped>
@@ -54,6 +67,7 @@ h3 {
 }
 
 @media (min-width: 1024px) {
+
   .greetings h1,
   .greetings h3 {
     text-align: left;

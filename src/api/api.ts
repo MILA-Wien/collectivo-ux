@@ -71,5 +71,5 @@ export const getMembershipFn = async () => {
 //update membership
 export const updateMembershipFn = async (member: Member) => {
   const response = await api.put("/members/v1/me", member);
-  return response; //or response.data --> figure out
+  return response;
 };
