@@ -18,7 +18,8 @@ const { membership } = storeToRefs(membershipStore);
 function updateInputText(event:any, key:string) {
   console.log("event", event.target.value)
   if(membership)
-    membership[key as keyof typeof membership] = event.target.value;
+    //@ts-ignore
+    membership.value[key] = event.target.value;
 }
 
 function save() {
@@ -40,7 +41,7 @@ function save() {
         <InputText id="user-attr-{{value}}" type="text" aria-describedby="user-attr-{{value}}-help"
           @change="updateInputText($event, key)"
           :value="value"
-          :disabled="value === 'id' || value === 'user_id' || value === 'create_attr' || value === 'admin_attr'" />
+          :disabled="key === 'id' || key === 'user_id' || key === 'create_attr' || key === 'admin_attr'" />
       </div>
       <br />
       <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
