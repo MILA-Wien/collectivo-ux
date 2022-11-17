@@ -16,13 +16,6 @@ let iframeSrc = shallowRef("");
 let isIframe = shallowRef(false);
 let menuLabel = ref("")
 
-// const name = extensionName.value;
-
-function getMenuLabel() {
-  const menuStore = useMenuStore();
-
-}
-
 function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
   if (menuStore.menuLoaded) {

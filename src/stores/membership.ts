@@ -15,7 +15,7 @@ export const useMembershipStore = defineStore({
 
   actions: {
     async updateMembership(membership: Member) {
-      await updateMembershipFn(membership).then((response) => {
+      await updateMembershipFn(membership).then(() => {
         this.membership = membership;
       }).catch(error => {
         console.log("put membership error", error);

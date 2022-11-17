@@ -4,7 +4,6 @@ import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
-import { ref } from "vue";
 
 const storeVersion = useSettingsStore();
 storeVersion.getVersion();
