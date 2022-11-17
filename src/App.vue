@@ -87,3 +87,7 @@ nav a:first-of-type {
   }
 }
 </style>
+
+<style lang="scss">
+@import "primeflex/primeflex.scss";
+</style>
