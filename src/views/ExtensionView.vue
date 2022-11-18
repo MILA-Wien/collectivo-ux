@@ -14,14 +14,14 @@ let type = shallowRef(LoadingItem);
 const menuStore = useMenuStore();
 let iframeSrc = shallowRef("");
 let isIframe = shallowRef(false);
-let menuLabel = ref("")
+let menuLabel = ref("");
 
 function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
   if (menuStore.menuLoaded) {
     const item = menuStore.getMenuItem(extension, component);
-    if(item?.label) {
-      menuLabel.value = item?.label
+    if (item?.label) {
+      menuLabel.value = item?.label;
     }
     if (item !== null && item) {
       if (item.action === "component") {

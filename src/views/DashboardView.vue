@@ -50,7 +50,7 @@ watch(
       >
         <PrimeCard>
           <template #title>
-            {{ t("tile.members_registration_tile") }}
+            {{ t(tile.label ? tile.label : "") }}
           </template>
           <template #content>
             <component

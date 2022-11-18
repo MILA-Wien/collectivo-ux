@@ -78,6 +78,6 @@ export interface DashboardTile {
   order: number;
   required_role?: string;
   blocked_role?: string;
+  label?: string;
   extension: string;
-}
 }
