@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { shallowRef, watch } from "vue";
+import { shallowRef, watch, ref } from "vue";
 import LoadingItem from "../components/LoadingItem.vue";
 import ErrorItem from "../components/ErrorItem.vue";
 import IframeItem from "../components/IFrameItem.vue";
@@ -14,13 +14,15 @@ let type = shallowRef(LoadingItem);
 const menuStore = useMenuStore();
 let iframeSrc = shallowRef("");
 let isIframe = shallowRef(false);
-// const name = extensionName.value;
+let menuLabel = ref("")
 
 function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
   if (menuStore.menuLoaded) {
     const item = menuStore.getMenuItem(extension, component);
-    console.log("item", item);
+    if(item?.label) {
+      menuLabel.value = item?.label
+    }
     if (item !== null && item) {
       if (item.action === "component") {
         isIframe.value = false;
@@ -43,7 +45,6 @@ function getComponent(extension: string, component: string) {
 watch(
   () => menuStore.menuLoaded,
   () => {
-    console.log("menuStore.menu", menuStore.menu);
     type.value = LoadingItem;
     getComponent(
       route.params.extension.toString(),
@@ -80,7 +81,7 @@ watch(
 
 <template>
   <div class="extension-wrapper">
-    <h1>{{ t(route.params.extension.toString()) }}</h1>
+    <h1>{{ t(menuLabel) }}</h1>
     <component :is="type" v-if="!isIframe"></component>
     <IframeItem v-if="isIframe" :src="iframeSrc" />
   </div>
