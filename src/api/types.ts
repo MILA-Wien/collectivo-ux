@@ -54,11 +54,11 @@ export interface User {
   profile: any;
 }
 export interface Member {
-  id: number;
-  user_id: string;
+  id?: number;
+  user_id?: string;
   user_attr: string | null;
-  create_attr: string | null;
-  admin_attr: string | null;
+  create_attr?: string | null;
+  admin_attr?: string | null;
 }
 export interface Members {
   count?: number;
@@ -79,4 +79,5 @@ export interface DashboardTile {
   required_role?: string;
   blocked_role?: string;
   extension: string;
+}
 }

@@ -29,7 +29,6 @@ export const useMenuStore = defineStore({
       state.menu;
     },
     getMenuItem: (state) => {
-      console.log("state.menu", JSON.stringify(state.menu));
       return (extension: string, component: string) => {
         return state.menu?.menu?.find(
           (item: ExtensionMenuItem) =>
