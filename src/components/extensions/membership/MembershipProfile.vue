@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMembershipStore } from "@/stores/membership";
+import { useMembershipStore } from "@/stores/profile";
 import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
@@ -34,14 +34,15 @@ function save() {
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <div v-for="(value, key) in membership " :key="value ? key + value : key" class="field">
+      <!-- <div v-for="(value, key) in membership " :key="value ? key + value : key" class="field">
         <strong for="user-attr-{{value}}">{{ key }}</strong>
         <br />
         <InputText id="user-attr-{{value}}" type="text" aria-describedby="user-attr-{{value}}-help"
           @change="updateInputText($event, key)"
           :value="value"
-          :disabled="key === 'id' || key === 'user_id' || key === 'create_attr' || key === 'admin_attr'" />
-      </div>
+          :disabled="key === 'id'" />
+      </div> -->
+      {{membership}}
       <br />
       <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
     </div>

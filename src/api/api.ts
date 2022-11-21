@@ -29,7 +29,7 @@ export const coreVersionFn = async () => {
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/ux/v1/menus/main_menu/items");
+  const response = await api.get("/menus/v1/menus/main_menu/items");
   return response.data;
 };
 
@@ -72,4 +72,10 @@ export const getMembershipFn = async () => {
 export const updateMembershipFn = async (member: Member) => {
   const response = await api.put("/members/v1/me", member);
   return response;
+};
+
+// get profile schema
+export const getProfileSchemaFn = async () => {
+  const response = await api.get("/api/members/v1/profile");
+  return response.data; //or response? When to choose?
 };

@@ -54,11 +54,30 @@ export interface User {
   profile: any;
 }
 export interface Member {
+  title_pre?: string;
+  title_post?: string;
+  first_name: string;
+  last_name: string;
+  gender?: ["male", "female", "diverse"]; // Array<String>
+  date_birth?: Date;
+  email: string;
+  email_2?: string;
+  phone?: string;
+  phone_2?: string;
+  address_street?: string;
+  address_number?: string;
+  address_is_home?: boolean;
+  address_co?: string;
+  address_stair?: string;
+  address_door?: string;
+  address_postcode?: string;
+  address_city?: string;
+  address_country?: string;
+  legal_name?: string;
+  legal_type?: string;
+  legal_seat?: string;
+  legal_type_id?: string;
   id?: number;
-  user_id?: string;
-  user_attr: string | null;
-  create_attr?: string | null;
-  admin_attr?: string | null;
 }
 export interface Members {
   count?: number;
