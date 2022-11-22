@@ -46,7 +46,6 @@ function save() {
       <br />
       <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
     </div>
-    <p>{{membership}}</p>
   </div>
 
 </template>
