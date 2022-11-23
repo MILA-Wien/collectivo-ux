@@ -8,8 +8,8 @@ describe("Login Succesfull", () => {
       cy.contains("h1", "Bei Ihrem Konto anmelden");
       cy.get("input[name=username]").type("test_member_1@example.com");
       cy.get("input[name=password]").type("test").type("{enter}"); // '{enter}' submits the form
-      cy.contains("h1", "Version API Call");
-      // cy.get("a").contains("Logout").click();
+      cy.contains("h1", "Dashboard");
+      cy.get("a").contains("Logout").click();
     });
   });
 });
