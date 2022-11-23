@@ -58,11 +58,12 @@ export interface Member {
   title_post?: string;
   first_name: string;
   last_name: string;
-  gender?: ["male", "female", "diverse"]; // Array<String>
+  gender?: Array<String>;
   date_birth?: Date;
   email: string;
   email_2?: string;
   phone?: string;
+  input_type: string;
   phone_2?: string;
   address_street?: string;
   address_number?: string;

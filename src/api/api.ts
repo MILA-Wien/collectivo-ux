@@ -76,6 +76,6 @@ export const updateMembershipFn = async (member: Member) => {
 
 // get profile schema
 export const getProfileSchemaFn = async () => {
-  const response = await api.get("/members/v1/profile");
+  const response = await api.get("/members/v1/profile/schema/");
   return response.data; //or response? When to choose?
 };

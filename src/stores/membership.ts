@@ -24,7 +24,7 @@ export const useMembershipStore = defineStore({
     async getMembership() {
       await getProfileSchemaFn().then((response) => {
         if (this.membership === null) {
-          this.membership = { first_name: "", last_name: "", email: "" };
+          this.membership = { first_name: "", last_name: "", email: ""};
         }
         this.membership = {
           title_pre: response.title_pre,
