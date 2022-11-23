@@ -38,7 +38,14 @@ function getComponent(extension: string, component: string) {
         isIframe.value = true;
       }
     } else {
-      type.value = ErrorItem;
+      import(componentName /* @vite-ignore */) // vite-ignore is required for dynamic imports
+        .then((module) => {
+          type.value = module.default;
+        })
+        .catch(() => {
+          type.value = ErrorItem;
+        });
+      //import a non menu item
     }
   }
 }

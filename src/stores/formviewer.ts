@@ -1,0 +1,83 @@
+import { defineStore } from "pinia";
+import type { RootElement } from "@/formviewer/types/elements";
+interface Values {
+  [key: string]: string;
+}
+
+export type FormViewStoreState = {
+  tree: RootElement | null;
+  currentPage: String | null | undefined;
+  values: Values;
+  path: Array<String>;
+  faults: Array<String>;
+  validateCurrentPage: boolean;
+};
+
+export const useFormViewerStore = defineStore({
+  id: "formviewer",
+  state: () =>
+    ({
+      tree: null,
+      currentPage: null,
+      path: [],
+      values: {},
+      faults: [],
+      validateCurrentPage: false,
+    } as FormViewStoreState),
+  actions: {
+    setTree(tree: RootElement) {
+      this.tree = tree;
+    },
+    setCurrentPage(page: String) {
+      this.currentPage = page;
+      this.path.push(page);
+    },
+    updateValue(id: string, value: any) {
+      this.values[id] = value;
+      this.validateCurrentPage = false;
+    },
+
+    nextPage() {
+      this.validateCurrentPage = false;
+
+      const index = this.tree?.children?.findIndex(
+        (e) => e.id == this.currentPage
+      );
+
+      if (index == -1 || typeof index === "undefined") return;
+      console.log("nextPage", index);
+      if (this.tree?.children && index + 1 < this.tree.children.length) {
+        this.currentPage = this.tree?.children[index + 1].id;
+        this.path.push(this.currentPage);
+      }
+    },
+    previousPage() {
+      if (this.path.length > 1) {
+        this.path.pop();
+        this.currentPage = this.path[this.path.length - 1];
+        this.validateCurrentPage = false;
+      }
+    },
+    goToPage(page: string) {
+      this.validateCurrentPage = false;
+      this.currentPage = page;
+    },
+    validatePage() {
+      this.validateCurrentPage = true;
+    },
+  },
+  getters: {
+    getTree: (state) => {
+      return state.tree;
+    },
+    validationFaults: (state) => {
+      return state.faults;
+    },
+    getValueForId: (state) => (id: string) => {
+      return state.values[id];
+    },
+    getValidateCurrentPage: (state) => {
+      return state.validateCurrentPage;
+    },
+  },
+});

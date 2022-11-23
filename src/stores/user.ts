@@ -55,6 +55,11 @@ export const useUserStore = defineStore({
     setProfile(profile: any) {
       this.user!.profile = profile;
     },
+    logout() {
+      const logOutUrl = this.user!.logoutUrl;
+      this.user = null;
+      location.href = logOutUrl;
+    },
   },
   getters: {},
 });

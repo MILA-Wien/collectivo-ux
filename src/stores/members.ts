@@ -1,4 +1,5 @@
-import type { Members, Member } from "./../api/types";
+import { getRegisterSchemaFn, registerMemberFn } from "./../api/api";
+import type { Members, Member, Schema } from "./../api/types";
 import { defineStore } from "pinia";
 import { membersMembersFn, membersMembersPatch } from "@/api/api";
 
@@ -6,6 +7,7 @@ type MembersState = {
   members: Members | null;
   membersLoaded: boolean;
   membersLoadingError: string | null;
+  registrationSchema: Schema | null;
 };
 
 export const useMembersStore = defineStore({
@@ -15,6 +17,7 @@ export const useMembersStore = defineStore({
       members: null,
       membersLoaded: false,
       membersLoadingError: null,
+      registrationSchema: null,
     } as MembersState),
   actions: {
     async getMembers() {
@@ -54,6 +57,16 @@ export const useMembersStore = defineStore({
     },
     async deleteMember(member: Member) {
       alert("deleteMember not yet implemented " + member.id);
+    },
+    async register(registrationData: any) {
+      registerMemberFn(registrationData).then((response: any) => {
+        console.log("register", response);
+      });
+    },
+    async loadRegisterSchema() {
+      getRegisterSchemaFn().then((response) => {
+        this.registrationSchema = response;
+      });
     },
   },
 });
