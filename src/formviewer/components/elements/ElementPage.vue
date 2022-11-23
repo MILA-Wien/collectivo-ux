@@ -39,7 +39,7 @@ for (let i = 0; i < allElements.value.length; i++) {
   const element = allElements.value[i];
   if (element.properties?.required) {
     const selector = element.properties?.extId;
-    if (element.properties?.required) {
+    if (element.properties?.required && selector) {
       rules[selector] = {
         required,
         minLength: minLength(1),
