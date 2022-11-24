@@ -64,13 +64,13 @@ export const membersMembersPatch = async (member: Member) => {
 
 // get membership
 export const getMembershipFn = async () => {
-  const response = await api.get("/members/v1/me");
+  const response = await api.get("/members/v1/profile");
   return response.data;
 };
 
 //update membership
 export const updateMembershipFn = async (member: Member) => {
-  const response = await api.put("/members/v1/me", member);
+  const response = await api.patch("/members/v1/profile", member);
   return response;
 };
 
