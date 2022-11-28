@@ -92,13 +92,13 @@ export const dashboardTiles = async () => {
 };
 // get membership
 export const getMembershipFn = async () => {
-  const response = await api.get("/members/me");
+  const response = await api.get("/members/profile");
   return response.data;
 };
 
 //update membership
 export const updateMembershipFn = async (member: Member) => {
-  const response = await api.put("/members/me", member);
+  const response = await api.put("/members/profile", member);
   return response;
 };
 
