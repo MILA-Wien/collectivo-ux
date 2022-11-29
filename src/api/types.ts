@@ -66,3 +66,18 @@ export interface Members {
   previous?: string;
   results: Array<Member>;
 }
+export interface DashboardTiles {
+  count?: number;
+  next?: string;
+  previous?: string;
+  results: Array<DashboardTile>;
+}
+export interface DashboardTile {
+  tile_id: string;
+  component_name: string;
+  order: number;
+  required_role?: string;
+  blocked_role?: string;
+  label?: string;
+  extension: string;
+}

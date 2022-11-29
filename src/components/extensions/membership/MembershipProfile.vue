@@ -11,12 +11,10 @@ const membershipStore = useMembershipStore();
 membershipStore.getMembership();
 const { t } = useI18n();
 
-
 const { membership } = storeToRefs(membershipStore);
 
-function updateInputText(event:any, key:string) {
-  console.log("event", event.target.value)
-  if(membership)
+function updateInputText(event: any, key: string) {
+  if (membership)
     //@ts-ignore
     membership.value[key] = event.target.value;
 }
@@ -34,20 +32,37 @@ function save() {
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <div v-for="(value, key) in membership " :key="value ? key + value : key" class="field">
+      <div
+        v-for="(value, key) in membership"
+        :key="value ? key + value : key"
+        class="field"
+      >
         <strong for="user-attr-{{value}}">{{ key }}</strong>
         <br />
-        <InputText id="user-attr-{{value}}" type="text" aria-describedby="user-attr-{{value}}-help"
+        <InputText
+          id="user-attr-{{value}}"
+          type="text"
+          aria-describedby="user-attr-{{value}}-help"
           @change="updateInputText($event, key)"
           :value="value"
-          :disabled="key === 'id' || key === 'user_id' || key === 'create_attr' || key === 'admin_attr'" />
+          :disabled="
+            key === 'id' ||
+            key === 'user_id' ||
+            key === 'create_attr' ||
+            key === 'admin_attr'
+          "
+        />
       </div>
       <br />
-      <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
+      <ButtonPrime
+        :label="t('Save')"
+        icon="pi pi-check"
+        @click="save()"
+        autofocus
+      />
     </div>
-    <p>{{membership}}</p>
+    <p>{{ membership }}</p>
   </div>
-
 </template>
 
 <style scoped>
@@ -67,7 +82,6 @@ h3 {
 }
 
 @media (min-width: 1024px) {
-
   .greetings h1,
   .greetings h3 {
     text-align: left;
