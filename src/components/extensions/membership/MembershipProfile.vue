@@ -14,7 +14,6 @@ const { t } = useI18n();
 const { membership } = storeToRefs(membershipStore);
 
 function updateInputText(event: any, key: string) {
-  console.log("event", event.target.value);
   if (membership)
     //@ts-ignore
     membership.value[key] = event.target.value;

@@ -2,7 +2,9 @@ import Keycloak from "keycloak-js";
 import { useUserStore } from "@/stores/user";
 
 const initOptions = {
-  url: "http://keycloak:8080/",
+  url: import.meta.env.VITE_KEYCLOAK_URL
+    ? import.meta.env.VITE_KEYCLOAK_URL
+    : "http://keycloak:8080/auth",
   realm: "collectivo",
   clientId: "collectivo-ux",
   onLoad: <Keycloak.KeycloakOnLoad>"check-sso", // login-required means that the user will be redirected to the login page if not already authenticated
