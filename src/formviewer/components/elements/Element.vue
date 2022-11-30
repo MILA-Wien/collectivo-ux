@@ -160,7 +160,6 @@ function buttonClick(element: any) {
     formViewerStore.validatePage();
     emit("nextPage");
     emit("blub");
-    console.log("next");
   } else if (element.properties.buttonType == "goToPage") {
     emit("goToPage", element.properties.goToPage);
   } else if (element.properties.buttonType == "back") {

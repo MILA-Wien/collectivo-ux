@@ -45,7 +45,6 @@ export const useFormViewerStore = defineStore({
       );
 
       if (index == -1 || typeof index === "undefined") return;
-      console.log("nextPage", index);
       if (this.tree?.children && index + 1 < this.tree.children.length) {
         this.currentPage = this.tree?.children[index + 1].id;
         this.path.push(this.currentPage);

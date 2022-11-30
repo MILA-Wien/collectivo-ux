@@ -24,14 +24,6 @@ function initKeycloak() {
     store.setRegisterUrl(keycloak.createRegisterUrl());
     store.setAccountUrl(keycloak.createAccountUrl());
     store.setRedirectUri(keycloak.redirectUri);
-    //   keycloak
-    //     .loadUserProfile()
-    //     .then(function (profile) {
-    //       store.setProfile(profile);
-    //     })
-    //     .catch(function () {
-    //       console.log("Failed to load user profile");
-    //     });
   };
   keycloak.onAuthError = () => {
     console.log("onAuthError");
