@@ -13,6 +13,7 @@ api.interceptors.request.use(
     const token = store.user!.token;
     if (token && config.headers) {
       config.headers.Authorization = `Token ${token}`;
+      config.headers["Accept"] = "application/json; version=0.1.0";
     }
     return config;
   },
@@ -23,24 +24,26 @@ api.interceptors.request.use(
 );
 api.defaults.headers.common["Content-Type"] = "application/json";
 
+
+
 export const coreVersionFn = async () => {
-  const response = await api.get("/collectivo/v1/version");
+  const response = await api.get("/collectivo/about/");
   return response.data;
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/menus/v1/menus/main_menu/items");
+  const response = await api.get("/menus/menus/main_menu/items");
   return response.data;
 };
 
 export const coreMicroFrontendsFn = async (name: string) => {
-  const response = await api.get("/ux/v1/microfrontends/" + { name });
+  const response = await api.get("/ux/microfrontends/" + { name });
   return response.data;
 };
 
 // get members
 export const membersMembersFn = async () => {
-  const response = api.get("/members/v1/members/");
+  const response = api.get("/members/members/");
   return response;
 };
 
@@ -56,7 +59,7 @@ export const membersMembersPreviousFn = async (previousUrl: string) => {
 
 export const membersMembersPatch = async (member: Member) => {
   const response = await api.patch(
-    `/members/v1/members/${member.id}/?limit=10`,
+    `/members/members/${member.id}/?limit=10`,
     member
   );
   return response.data;
@@ -64,18 +67,18 @@ export const membersMembersPatch = async (member: Member) => {
 
 // get membership
 export const getMembershipFn = async () => {
-  const response = await api.get("/members/v1/profile");
+  const response = await api.get("/members/profile");
   return response.data;
 };
 
 //update membership
 export const updateMembershipFn = async (member: Member) => {
-  const response = await api.patch("/members/v1/profile", member);
+  const response = await api.patch("/members/profile", member);
   return response;
 };
 
 // get profile schema
 export const getProfileSchemaFn = async () => {
-  const response = await api.get("/members/v1/profile/schema/");
+  const response = await api.get("/members/profile/schema/");
   return response.data; //or response? When to choose?
 };

@@ -86,3 +86,26 @@ export interface Members {
   previous?: string;
   results: Array<Member>;
 }
+
+export interface SchemaField {
+  field_type: string;
+  input_type: string;
+  label: string;
+  max_length: number;
+  read_only: boolean;
+  required: boolean;
+  write_only: boolean;
+  choices?: Array<SchemaChoiceItem>;
+  condition?: SchemaCondition;
+}
+export interface SchemaChoiceItem {
+  [key: string]: string;
+}
+export interface SchemaCondition {
+  field: string;
+  condition: string;
+  value: string;
+}
+export interface Schema {
+  [key: string]: SchemaField;
+}

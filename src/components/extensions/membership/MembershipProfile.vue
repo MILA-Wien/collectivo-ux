@@ -9,7 +9,8 @@ import InputMask from "primevue/inputmask";
 import Listbox from 'primevue/listbox';
 import Calendar from 'primevue/calendar';
 import SelectButton from 'primevue/selectbutton';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import type { Members, Member } from "@/api/types";
 
 const storeVersion = useSettingsStore();
 storeVersion.getVersion();
@@ -17,22 +18,35 @@ const membershipStore = useMembershipStore();
 membershipStore.getMembershipSchema();
 membershipStore.getMembership();
 const { t } = useI18n();
-const selectedGender = ref( { name: 'diverse', code: 'diverse' });
-const gender = ref([
-  { name: 'diverse', code: 'diverse' },
-  { name: 'female', code: 'female' },
-  { name: 'male', code: 'male' },
-]);
-const date1 = ref();
+const selectedGender = ref();
+
+const birthdate = ref();
 const inputmask = ref();
-const value1 = ref(42);
 const options = ref(['Yes', 'No']);
-const checkboxVal = ref('No');
+const checkboxVal = ref();
+
+let newData: Member = { first_name: "", last_name: "", email: "", input_type: "" }
 
 const { membership, membershipSchema } = storeToRefs(membershipStore);
+watch(membership, (value) => {
+  selectedGender.value = { name: value ? value["gender"] : "", code: value ? value["gender"] : "" };
+  if (value) {
+    if (typeof value["date_birth"] === 'string') {
+      console.log("string date", value["date_birth"])
+      const dateFormat = new Date(value["date_birth"])
+      console.log("dateFormate", dateFormat)
+      birthdate.value = dateFormat;
+    }
+    else {
+      birthdate.value = value?value["date_birth"]:"";
+    }
 
-function updateInputText(event: any, key: string) {
-  console.log("text event changed", event.target.value, key)
+  }
+  console.log("watch value", value);
+})
+
+function updateInputText(event: any, key: string | number) {
+  console.log("text event changed", event.target.value, key);
   if (membership)
     //@ts-ignore
     membership.value[key] = event.target.value;
@@ -40,17 +54,59 @@ function updateInputText(event: any, key: string) {
 
 }
 
-function updateCheckBox(event: any, key: string) {
-  console.log("checkbox event changed", event.value, key)
+function updateRadioGender(event: any, key: string) {
+  console.log("radio event changed", event.target.innerText, key);
+  console.log("membership.value[key]", membership.value[key]);
   //@ts-ignore
-  membership.value[key] = event.value
+  membership.value[key] = event.target.innerText;
 
+  //idee um auch nach reload das auserwählte Gender zu zeigen aber funktioniert leider nicht...
+  // selectedGender.value =  { name: event.target.innerText, code: event.target.innerText }
+
+}
+
+function selectBirthdate(event: any, key: string | number) {
+  console.log("calendar event changed", event, key);
+  //format Date to ISO 8601 format for Django database
+  const offset = event.getTimezoneOffset();
+
+  event = new Date(event.getTime() - (offset * 60 * 1000))
+  const birthdate = event.toISOString().split('T')[0];
+  console.log(birthdate);
+
+  //@ts-ignore
+  membership.value[key] = birthdate;
+  console.log("membership.value[key]", membership.value[key]);
+}
+
+function typeBirthdate(event: any, key: string | number) {
+  console.log("type date", event, key);
+}
+
+
+function updateCheckBox(event: any, key: string) {
+  console.log("checkbox event changed", event.target.innerText, key);
+  console.log("membership.value[key]", membership.value[key]);
+
+  //@ts-ignore
+  membership.value[key] = event.target.innerText;
 }
 
 function save() {
   if (membership.value) {
     membershipStore.updateMembership(membership.value);
   }
+}
+function schemaToPrime(choices: any) {
+  console.log("choices", choices)
+  // choices.forEach(element => {
+
+  // });
+  return [
+    { name: 'diverse', code: 'diverse' },
+    { name: 'female', code: 'female' },
+    { name: 'male', code: 'male' },
+  ]
 }
 </script>
 
@@ -60,40 +116,48 @@ function save() {
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <div v-for="(value, key) in membershipSchema " :key="value ? key + value : key" class="field">
+      <div v-for="(value, key) in membershipSchema " :key="value ? key + value.input_type : key" class="field">
         <!-- <strong for="user-attr-{{value}}">{{ key }}</strong> -->
-        <div v-if="value?.input_type === 'text'">
-          <h3>{{ value?.label }}</h3>
+        <div v-if="
+        value?.input_type === 'text'">
+          <h3>{{
+              value?.label
+          }}</h3>
           <br />
           <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
-            @change="updateInputText($event, key)" :value="membership[key]" />
+            @change="updateInputText($event, key)" :value="
+            membership ? membership[key] : ''" />
         </div>
-        <div v-else-if="value?.input_type === 'checkbox'">
-          <h3>{{ value?.label }}</h3>
-          <SelectButton v-model="checkboxVal" :options="options" aria-labelledby="single" @change="updateCheckBox($event, key)"/>
+        <div v-else-if="
+        value?.input_type === 'checkbox'">
+          <h3>{{ value.label }}</h3>
+          <SelectButton v-model="checkboxVal" :options="options" aria-labelledby="single"
+            @click="updateCheckBox($event, key)" />
           preset status in Django als Übergabe?
         </div>
-        <div v-else-if="value?.input_type === 'select'">
+        <div v-else-if="value?.input_type === 'radio'">
           <h3>{{ value?.label }}</h3>
-          <Listbox v-model="selectedGender" :options="gender" optionLabel="name" placeholder="Select Gender(s)" />
+          <Listbox v-model="selectedGender" :options="schemaToPrime(value.choices)" optionLabel="name"
+            placeholder="Select Gender(s)" @click="updateRadioGender($event, key)" />
 
           preset status in Django als Übergabe?
         </div>
         <div v-else-if="value?.input_type === 'email'">
           <h3>{{ value?.label }}</h3>
           <InputMask id="user-attr-{{value}}" v-model="inputmask" mask="*@*.a" />
-          InputMask to be done with Vuelidate
+          InputMask for mail address to be done with Vuelidate
 
         </div>
         <div v-else-if="value?.input_type === 'date'">
           <h3>{{ value?.label }}</h3>
-          <Calendar inputId="basic" v-model="date1" :showIcon="true" dateFormat="dd.mm.yy" />
+          <Calendar inputId="basic" v-model="birthdate" :showIcon="true" dateFormat="dd.mm.yy"
+            @date-select="selectBirthdate($event, key)" @input="typeBirthdate($event, key)"/>
 
         </div>
         <div v-else-if="value?.input_type === 'number'">
           <h3>{{ value?.label }}</h3>
           <!-- bad hardcoding but how to assign membership.id if not possible in <script>?-->
-          <InputText disabled v-model="membership[key]" />
+          <InputNumber disabled type="number" v-model="newData[key]" />
           <!--{{value1 = membership[key]}}-->
           <!--<InputNumber v-model="value1"-->
           <!--how to implement disabled input field, when no if case is possible inside else-if-case?-->
