@@ -67,7 +67,7 @@ export interface Member {
   phone_2?: string;
   address_street?: string;
   address_number?: string;
-  address_is_home?: boolean;
+  address_is_home?: Array<String>;
   address_co?: string;
   address_stair?: string;
   address_door?: string;
