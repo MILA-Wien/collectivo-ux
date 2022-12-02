@@ -6,7 +6,7 @@ const { t } = useI18n();
   <div>
     <p>
       <b>{{ t("Important:") }}</b>
-      {{ t("Registration hasn't finished yes please continue here.") }}
+      {{ t("Registration hasn't finished yet please continue here.") }}
     </p>
     <RouterLink to="/membership/registration">
       <ButtonPrime> {{ t("next") }} </ButtonPrime>
