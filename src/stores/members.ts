@@ -60,7 +60,7 @@ export const useMembersStore = defineStore({
     },
     async register(registrationData: any) {
       registerMemberFn(registrationData).then((response: any) => {
-        console.log("register", response);
+        //todo: what happens after registration?
       });
     },
     async loadRegisterSchema() {

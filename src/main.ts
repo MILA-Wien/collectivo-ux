@@ -26,8 +26,7 @@ const app = createApp(App);
 app.use(createPinia());
 const keycloakInstance = initKeycloak();
 keycloakInstance
-  .then((keycloak) => {
-    console.log("keycloakInstance", keycloak);
+  .then(() => {
     app.use(i18n);
     // PrimeVue
     app.use(PrimeVue);
