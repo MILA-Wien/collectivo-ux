@@ -11,7 +11,7 @@ const { user } = storeToRefs(userStore);
   <div class="app" v-if="user?.token !== ''">
     <header>
       <div class="wrapper">
-        <MenuView></MenuView>
+        <MenuView v-if="user?.authenticated"></MenuView>
       </div>
     </header>
     <div class="content">
