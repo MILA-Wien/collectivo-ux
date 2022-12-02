@@ -25,13 +25,13 @@ services:
       - DB_USER=user
       - DB_PASS=changeme
     depends_on:
-      - db
+      - collectivo-db
       - keycloak
     extra_hosts:
       # Allow for direct communication between services.
       - host.docker.internal:host-gateway
 
-  db:
+  collectivo-db:
     image: postgres:13-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
