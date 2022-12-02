@@ -120,8 +120,6 @@ import { useFormViewerStore } from "../../../stores/formviewer";
 import { storeToRefs } from "pinia";
 
 const ElementBlueprint = defineAsyncComponent(() => import("./Element.vue"));
-// const Signature = defineAsyncComponent(() => import("./Signature.vue"));
-// const Percentage = defineAsyncComponent(() => import("./Percentage.vue"));
 const Calculation = defineAsyncComponent(
   () => import("./ElementCalculation.vue")
 );
@@ -159,8 +157,6 @@ function buttonClick(element: any) {
   if (element.properties.buttonType == "next") {
     formViewerStore.validatePage();
     emit("nextPage");
-    emit("blub");
-    console.log("next");
   } else if (element.properties.buttonType == "goToPage") {
     emit("goToPage", element.properties.goToPage);
   } else if (element.properties.buttonType == "back") {
