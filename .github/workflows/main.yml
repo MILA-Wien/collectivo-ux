@@ -39,10 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     env:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_HOST: localhost # default host value for the database
-      DB_NAME: djtesting
+      DB_HOST: collectivo-db
+      DB_NAME: collectivo_db
+      DB_USER: admin
+      DB_PASS: badpassword  
       POSTGRES_PORT: 5432
       DJANGO_SECRET_KEY: test-key-not-good
     steps:
@@ -64,7 +64,7 @@ jobs:
           docker network create -d bridge collectivo
           cd ${GITHUB_WORKSPACE}/docker/keycloak && docker build -t keycloak .
           /usr/bin/docker run -d -p 8080:8080 --network collectivo --name keycloak --hostname keycloak  -e GITHUB_ACTIONS=true -e CI=true keycloak
-            /usr/bin/docker run -d  --network collectivo  -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name db --hostname db -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_DB=djtesting" -e GITHUB_ACTIONS=true -e CI=true postgres:12
+            /usr/bin/docker run -d  --network collectivo  -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name collectivo-db --hostname collectivo-db -e "POSTGRES_USER=admin" -e "POSTGRES_PASSWORD=badpassword" -e "POSTGRES_DB=djtesting" -e GITHUB_ACTIONS=true -e CI=true postgres:12
       - name: Download dependencies
         run: yarn install --frozen-lockfile
       - name: Add hosts to /etc/hosts
