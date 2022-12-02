@@ -1,0 +1,510 @@
+{
+    "type": "root",
+    "children": [
+        {
+            "type": "page",
+            "name": "Welcome",
+            "id": "FINTaFRUUKNk",
+            "children": [
+                {
+                    "type": "paragraph",
+                    "properties": {
+                        "htmlType": "p",
+                        "conditions": [],
+                        "label": "Herzlich Willkommen",
+                        "content": "Eineleitungstext",
+                        "extId": "tSnUMpenIvvX"
+                    },
+                    "id": "tSnUMpenIvvX",
+                    "children": []
+                },
+                {
+                    "type": "singleChoice",
+                    "properties": {
+                        "label": "Type of membership",
+                        "htmlType": "radio",
+                        "conditions": [],
+                        "required": true,
+                        "options": [
+                            "active",
+                            "investing",
+                            "legal"
+                        ],
+                        "values": [
+                            "active",
+                            "investing",
+                            "legal"
+                        ],
+                        "extId": "membership_type"
+                    },
+                    "id": "hCyBgyqSimyU",
+                    "children": []
+                },
+                {
+                    "type": "button",
+                    "properties": {
+                        "label": "Next",
+                        "conditions": [],
+                        "extId": "woSqVbVIKwHd",
+                        "buttonType": "next"
+                    },
+                    "id": "QLeEwzRDCuqz",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "type": "page",
+            "name": "page 0",
+            "id": "FINTRFRUUKNk",
+            "children": [
+                {
+                    "type": "singleChoice",
+                    "properties": {
+                        "label": "Gender",
+                        "htmlType": "radio",
+                        "conditions": [],
+                        "options": [
+                            "divers",
+                            "female",
+                            "male"
+                        ],
+                        "values": [
+                            "divers",
+                            "female",
+                            "male"
+                        ],
+                        "required": true,
+                        "extId": "gender"
+                    },
+                    "id": "poKddqtVrGPs",
+                    "children": []
+                },
+                {
+                    "type": "date",
+                    "properties": {
+                        "label": "Birthdate",
+                        "conditions": [],
+                        "content": "",
+                        "extId": "skNWSarXVbcC"
+                    },
+                    "id": "skNWSarXVbcC",
+                    "children": []
+                },
+                {
+                    "type": "formset",
+                    "properties": {
+                        "conditions": [],
+                        "hideLabel": false,
+                        "extId": "uNmhrILdTZge",
+                        "label": "Address"
+                    },
+                    "id": "uNmhrILdTZge",
+                    "children": [
+                        {
+                            "type": "formset",
+                            "properties": {
+                                "conditions": [],
+                                "hideLabel": true,
+                                "extId": "TqfJLpaUCpsv"
+                            },
+                            "id": "noTTTvxeKWvN",
+                            "children": [
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "Street",
+                                        "extId": "address_street",
+                                        "required": true
+                                    },
+                                    "id": "XtGQbUHzUKHl",
+                                    "children": []
+                                },
+                                {
+                                    "type": "number",
+                                    "properties": {
+                                        "label": "number",
+                                        "conditions": [],
+                                        "content": "",
+                                        "extId": "address_number",
+                                        "required": true
+                                    },
+                                    "id": "mKoTGeoIFHqb",
+                                    "children": []
+                                },
+                                {
+                                    "type": "number",
+                                    "properties": {
+                                        "label": "stair",
+                                        "conditions": [],
+                                        "content": "",
+                                        "extId": "address_stair"
+                                    },
+                                    "id": "zkzcBrFPCdGx",
+                                    "children": []
+                                },
+                                {
+                                    "type": "number",
+                                    "properties": {
+                                        "label": "door",
+                                        "conditions": [],
+                                        "content": "",
+                                        "extId": "address_door"
+                                    },
+                                    "id": "AkzcBrFPCdGx",
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "type": "formset",
+                            "properties": {
+                                "conditions": [],
+                                "hideLabel": true,
+                                "extId": "BqQUbdltwSrD"
+                            },
+                            "id": "BqQUbdltwSrD",
+                            "children": [
+                                {
+                                    "type": "number",
+                                    "properties": {
+                                        "label": "Postcode",
+                                        "conditions": [],
+                                        "content": "",
+                                        "extId": "address_postcode",
+                                        "required": true
+                                    },
+                                    "id": "eGIMUDzZmIXl",
+                                    "children": []
+                                },
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "City",
+                                        "extId": "city"
+                                    },
+                                    "id": "JDoKLTEXhcsl",
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "country",
+                                "extId": "country"
+                            },
+                            "id": "WCEHZtmfzgZB",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "formset",
+                    "properties": {
+                        "conditions": [],
+                        "hideLabel": true,
+                        "extId": "GqQUbdltwSrD"
+                    },
+                    "id": "GqQUbdltwSrD",
+                    "children": [
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "Phone",
+                                "extId": "phone",
+                                "required": true
+                            },
+                            "id": "sJsmSmZUQhtG",
+                            "children": []
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "Phone 2",
+                                "extId": "phone_2"
+                            },
+                            "id": "XzQXvahmNmZf",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "textfield",
+                    "properties": {
+                        "htmlType": "text",
+                        "conditions": [],
+                        "label": "Homepage",
+                        "extId": "homepage"
+                    },
+                    "id": "iOUgJUqSGMvm",
+                    "children": []
+                },
+                {
+                    "type": "formset",
+                    "properties": {
+                        "conditions": [
+                            {
+                                "target": "hCyBgyqSimyU",
+                                "value": "legal"
+                            }
+                        ],
+                        "hideLabel": true,
+                        "extId": "oLSvbRsAfmSl",
+                        "label": "legal"
+                    },
+                    "id": "oLSvbRsAfmSl",
+                    "children": [
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "legal_name",
+                                "extId": "ReLbytOMwxxT"
+                            },
+                            "id": "yfMLKFbCbVyZ",
+                            "children": []
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "legal_type",
+                                "extId": "legal_type"
+                            },
+                            "id": "aDERADxZaNGg",
+                            "children": []
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "legal_seat",
+                                "extId": "legal_seat"
+                            },
+                            "id": "RqNDXfmTWUUL",
+                            "children": []
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "legal_type_id",
+                                "extId": "legal_type_id"
+                            },
+                            "id": "ReLbytOMwxxT",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "formset",
+                    "properties": {
+                        "conditions": [],
+                        "hideLabel": true,
+                        "extId": "ALSvbRsAfmSl",
+                        "label": "legal"
+                    },
+                    "id": "ALSvbRsAfmSl",
+                    "children": [
+                        {
+                            "type": "button",
+                            "properties": {
+                                "label": "Back",
+                                "conditions": [
+                                    {
+                                        "target": null,
+                                        "value": "legal"
+                                    }
+                                ],
+                                "extId": "ATcyDpIIfqdX",
+                                "buttonType": "back"
+                            },
+                            "id": "ATcyDpIIfqdX",
+                            "children": []
+                        },
+                        {
+                            "type": "button",
+                            "properties": {
+                                "label": "Next",
+                                "conditions": [
+                                    {
+                                        "target": null,
+                                        "value": "legal"
+                                    }
+                                ],
+                                "extId": "ETcyDpIIfqdX",
+                                "buttonType": "next"
+                            },
+                            "id": "ETcyDpIIfqdX",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "page",
+            "name": "page 1",
+            "id": "wIEVWuPGslMX",
+            "children": [
+                {
+                    "type": "paragraph",
+                    "properties": {
+                        "htmlType": "p",
+                        "conditions": [],
+                        "label": "Shares",
+                        "content": "Some random text about shares",
+                        "extId": "gEVwcJiztoBG"
+                    },
+                    "id": "gEVwcJiztoBG",
+                    "children": []
+                },
+                {
+                    "type": "number",
+                    "properties": {
+                        "label": "share_number",
+                        "conditions": [],
+                        "content": "",
+                        "extId": "share_number"
+                    },
+                    "id": "kDFmPWTOqEeE",
+                    "children": []
+                },
+                {
+                    "type": "formset",
+                    "properties": {
+                        "conditions": [
+                            {
+                                "target": null,
+                                "value": "legal"
+                            }
+                        ],
+                        "hideLabel": true,
+                        "extId": "cdSvbRsAfmSl"
+                    },
+                    "id": "cdSvbRsAfmSl",
+                    "children": [
+                        {
+                            "type": "button",
+                            "properties": {
+                                "label": "Back",
+                                "conditions": [
+                                    {
+                                        "target": null,
+                                        "value": "legal"
+                                    }
+                                ],
+                                "extId": "cdcyDpIIfqdX",
+                                "buttonType": "back"
+                            },
+                            "id": "cdcyDpIIfqdX",
+                            "children": []
+                        },
+                        {
+                            "type": "button",
+                            "properties": {
+                                "label": "Next",
+                                "conditions": [],
+                                "extId": "PuuykphDkxDQ",
+                                "buttonType": "next"
+                            },
+                            "id": "FlmRKTJhcvQC",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "page",
+            "name": "page 2",
+            "id": "IcLLQoeLXybn",
+            "children": [
+                {
+                    "type": "paragraph",
+                    "properties": {
+                        "htmlType": "p",
+                        "conditions": [],
+                        "label": "Nearly done are you sure?",
+                        "content": "This is a text",
+                        "extId": "JqklVcreWnWV"
+                    },
+                    "id": "JqklVcreWnWV",
+                    "children": []
+                },
+                {
+                    "type": "formset",
+                    "properties": {
+                        "conditions": [
+                            {
+                                "target": null,
+                                "value": "legal"
+                            }
+                        ],
+                        "hideLabel": true,
+                        "extId": "cdSvbRsAfmSl"
+                    },
+                    "id": "cdSvbRsAfmSl",
+                    "children": [
+                        {
+                            "type": "button",
+                            "properties": {
+                                "label": "Back",
+                                "conditions": [],
+                                "extId": "EGwyLArCyWKu",
+                                "buttonType": "back"
+                            },
+                            "id": "EGwyLArCyWKu",
+                            "children": []
+                        },
+                        {
+                            "type": "button",
+                            "properties": {
+                                "label": "Register",
+                                "conditions": [],
+                                "extId": "FGwyLArCyWKu",
+                                "buttonType": "submit"
+                            },
+                            "id": "FGwyLArCyWKu",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "page",
+            "name": "page 3",
+            "id": "pzwtvhVtTtKX",
+            "children": [
+                {
+                    "type": "paragraph",
+                    "properties": {
+                        "htmlType": "p",
+                        "conditions": [],
+                        "label": "Complete text",
+                        "content": "This is a text",
+                        "extId": "llnXyrSdwKHT"
+                    },
+                    "id": "llnXyrSdwKHT",
+                    "children": []
+                }
+            ]
+        }
+    ]
+}

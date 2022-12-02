@@ -13,6 +13,7 @@ api.interceptors.request.use(
     const token = store.user!.token;
     if (token && config.headers) {
       config.headers.Authorization = `Token ${token}`;
+      config.headers["Accept"] = "application/json; version=1.0";
     }
     return config;
   },
@@ -22,6 +23,20 @@ api.interceptors.request.use(
   }
 );
 api.defaults.headers.common["Content-Type"] = "application/json";
+
+api.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status === 401) {
+      // const store = useUserStore();
+      // store.logout();
+      alert("Error 401:" + error.response.data.detail);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const coreVersionFn = async () => {
   const response = await api.get("/collectivo/v1/version");
@@ -77,4 +92,14 @@ export const getMembershipFn = async () => {
 export const updateMembershipFn = async (member: Member) => {
   const response = await api.put("/members/v1/me", member);
   return response;
+};
+
+export const getRegisterSchemaFn = async () => {
+  const response = await api.get("/members/v1/register/schema");
+  return response.data;
+};
+
+export const registerMemberFn = async (member: any) => {
+  const response = await api.post("/members/v1/register", member);
+  return response.data;
 };
