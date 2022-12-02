@@ -12,7 +12,7 @@ services:
     ports:
       - "8001:80"
   collectivo:
-    build: https://github.com/MILA-Wien/machmit_backend.git#main
+    image: milawien/collectivo:pr-main
     ports:
       - "8000:8000"
     volumes:
@@ -53,7 +53,7 @@ services:
       POSTGRES_PASSWORD: badpassword
 
   keycloak:
-    image: "quay.io/keycloak/keycloak:19.0.2"
+    build: ./docker/keycloak
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin

@@ -8,10 +8,10 @@ const { user } = storeToRefs(userStore);
 </script>
 
 <template>
-  <div class="app" v-if="user?.token !== ''">
+  <div class="app" v-if="user?.authenticated">
     <header>
       <div class="wrapper">
-        <MenuView v-if="user?.authenticated"></MenuView>
+        <MenuView></MenuView>
       </div>
     </header>
     <div class="content">
