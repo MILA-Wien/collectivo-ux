@@ -33,7 +33,7 @@ services:
       KEYCLOAK_SERVER_URL: http://keycloak:8080
       # UNSAFE! GENERATE SECRETE KEY IN KEYCLOAK FOR PRODUCTION
       KEYCLOAK_CLIENT_SECRET_KEY: '**********'
-      COLLECTIVO_EXTENSIONS: core
+      COLLECTIVO_EXTENSIONS: members
       DEBUG: 1
       DEVELOPMENT: 1
     depends_on:
