@@ -5,11 +5,11 @@ import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
-import InputMask from "primevue/inputmask";
 import Listbox from 'primevue/listbox';
 import Calendar from 'primevue/calendar';
-import { ref, watch } from 'vue';
-import type { Member } from "@/api/types";
+import { ref, watch, reactive, computed } from 'vue';
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 
 const storeVersion = useSettingsStore();
 storeVersion.getVersion();
@@ -18,34 +18,41 @@ membershipStore.getMembershipSchema();
 membershipStore.getMembership();
 const { t } = useI18n();
 const selectedGender = ref();
-
 const birthdate = ref();
-const inputmask = ref();
 const checkboxValue = ref();
 const id = ref();
 
 const { membership, membershipSchema } = storeToRefs(membershipStore);
-watch(membership, (value, key) => {
+watch(membership, (value) => {
   selectedGender.value = { name: value ? value["gender"] : "", code: value ? value["gender"] : "" };
   checkboxValue.value = { name: value ? value["address_is_home"] : "", code: value ? value["address_is_home"] : "" };
-  id.value = value? value["id"] : "";
+  id.value = value ? value["id"] : "";
   if (value) {
     if (typeof value["date_birth"] === 'string') {
       console.log("string date", value["date_birth"])
       const dateFormat = new Date(value["date_birth"])
-      console.log("dateFormate", dateFormat)
+      console.log("dateFormat", dateFormat)
       birthdate.value = dateFormat;
     }
     else {
-      birthdate.value = value?value["date_birth"]:"";
+      birthdate.value = value ? value["date_birth"] : "";
     }
 
   }
 })
 
+
+// Vuelidate block
+const rules = {
+  email: { required, email },
+  email_2: { email }
+};
+const v$ = useVuelidate(rules, membership);
+
+
 function updateInputText(event: any, key: string | number) {
-    //@ts-ignore
-    membership.value[key] = event.target.value;
+  //@ts-ignore
+  membership.value[key] = event.target.value;
 }
 
 function updateRadioGender(event: any, key: string | number) {
@@ -62,16 +69,25 @@ function selectBirthdate(event: any, key: string | number) {
   membership.value[key] = birthdate;
 }
 
-function save() {
-  if (membership.value) {
+async function save() {
+  console.log("v$", v$);
+  console.log("validate()", v$.value.$errors)
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) {
+    alert(v$.value.$errors[0].$message);
+  }
+  else if (membership.value) {
     membershipStore.updateMembership(membership.value);
+  }
+  else {
+    throw new TypeError("Membership value is empty");
   }
 }
 function schemaToPrime(choices: any) {
-  let schema:Array<Object> = [];
+  let schema: Array<Object> = [];
   Object.keys(choices).forEach(key => {
-  schema.push({name: choices[key], code: choices[key]})
-});
+    schema.push({ name: choices[key], code: choices[key] })
+  });
   return schema;
 }
 </script>
@@ -83,8 +99,8 @@ function schemaToPrime(choices: any) {
     </div>
     <div v-else class="members-table">
       <div v-for="(value, key) in membershipSchema " :key="value ? key + value.input_type : key" class="field">
-        <div v-if="
-        value?.input_type === 'text'">
+        <div v-if="(
+        value?.input_type === 'text')">
           <h3>{{
               value?.label
           }}</h3>
@@ -106,16 +122,34 @@ function schemaToPrime(choices: any) {
 
           </div>
         </div>
-        <div v-else-if="value?.input_type === 'email'">
-          <h3>{{ value?.label }}</h3>
-          <InputMask id="user-attr-{{value}}" v-model="inputmask" mask="*@*.a" />
-          InputMask for mail address to be done with Vuelidate
+        <div v-else-if="value?.input_type === 'email' && membership">
+          <div v-if="key === 'email'">
+            <!-- TODO: Change five lines below v$.email.$errors in something like v$.{key}.errors -->
+            <!-- Should vuelidate start from beginning on or after saving as it is now?  -->
+            <h3>{{ value?.label }}</h3>
+            <div :class="{ error: v$.email.$errors }" >
+              <InputText id="user-attr-{{key}}" v-model="membership[key]" />
+            </div>
+            <div class="input-errors" v-for="error of v$.email.$errors" :key="error.$uid">
+              <div class="error-msg">{{ error.$message }}</div>
+            </div>
+          </div>
+          <div v-else-if="key === 'email_2'">
+            <h3>{{ value?.label }}</h3>
+            <div :class="{ error: v$.email.$errors }">
+              <InputText id="user-attr-{{key}}" v-model="membership[key]" />
+            </div>
+            <div class="input-errors" v-for="error of v$.email_2.$errors" :key="error.$uid">
+              <div class="error-msg">{{ error.$message }}</div>
+            </div>
+
+          </div>
 
         </div>
         <div v-else-if="value?.input_type === 'date'">
           <h3>{{ value?.label }}</h3>
           <Calendar inputId="basic" v-model="birthdate" :showIcon="true" dateFormat="dd.mm.yy"
-            @date-select="selectBirthdate($event, key)"/>
+            @date-select="selectBirthdate($event, key)" />
 
         </div>
         <div v-else-if="value?.input_type === 'number'">
