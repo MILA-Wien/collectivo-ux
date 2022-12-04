@@ -39,10 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     env:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_HOST: localhost # default host value for the database
-      DB_NAME: djtesting
+      DB_HOST: collectivo-db
+      DB_NAME: collectivo_db
+      DB_USER: admin
+      DB_PASS: badpassword  
       POSTGRES_PORT: 5432
       DJANGO_SECRET_KEY: test-key-not-good
     steps:
@@ -64,7 +64,7 @@ jobs:
           docker network create -d bridge collectivo
           cd ${GITHUB_WORKSPACE}/docker/keycloak && docker build -t keycloak .
           /usr/bin/docker run -d -p 8080:8080 --network collectivo --name keycloak --hostname keycloak  -e GITHUB_ACTIONS=true -e CI=true keycloak
-            /usr/bin/docker run -d  --network collectivo  -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name db --hostname db -e "POSTGRES_USER=postgres" -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_DB=djtesting" -e GITHUB_ACTIONS=true -e CI=true postgres:12
+          /usr/bin/docker run -d  --network collectivo  -p 5432:5432 --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 --name collectivo-db --hostname collectivo-db -e "POSTGRES_USER=admin" -e "POSTGRES_PASSWORD=badpassword" -e "POSTGRES_DB=collectivo_db" -e GITHUB_ACTIONS=true -e CI=true postgres:12
       - name: Download dependencies
         run: yarn install --frozen-lockfile
       - name: Add hosts to /etc/hosts
@@ -74,7 +74,7 @@ jobs:
           cat /etc/hosts
           curl -v http://keycloak:8080
       - name: Setup collectivo
-        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=postgres" -e "DB_PASS=postgres" -e "DB_NAME=djtesting" -e "DB_HOST=db" -e "DJANGO_SECRET_KEY=test-key-not-good" -e GITHUB_ACTIONS=true -e CI=true milawien/collectivo:pr-main
+        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=admin" -e "DB_PASS=badpassword" -e "DB_NAME=collectivo_db" -e "DB_HOST=collectivo-db" -e "SECRET_KEY=test-key-not-good" -e "GITHUB_ACTIONS=true" -e "CI=true" -e "KEYCLOAK_SERVER_URL=http://keycloak:8080"  -e "KEYCLOAK_CLIENT_SECRET_KEY=**********" -e "COLLECTIVO_EXTENSIONS=members" -e "DEBUG=True" -e "DEVELOPMENT=True" milawien/collectivo:pr-main
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
