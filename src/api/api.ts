@@ -39,23 +39,23 @@ api.interceptors.response.use(
 );
 
 export const coreVersionFn = async () => {
-  const response = await api.get("/collectivo/v1/version");
+  const response = await api.get("/collectivo/version");
   return response.data;
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/menus/v1/menus/main_menu/items");
+  const response = await api.get("/menus/menus/main_menu/items");
   return response.data;
 };
 
 export const coreMicroFrontendsFn = async (name: string) => {
-  const response = await api.get("/ux/v1/microfrontends/" + { name });
+  const response = await api.get("/ux/microfrontends/" + { name });
   return response.data;
 };
 
 // get members
 export const membersMembersFn = async () => {
-  const response = api.get("/members/v1/members/");
+  const response = api.get("/members/members/");
   return response;
 };
 
@@ -71,7 +71,7 @@ export const membersMembersPreviousFn = async (previousUrl: string) => {
 
 export const membersMembersPatch = async (member: Member) => {
   const response = await api.patch(
-    `/members/v1/members/${member.id}/?limit=10`,
+    `/members/members/${member.id}/?limit=10`,
     member
   );
   return response.data;
@@ -79,27 +79,27 @@ export const membersMembersPatch = async (member: Member) => {
 
 // Dashboard
 export const dashboardTiles = async () => {
-  const response = api.get(`/dashboard/v1/tiles/?limit=10`);
+  const response = api.get(`/dashboard/tiles/?limit=10`);
   return response;
 };
 // get membership
 export const getMembershipFn = async () => {
-  const response = await api.get("/members/v1/me");
+  const response = await api.get("/members/me");
   return response.data;
 };
 
 //update membership
 export const updateMembershipFn = async (member: Member) => {
-  const response = await api.put("/members/v1/me", member);
+  const response = await api.put("/members/me", member);
   return response;
 };
 
 export const getRegisterSchemaFn = async () => {
-  const response = await api.get("/members/v1/register/schema");
+  const response = await api.get("/members/register/schema");
   return response.data;
 };
 
 export const registerMemberFn = async (member: any) => {
-  const response = await api.post("/members/v1/register", member);
+  const response = await api.post("/members/register", member);
   return response.data;
 };
