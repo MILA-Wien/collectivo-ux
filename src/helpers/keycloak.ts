@@ -4,8 +4,8 @@ import { keycloakURL } from "@/app.config";
 
 const initOptions = {
   url: keycloakURL
-    ? keycloakURL + "/auth"
-    : "http://keycloak:8080/auth",
+    ? keycloakURL
+    : "http://keycloak:8080",
   realm: "collectivo",
   clientId: "collectivo-ux",
   onLoad: <Keycloak.KeycloakOnLoad>"check-sso", // login-required means that the user will be redirected to the login page if not already authenticated
