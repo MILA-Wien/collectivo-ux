@@ -1,9 +1,10 @@
 import Keycloak from "keycloak-js";
 import { useUserStore } from "@/stores/user";
+import { keycloakURL } from "@/app.config";
 
 const initOptions = {
-  url: import.meta.env.VITE_KEYCLOAK_URL
-    ? import.meta.env.VITE_KEYCLOAK_URL
+  url: keycloakURL
+    ? keycloakURL + "/auth"
     : "http://keycloak:8080/auth",
   realm: "collectivo",
   clientId: "collectivo-ux",
