@@ -1,7 +1,8 @@
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
 import type { Member } from "./types";
-const BASE_URL = import.meta.env.VITE_APP_API + "/api/";
+import { baseURL } from "@/app.config";
+const BASE_URL = baseURL + "/api/";
 
 const api = axios.create({
   baseURL: BASE_URL,
