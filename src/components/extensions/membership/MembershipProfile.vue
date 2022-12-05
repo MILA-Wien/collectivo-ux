@@ -9,7 +9,8 @@ import Listbox from 'primevue/listbox';
 import Calendar from 'primevue/calendar';
 import { ref, watch, reactive, computed } from 'vue';
 import { useVuelidate } from '@vuelidate/core'
-import { required, email } from '@vuelidate/validators'
+import { required, email, helpers } from '@vuelidate/validators'
+import { useToast } from 'primevue/usetoast';
 
 const storeVersion = useSettingsStore();
 storeVersion.getVersion();
@@ -21,6 +22,8 @@ const selectedGender = ref();
 const birthdate = ref();
 const checkboxValue = ref();
 const id = ref();
+const toast = useToast();
+const submitted = ref(false);
 
 const { membership, membershipSchema } = storeToRefs(membershipStore);
 watch(membership, (value) => {
@@ -29,9 +32,7 @@ watch(membership, (value) => {
   id.value = value ? value["id"] : "";
   if (value) {
     if (typeof value["date_birth"] === 'string') {
-      console.log("string date", value["date_birth"])
       const dateFormat = new Date(value["date_birth"])
-      console.log("dateFormat", dateFormat)
       birthdate.value = dateFormat;
     }
     else {
@@ -42,10 +43,21 @@ watch(membership, (value) => {
 })
 
 
+for (const [key, value] of Object.entries(membershipSchema._object.membershipSchema)) {
+  console.log(`${key}: ${value}`);
+}
+
+// Working example
+// console.log("membership", membershipSchema)
+// in console:
+// for (const [key, value] of Object.entries(temp0._object.membershipSchema)) {
+//   console.log(`${key}: ${value.required}`);
+// }
+
 // Vuelidate block
 const rules = {
   email: { required, email },
-  email_2: { email }
+  email_2: { email },
 };
 const v$ = useVuelidate(rules, membership);
 
@@ -61,6 +73,7 @@ function updateRadioGender(event: any, key: string | number) {
 }
 
 function selectBirthdate(event: any, key: string | number) {
+  //format date to yyyy-mm-dd ISO 8601 https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
   const offset = event.getTimezoneOffset();
   event = new Date(event.getTime() - (offset * 60 * 1000))
   const birthdate = event.toISOString().split('T')[0];
@@ -69,12 +82,28 @@ function selectBirthdate(event: any, key: string | number) {
   membership.value[key] = birthdate;
 }
 
+function isInvalid(key: any) {
+  if (key === 'email') {
+    return v$.value.email.$invalid;
+  }
+  else if (key === 'email_2') {
+    return v$.value.email_2.$invalid;
+  }
+  else {
+    //TODO: give two inputs instead of one
+    // like: throw new TypeError("Unknown key for validation", key);
+    throw new TypeError("Unknown key for validation");
+  }
+
+
+}
+
 async function save() {
-  console.log("v$", v$);
-  console.log("validate()", v$.value.$errors)
+  submitted.value = true;
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) {
-    alert(v$.value.$errors[0].$message);
+    toast.add({ severity: 'error', summary: t('Error'), detail: v$.value.$errors[0].$message, life: 5000 });
+    return;
   }
   else if (membership.value) {
     membershipStore.updateMembership(membership.value);
@@ -94,6 +123,7 @@ function schemaToPrime(choices: any) {
 
 <template>
   <div>
+    <Toast />
     <div v-if="membershipSchema === null && membership === null" class="loading">
       <h2>{{ $t("Loading members") }}</h2>
     </div>
@@ -105,7 +135,8 @@ function schemaToPrime(choices: any) {
               value?.label
           }}</h3>
           <br />
-          <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
+          <InputText id="user-attr-{{value}}" :type="value?.input_type"
+            aria-describedby="user-attr-{{value}}-help"
             @change="updateInputText($event, key)" :value="
             membership ? membership[key] : ''" />
         </div>
@@ -124,11 +155,11 @@ function schemaToPrime(choices: any) {
         </div>
         <div v-else-if="value?.input_type === 'email' && membership">
           <div v-if="key === 'email'">
-            <!-- TODO: Change five lines below v$.email.$errors in something like v$.{key}.errors -->
+            <!-- TODO: Change five lines below v$.email.$errors in something like v$.{key}.errors or v$.$key.errors-->
             <!-- Should vuelidate start from beginning on or after saving as it is now?  -->
             <h3>{{ value?.label }}</h3>
-            <div :class="{ error: v$.email.$errors }" >
-              <InputText id="user-attr-{{key}}" v-model="membership[key]" />
+            <div :class="{ error: v$.email.$errors }">
+              <InputText id="user-attr-{{key}}" v-model="membership[key]" :class="{ 'p-invalid': isInvalid(key) && submitted }" />
             </div>
             <div class="input-errors" v-for="error of v$.email.$errors" :key="error.$uid">
               <div class="error-msg">{{ error.$message }}</div>
@@ -137,10 +168,11 @@ function schemaToPrime(choices: any) {
           <div v-else-if="key === 'email_2'">
             <h3>{{ value?.label }}</h3>
             <div :class="{ error: v$.email.$errors }">
-              <InputText id="user-attr-{{key}}" v-model="membership[key]" />
+              <InputText id="user-attr-{{key}}" v-model="membership[key]"
+              :class="{ 'p-invalid': isInvalid(key) && submitted }" />
             </div>
             <div class="input-errors" v-for="error of v$.email_2.$errors" :key="error.$uid">
-              <div class="error-msg">{{ error.$message }}</div>
+              <div class="p-error">{{ error.$message }}</div>
             </div>
 
           </div>
