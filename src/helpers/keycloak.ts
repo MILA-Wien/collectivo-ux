@@ -42,6 +42,9 @@ function initKeycloak() {
   };
   keycloak.onTokenExpired = () => {
     console.log("onTokenExpired");
+    keycloak.updateToken(30).then(() => {
+      store.setToken(keycloak.token);
+    })
   };
   keycloak.onReady = (authenticated) => {
     console.log("onReady", authenticated);
