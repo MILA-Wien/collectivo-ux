@@ -741,7 +741,7 @@
                             "properties": {
                                 "htmlType": "checkbox",
                                 "conditions": [],
-                                "label": "Publc use approved",
+                                "label": "Public use approved",
                                 "extId": "public_use_approved"
                             },
                             "id": "qwnXyrSdwKHT",

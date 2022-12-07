@@ -68,13 +68,13 @@
         <number @update="valueChange($event)" :element="element" />
       </div>
       <div v-else-if="element.type == 'button'">
-        <PrimeButton class="btn btn-primary" @click="buttonClick(element)">
-          {{ t(element.properties.label) }}
+        <PrimeButton class="btn btn-primary" @click="buttonClick(element)" :label="t(element.properties.label)" icon="pi " iconPos="right" :loading="isLoading">
+         
         </PrimeButton>
       </div>
     </div>
     <div class="formset-elements" :id="'formset-' + element.id"
-      v-if="props.element.children.length > 0 && element.type == 'formset'">
+      v-if="props.element.children.length > 0">
       <div v-for="(e, i) in element.children" v-bind:key="e.type + '_' + String(i)" class="formset-element-item">
         <element-blueprint :element="e" @formSubmit="$emit('formSubmit')" :path="path.concat(element.id)" />
       </div>
@@ -136,6 +136,7 @@ function checkValidationFailed() {
   return "";
 }
 const emit = defineEmits(["formSubmit", "nextPage", "goToPage", "blub"]);
+const isLoading = ref(false);
 function buttonClick(element: any) {
   if (element.properties.buttonType == "next") {
     formViewerStore.validatePage();
@@ -145,6 +146,8 @@ function buttonClick(element: any) {
   } else if (element.properties.buttonType == "back") {
     formViewerStore.previousPage();
   } else if (element.properties.buttonType == "submit") {
+    console.log("submit");
+    isLoading.value = true;
     emit("formSubmit");
   }
 }
