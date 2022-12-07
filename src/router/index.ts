@@ -27,7 +27,13 @@ const router = createRouter({
       name: "extension",
       component: () => import("../views/ExtensionView.vue"),
     },
+    {
+      path: "/members/profile",
+      name: "profile",
+      component: () => import("../components/extensions/membership/MembershipProfile.vue"),
+    },
   ],
 });
 
 export default router;
+
