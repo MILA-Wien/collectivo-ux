@@ -1,8 +1,5 @@
 <template>
   <div class="form-view">
-    <p v-for="error of validation.$errors" :key="error.$uid">
-      {{ error.$propertyPath }}: {{ error.$message }}
-    </p>
     <div
       class="form-page"
       v-for="(e, i) in tree?.children"
@@ -22,11 +19,9 @@
 import { useFormViewerStore } from "@/stores/formviewer";
 import { storeToRefs } from "pinia";
 import { defineAsyncComponent } from "vue";
-import { useVuelidate } from "@vuelidate/core";
 // store
 const formViewerStore = useFormViewerStore();
 const { tree, currentPage } = storeToRefs(formViewerStore);
-const validation = useVuelidate();
 const FormPage = defineAsyncComponent(
   () => import("./elements/ElementPage.vue")
 );

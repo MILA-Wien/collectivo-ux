@@ -1,5 +1,10 @@
 <template>
-  <div class="calculation"></div>
+  <div class="calculation" v-if="!element.hidden">
+    <div class="calculation-label">{{ element.properties.label }}</div>
+    <div class="calculation-result">
+      {{ result }} {{ element.properties.description }}
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 import { useFormViewerStore } from "@/stores/formviewer";
@@ -13,23 +18,53 @@ const emit = defineEmits(["change", "update"]);
 const config = {};
 let formula = ref(props.element.properties.content);
 let math = create(all, config);
-let result = 0;
+let result = ref(0);
 const formViewerStore = useFormViewerStore();
 const { values } = storeToRefs(formViewerStore);
 
-function updateResult() {
-  let oldResult = result;
+function updateResult(values: any) {
+  let oldResult = result.value;
   let newResult: number | undefined = 0;
+  const vals: any = {};
+  for (const [key, value] of Object.entries(values)) {
+    if (value && typeof value === "string") {
+      const n = parseInt(value);
+      if (!isNaN(n)) {
+        vals[key] = n;
+      }
+    } else if (value && typeof value === "number") {
+      vals[key] = value;
+    }
+  }
   try {
-    newResult = math.evaluate(formula.value, values.value);
+    newResult = math.evaluate(formula.value, vals);
 
     if (oldResult != newResult && newResult != undefined) {
-      result = newResult;
-      emit("update", result);
+      result.value = newResult;
+      // emit("update", newResult); //todo: this is not working
     }
   } catch (e) {
     newResult = undefined;
   }
 }
-watch(() => values.value, updateResult);
+updateResult(values.value);
+watch(
+  () => values.value,
+  (old: any, newVals: any) => {
+    updateResult(newVals);
+  },
+  { deep: true }
+);
 </script>
+<style scoped>
+.calculation {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+}
+
+.calculation-result {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+</style>

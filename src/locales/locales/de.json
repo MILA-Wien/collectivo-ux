@@ -25,5 +25,8 @@
     "actions":"Aktionen",
     "user_id":"Benutzer Id",
     "tile.members_registration_tile":"Registrierung",
-    "Edit": "Bearbeiten"
+    "Edit": "Bearbeiten",
+    "Registration": "Registrierung",
+    "Next": "Weiter",
+    "Back": "Zurück"
 }

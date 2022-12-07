@@ -17,10 +17,13 @@ export interface ElementProperties {
   required?: boolean;
   hideLabel?: boolean;
   extId?: string;
+  hidden?: boolean;
 }
 export interface ElementCondition {
-  target: string | null;
-  value: number;
+  target: string;
+  value?: string | number | null;
+  operator?: string;
+  values?: string[] | number[] | null;
 }
 
 export interface ElementTemplate {
