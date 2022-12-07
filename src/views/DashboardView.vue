@@ -7,6 +7,12 @@ import { useI18n } from "vue-i18n";
 import { defineAsyncComponent, watch } from "vue";
 import LoadingItem from "@/components/LoadingItem.vue";
 import PrimeCard from "primevue/card";
+import { useTitle } from "../hooks/useTitle";
+import { useUserStore } from "@/stores/user";
+
+const title = useTitle();
+title.title.value = 'Dashboard';
+const userStore = useUserStore();
 // language
 const { t } = useI18n();
 // store
@@ -41,7 +47,15 @@ watch(
 
 <template>
   <div>
-    <h1>{{ t("Dashboard") }}</h1>
+    <!-- <h1>{{ t("Dashboard") }}</h1> -->
+    <span class="w-full">
+      Hallo,
+      {{userStore.user?.tokenParsed.given_name}}
+      {{userStore.user?.tokenParsed.family_name}}.
+      Willkommen auf der MILA Mitgliederplattform!
+      Bei Fragen wende dich bitte an
+      <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
+    </span>
     <div class="grid">
       <div
         v-for="tile in tiles?.results"
@@ -61,6 +75,6 @@ watch(
         </PrimeCard>
       </div>
     </div>
-    <VersionItem />
+    <!-- <VersionItem /> -->
   </div>
 </template>

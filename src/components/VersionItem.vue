@@ -5,14 +5,16 @@ store.getVersion();
 </script>
 
 <template>
-  <div class="s">
-    <div class="s__version">
-      <span v-if="store.version" class="s__version__text"
-        >Version: {{ store.version.version }}</span
+  <!-- <div class="s">
+    <div class="s__version"> -->
+      <span v-if="store.version"
+        >
+        version {{ store.version.version }}
+        </span
       >
-      <span v-else class="s__version__text">Loading...</span>
-    </div>
-  </div>
+      <span v-else>loading ...</span>
+    <!-- </div>
+  </div> -->
 </template>
 
 <style scoped>

@@ -1,12 +1,6 @@
 <template>
 
   <ToastPrime />
-  <span class="p-4 p-submenu-header w-full">
-    Willkommen,<br>
-    {{userStore.user?.tokenParsed.given_name}}
-    {{userStore.user?.tokenParsed.family_name}}
-  </span>
-
   <PrimeMenu :model="items" v-if="items.length > 0" id="main_menu" />
 
 </template>

@@ -13,17 +13,19 @@
       class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition
       duration-300 mr-5 transform bg-white lg:translate-x-0 lg:static lg:inset-0"
     >
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col h-full items-center">
         <img src="../assets/mila_logo_header.png" alt="MILA Logo" class="p-4">
         <MenuMain />
+        <span class="grow"></span>
+        <span class="my-3 text-sm">collectivo — <VersionItem /></span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { useSidebar } from "../hooks/useSidebar";
 import MenuMain from "../components/MenuMain.vue"
+import VersionItem from "../components/VersionItem.vue";
 const { isOpen } = useSidebar();
 </script>
