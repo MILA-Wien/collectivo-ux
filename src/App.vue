@@ -14,7 +14,7 @@ const { user } = storeToRefs(userStore);
     <div class="flex-1 flex flex-col overflow-hidden">
       <HeaderView />
       <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-        <div class="container mx-auto px-6 py-4">
+        <div class="container mr-auto px-6 py-4">
           <RouterView />
         </div>
       </main>
