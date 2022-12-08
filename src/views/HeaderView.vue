@@ -1,7 +1,5 @@
 <template>
-  <header
-    class="flex items-center justify-between px-6 pt-7 lg:pt-10"
-  >
+  <header class="flex items-center justify-between px-6 pt-7 lg:pt-10">
     <div class="flex items-bottom">
       <div class="lg:hidden mr-5">
         <Button
@@ -9,9 +7,9 @@
           icon="pi pi-align-left"
           class="p-button-outline"
         />
+      </div>
+      <h1>{{ t(title.title.value) }}</h1>
     </div>
-    <h1>{{ t(title.title.value) }}</h1>
-  </div>
   </header>
 </template>
 
@@ -19,7 +17,7 @@
 import { useSidebar } from "../hooks/useSidebar";
 
 import { useRoute } from "vue-router";
-import Button from 'primevue/button';
+import Button from "primevue/button";
 import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
 
@@ -30,5 +28,4 @@ const route = useRoute();
 const { isOpen } = useSidebar();
 const menuStore = useMenuStore();
 const title = useTitle();
-
 </script>

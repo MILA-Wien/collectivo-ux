@@ -11,7 +11,7 @@ import { useTitle } from "../hooks/useTitle";
 import { useUserStore } from "@/stores/user";
 
 const title = useTitle();
-title.title.value = 'Dashboard';
+title.title.value = "Dashboard";
 const userStore = useUserStore();
 // language
 const { t } = useI18n();
@@ -50,10 +50,9 @@ watch(
     <!-- <h1>{{ t("Dashboard") }}</h1> -->
     <span class="w-full">
       Hallo,
-      {{userStore.user?.tokenParsed.given_name}}
-      {{userStore.user?.tokenParsed.family_name}}.
-      Willkommen auf der MILA Mitgliederplattform!
-      Bei Fragen wende dich bitte an
+      {{ userStore.user?.tokenParsed.given_name }}
+      {{ userStore.user?.tokenParsed.family_name }}. Willkommen auf der MILA
+      Mitgliederplattform! Bei Fragen wende dich bitte an
       <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
     </span>
     <div class="grid">

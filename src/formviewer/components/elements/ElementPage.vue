@@ -1,7 +1,15 @@
 <template>
   <div class="element-page" name="page">
-    <div v-for="(e, i) in page?.children" v-bind:key="e.type + '_' + String(i)" class="element-page-items">
-      <ElementBlueprint :element="e" :path="[page?.id]" @formSubmit="$emit('formSubmit')" />
+    <div
+      v-for="(e, i) in page?.children"
+      v-bind:key="e.type + '_' + String(i)"
+      class="element-page-items"
+    >
+      <ElementBlueprint
+        :element="e"
+        :path="[page?.id]"
+        @formSubmit="$emit('formSubmit')"
+      />
     </div>
   </div>
 </template>
