@@ -64,7 +64,7 @@
                         "htmlType": "radio",
                         "conditions": [],
                         "options": [
-                            "divers",
+                            "diverse",
                             "female",
                             "male"
                         ],
