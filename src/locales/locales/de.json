@@ -71,7 +71,7 @@
     "Shares": "Genossenschaftsanteile",
     "Active": "Aktiv",
     "Investing": "Investierend",
-    "How many shares do you want?": "Wieviele Genossenschaftsanteile wills du zeichnen?",
+    "How many shares do you want?": "Wieviele Genossenschaftsanteile willst du zeichnen?",
     "Number of shares": "Anzahl an Anteilen",
     "Payment type": "Zahlungsart",
     "Bank account number (IBAN)": "Kontonummer (IBAN)",
@@ -87,6 +87,6 @@
 
     "Final questions": "Abschließende Fragen",
     "Submit application": "Beitrittserklärung einreichen",
-    "Return to dashboard": "Zum dashboard zurückkehren"
+    "Return to dashboard": "Zum Dashboard zurückkehren"
 
 }

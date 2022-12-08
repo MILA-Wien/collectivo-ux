@@ -10,7 +10,7 @@
     <FormView @formSubmit="submit" v-if="!registrationFinished"></FormView>
     <div v-else>
       <p class="my-5">{{ t("Deine Beitrittserklärung wurde erfolgreich eingereicht! In den nächsten Tagen senden wir dir eine Email mit den weiteren Schritten.") }}</p>
-      <PrimeButton @click="router.push('/')" label="Return to dashboard" />
+      <PrimeButton @click="router.push('/')" v-bind:label="t('Return to dashboard')" />
     </div>
   </div>
 </template>

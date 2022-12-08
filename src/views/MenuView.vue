@@ -20,7 +20,7 @@
         />
         <MenuMain />
         <span class="grow"></span>
-        <span class="my-3 pl-4 text-sm">collectivo — <VersionItem /></span>
+        <span class="my-3 text-sm">collectivo — <VersionItem /></span>
       </div>
     </div>
   </div>
