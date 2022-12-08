@@ -28,5 +28,10 @@
     "Edit": "Bearbeiten",
     "Registration": "Registrierung",
     "Next": "Weiter",
-    "Back": "Zurück"
+    "Continue": "Weiter",
+    "Back": "Zurück",
+
+    "Membership application": "Beitrittserklärung",
+    "Click here to fill out your application to become a member of the MILA cooperative.":
+    "Klicke hier um deine Beitrittserklärung zur MILA Genossenschaft in Gründung auszufüllen."
 }

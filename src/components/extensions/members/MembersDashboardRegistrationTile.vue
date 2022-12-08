@@ -5,11 +5,11 @@ const { t } = useI18n();
 <template>
   <div>
     <p>
-      <b>{{ t("Important:") }}</b>
-      {{ t("Registration hasn't finished yet please continue here.") }}
+      {{ t("Click here to fill out your application to become a member of the MILA cooperative.") }}
     </p>
     <RouterLink to="/membership/registration">
-      <ButtonPrime> {{ t("next") }} </ButtonPrime>
+      <ButtonPrime> {{ t("Continue") }} </ButtonPrime>
     </RouterLink>
   </div>
 </template>
+Beitrittserklärung zur MILA Genossenschaft in Gründung
