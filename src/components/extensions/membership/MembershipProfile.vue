@@ -4,96 +4,88 @@ import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
 import Listbox from 'primevue/listbox';
 import Calendar from 'primevue/calendar';
-import { ref, watch, reactive, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { useVuelidate } from '@vuelidate/core'
-import { required, email, helpers } from '@vuelidate/validators'
+import { required } from '@vuelidate/validators'
 import { useToast } from 'primevue/usetoast';
 
-const storeVersion = useSettingsStore();
-storeVersion.getVersion();
 const membershipStore = useMembershipStore();
 membershipStore.getMembershipSchema();
 membershipStore.getMembership();
 const { t } = useI18n();
 const selectedGender = ref();
-const birthday = ref();
-const person_type = ref();
-const shares_payment_type = ref();
-const membership_type = ref();
-const id = ref();
-const shares_number = ref();
 const toast = useToast();
 const submitted = ref(false);
-const membership_start = ref();
-let rules = {};
-
 const { membership, membershipSchema } = storeToRefs(membershipStore);
+
 watch(membership, (value) => {
   selectedGender.value = { name: value ? value["gender"] ? value["gender"] : "" : "", code: value ? value["gender"] : "" };
-  id.value = value ? value["id"] : "";
-  shares_number.value = value ? value["shares_number"] : "";
 })
 
-
-// Hier wird das required direkt übersetzt und nicht als Objekt genommen. Es kommt immer  { "required": { "$message": "Value is required", "$params": { "type": "required" } } },
+// Vuelidate block
+// Required fields need to be added manually and will be checked afterwards, if each field is contained in membershipSchema
+const rules: any = {
+  gender: { required },
+  address_street: { required },
+  address_number: { required },
+  address_postcode: { required },
+  address_city: { required },
+  address_country: { required },
+};
+const v$ = useVuelidate(rules, membership);
 watch(membershipSchema, (value) => {
-  console.log("membership", membershipSchema)
-  for(let i = 0; i < Object.entries(JSON.parse(JSON.stringify(membershipSchema.value))).length; i++){
-    if(Object.entries(JSON.parse(JSON.stringify(membershipSchema.value)))[i][1].required){
-      console.log("enter",i)
-      console.log(Object.entries(JSON.parse(JSON.stringify(membershipSchema.value)))[i][0])
-      rules[Object.entries(JSON.parse(JSON.stringify(membershipSchema.value)))[i][0].toString()]={required}
+  const dict: Array<Array<string | any>> = Object.entries(JSON.parse(JSON.stringify(membershipSchema.value)));
+  for (let i = 0; i < dict.length; i++) {
+    if (dict[i][1].required) {
+      if (!Object.keys(rules).includes(dict[i][0])) {
+        throw TypeError("Missing required field in rules");
+      }
     }
   }
 })
-  // Hier kann ich anscheinend nur eine Zeile schreiben ohne einen Error zu werfen + if-statement wirft Error im Vorhinein
-  // Object.entries(JSON.parse(JSON.stringify(membershipSchema.value))).forEach(
-  //   (item: any) =>
-  //   // console.log( item[0], "required:", item[1].required, "read_only: ", item[1].read_only, item[1].help_text)
-  // )
-
-
-// Vuelidate block
-const v$ = useVuelidate(rules, membership);
 
 
 function updateInputText(event: any, key: string | number) {
-  //@ts-ignore
-  membership.value[key] = event.target.value;
+  if (membership.value) {
+    membership.value[key as keyof typeof membership.value] = event.target.value;
+  }
 }
 
 function updateRadioGender(event: any, key: string | number) {
-  //@ts-ignore
-  membership.value[key] = event.target.innerText;
+  if (membership.value) {
+    membership.value[key as keyof typeof membership.value] = event.target.innerText;
+  }
 }
 
-function selectDate(event: any, key: string | number) {
-  //format date to yyyy-mm-dd ISO 8601 https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-  const offset = event.getTimezoneOffset();
-  event = new Date(event.getTime() - (offset * 60 * 1000))
-  const birthday = event.toISOString().split('T')[0];
+function convertDate(value: string) {
+  //convert date to german format from https://stackoverflow.com/a/2086843/19932351
+  let datePart = value.match(/\d+/g);
+  if (datePart) {
+    let year = datePart[0].substring(2);
+    let month = datePart[1];
+    let day = datePart[2];
+    return day + '.' + month + '.' + year;
+  }
+}
 
-  //@ts-ignore
-  membership.value[key] = birthday;
+function returnErrorMessage(key: any) {
+  if (Object.keys(rules).includes(key)) {
+    return v$.value[key].required.$message;
+  }
+  else {
+    return false;
+  }
 }
 
 function isInvalid(key: any) {
-  if (key === 'email') {
-    return v$.value.email.$invalid;
-  }
-  else if (key === 'email_2') {
-    return v$.value.email_2.$invalid;
+  if (Object.keys(rules).includes(key)) {
+    return (v$.value[key].$invalid && submitted) || v$.value[key].$pending.$response;
   }
   else {
-    //TODO: give two inputs instead of one
-    // like: throw new TypeError("Unknown key for validation", key);
-    throw new TypeError("Unknown key for validation");
+    return false;
   }
-
-
 }
 
 async function save() {
@@ -122,61 +114,55 @@ function schemaToPrime(choices: any) {
 <template>
   <div>
     <Toast />
-    {{ membership }}
-    {{rules}}
-
     <div v-if="membershipSchema === null && membership === null" class="loading">
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
       <div v-for="(value, key) in membershipSchema" :key="value ? key + value.input_type : key" class="field">
         <div v-if="value.read_only">
-          <h3>{{value?.label}}</h3>
-          <span class="required" v-if="value.required">*</span>
-          <InputText disabled :value="membership ? membership[key] : ''"/>
+          <h3>{{ value?.label }}</h3>
+          <div v-if="value.input_type === 'date'">
+            <InputText disabled
+              :value="membership ? convertDate(membership[key as keyof typeof membership] as string) : ''" />
+          </div>
+          <div v-else>
+            <InputText disabled :value="membership ? membership[key as keyof typeof membership] : ''" />
+          </div>
         </div>
         <div v-else>
           <div v-if="(value?.input_type === 'text' || value?.input_type === 'email')">
-            <h3 v-if="value.required">{{value?.label}}*</h3>
-            <h3 v-else>{{value?.label}}</h3>
+            <h3 v-if="value.required">{{ value?.label }}*</h3>
+            <h3 v-else>{{ value?.label }}</h3>
 
             <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
-              @change="updateInputText($event, key)" :value="membership ? membership[key] : ''" />
+              @change="updateInputText($event, key)"
+              :value="membership ? membership[key as keyof typeof membership] : ''"
+              :class="{ 'p-invalid': isInvalid(key) }" />
+            <br />
+            <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
           </div>
           <div v-else-if="value?.input_type === 'radio'">
             <div v-if="key === 'gender'">
-              <h3>{{ value?.label }}</h3>
+              <h3 v-if="value.required">{{ value?.label }}*</h3>
+              <h3 v-else>{{ value?.label }}</h3>
               <Listbox v-model="selectedGender" :options="schemaToPrime(value.choices)" optionLabel="name"
                 placeholder="Select Gender(s)" @click="updateRadioGender($event, key)" />
-            </div>
-          </div>
-          <div v-else-if="value?.input_type === 'date'">
-            <div v-if="key === 'birthday'">
-              <h3>{{ value?.label }}</h3>
-              <Calendar inputId="basic" :v-model="birthday" :showIcon="true"
-                dateFormat="dd.mm.yy" @date-select="selectDate($event, key)" />
-            </div>
-            <div v-else-if="key === 'membership_start'">
-              <h3>{{ value?.label }}</h3>
-              <Calendar inputId="basic" :v-model="membership_start" :showIcon="true"
-                dateFormat="dd.mm.yy" @date-select="selectDate($event, key)" />
+              <br />
+              <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
             </div>
           </div>
           <div v-else>
-            <h3>{{ value?.label }}</h3>
+            <h3>{{ value?.label }} Else-Case!!</h3>
             <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
-              @change="updateInputText($event, key)" :value="value" :disabled="key === 'id'" />
-            Else-Case!!
-
-
+              :value="value" :disabled="key === 'id'" />
           </div>
         </div>
         <br />
       </div>
       <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
 
-        </div>
-      </div>
+    </div>
+  </div>
 
 </template>
 
