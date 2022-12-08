@@ -61,6 +61,41 @@
                     "id": "eufnsig7fh",
                     "children": [
                         {
+                            "type": "formset",
+                            "properties": {
+                                "conditions": [],
+                                "hideLabel": true,
+                                "extId": "eufnsig7fhss"
+                            },
+                            "id": "eufnsig7fhss",
+                            "children": [
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "First name",
+                                        "extId": "first_name",
+                                        "required": true
+                                    },
+                                    "id": "sJsmSmZUQhtG",
+                                    "children": []
+                                },
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "Last name",
+                                        "extId": "last_name",
+                                        "required": true
+                                    },
+                                    "id": "sJsmSmZUQhtG",
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
                             "type": "singleChoice",
                             "properties": {
                                 "label": "Gender",
@@ -128,6 +163,41 @@
                     },
                     "id": "eufnsig7fh",
                     "children": [
+                        {
+                            "type": "formset",
+                            "properties": {
+                                "conditions": [],
+                                "hideLabel": true,
+                                "extId": "eufnsig7fhaa"
+                            },
+                            "id": "eufnsig7fhaa",
+                            "children": [
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "First name",
+                                        "extId": "first_name",
+                                        "required": true
+                                    },
+                                    "id": "sJsmSmZUQhtG",
+                                    "children": []
+                                },
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "Last name",
+                                        "extId": "last_name",
+                                        "required": true
+                                    },
+                                    "id": "sJsmSmZUQhtG",
+                                    "children": []
+                                }
+                            ]
+                        },
                         {
                             "type": "singleChoice",
                             "properties": {
@@ -686,9 +756,9 @@
                             "Immobilien/Architektur/Planung",
                             "Einzelhandel",
                             "Handwerk (Elektrik, Tischlerei, …)",
-                            "Genossenschaft/ Partizipation/Organisationsentwicklung",
+                            "Genossenschaft/Partizipation/Organisationsentwicklung",
                             "Kommunikation (Medien, Grafik, Text,…)",
-                            "IT/ Digitales",
+                            "IT/Digitales",
                             "Finanzen (BWL, Buchhaltung,…)"
                         ],
                         "values": [
@@ -762,7 +832,7 @@
                         "htmlType": "checkbox",
                         "conditions": [],
                         "label": "Kommst du zur Gründungsversammlung?",
-                        "description": "Wenn du zur Gründungsversammlung kommst, kannst du Gründerin von MILA Mitmach-Supermarkt e.G. sein. Deine Teilnahme ist für eine Aufnahme als Mitglied aber nicht nötig.",
+                        "description": "Ja, ich komme verbindlich am 1.2.2023 um 18 Uhr zur Gründung in der Brunnenpassage am Yppenplatz. Wenn du zur Gründungsversammlung kommst, kannst du Gründerin von MILA Mitmach-Supermarkt e.G. sein. Deine Teilnahme ist für eine Aufnahme als Mitglied aber nicht nötig.",
                         "extId": "founding_event"
                     },
                     "id": "checkbox_2_yrSdwKHT",
