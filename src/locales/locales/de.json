@@ -30,8 +30,63 @@
     "Next": "Weiter",
     "Continue": "Weiter",
     "Back": "Zurück",
-
+    "Please fill out the required fields": "Bitte füll die erforderlichen Felder aus.",
+    "Value is required": "Dieses Feld ist erforderlich.",
+    "Error": "Fehler",
     "Membership application": "Beitrittserklärung",
     "Click here to fill out your application to become a member of the MILA cooperative.":
-    "Klicke hier um deine Beitrittserklärung zur MILA Genossenschaft in Gründung auszufüllen."
+    "Klicke hier um deine Beitrittserklärung zur MILA Genossenschaft in Gründung auszufüllen.",
+    "What type of membership do you want?": "Wie wirst du Genossenschaftsmitglied?",
+    "As a person": "Als Person",
+    "As an organisation": "Als Organisation",
+
+    "Personal data": "Persönliche Daten",
+    "Gender": "Geschlecht",
+    "Diverse": "Divers",
+    "Female": "Weiblich",
+    "Male": "Männlich",
+
+    "Birthday": "Geburtstag",
+
+    "Details of the person": "Details zur Person",
+    "Details of the contact person": "Details zur Ansprechperson",
+    "Details of the organisation": "Details zur Organisation",
+    "Name of the organisation": "Name der Organisation",
+    "Legal type": "Rechtsform",
+    "Identification number":
+    "Firmenbuchnummer/Vereinsregisternummer",
+
+    "Address": "Adresse",
+    "Street": "Straße",
+    "Number": "Hausnummer",
+    "Stair": "Stiege",
+    "Door": "Tür",
+    "Postcode": "Postleitzahl",
+    "City": "Stadt",
+    "Country": "Land",
+    "Phone number": "Telefonnummer",
+    "Type of person": "Art der Person",
+    "Which type of membership do you choose?": "Welche Art der Genossenschaftsmitgliedschaft wählst du?",
+    "Only as an active member do you have the opportunity to shop after the opening of the supermarket. As an investing member, you support us financially, but you cannot shop.": "Nur als aktives Mitglied hast du nach der Eröffnung des Supermarkts die Möglichkeit einzukaufen. Als investierendes Mitglied unterstützt du uns finanziell, kannst jedoch nicht einkaufen.",
+    "Shares": "Genossenschaftsanteile",
+    "Active": "Aktiv",
+    "Investing": "Investierend",
+    "How many shares do you want?": "Wieviele Genossenschaftsanteile wills du zeichnen?",
+    "Number of shares": "Anzahl an Anteilen",
+    "Payment type": "Zahlungsart",
+    "Bank account number (IBAN)": "Kontonummer (IBAN)",
+    "Bank account owner": "Kontoinhaber*in",
+    "Will you come to the founding event?": "Kommst du zur Gründungsversammlung?",
+
+    "Survey": "Umfrage",
+    "Nearly done! Do you want to provide some aditional information?": "Fast fertig! Möchtest du noch weitere Informationen mit uns teilen?",
+    "How did you hear about us?": "Woher kennst du MILA?",
+    "What convinced you to join MILA?": "Was hat dich von MILA überzeugt?",
+    "In which working group do you want to be active?": "Willst du in einer Arbeitsgruppe (AG) aktiv werden?",
+    "What are your occupations/skills/interests?": "Welche Fähigkeiten, Beruf und Netzwerk bringst du mit?",
+
+    "Final questions": "Abschließende Fragen",
+    "Submit application": "Beitrittserklärung einreichen",
+    "Return to dashboard": "Zum dashboard zurückkehren"
+
 }
