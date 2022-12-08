@@ -55,11 +55,11 @@ watch(
       Mitgliederplattform! Bei Fragen wende dich bitte an
       <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
     </span>
-    <div class="grid">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8">
       <div
         v-for="tile in tiles?.results"
         :key="tile.tile_id"
-        class="p-4 bg-white rounded-lg shadow md:col-6 lg:col-4"
+        class="md:col-6 lg:col-4"
       >
         <PrimeCard>
           <template #title>
@@ -77,3 +77,9 @@ watch(
     <!-- <VersionItem /> -->
   </div>
 </template>
+
+<style lang="scss">
+.p-card .p-card-content {
+  padding: 0;
+}
+</style>

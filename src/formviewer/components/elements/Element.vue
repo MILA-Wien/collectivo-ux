@@ -41,15 +41,15 @@
       <div class="image" v-else-if="element.type == 'image'">
         <img :src="element.properties.src" />
       </div>
-      <div v-else-if="element.type === 'textfield'" class="html-input d-flex">
+      <div v-else-if="element.type === 'textfield'" class="html-input">
         <PrimeText @change="valueChange($event)" v-model="value">
         </PrimeText>
       </div>
-      <div v-else-if="element.type === 'textarea'" class="html-input d-flex">
+      <div v-else-if="element.type === 'textarea'" class="html-input">
         <PrimeTextarea @change="valueChange($event)" v-model="value" :autoResize="true" rows="5" cols="30">
         </PrimeTextarea>
       </div>
-      <div v-else-if="element.properties.htmlType !== undefined" class="html-input d-flex">
+      <div v-else-if="element.properties.htmlType !== undefined" class="html-input">
         <PrimeText v-if="element.properties.htmlType === 'text'" @change="valueChange($event)" v-model="value">
         </PrimeText>
         <input v-else class="form-control" @input="valueChange($event)" :type="element.properties.htmlType" />
@@ -68,9 +68,15 @@
         <number @update="valueChange($event)" :element="element" />
       </div>
       <div v-else-if="element.type == 'button'">
-        <PrimeButton class="btn btn-primary" @click="buttonClick(element)" :label="t(element.properties.label)" icon="pi " iconPos="right" :loading="isLoading">
-         
-        </PrimeButton>
+        <PrimeButton
+          class="btn btn-primary"
+          style="margin-top: 20px"
+          @click="buttonClick(element)"
+          :label="t(element.properties.label)"
+          icon="pi "
+          iconPos="right"
+          :loading="isLoading"
+        />
       </div>
     </div>
     <div class="formset-elements" :id="'formset-' + element.id"
@@ -87,6 +93,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import {
   defineProps,
@@ -208,7 +215,9 @@ export default {
 }
 
 .element-header {
-  min-height: 42px;
+  /* min-height: 42px; */
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .element input {
@@ -257,6 +266,7 @@ input {
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
 }
 
@@ -266,11 +276,36 @@ input {
   align-items: center;
   height: 100%;
   margin-right: 10px;
+  /* min-width: 250px; */
 }
 
 #formset-uNmhrILdTZge {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+#formset-eufnsig7fh {
+  flex-direction: column;
+}
+
+
+#warucmPWTOqEeE, #SOZialVwcJiztoBG, #regelcJiztoBG {
+  border: 1px solid;
+  padding: 10px 20px 10px 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#SOZialVwcJiztoBG, #regelcJiztoBG {
+  border: 1px solid;
+  padding: 20px 20px 20px 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.element-page-items .form-control {
+  width: 20px;
+  height: 20px;
 }
 </style>

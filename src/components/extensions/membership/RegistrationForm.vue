@@ -1,17 +1,16 @@
 <template>
   <div>
-    <h2>{{ `${t("Registration")} ${userStore.user?.tokenParsed?.name}` }}</h2>
+    <!-- <h2>{{ `${t("Registration")} ${userStore.user?.tokenParsed?.name}` }}</h2> -->
     <div v-for="error of validation.$errors" :key="error.$uid">
       <PrimeMessage v-if="registrationSchema" severity="error">
-        {{ registrationSchema[error.$propertyPath].label }}:
+        {{ t(registrationSchema[error.$propertyPath].label) }}:
         {{ t(error.$message.toString()) }}
       </PrimeMessage>
     </div>
     <FormView @formSubmit="submit" v-if="!registrationFinished"></FormView>
     <div v-else>
-      <h2>{{ t("Registration finished") }}</h2>
-      <p>{{ t("You are now part of the collective") }}</p>
-      <PrimeButton @click="router.push('/')" label="Go to home" />
+      <p class="my-5">{{ t("Deine Beitrittserklärung wurde erfolgreich eingereicht! In den nächsten Tagen senden wir dir eine Email mit den weiteren Schritten.") }}</p>
+      <PrimeButton @click="router.push('/')" label="Return to dashboard" />
     </div>
   </div>
 </template>
@@ -28,6 +27,11 @@ import { useDashboardStore } from "@/stores/dashboard";
 import { useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import PrimeMessage from "primevue/message";
+import { useTitle } from "@/hooks/useTitle";
+
+const title = useTitle();
+title.title.value = "Membership application";
+
 const validation = useVuelidate();
 const { t } = useI18n();
 
@@ -71,3 +75,10 @@ if (userStore.user) {
 const router = useRouter();
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 </script>
+
+
+<style lang="scss">
+.element-page {
+  padding: 0 !important;
+}
+</style>

@@ -34,8 +34,8 @@ if (
 }
 </script>
 <style scoped>
-.form-view {
+/* .form-view {
   max-height: 80vh;
   overflow-x: scroll;
-}
+} */
 </style>

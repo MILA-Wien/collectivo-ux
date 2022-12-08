@@ -115,10 +115,15 @@ watch(
   display: flex;
   text-align: left;
   margin: 0px 0px 5px 00px;
-  padding: 10px;
+  /* padding: 10px; */
   flex-direction: column;
   border-radius: 5px;
 }
+
+/* .element-page-items {
+  margin-top: 10px;
+  margin-bottom: 10px;
+} */
 
 .element-page-header {
   display: flex;
