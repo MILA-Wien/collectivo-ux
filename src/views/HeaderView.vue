@@ -6,6 +6,7 @@
           @click="isOpen = true"
           icon="pi pi-align-left"
           class="p-button-outline"
+          id="toggle-sidebar-button"
         />
       </div>
       <h1>{{ t(title.title.value) }}</h1>
