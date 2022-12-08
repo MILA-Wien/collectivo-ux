@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <ToastPrime />
-    <PrimeMenu :model="items" v-if="items.length > 0" />
-  </div>
+  <ToastPrime />
+  <PrimeMenu :model="items" v-if="items.length > 0" id="main_menu" />
 </template>
 
 <script lang="ts" setup>
@@ -23,6 +21,7 @@ const items = ref<MenuItem>([]);
 function buildMenu(menu: ExtensionMenu) {
   items.value = [
     {
+      label: "Hauptmenü",
       items: [],
     },
   ];
@@ -73,3 +72,10 @@ watch(menu, () => {
   }
 });
 </script>
+
+<style>
+#main_menu {
+  border: 0;
+  width: 100%;
+}
+</style>
