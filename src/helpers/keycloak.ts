@@ -13,6 +13,7 @@ function initKeycloak() {
   const store = useUserStore();
 
   const keycloak = new Keycloak(initOptions);
+  keycloak.enableLogging = true
   keycloak.redirectUri = window.location.origin + "/";
   keycloak.onAuthSuccess = () => {
     store.setToken(keycloak.token);
@@ -51,6 +52,8 @@ function initKeycloak() {
         locale: "de",
         redirectUri: window.location.origin + window.location.pathname + "/",
       });
+    } else {
+      store.setKeycloak(keycloak);
     }
   };
 
