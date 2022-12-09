@@ -36,7 +36,9 @@ api.interceptors.response.use(
     } else if (error.response.status === 403) {
       alert("Error 403:" + error.response.data.detail);
     } else if (error.response.status === 404) {
-      if (error.response.data.detail === "Incorrect authentication credentials.") {
+      if (
+        error.response.data.detail === "Incorrect authentication credentials."
+      ) {
         const store = useUserStore();
         store.logout();
       }

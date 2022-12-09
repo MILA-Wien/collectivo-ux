@@ -12,12 +12,12 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(["update"]);
 const value = ref("" as any);
-const n = parseInt(useFormViewerStore().getValueForId(
-  props.element.properties.extId
-));
+const n = parseInt(
+  useFormViewerStore().getValueForId(props.element.properties.extId)
+);
 if (!isNaN(n)) {
   value.value = n;
-}else {
+} else {
   value.value = undefined;
 }
 watch(
