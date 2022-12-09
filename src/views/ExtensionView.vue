@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { shallowRef, watch, ref } from "vue";
+import { shallowRef, watch } from "vue";
 import LoadingItem from "../components/LoadingItem.vue";
 import ErrorItem from "../components/ErrorItem.vue";
 import IframeItem from "../components/IFrameItem.vue";

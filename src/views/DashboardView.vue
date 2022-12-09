@@ -48,8 +48,9 @@ watch(
   <div>
     <!-- <h1>{{ t("Dashboard") }}</h1> -->
     <span class="w-full">
-      {{`${t("Hello,")} ${ userStore.user?.tokenParsed.given_name }
-      ${userStore.user?.tokenParsed.family_name }. ${t(
+      {{
+        `${t("Hello,")} ${userStore.user?.tokenParsed.given_name}
+      ${userStore.user?.tokenParsed.family_name}. ${t(
           "Willkommen auf der MILA Mitgliederplattform! Bei Fragen wende dich bitte an"
         )}`
       }}

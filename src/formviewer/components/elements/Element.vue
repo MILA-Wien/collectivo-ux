@@ -1,27 +1,37 @@
 <template>
   <div :class="getClass" :id="element.id" v-if="show">
     <div :class="element.type">
-      <div class="element-header" v-if="
-        element.type != 'button' &&
-        element.type != 'formset' &&
-        element.type != 'paragraph' &&
-        !element.properties.hideLabel &&
-        element.type != 'calculation'
-      ">
+      <div
+        class="element-header"
+        v-if="
+          element.type != 'button' &&
+          element.type != 'formset' &&
+          element.type != 'paragraph' &&
+          !element.properties.hideLabel &&
+          element.type != 'calculation'
+        "
+      >
         <label class="element-label" v-if="!element.properties.hideLabel">
           {{
-              element.properties.label ? t(element.properties.label) : t(element.type)
+            element.properties.label
+              ? t(element.properties.label)
+              : t(element.type)
           }}
           <span class="required" v-if="element.properties.required">*</span>
         </label>
       </div>
-      <div v-if="
-        (element.type == 'formset' || element.type == 'paragraph') &&
-        !element.properties.hideLabel
-      " class="element-header">
+      <div
+        v-if="
+          (element.type == 'formset' || element.type == 'paragraph') &&
+          !element.properties.hideLabel
+        "
+        class="element-header"
+      >
         <h3>
           {{
-              element.properties.label ? t(element.properties.label) : t(element.type)
+            element.properties.label
+              ? t(element.properties.label)
+              : t(element.type)
           }}
           <span class="required" v-if="element.properties.required">*</span>
         </h3>
@@ -42,17 +52,34 @@
         <img :src="element.properties.src" />
       </div>
       <div v-else-if="element.type === 'textfield'" class="html-input d-flex">
-        <PrimeText @change="valueChange($event)" v-model="value">
-        </PrimeText>
+        <PrimeText @change="valueChange($event)" v-model="value"> </PrimeText>
       </div>
       <div v-else-if="element.type === 'textarea'" class="html-input d-flex">
-        <PrimeTextarea @change="valueChange($event)" v-model="value" :autoResize="true" rows="5" cols="30">
+        <PrimeTextarea
+          @change="valueChange($event)"
+          v-model="value"
+          :autoResize="true"
+          rows="5"
+          cols="30"
+        >
         </PrimeTextarea>
       </div>
-      <div v-else-if="element.properties.htmlType !== undefined" class="html-input d-flex">
-        <PrimeText v-if="element.properties.htmlType === 'text'" @change="valueChange($event)" v-model="value">
+      <div
+        v-else-if="element.properties.htmlType !== undefined"
+        class="html-input d-flex"
+      >
+        <PrimeText
+          v-if="element.properties.htmlType === 'text'"
+          @change="valueChange($event)"
+          v-model="value"
+        >
         </PrimeText>
-        <input v-else class="form-control" @input="valueChange($event)" :type="element.properties.htmlType" />
+        <input
+          v-else
+          class="form-control"
+          @input="valueChange($event)"
+          :type="element.properties.htmlType"
+        />
       </div>
 
       <!-- <div v-else-if="element.type == 'signature'">
@@ -68,21 +95,41 @@
         <number @update="valueChange($event)" :element="element" />
       </div>
       <div v-else-if="element.type == 'button'">
-        <PrimeButton class="btn btn-primary" @click="buttonClick(element)" :label="t(element.properties.label)" icon="pi " iconPos="right" :loading="isLoading">
-         
+        <PrimeButton
+          class="btn btn-primary"
+          @click="buttonClick(element)"
+          :label="t(element.properties.label)"
+          icon="pi "
+          iconPos="right"
+          :loading="isLoading"
+        >
         </PrimeButton>
       </div>
     </div>
-    <div class="formset-elements" :id="'formset-' + element.id"
-      v-if="props.element.children.length > 0">
-      <div v-for="(e, i) in element.children" v-bind:key="e.type + '_' + String(i)" class="formset-element-item">
-        <element-blueprint :element="e" @formSubmit="$emit('formSubmit')" :path="path.concat(element.id)" />
+    <div
+      class="formset-elements"
+      :id="'formset-' + element.id"
+      v-if="props.element.children.length > 0"
+    >
+      <div
+        v-for="(e, i) in element.children"
+        v-bind:key="e.type + '_' + String(i)"
+        class="formset-element-item"
+      >
+        <element-blueprint
+          :element="e"
+          @formSubmit="$emit('formSubmit')"
+          :path="path.concat(element.id)"
+        />
       </div>
     </div>
-    <div v-if="
-      element.properties.description !== undefined &&
-      element.type != 'calculation'
-    " class="description">
+    <div
+      v-if="
+        element.properties.description !== undefined &&
+        element.type != 'calculation'
+      "
+      class="description"
+    >
       <small>{{ t(element.properties.description) }}</small>
     </div>
   </div>
@@ -99,7 +146,6 @@ import { useFormViewerStore } from "../../../stores/formviewer";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-
 
 const ElementBlueprint = defineAsyncComponent(() => import("./Element.vue"));
 const Calculation = defineAsyncComponent(
@@ -158,7 +204,6 @@ watch(value, (val: any) => {
   valueChange(val);
 });
 
-
 function getClass() {
   return "element" + checkCondition() + checkValidationFailed();
 }
@@ -191,8 +236,8 @@ function checkCondition() {
 }
 const show = ref(checkCondition());
 watch(values.value, () => {
-  show.value = checkCondition()
-})
+  show.value = checkCondition();
+});
 </script>
 <script lang="ts">
 export default {
@@ -259,7 +304,6 @@ input {
   flex-direction: row;
   width: 100%;
 }
-
 
 .formset-element-item {
   display: flex;
