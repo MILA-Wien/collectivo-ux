@@ -3,30 +3,27 @@
     <div class="flex items-bottom">
       <div class="lg:hidden mr-5">
         <Button
-          @click="isOpen = true"
+          @click="toggleSideBar()"
           icon="pi pi-align-left"
           class="p-button-outline"
           id="toggle-sidebar-button"
         />
       </div>
-      <h1>{{ t(title.title.value) }}</h1>
+      <h1>{{ t(title) }}</h1>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { useSidebar } from "../hooks/useSidebar";
-
-import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
-
-import { useTitle } from "../hooks/useTitle";
+import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
-const route = useRoute();
-const { isOpen } = useSidebar();
 const menuStore = useMenuStore();
-const title = useTitle();
+const { getSideBarOpen, title } = storeToRefs(menuStore);
+function toggleSideBar() {
+  menuStore.setSideBarOpen(getSideBarOpen.value ? false : true);
+}
 </script>

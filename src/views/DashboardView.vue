@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import VersionItem from "../components/VersionItem.vue";
 import { useDashboardStore } from "@/stores/dashboard";
 import { storeToRefs } from "pinia";
 import type { DashboardTile } from "@/api/types";
@@ -7,11 +6,11 @@ import { useI18n } from "vue-i18n";
 import { defineAsyncComponent, watch } from "vue";
 import LoadingItem from "@/components/LoadingItem.vue";
 import PrimeCard from "primevue/card";
-import { useTitle } from "../hooks/useTitle";
 import { useUserStore } from "@/stores/user";
+import { useMenuStore } from "@/stores/menu";
 
-const title = useTitle();
-title.title.value = "Dashboard";
+const menuStore = useMenuStore();
+menuStore.setTitle("Dashboard");
 const userStore = useUserStore();
 // language
 const { t } = useI18n();
@@ -49,10 +48,12 @@ watch(
   <div>
     <!-- <h1>{{ t("Dashboard") }}</h1> -->
     <span class="w-full">
-      Hallo,
-      {{ userStore.user?.tokenParsed.given_name }}
-      {{ userStore.user?.tokenParsed.family_name }}. Willkommen auf der MILA
-      Mitgliederplattform! Bei Fragen wende dich bitte an
+      {{
+        `${t("Hello,")} ${userStore.user?.tokenParsed.given_name}
+      ${userStore.user?.tokenParsed.family_name}. ${t(
+          "Willkommen auf der MILA Mitgliederplattform! Bei Fragen wende dich bitte an"
+        )}`
+      }}
       <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
     </span>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8">
@@ -74,7 +75,6 @@ watch(
         </PrimeCard>
       </div>
     </div>
-    <!-- <VersionItem /> -->
   </div>
 </template>
 

@@ -22,7 +22,7 @@ import treeData from "@/assets/registrationForm.json";
 import { useMembersStore } from "@/stores/members";
 import { useUserStore } from "@/stores/user";
 import { useI18n } from "vue-i18n";
-import { defineAsyncComponent, ref, watch } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import { useDashboardStore } from "@/stores/dashboard";
 import { useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
@@ -69,8 +69,14 @@ async function submit() {
 // Add informations from keycloak to the form
 if (userStore.user) {
   formViewerStore.updateValue("email", userStore.user.tokenParsed.email);
-  formViewerStore.updateValue("first_name", userStore.user.tokenParsed.family_name);
-  formViewerStore.updateValue("last_name", userStore.user.tokenParsed.given_name);
+  formViewerStore.updateValue(
+    "first_name",
+    userStore.user.tokenParsed.family_name
+  );
+  formViewerStore.updateValue(
+    "last_name",
+    userStore.user.tokenParsed.given_name
+  );
 }
 const router = useRouter();
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));

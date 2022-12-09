@@ -5,6 +5,8 @@ import type { ExtensionMenu, ExtensionMenuItem } from "@/api/types";
 export type MenuStoreState = {
   menu: ExtensionMenu | null;
   menuLoaded: boolean;
+  sideBarOpen: boolean;
+  title: string;
 };
 
 export const useMenuStore = defineStore({
@@ -13,6 +15,8 @@ export const useMenuStore = defineStore({
     ({
       menu: null,
       menuLoaded: false,
+      sideBarOpen: false,
+      title: "",
     } as MenuStoreState),
 
   actions: {
@@ -23,10 +27,22 @@ export const useMenuStore = defineStore({
       this.menu.menu = await coreMenuItemsFn();
       this.menuLoaded = true;
     },
+    setSideBarOpen(open: boolean) {
+      this.sideBarOpen = open;
+    },
+    setTitle(title: string) {
+      this.title = title;
+    },
   },
   getters: {
     menugetter: (state) => {
       state.menu;
+    },
+    getSideBarOpen: (state) => {
+      return state.sideBarOpen;
+    },
+    getTitle: (state) => {
+      return state.title;
     },
     getMenuItem: (state) => {
       return (extension: string, component: string) => {

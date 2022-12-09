@@ -22,10 +22,9 @@ import { useFormViewerStore } from "@/stores/formviewer";
 import { minLength, required, maxLength } from "@vuelidate/validators";
 import { ElementPage, type Element } from "@/formviewer/types/elements";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast } from 'primevue/usetoast';
+import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-
 
 const formViewerStore = useFormViewerStore();
 const props = defineProps({

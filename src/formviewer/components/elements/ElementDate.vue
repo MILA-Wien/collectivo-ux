@@ -27,7 +27,7 @@ watch(
   () => value.value,
   (newValue: any) => {
     // const date = new Date(newValue.getTime() - (offset * 60 * 1000))
-    const dateFormated = newValue.toISOString().split('T')[0];
+    const dateFormated = newValue.toISOString().split("T")[0];
     emit("update", dateFormated);
   }
 );

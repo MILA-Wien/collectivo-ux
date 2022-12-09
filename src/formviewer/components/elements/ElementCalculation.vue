@@ -9,12 +9,11 @@
 <script setup lang="ts">
 import { useFormViewerStore } from "@/stores/formviewer";
 import { create, all } from "mathjs";
-import { defineProps, defineEmits, ref, watch } from "vue";
+import { defineProps, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 const props = defineProps<{
   element: any;
 }>();
-const emit = defineEmits(["change", "update"]);
 const config = {};
 let formula = ref(props.element.properties.content);
 let math = create(all, config);
@@ -50,7 +49,7 @@ function updateResult(values: any) {
 updateResult(values.value);
 watch(
   () => values.value,
-  (old: any, newVals: any) => {
+  (_, newVals: any) => {
     updateResult(newVals);
   },
   { deep: true }
