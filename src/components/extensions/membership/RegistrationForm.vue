@@ -53,7 +53,9 @@ async function submit() {
   try {
     await memberStore.register(registerData);
     registrationFinished.value = true;
+    // reload the dashboard and menu
     useDashboardStore().getDashboardTiles();
+    useMenuStore().getMenu();
   } catch (e: any) {
     console.log(e);
     alert(
@@ -62,7 +64,7 @@ async function submit() {
       } \n${JSON.stringify(e.response.data)}`
     );
   }
-  // reload the dashboard
+
 }
 // Add informations from keycloak to the form
 if (userStore.user) {

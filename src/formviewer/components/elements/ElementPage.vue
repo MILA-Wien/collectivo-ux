@@ -6,7 +6,7 @@
       v-bind:key="e.type + '_' + String(i)"
       class="element-page-items"
     >
-      <ElementBlueprint :element="e" :path="[page?.id]" @formSubmit="submit()" @nextPage="nextPage()"/>
+      <ElementBlueprint :element="e" :path="[page?.id]" @formSubmit="submit()"/>
     </div>
   </div>
 </template>
@@ -100,10 +100,8 @@ const v$ = useVuelidate(rules, formViewerStore.values);
 const toast = useToast();
 
 function nextPage() {
-  console.log("nextPage");
   // validate current page
   v$.value.$validate().then((isFormCorrect: boolean) => {
-    console.log("isFormCorrect", isFormCorrect);
     if (isFormCorrect) {
       formViewerStore.nextPage();
     } else {
@@ -116,6 +114,15 @@ function nextPage() {
     }
   });
 }
+// watch for a validation event to call the next page
+watch(
+  () => formViewerStore.getValidateCurrentPage,
+  (val: any) => {
+    if (val) {
+      nextPage();
+    }
+  }
+);
 const emit = defineEmits(["formSubmit"]);
 
 function submit() {
