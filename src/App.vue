@@ -8,7 +8,7 @@ const { user } = storeToRefs(userStore);
 </script>
 
 <template>
-  <div class="app" v-if="user?.token !== ''">
+  <div class="app" v-if="user?.authenticated">
     <header>
       <div class="wrapper">
         <MenuView></MenuView>
@@ -86,4 +86,8 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+</style>
+
+<style lang="scss">
+@import "primeflex/primeflex.scss";
 </style>

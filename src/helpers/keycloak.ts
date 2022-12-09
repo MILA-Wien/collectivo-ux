@@ -1,8 +1,11 @@
 import Keycloak from "keycloak-js";
 import { useUserStore } from "@/stores/user";
+import { keycloakURL } from "@/app.config";
 
 const initOptions = {
-  url: "http://keycloak:8080/",
+  url: keycloakURL
+    ? keycloakURL
+    : "http://keycloak:8080",
   realm: "collectivo",
   clientId: "collectivo-ux",
   onLoad: <Keycloak.KeycloakOnLoad>"check-sso", // login-required means that the user will be redirected to the login page if not already authenticated
@@ -24,14 +27,6 @@ function initKeycloak() {
     store.setRegisterUrl(keycloak.createRegisterUrl());
     store.setAccountUrl(keycloak.createAccountUrl());
     store.setRedirectUri(keycloak.redirectUri);
-    //   keycloak
-    //     .loadUserProfile()
-    //     .then(function (profile) {
-    //       store.setProfile(profile);
-    //     })
-    //     .catch(function () {
-    //       console.log("Failed to load user profile");
-    //     });
   };
   keycloak.onAuthError = () => {
     console.log("onAuthError");
@@ -47,6 +42,9 @@ function initKeycloak() {
   };
   keycloak.onTokenExpired = () => {
     console.log("onTokenExpired");
+    keycloak.updateToken(30).then(() => {
+      store.setToken(keycloak.token);
+    })
   };
   keycloak.onReady = (authenticated) => {
     console.log("onReady", authenticated);

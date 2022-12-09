@@ -1,7 +1,8 @@
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
 import type { Member } from "./types";
-const BASE_URL = import.meta.env.VITE_APP_API + "/api/";
+import { baseURL } from "@/app.config";
+const BASE_URL = baseURL + "/api/";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -24,7 +25,27 @@ api.interceptors.request.use(
 );
 api.defaults.headers.common["Content-Type"] = "application/json";
 
-
+api.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status === 401) {
+      // store.logout();
+      alert("Error 401:" + error.response.data.detail);
+    } else if (error.response.status === 403) {
+      alert("Error 403:" + error.response.data.detail);
+    } else if (error.response.status === 404) {
+      if (error.response.data.detail === "Incorrect authentication credentials.") {
+        const store = useUserStore();
+        store.logout();
+      }
+    } else if (error.response.status === 500) {
+      alert("Error 500:" + error.response.data.detail);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const coreVersionFn = async () => {
   const response = await api.get("/collectivo/about/");
@@ -65,6 +86,11 @@ export const membersMembersPatch = async (member: Member) => {
   return response.data;
 };
 
+// Dashboard
+export const dashboardTiles = async () => {
+  const response = api.get(`/dashboard/tiles/?limit=10`);
+  return response;
+};
 // get membership
 export const getMembershipFn = async () => {
   const response = await api.get("/members/profile");
@@ -81,4 +107,14 @@ export const updateMembershipFn = async (member: Member) => {
 export const getProfileSchemaFn = async () => {
   const response = await api.get("/members/profile/schema/");
   return response.data; //or response? When to choose?
+};
+
+export const getRegisterSchemaFn = async () => {
+  const response = await api.get("/members/register/schema");
+  return response.data;
+};
+
+export const registerMemberFn = async (member: any) => {
+  const response = await api.post("/members/register", member);
+  return response.data;
 };

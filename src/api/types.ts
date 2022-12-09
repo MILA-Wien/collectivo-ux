@@ -76,6 +76,21 @@ export interface Members {
   previous?: string;
   results: Array<Member>;
 }
+export interface DashboardTiles {
+  count?: number;
+  next?: string;
+  previous?: string;
+  results: Array<DashboardTile>;
+}
+export interface DashboardTile {
+  tile_id: string;
+  component_name: string;
+  order: number;
+  required_role?: string;
+  blocked_role?: string;
+  label?: string;
+  extension: string;
+}
 
 export interface SchemaField {
   field_type: string;
@@ -88,6 +103,10 @@ export interface SchemaField {
   choices?: Array<SchemaChoiceItem>;
   condition?: SchemaCondition;
 }
+
+export interface Schema {
+  [key: string]: SchemaField;
+}
 export interface SchemaChoiceItem {
   [key: string]: string;
 }
@@ -95,7 +114,4 @@ export interface SchemaCondition {
   field: string;
   condition: string;
   value: string;
-}
-export interface Schema {
-  [key: string]: SchemaField;
 }

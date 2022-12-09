@@ -25,5 +25,6 @@
     "actions":"Aktionen",
     "user_id":"Benutzer Id",
     "Edit": "Bearbeiten",
-    "Error": "Fehler"
+    "Error": "Fehler",
+    "tile.members_registration_tile":"Registrierung"
 }
