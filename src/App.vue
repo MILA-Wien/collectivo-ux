@@ -9,11 +9,11 @@ const { user } = storeToRefs(userStore);
 </script>
 
 <template>
-  <div class="flex h-screen bg-gray-100 font-roboto" v-if="user?.authenticated">
+  <div class="flex h-screen bg-mila font-sans" v-if="user?.authenticated">
     <MenuView />
     <div class="flex-1 flex flex-col overflow-hidden">
       <HeaderView />
-      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+      <main class="flex-1 overflow-x-hidden overflow-y-auto">
         <div class="container mx-auto px-6 py-4">
           <RouterView />
         </div>
@@ -21,3 +21,9 @@ const { user } = storeToRefs(userStore);
     </div>
   </div>
 </template>
+
+<style scoped>
+.bg-mila {
+  background-color: #f6f0e7;
+}
+</style>
