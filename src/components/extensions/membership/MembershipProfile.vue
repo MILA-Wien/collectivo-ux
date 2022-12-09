@@ -123,7 +123,7 @@ function schemaToPrime(choices: any) {
           <h3>{{ value?.label }}</h3>
           <div v-if="value.input_type === 'date'">
             <InputText disabled
-              :value="membership ? convertDate(membership[key as keyof typeof membership] as string) : ''" />
+              :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' :''" />
           </div>
           <div v-else>
             <InputText disabled :value="membership ? membership[key as keyof typeof membership] : ''" />
