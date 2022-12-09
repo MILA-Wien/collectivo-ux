@@ -160,7 +160,7 @@ const props = defineProps({
 });
 function valueChange(val: any) {
   let value = val;
-  if (val.target) value = val.target.value;
+  if (val && val.target) value = val.target.value;
   formViewerStore.updateValue(props.element.properties.extId, value);
 }
 const { validationFaults, values } = storeToRefs(formViewerStore);

@@ -518,7 +518,17 @@
                         ],
                         "content": "",
                         "extId": "shares_number",
-                        "required": true
+                        "required": true,
+                        "validations": [
+                            {
+                                "type": "minValue",
+                                "value": 1
+                            },
+                            {
+                                "type": "maxValue",
+                                "value": 100
+                            }
+                        ]
                     },
                     "id": "kDFmPWTOqEeEddsg44",
                     "children": []

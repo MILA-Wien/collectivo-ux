@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <!-- <h2>{{ `${t("Registration")} ${userStore.user?.tokenParsed?.name}` }}</h2> -->
+  <div id="registration-form">
     <div v-for="error of validation.$errors" :key="error.$uid">
       <PrimeMessage v-if="registrationSchema" severity="error">
-        {{ t(registrationSchema[error.$propertyPath].label) }}:
+        {{ t(registrationSchema[error.$propertyPath]?registrationSchema[error.$propertyPath].label:"") }}:
         {{ t(error.$message.toString()) }}
       </PrimeMessage>
     </div>
@@ -21,16 +20,15 @@ import { storeToRefs } from "pinia";
 import treeData from "@/assets/registrationForm.json";
 import { useMembersStore } from "@/stores/members";
 import { useUserStore } from "@/stores/user";
+import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
 import { defineAsyncComponent, ref } from "vue";
 import { useDashboardStore } from "@/stores/dashboard";
 import { useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import PrimeMessage from "primevue/message";
-import { useTitle } from "@/hooks/useTitle";
-
-const title = useTitle();
-title.title.value = "Membership application";
+const menuStore = useMenuStore();
+menuStore.setTitle("Membership application");
 
 const validation = useVuelidate();
 const { t } = useI18n();
@@ -84,7 +82,10 @@ const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 
 
 <style lang="scss">
-.element-page {
+#registration-form .element-page {
   padding: 0 !important;
+}
+#registration-form .form-view h2 {
+  font-size: 1.5em;
 }
 </style>

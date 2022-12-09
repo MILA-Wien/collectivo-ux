@@ -18,6 +18,13 @@ export interface ElementProperties {
   hideLabel?: boolean;
   extId?: string;
   hidden?: boolean;
+  validations?: ElementValidation[];
+}
+export interface ElementValidation {
+  type: string;
+  message: string;
+  value?: string | number | null;
+  values?: string[] | number[] | null;
 }
 export interface ElementCondition {
   target: string;
