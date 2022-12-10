@@ -1,6 +1,6 @@
 <template>
   <div class="element-page" name="page">
-    <h2 v-if="page?.name">{{ t(page.name) }}</h2>
+    <h2 v-if="page?.name" class="mb-2">{{ t(page.name) }}</h2>
     <div
       v-for="(e, i) in page?.children"
       v-bind:key="e.type + '_' + String(i)"
@@ -136,15 +136,9 @@ function submit() {
   display: flex;
   text-align: left;
   margin: 0px 0px 5px 00px;
-  /* padding: 10px; */
   flex-direction: column;
   border-radius: 5px;
 }
-
-/* .element-page-items {
-  margin-top: 10px;
-  margin-bottom: 10px;
-} */
 
 .element-page-header {
   display: flex;

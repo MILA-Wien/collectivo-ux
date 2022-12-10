@@ -97,12 +97,3 @@ function registrationFinishedBtn() {
   userStore.finishRegistration();
 }
 </script>
-
-<style lang="scss">
-#registration-form .element-page {
-  padding: 0 !important;
-}
-#registration-form .form-view h2 {
-  font-size: 1.5em;
-}
-</style>

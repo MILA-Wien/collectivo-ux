@@ -7,7 +7,11 @@
     "Counter": "Zähler",
     "Increment": "Hinzufügen",
 
-
+    "Page 1/5: Type of person": "Seite 1/5: Art der Person",
+    "Page 2/5: Personal data": "Seite 2/5: Persönliche Daten",
+    "Page 3/5: Membership": "Seite 3/5: Mitgliedschaft",
+    "Page 4/5: Survey": "Seite 4/5: Umfrage",
+    "Page 5/5: Final questions": "Seite 5/5: Abschließende Fragen",
 
     "Membership": "Mitgliedschaft",
     "Member data": "Mitgliedsdaten",

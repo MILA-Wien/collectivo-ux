@@ -3,7 +3,7 @@
     "children": [
         {
             "type": "page",
-            "name": "Beitrittserklärung zur MILA Genossenschaft in Gründung",
+            "name": "Page 1/5: Type of person",
             "id": "FINTaFRUUKNk",
             "children": [
                 {
@@ -42,7 +42,7 @@
         },
         {
             "type": "page",
-            "name": "Personal data",
+            "name": "Page 2/5: Personal data",
             "id": "FINTRFRUUKNk",
             "children": [
                 {
@@ -314,21 +314,21 @@
                                     },
                                     "id": "JDoKLTEXhcsl",
                                     "children": []
+                                },
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "Country",
+                                        "default": "Austria",
+                                        "required": true,
+                                        "extId": "address_country"
+                                    },
+                                    "id": "WCEHZtmfzgZB",
+                                    "children": []
                                 }
                             ]
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [],
-                                "label": "Country",
-                                "default": "Austria",
-                                "required": true,
-                                "extId": "address_country"
-                            },
-                            "id": "WCEHZtmfzgZB",
-                            "children": []
                         }
                     ]
                 },
@@ -455,7 +455,7 @@
         },
         {
             "type": "page",
-            "name": "Membership",
+            "name": "Page 3/5: Membership",
             "id": "wIEVWuPGslMX",
             "children": [
                 {
@@ -468,8 +468,8 @@
                                 "value": "legal"
                             }
                         ],
-                        "hideLabel": true,
-                        "description": "As an organisation, you will be an investing member. As an investing member, you support us financially, but you cannot shop.",
+                        "label": "As an organisation, you will be an investing member. As an investing member, you support us financially, but you cannot shop.",
+                        "content": "",
                         "extId": "gEVwcJiztoBGsss"
                     },
                     "id": "SOZialVwcJiztoBGsss",
@@ -580,8 +580,8 @@
                                 "value": "social"
                             }
                         ],
-                        "hideLabel": true,
-                        "content": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
+                        "content": "",
+                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
                         "extId": "gEVwcJiztoBG"
                     },
                     "id": "SOZialVwcJiztoBG",
@@ -597,8 +597,8 @@
                                 "value": "normal"
                             }
                         ],
-                        "hideLabel": true,
-                        "content": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
+                        "content": "",
+                        "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
                         "extId": "gEasdVwcJiztoBG"
                     },
                     "id": "regelcJiztoBG",
@@ -706,7 +706,7 @@
         },
         {
             "type": "page",
-            "name": "Survey",
+            "name": "Page 4/5: Survey",
             "id": "IcLLQoeLXybn",
             "children": [
                 {
@@ -844,7 +844,7 @@
         },
         {
             "type": "page",
-            "name": "Final questions",
+            "name": "Page 5/5: Final questions",
             "id": "pzwtvhVtTtKX",
             "children": [
                 {

@@ -1,12 +1,11 @@
 <template>
   <div :class="getClass" :id="element.id" v-if="show">
-    <div :class="element.type">
+    <div :class="element.type" class="my-2">
       <div
-        class="element-header"
+        class="element-header mb-1"
         v-if="
           element.type != 'button' &&
           element.type != 'formset' &&
-          element.type != 'paragraph' &&
           !element.properties.hideLabel &&
           element.type != 'calculation'
         "
@@ -18,16 +17,24 @@
       </div>
       <div
         v-if="
-          (element.type == 'formset' || element.type == 'paragraph') &&
+          (element.type == 'formset') &&
           !element.properties.hideLabel
         "
         class="element-header"
       >
-        <h3>
+        <h3 class="mt-6">
           {{ element.properties.label ? t(element.properties.label) : t(element.type) }}
           <span class="required" v-if="element.properties.required">*</span>
         </h3>
       </div>
+
+      <div
+        v-if="element.properties.description !== undefined && element.type != 'calculation'"
+        class="description font-light text-sm"
+      >
+        {{ t(element.properties.description) }}
+      </div>
+
       <div class="single-choice" v-if="element.type == 'singleChoice'">
         <radio-group :element="element" @change="valueChange($event.value)" />
       </div>
@@ -35,7 +42,7 @@
         <checkbox-group :element="element" @change="valueChange($event)" />
       </div>
       <div v-else-if="element.properties.htmlType == 'p'">
-        <p>{{ element.properties.content }}</p>
+        <p class="font-light text-sm">{{ t(element.properties.content) }}</p>
       </div>
       <div v-else-if="element.type == 'plainHtml'">
         <div v-html="element.properties.content"></div>
@@ -115,12 +122,6 @@
           :path="path.concat(element.id)"
         />
       </div>
-    </div>
-    <div
-      v-if="element.properties.description !== undefined && element.type != 'calculation'"
-      class="description"
-    >
-      <small>{{ t(element.properties.description) }}</small>
     </div>
   </div>
 </template>
@@ -228,18 +229,6 @@ export default {
 </script>
 
 <style scoped>
-.element {
-  width: 100%;
-  border-radius: 3px;
-  padding: 2px;
-}
-
-.element-header {
-  /* min-height: 42px; */
-  margin-top: 15px;
-  margin-bottom: 10px;
-}
-
 .element input {
   margin-bottom: 10px;
 }
@@ -283,7 +272,6 @@ input {
 
 .formset-elements {
   border-radius: 3px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -295,7 +283,6 @@ input {
   align-items: center;
   height: 100%;
   margin-right: 10px;
-  /* min-width: 250px; */
 }
 
 #formset-uNmhrILdTZge {
@@ -320,7 +307,7 @@ input {
 #SOZialVwcJiztoBG,
 #regelcJiztoBG {
   border: 1px solid;
-  padding: 20px 20px 20px 20px;
+  padding: 10px 20px 10px 20px;
   margin-top: 20px;
   margin-bottom: 20px;
 }

@@ -13,7 +13,7 @@
         :name="element.id"
         :checked="value === element.properties.values[j]"
       />
-      <label class="form-check-label me-2">{{ t(o) }}</label>
+      <label class="form-check-label me-2 font-light">{{ t(o) }}</label>
     </div>
   </div>
   <!-- <SelectButton
