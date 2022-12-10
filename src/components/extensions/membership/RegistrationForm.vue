@@ -87,6 +87,11 @@ if (userStore.user) {
   formViewerStore.updateValue("first_name", userStore.user.tokenParsed.family_name);
   formViewerStore.updateValue("last_name", userStore.user.tokenParsed.given_name);
 }
+// Add default values
+formViewerStore.updateValue("address_country", "Österreich");
+formViewerStore.updateValue("address_city", "Wien");
+formViewerStore.updateValue("phone", "+43");
+
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 function registrationFinishedBtn() {
   userStore.finishRegistration();
