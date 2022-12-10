@@ -1,5 +1,4 @@
 // https://docs.cypress.io/api/introduction/api.html
-import "cypress-keycloak";
 
 describe("Show the Login mask", () => {
   it("visits the app root url", () => {

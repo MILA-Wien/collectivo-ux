@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <ToastPrime />
-    <PrimeMenu :model="items" v-if="items.length > 0" />
-  </div>
+  <ToastPrime />
+  <PrimeMenu :model="items" v-if="items.length > 0" id="main_menu" />
 </template>
 
 <script lang="ts" setup>
@@ -23,6 +21,7 @@ const items = ref<MenuItem>([]);
 function buildMenu(menu: ExtensionMenu) {
   items.value = [
     {
+      label: t("Main Menu"),
       items: [],
     },
   ];
@@ -73,3 +72,11 @@ watch(menu, () => {
   }
 });
 </script>
+
+<style>
+/* can't be scoped because we are overwriting prime styles */
+#main_menu {
+  border: none;
+  width: 100%;
+}
+</style>

@@ -13,7 +13,9 @@
       >
         <label class="element-label" v-if="!element.properties.hideLabel">
           {{
-            element.properties.label ? element.properties.label : element.type
+            element.properties.label
+              ? t(element.properties.label)
+              : t(element.type)
           }}
           <span class="required" v-if="element.properties.required">*</span>
         </label>
@@ -27,18 +29,12 @@
       >
         <h3>
           {{
-            element.properties.label ? element.properties.label : element.type
+            element.properties.label
+              ? t(element.properties.label)
+              : t(element.type)
           }}
           <span class="required" v-if="element.properties.required">*</span>
         </h3>
-      </div>
-      <div
-        v-if="
-          element.properties.description !== undefined &&
-          element.type != 'calculation'
-        "
-      >
-        <small>{{ element.properties.description }}</small>
       </div>
       <div class="single-choice" v-if="element.type == 'singleChoice'">
         <radio-group :element="element" @change="valueChange($event.value)" />
@@ -55,6 +51,19 @@
       <div class="image" v-else-if="element.type == 'image'">
         <img :src="element.properties.src" />
       </div>
+      <div v-else-if="element.type === 'textfield'" class="html-input d-flex">
+        <PrimeText @change="valueChange($event)" v-model="value"> </PrimeText>
+      </div>
+      <div v-else-if="element.type === 'textarea'" class="html-input d-flex">
+        <PrimeTextarea
+          @change="valueChange($event)"
+          v-model="value"
+          :autoResize="true"
+          rows="5"
+          cols="30"
+        >
+        </PrimeTextarea>
+      </div>
       <div
         v-else-if="element.properties.htmlType !== undefined"
         class="html-input d-flex"
@@ -63,7 +72,8 @@
           v-if="element.properties.htmlType === 'text'"
           @change="valueChange($event)"
           v-model="value"
-        ></PrimeText>
+        >
+        </PrimeText>
         <input
           v-else
           class="form-control"
@@ -71,6 +81,7 @@
           :type="element.properties.htmlType"
         />
       </div>
+
       <!-- <div v-else-if="element.type == 'signature'">
         <signature @update="valueChange($event)" />
       </div> -->
@@ -84,15 +95,21 @@
         <number @update="valueChange($event)" :element="element" />
       </div>
       <div v-else-if="element.type == 'button'">
-        <PrimeButton class="btn btn-primary" @click="buttonClick(element)">
-          {{ element.properties.label }}
+        <PrimeButton
+          class="btn btn-primary"
+          @click="buttonClick(element)"
+          :label="t(element.properties.label)"
+          icon="pi "
+          iconPos="right"
+          :loading="isLoading"
+        >
         </PrimeButton>
       </div>
     </div>
     <div
       class="formset-elements"
       :id="'formset-' + element.id"
-      v-if="props.element.children.length > 0 && element.type == 'formset'"
+      v-if="props.element.children.length > 0"
     >
       <div
         v-for="(e, i) in element.children"
@@ -106,6 +123,15 @@
         />
       </div>
     </div>
+    <div
+      v-if="
+        element.properties.description !== undefined &&
+        element.type != 'calculation'
+      "
+      class="description"
+    >
+      <small>{{ t(element.properties.description) }}</small>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -118,6 +144,8 @@ import {
 } from "vue";
 import { useFormViewerStore } from "../../../stores/formviewer";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const ElementBlueprint = defineAsyncComponent(() => import("./Element.vue"));
 const Calculation = defineAsyncComponent(
@@ -129,6 +157,7 @@ const Number = defineAsyncComponent(() => import("./ElementNumber.vue"));
 const Date = defineAsyncComponent(() => import("./ElementDate.vue"));
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 const PrimeText = defineAsyncComponent(() => import("primevue/inputtext"));
+const PrimeTextarea = defineAsyncComponent(() => import("primevue/textarea"));
 const formViewerStore = useFormViewerStore();
 const props = defineProps({
   element: {
@@ -153,6 +182,7 @@ function checkValidationFailed() {
   return "";
 }
 const emit = defineEmits(["formSubmit", "nextPage", "goToPage", "blub"]);
+const isLoading = ref(false);
 function buttonClick(element: any) {
   if (element.properties.buttonType == "next") {
     formViewerStore.validatePage();
@@ -162,6 +192,8 @@ function buttonClick(element: any) {
   } else if (element.properties.buttonType == "back") {
     formViewerStore.previousPage();
   } else if (element.properties.buttonType == "submit") {
+    console.log("submit");
+    isLoading.value = true;
     emit("formSubmit");
   }
 }
@@ -183,14 +215,29 @@ function checkCondition() {
   // check first condition
   var condition = props.element.properties.conditions[0];
   if (condition.target == null) return true;
-  let targetValue = values.value[condition.target];
-  if (targetValue == undefined) return false;
-  if (String(condition.value) == targetValue) {
-    return true;
+  if (!condition.type) {
+    let targetValue = values.value[condition.target];
+    if (targetValue == undefined) return false;
+    if (String(condition.value) == targetValue) {
+      return true;
+    }
+  } else if (condition.type === "not") {
+    if (values.value[condition.target] == undefined) {
+      return false;
+    }
+    if (
+      values.value[condition.target] != condition.values[0] &&
+      values.value[condition.target] != condition.values[1]
+    ) {
+      return true;
+    }
   }
   return false;
 }
 const show = ref(checkCondition());
+watch(values.value, () => {
+  show.value = checkCondition();
+});
 </script>
 <script lang="ts">
 export default {
@@ -246,10 +293,12 @@ input {
   border-left: 3px solid red;
 }
 
+.description {
+  margin-bottom: 10px;
+}
+
 .formset-elements {
-  border: 1px solid #ccc;
   border-radius: 3px;
-  padding: 10px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
@@ -260,6 +309,7 @@ input {
   display: flex;
   align-items: center;
   height: 100%;
+  margin-right: 10px;
 }
 
 #formset-uNmhrILdTZge {

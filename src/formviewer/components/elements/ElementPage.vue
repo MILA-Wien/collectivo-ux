@@ -1,7 +1,16 @@
 <template>
   <div class="element-page" name="page">
-    <div v-for="(e, i) in page?.children" v-bind:key="e.type + '_' + String(i)" class="element-page-items">
-      <ElementBlueprint :element="e" :path="[page?.id]" @formSubmit="$emit('formSubmit')" />
+    <h2 v-if="page?.name">{{ t(page.name) }}</h2>
+    <div
+      v-for="(e, i) in page?.children"
+      v-bind:key="e.type + '_' + String(i)"
+      class="element-page-items"
+    >
+      <ElementBlueprint
+        :element="e"
+        :path="[page?.id]"
+        @formSubmit="$emit('formSubmit')"
+      />
     </div>
   </div>
 </template>
@@ -13,6 +22,9 @@ import { useFormViewerStore } from "@/stores/formviewer";
 import { minLength, required, maxLength } from "@vuelidate/validators";
 import { ElementPage, type Element } from "@/formviewer/types/elements";
 import { useVuelidate } from "@vuelidate/core";
+import { useToast } from "primevue/usetoast";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const formViewerStore = useFormViewerStore();
 const props = defineProps({
@@ -39,23 +51,49 @@ for (let i = 0; i < allElements.value.length; i++) {
   const element = allElements.value[i];
   if (element.properties?.required) {
     const selector = element.properties?.extId;
-    if (element.properties?.required && selector) {
-      rules[selector] = {
-        required,
-        minLength: minLength(1),
-        maxLength: maxLength(255),
-        $autoDirty: true,
-      };
+    if (element && element.properties?.required && selector) {
+      // check conditions
+      if (
+        element.properties?.conditions &&
+        element.properties?.conditions?.length > 0
+      ) {
+        if (
+          element.properties?.conditions[0].value ===
+          formViewerStore.values[element.properties?.conditions[0].target]
+        ) {
+          rules[selector] = {
+            required,
+            minLength: minLength(1),
+            maxLength: maxLength(255),
+            $autoDirty: true,
+          };
+        }
+      } else {
+        rules[selector] = {
+          required,
+          minLength: minLength(1),
+          maxLength: maxLength(255),
+          $autoDirty: true,
+        };
+      }
     }
   }
 }
 const v$ = useVuelidate(rules, formViewerStore.values);
+const toast = useToast();
 
 function nextPage() {
   // validate current page
   v$.value.$validate().then((isFormCorrect: boolean) => {
     if (isFormCorrect) {
       formViewerStore.nextPage();
+    } else {
+      toast.add({
+        severity: "error",
+        summary: t("Error"),
+        detail: t("Please fill out the required fields"),
+        life: 5000,
+      });
     }
   });
 }
