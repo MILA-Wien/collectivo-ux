@@ -101,8 +101,14 @@ export const getMembershipFn = async () => {
 
 //update membership
 export const updateMembershipFn = async (member: Member) => {
-  const response = await api.put("/members/profile", member);
+  const response = await api.patch("/members/profile", member);
   return response;
+};
+
+// get profile schema
+export const getProfileSchemaFn = async () => {
+  const response = await api.get("/members/profile/schema/");
+  return response.data; //or response? When to choose?
 };
 
 export const getRegisterSchemaFn = async () => {

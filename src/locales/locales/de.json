@@ -19,6 +19,7 @@
     "Showing": "Zeige",
     "to": "bis",
     "of": "von",
+
     "Edit user": "Benutzer bearbeiten",
     "Cancel": "Abbrechen",
     "Save": "Speichern",
@@ -30,11 +31,15 @@
     "user_id": "Benutzer Id",
     "Hello,": "Hallo",
     "tile.members_registration_tile": "Registrierung",
+
     "Edit": "Bearbeiten",
+    "Error": "Fehler",
+    "tile.members_registration_tile": "Registrierung",
     "Registration": "Registrierung",
     "Next": "Weiter",
     "Continue": "Weiter",
     "Back": "Zurück",
+
     "Please fill out the required fields": "Bitte füll die erforderlichen Felder aus.",
     "Value is required": "Dieses Feld ist erforderlich.",
     "Error": "Fehler",
@@ -94,4 +99,7 @@
     "Dashboard": "Startseite",
     "Open test iframe": "Test iframe öffnen",
     "Open test webcomponent": "Test webcomponent öffnen"
+
+    "Main menu": "Hauptmenü",
+    "Membership number": "Mitgliedsnummer"
 }
