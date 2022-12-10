@@ -34,7 +34,6 @@
 
     "Edit": "Bearbeiten",
     "Error": "Fehler",
-    "tile.members_registration_tile": "Registrierung",
     "Registration": "Registrierung",
     "Next": "Weiter",
     "Continue": "Weiter",
@@ -42,7 +41,6 @@
 
     "Please fill out the required fields": "Bitte füll die erforderlichen Felder aus.",
     "Value is required": "Dieses Feld ist erforderlich.",
-    "Error": "Fehler",
     "Membership application": "Beitrittserklärung",
     "Click here to fill out your application to become a member of the MILA cooperative.": "Klicke hier um deine Beitrittserklärung zur MILA Genossenschaft in Gründung auszufüllen.",
     "What type of membership do you want?": "Wie wirst du Genossenschaftsmitglied?",
@@ -98,7 +96,7 @@
     "": "",
     "Dashboard": "Startseite",
     "Open test iframe": "Test iframe öffnen",
-    "Open test webcomponent": "Test webcomponent öffnen"
+    "Open test webcomponent": "Test webcomponent öffnen",
 
     "Main menu": "Hauptmenü",
     "Membership number": "Mitgliedsnummer"
