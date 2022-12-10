@@ -27,10 +27,11 @@
 
     "Edit": "Bearbeiten",
     "Error": "Fehler",
-    "tile.members_registration_tile":"Registrierung"
+    "tile.members_registration_tile": "Registrierung",
     "Registration": "Registrierung",
     "Next": "Weiter",
     "Back": "Zurück",
-    "Main menu": "Hauptmenü"
+    "Main menu": "Hauptmenü",
 
+    "Membership number": "Mitgliedsnummer"
 }
