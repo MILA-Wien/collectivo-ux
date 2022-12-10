@@ -140,94 +140,7 @@
                                 "htmlType": "text",
                                 "conditions": [],
                                 "label": "Phone number",
-                                "extId": "phone",
-                                "required": true
-                            },
-                            "id": "sJsmSmZUQhtG",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "legal"
-                            }
-                        ],
-                        "hideLabel": false,
-                        "extId": "eufnsig7fh",
-                        "label": "Details of the contact person"
-                    },
-                    "id": "eufnsig7fh",
-                    "children": [
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "eufnsig7fhaa"
-                            },
-                            "id": "eufnsig7fhaa",
-                            "children": [
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "First name",
-                                        "extId": "first_name",
-                                        "required": true
-                                    },
-                                    "id": "sJsmSmZUQhtG",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Last name",
-                                        "extId": "last_name",
-                                        "required": true
-                                    },
-                                    "id": "sJsmSmZUQhtG",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "type": "singleChoice",
-                            "properties": {
-                                "label": "Gender",
-                                "htmlType": "radio",
-                                "conditions": [],
-                                "options": [
-                                    "Diverse",
-                                    "Female",
-                                    "Male"
-                                ],
-                                "values": [
-                                    "diverse",
-                                    "female",
-                                    "male"
-                                ],
-                                "required": true,
-                                "extId": "gender"
-                            },
-                            "id": "poKddqtVrGPs",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [],
-                                "label": "Phone number",
-                                "extId": "phone",
-                                "required": true
+                                "extId": "phone"
                             },
                             "id": "sJsmSmZUQhtG",
                             "children": []
@@ -422,6 +335,91 @@
                 {
                     "type": "formset",
                     "properties": {
+                        "conditions": [
+                            {
+                                "target": "person_type",
+                                "value": "legal"
+                            }
+                        ],
+                        "hideLabel": false,
+                        "extId": "eufnsig7fh",
+                        "label": "Details of the contact person"
+                    },
+                    "id": "eufnsig7fh",
+                    "children": [
+                        {
+                            "type": "formset",
+                            "properties": {
+                                "conditions": [],
+                                "hideLabel": true,
+                                "extId": "eufnsig7fhaa"
+                            },
+                            "id": "eufnsig7fhaa",
+                            "children": [
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "First name",
+                                        "extId": "first_name",
+                                        "required": true
+                                    },
+                                    "id": "sJsmSmZUQhtG",
+                                    "children": []
+                                },
+                                {
+                                    "type": "textfield",
+                                    "properties": {
+                                        "htmlType": "text",
+                                        "conditions": [],
+                                        "label": "Last name",
+                                        "extId": "last_name",
+                                        "required": true
+                                    },
+                                    "id": "sJsmSmZUQhtG",
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "type": "singleChoice",
+                            "properties": {
+                                "label": "Gender",
+                                "htmlType": "radio",
+                                "conditions": [],
+                                "options": [
+                                    "Diverse",
+                                    "Female",
+                                    "Male"
+                                ],
+                                "values": [
+                                    "diverse",
+                                    "female",
+                                    "male"
+                                ],
+                                "required": true,
+                                "extId": "gender"
+                            },
+                            "id": "poKddqtVrGPs",
+                            "children": []
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "htmlType": "text",
+                                "conditions": [],
+                                "label": "Phone number",
+                                "extId": "phone"
+                            },
+                            "id": "sJsmSmZUQhtG",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "formset",
+                    "properties": {
                         "conditions": [],
                         "hideLabel": true,
                         "extId": "ALSvbRsAfmSl",
@@ -461,10 +459,32 @@
             "id": "wIEVWuPGslMX",
             "children": [
                 {
+                    "type": "paragraph",
+                    "properties": {
+                        "htmlType": "p",
+                        "conditions": [
+                            {
+                                "target": "person_type",
+                                "value": "legal"
+                            }
+                        ],
+                        "hideLabel": true,
+                        "description": "As an organisation, you will be an investing member. As an investing member, you support us financially, but you cannot shop.",
+                        "extId": "gEVwcJiztoBGsss"
+                    },
+                    "id": "SOZialVwcJiztoBGsss",
+                    "children": []
+                },
+                {
                     "type": "singleChoice",
                     "properties": {
                         "label": "Which type of membership do you choose?",
-                        "conditions": [],
+                        "conditions": [
+                            {
+                                "target": "person_type",
+                                "value": "natural"
+                            }
+                        ],
                         "content": "",
                         "htmlType": "radio",
                         "description": "Only as an active member do you have the opportunity to shop after the opening of the supermarket. As an investing member, you support us financially, but you cannot shop.",
@@ -588,13 +608,13 @@
                     "type": "singleChoice",
                     "properties": {
                         "label": "Payment type",
-                        "description": "Aktuell ist nur Zahlung durch SEPA-Lastschrift möglich. Erst wenn der Firmenbucheintrag von MILA Mitmach-Supermarkt e.G. erfolgt ist, können wir das Genossenschaftskonto eröffnen und Zahlung per Überweisung ermöglichen. SEPA-Lastschrift ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
+                        "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. Erst wenn der Firmenbucheintrag von MILA Mitmach-Supermarkt e.G. erfolgt ist, können wir das Genossenschaftskonto eröffnen und Zahlung per Überweisung ermöglichen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
                         "conditions": [],
                         "content": "",
                         "extId": "shares_payment_type",
                         "required": true,
                         "options": [
-                            "SEPA"
+                            "Jetzt SEPA Bankeinzug genemigen!"
                         ],
                         "values": [
                             "sepa"
@@ -727,10 +747,11 @@
                 {
                     "type": "multipleChoice",
                     "properties": {
-                        "label": "In which working group do you want to be active?",
+                        "label": "Would you be interested to join a working group?",
+                        "description": "You can find more information about the working groups here: https://www.mila.wien/de/mitmachen/arbeitsgruppen/",
                         "conditions": [],
                         "htmlType": "checkbox",
-                        "extId":"groups_interested", 
+                        "extId":"groups_interested",
                         "options": [
                             "Infogespräche",
                             "Sortiment",
@@ -763,7 +784,7 @@
                         "label": "What are your occupations/skills/interests?",
                         "htmlType": "checkbox",
                         "conditions": [],
-                        "extId":"skills", 
+                        "extId":"skills",
                         "options": [
                             "Immobilien/Architektur/Planung",
                             "Einzelhandel",
@@ -843,7 +864,7 @@
                     "properties": {
                         "htmlType": "checkbox",
                         "conditions": [],
-                        "label": "Kommst du zur Gründungsversammlung?",
+                        "label": "Kommst du zur Gründungsversammlung am 1.2.2023 um 18 Uhr?",
                         "description": "Ja, ich komme verbindlich am 1.2.2023 um 18 Uhr zur Gründung in der Brunnenpassage am Yppenplatz. Wenn du zur Gründungsversammlung kommst, kannst du Gründerin von MILA Mitmach-Supermarkt e.G. sein. Deine Teilnahme ist für eine Aufnahme als Mitglied aber nicht nötig.",
                         "extId": "founding_event"
                     },

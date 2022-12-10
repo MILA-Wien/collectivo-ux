@@ -11,7 +11,7 @@ describe("Login Succesfull", () => {
       // cy.get("#kc-accept").click();
       cy.get('button[id="toggle-sidebar-button"]').click();
       cy.get('#main_menu_0_0 > .p-menuitem-content > .p-menuitem-link > .p-menuitem-text').contains("Dashboard");
-      cy.get("a").contains("Logout").click();
+      cy.get("a").contains("Abmelden").click();
     });
   });
 });
