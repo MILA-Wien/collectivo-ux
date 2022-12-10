@@ -10,7 +10,7 @@ describe("Login Succesfull", () => {
       cy.get("input[name=password]").type("test").type("{enter}"); // '{enter}' submits the form
       // cy.get("#kc-accept").click();
       cy.get('button[id="toggle-sidebar-button"]').click();
-      cy.get('#main_menu_0_0 > .p-menuitem-content > .p-menuitem-link > .p-menuitem-text').contains("Dashboard");
+      cy.get('#main_menu_0_0 > .p-menuitem-content > .p-menuitem-link > .p-menuitem-text').contains("Startseite");
       cy.get("a").contains("Abmelden").click();
     });
   });
