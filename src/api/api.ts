@@ -85,7 +85,7 @@ export const membersMembersPatch = async (member: Member) => {
     `/members/members/${member.id}/?limit=10`,
     member
   );
-  return response.data;
+  return response;
 };
 
 // Dashboard
