@@ -39,7 +39,6 @@ export const useFormViewerStore = defineStore({
 
     nextPage() {
       this.validateCurrentPage = false;
-
       const index = this.tree?.children?.findIndex(
         (e) => e.id == this.currentPage
       );

@@ -1,5 +1,5 @@
 <template>
-  <div class="number d-flex">
+  <div class="number">
     <PrimeNumber :name="element.id" v-model="value" />
   </div>
 </template>
