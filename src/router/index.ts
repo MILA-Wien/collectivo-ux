@@ -41,6 +41,11 @@ const router = createRouter({
       component: () => import("../views/ExtensionView.vue"),
     },
     {
+      path: "/members/members",
+      name: "members",
+      component: () => import("../components/extensions/members/MembersAdmin.vue"),
+    },
+    {
       path: "/members/profile",
       name: "profile",
       component: () => import("../components/extensions/membership/MembershipProfile.vue"),
