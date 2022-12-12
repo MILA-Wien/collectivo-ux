@@ -4,6 +4,9 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
 import MemberDetail from "./MemberDetail.vue";
+import InputText from 'primevue/inputtext';
+import Toolbar from 'primevue/toolbar';
+import Button from 'primevue/button';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { boolean } from "mathjs";
 const { t } = useI18n();
@@ -16,6 +19,7 @@ const props = defineProps({
     required: true,
   },
 });
+const dt = ref();
 let selectedMember = ref({});
 const selectedMembers = ref();
 const editMember = ref(false);
@@ -25,16 +29,33 @@ function edit(event: any) {
 }
 
 const filters1 = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  first_name: {
-      operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
-  },
+  id: { value: null, matchMode: FilterMatchMode.EQUALS },
+  first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  last_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  email: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
+  membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
+
+const exportCSV = () => {
+  // TODO This exports ALL members but should only export selectedMembers
+  dt.value.exportCSV();
+};
 </script>
 
 <template>
+
   <div class="members-table">
+
+    <Toolbar class="mb-4">
+      <template #start>
+      </template>
+
+      <template #end>
+          <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
+      </template>
+    </Toolbar>
+
     <DataTable
       :value="members.results"
       :paginator="true"
@@ -42,6 +63,7 @@ const filters1 = ref({
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       :rowsPerPageOptions="[10, 20, 50]"
       dataKey="id"
+      ref="dt"
       v-model:selection="selectedMembers"
       responsiveLayout="scroll"
       :globalFilterFields="['id', 'first_name']"
@@ -58,30 +80,43 @@ const filters1 = ref({
       sortField="id"
       :sortOrder="1"
     >
-      <!-- <template #header>
-          <div class="flex justify-content-between">
-              <Button type="button" icon="pi pi-filter-slash" label="Clear" class="p-button-outlined" @click="clearFilter1()"/>
-              <span class="p-input-icon-left">
-                  <i class="pi pi-search" />
-                  <InputText v-model="filters1['global'].value" placeholder="Keyword Search" />
-              </span>
-          </div>
-      </template>
-      <template #empty>
-          No customers found.
-      </template> -->
       <Column selectionMode="multiple"></Column>
-      <Column field="id" :header="t('ID')" :sortable="true"></Column>
-      <Column field="first_name" filterMatchMode="contains" :header="t('Vorname')" :sortable="true">
+      <Column field="id" :header="t('ID')" :sortable="true" :showFilterMatchModes="false">
         <template #filter="{filterModel}">
-          hello
-          <!-- TODO This is rendered but nothing is visible -->
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name"/>
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
         </template>
       </Column>
-      <Column field="last_name" :header="t('Nachname')" :sortable="true"></Column>
-      <Column field="person_type" :header="t('Typ')" :sortable="true"></Column>
-      <Column field="membership_type" :header="t('Status')" :sortable="true"></Column>
+      <Column field="first_name" :header="t('Vorname')" :sortable="true" :showFilterMatchModes="false">
+        <template #filter="{filterModel}">
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+        </template>
+      </Column>
+      <Column field="last_name" :header="t('Nachname')" :sortable="true" :showFilterMatchModes="false">
+        <template #filter="{filterModel}">
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+        </template>
+      </Column>
+
+      <Column field="email" :header="t('Email')" :sortable="true" :showFilterMatchModes="false">
+        <template #filter="{filterModel}">
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+        </template>
+      </Column>
+      <Column field="person_type" :header="t('Typ')" :sortable="true" :showFilterMatchModes="false">
+        <template #filter="{filterModel}">
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+        </template>
+      </Column>
+      <Column field="membership_type" :header="t('Status')" :sortable="true" :showFilterMatchModes="false">
+        <template #filter="{filterModel}">
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+        </template>
+      </Column>
+      <Column field="tags" :header="t('Tags')" :sortable="true" :showFilterMatchModes="false">
+        <template #filter="{filterModel}">
+          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+        </template>
+      </Column>
       <Column :header="t('actions')">
         <template #body="slotProps">
           <ButtonPrime
@@ -91,9 +126,6 @@ const filters1 = ref({
           />
         </template>
       </Column>
-      <!-- <template #paginatorstart>
-        <ButtonPrime type="button" icon="pi pi-refresh" class="p-button-text" />
-      </template> -->
     </DataTable>
     <MemberDetail
       v-if="editMember"
