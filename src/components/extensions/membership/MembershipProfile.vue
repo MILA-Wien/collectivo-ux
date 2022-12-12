@@ -49,7 +49,6 @@ watch(membershipSchema, (value) => {
   }
 })
 
-
 function updateInputText(event: any, key: string | number) {
   if (membership.value) {
     membership.value[key as keyof typeof membership.value] = event.target.value;
@@ -102,18 +101,18 @@ async function save() {
     try {
       await membershipStore.updateMembership(membership.value);
       toast.add({ severity: 'success', summary: t('Profile updated'), life: 5000 });
-    } catch(e:any) {
-      toast.add({ severity: 'error', summary: t('Update failed'), detail: `Request-id: "${
-              e?.response?.headers["x-request-id"]
-            }" `});
-      alert(`${JSON.stringify(e.response.data)}`)
+    } catch (e: any) {
+      toast.add({
+        severity: 'error', summary: t('Update failed'), detail: `Request-id: "${e?.response?.headers["x-request-id"]
+          }" `
+      });
     }
   }
   else {
     throw new TypeError("Membership value is empty");
   }
-  submitted.value = false;
 }
+
 function schemaToPrime(choices: any) {
   let schema: Array<Object> = [];
   Object.keys(choices).forEach(key => {
@@ -135,7 +134,7 @@ function schemaToPrime(choices: any) {
           <h3>{{ t(value?.label) }}</h3>
           <div v-if="value.input_type === 'date'">
             <InputText disabled
-              :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' :''" />
+              :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' : ''" />
           </div>
           <div v-else>
             <InputText disabled :value="membership ? membership[key as keyof typeof membership] : ''" />
@@ -153,7 +152,7 @@ function schemaToPrime(choices: any) {
             <br />
             <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
           </div>
-          <div v-else-if="value?.input_type === 'radio'" >
+          <div v-else-if="value?.input_type === 'radio'">
             <div v-if="key === 'gender'" class="w-56">
               <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
               <h3 v-else>{{ t(value?.label) }}</h3>
@@ -171,7 +170,7 @@ function schemaToPrime(choices: any) {
         </div>
         <br />
       </div>
-      <ButtonPrime :label="t('Save')" icon="pi pi-check" :loading="submitted" @click="save()" autofocus />
+      <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
 
     </div>
   </div>
