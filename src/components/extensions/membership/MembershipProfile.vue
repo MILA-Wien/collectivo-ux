@@ -182,7 +182,7 @@ function schemaToPrime(choices: any) {
               <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
               <h3 v-else>{{ t(value?.label) }}</h3>
               <br />
-              <div v-for="category of (schemaToPrime(value.choices) as any)" class="field-radiobutton">
+              <div v-for="category of (schemaToPrime(value.choices) as any)" class="field-radiobutton" :key="category.name">
                 <RadioButton :inputId="category.name" name="key" :value="category.name" v-model="selectedGender" @click="updateRadioButton(category.name, key)"/>
                 <label  :for="category.name" class="genderLabel">{{ t(capitalized(category.name)) }}</label>
               </div>
