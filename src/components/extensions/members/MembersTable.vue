@@ -115,11 +115,6 @@ const exportCSV = () => {
           <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
         </template>
       </Column>
-      <Column field="tags" :header="t('Tags')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
-        </template>
-      </Column>
       <Column :header="t('actions')">
         <template #body="slotProps">
           <ButtonPrime
