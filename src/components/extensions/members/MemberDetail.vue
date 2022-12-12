@@ -1,25 +1,59 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
+import { useMembersStore } from "@/stores/members";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
+import { useToast } from  "primevue/usetoast";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
+
+const membersStore = useMembersStore();
+
+const toast = useToast();
+const successToast = () => {
+  toast.add({
+    severity:'success',
+    summary: 'Success',
+    detail: "User has been updated.",
+    life: 3000,
+  })
+}
+const errorToast = () => {
+  toast.add({
+    severity:'error',
+    summary: 'Error',
+    detail: "Something went wrong.",
+    life: 3000,
+  })
+}
+
 const props = defineProps({
   member: {
     type: Object,
     required: true,
   },
 });
+
 const member_attributes = ref(JSON.parse(JSON.stringify(props.member)));
+
 const displayModal = ref(true);
+const isSaving = ref(false)
+
 function closeModal() {
   emit("close");
 }
-function save() {
-  emit("change", member_attributes.value);
+async function save() {
+  isSaving.value = true
+  try {
+    const response = await membersStore.updateMember(member_attributes.value);
+    successToast();
+  } catch (error) {
+    errorToast();
+  }
   emit("close");
+  isSaving.value = false
 }
 </script>
 <template>
@@ -61,6 +95,7 @@ function save() {
         />
         <ButtonPrime
           :label="t('Save')"
+          :loading="isSaving"
           icon="pi pi-check"
           @click="save()"
           autofocus

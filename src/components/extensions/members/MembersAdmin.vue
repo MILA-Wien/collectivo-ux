@@ -1,23 +1,27 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import type { Member } from "@/api/types";
 import { useMembersStore } from "@/stores/members";
 import { storeToRefs } from "pinia";
 import MembersTable from "./MembersTable.vue";
+import { useToast } from  "primevue/usetoast";
 
+const toast = useToast();
+
+const editMember = ref(false)
 const membersStore = useMembersStore();
 if (membersStore.membersLoaded === false) {
   membersStore.getMembers();
 }
 const { members, membersLoadingError } = storeToRefs(membersStore);
-function updateMember(member: Member) {
-  membersStore.updateMember(member);
-}
+
 function deleteMember(member: Member) {
   membersStore.deleteMember(member);
 }
 </script>
 
 <template>
+  <Toast />
   <div class="members-wrapper">
     <div v-if="membersLoadingError !== null" class="error">
       <h2>{{ $t("Error while loading Members") }}</h2>
@@ -29,8 +33,7 @@ function deleteMember(member: Member) {
     <div v-else class="members-table">
       <MembersTable
         :members="members"
-        @update:member="updateMember($event)"
-        @delete:member="deleteMember($event)"
+        :editMember="editMember"
       />
     </div>
   </div>
