@@ -12,7 +12,7 @@
         :value="props.element.properties.values[j]"
         :name="props.element.id + j"
       />
-      <label>{{ o }}</label>
+      <label class="font-light">{{ o }}</label>
     </div>
   </div>
 </template>

@@ -1,41 +1,40 @@
 <template>
   <div :class="getClass" :id="element.id" v-if="show">
-    <div :class="element.type">
+    <div :class="element.type" class="my-2">
       <div
-        class="element-header"
+        class="element-header mb-1"
         v-if="
           element.type != 'button' &&
           element.type != 'formset' &&
-          element.type != 'paragraph' &&
           !element.properties.hideLabel &&
           element.type != 'calculation'
         "
       >
         <label class="element-label" v-if="!element.properties.hideLabel">
-          {{
-            element.properties.label
-              ? t(element.properties.label)
-              : t(element.type)
-          }}
+          {{ element.properties.label ? t(element.properties.label) : t(element.type) }}
           <span class="required" v-if="element.properties.required">*</span>
         </label>
       </div>
       <div
         v-if="
-          (element.type == 'formset' || element.type == 'paragraph') &&
+          (element.type == 'formset') &&
           !element.properties.hideLabel
         "
         class="element-header"
       >
-        <h3>
-          {{
-            element.properties.label
-              ? t(element.properties.label)
-              : t(element.type)
-          }}
+        <h3 class="mt-6">
+          {{ element.properties.label ? t(element.properties.label) : t(element.type) }}
           <span class="required" v-if="element.properties.required">*</span>
         </h3>
       </div>
+
+      <div
+        v-if="element.properties.description !== undefined && element.type != 'calculation'"
+        class="description font-light text-sm"
+      >
+        {{ t(element.properties.description) }}
+      </div>
+
       <div class="single-choice" v-if="element.type == 'singleChoice'">
         <radio-group :element="element" @change="valueChange($event.value)" />
       </div>
@@ -43,7 +42,7 @@
         <checkbox-group :element="element" @change="valueChange($event)" />
       </div>
       <div v-else-if="element.properties.htmlType == 'p'">
-        <p>{{ element.properties.content }}</p>
+        <p class="font-light text-sm">{{ t(element.properties.content) }}</p>
       </div>
       <div v-else-if="element.type == 'plainHtml'">
         <div v-html="element.properties.content"></div>
@@ -51,10 +50,10 @@
       <div class="image" v-else-if="element.type == 'image'">
         <img :src="element.properties.src" />
       </div>
-      <div v-else-if="element.type === 'textfield'" class="html-input d-flex">
+      <div v-else-if="element.type === 'textfield'" class="html-input">
         <PrimeText @change="valueChange($event)" v-model="value"> </PrimeText>
       </div>
-      <div v-else-if="element.type === 'textarea'" class="html-input d-flex">
+      <div v-else-if="element.type === 'textarea'" class="html-input">
         <PrimeTextarea
           @change="valueChange($event)"
           v-model="value"
@@ -64,27 +63,6 @@
         >
         </PrimeTextarea>
       </div>
-      <div
-        v-else-if="element.properties.htmlType !== undefined"
-        class="html-input d-flex"
-      >
-        <PrimeText
-          v-if="element.properties.htmlType === 'text'"
-          @change="valueChange($event)"
-          v-model="value"
-        >
-        </PrimeText>
-        <input
-          v-else
-          class="form-control"
-          @input="valueChange($event)"
-          :type="element.properties.htmlType"
-        />
-      </div>
-
-      <!-- <div v-else-if="element.type == 'signature'">
-        <signature @update="valueChange($event)" />
-      </div> -->
       <div v-else-if="element.type == 'calculation'">
         <calculation @update="valueChange($event)" :element="element" />
       </div>
@@ -97,13 +75,35 @@
       <div v-else-if="element.type == 'button'">
         <PrimeButton
           class="btn btn-primary"
+          style="margin-top: 20px"
           @click="buttonClick(element)"
           :label="t(element.properties.label)"
           icon="pi "
           iconPos="right"
           :loading="isLoading"
+        />
+      </div>
+      <div v-else-if="element.type == 'boolean'">
+        <PrimeCheckbox
+          v-model="value"
+          @change="valueChange($event)"
+          :label="t(element.properties.label)"
         >
-        </PrimeButton>
+        </PrimeCheckbox>
+      </div>
+      <div v-else-if="element.properties.htmlType !== undefined" class="html-input">
+        <PrimeText
+          v-if="element.properties.htmlType === 'text'"
+          @change="valueChange($event)"
+          v-model="value"
+        >
+        </PrimeText>
+        <input
+          v-else
+          class="form-control"
+          @input="valueChange($event)"
+          :type="element.properties.htmlType"
+        />
       </div>
     </div>
     <div
@@ -123,34 +123,18 @@
         />
       </div>
     </div>
-    <div
-      v-if="
-        element.properties.description !== undefined &&
-        element.type != 'calculation'
-      "
-      class="description"
-    >
-      <small>{{ t(element.properties.description) }}</small>
-    </div>
   </div>
 </template>
+
 <script setup lang="ts">
-import {
-  defineProps,
-  defineEmits,
-  defineAsyncComponent,
-  ref,
-  watch,
-} from "vue";
+import { defineProps, defineEmits, defineAsyncComponent, ref, watch } from "vue";
 import { useFormViewerStore } from "../../../stores/formviewer";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const ElementBlueprint = defineAsyncComponent(() => import("./Element.vue"));
-const Calculation = defineAsyncComponent(
-  () => import("./ElementCalculation.vue")
-);
+const Calculation = defineAsyncComponent(() => import("./ElementCalculation.vue"));
 const RadioGroup = defineAsyncComponent(() => import("./RadioGroup.vue"));
 const CheckboxGroup = defineAsyncComponent(() => import("./CheckboxGroup.vue"));
 const Number = defineAsyncComponent(() => import("./ElementNumber.vue"));
@@ -158,6 +142,7 @@ const Date = defineAsyncComponent(() => import("./ElementDate.vue"));
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 const PrimeText = defineAsyncComponent(() => import("primevue/inputtext"));
 const PrimeTextarea = defineAsyncComponent(() => import("primevue/textarea"));
+const PrimeCheckbox = defineAsyncComponent(() => import("primevue/inputswitch"));
 const formViewerStore = useFormViewerStore();
 const props = defineProps({
   element: {
@@ -171,7 +156,7 @@ const props = defineProps({
 });
 function valueChange(val: any) {
   let value = val;
-  if (val.target) value = val.target.value;
+  if (val && val.target) value = val.target.value;
   formViewerStore.updateValue(props.element.properties.extId, value);
 }
 const { validationFaults, values } = storeToRefs(formViewerStore);
@@ -197,9 +182,7 @@ function buttonClick(element: any) {
     emit("formSubmit");
   }
 }
-let value: any = ref(
-  formViewerStore.getValueForId(props.element.properties.extId)
-);
+let value: any = ref(formViewerStore.getValueForId(props.element.properties.extId));
 watch(value, (val: any) => {
   valueChange(val);
 });
@@ -246,16 +229,6 @@ export default {
 </script>
 
 <style scoped>
-.element {
-  width: 100%;
-  border-radius: 3px;
-  padding: 2px;
-}
-
-.element-header {
-  min-height: 42px;
-}
-
 .element input {
   margin-bottom: 10px;
 }
@@ -299,9 +272,9 @@ input {
 
 .formset-elements {
   border-radius: 3px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
 }
 
@@ -316,5 +289,31 @@ input {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+#formset-eufnsig7fh {
+  flex-direction: column;
+}
+
+#warucmPWTOqEeE,
+#SOZialVwcJiztoBG,
+#regelcJiztoBG {
+  border: 1px solid;
+  padding: 10px 20px 10px 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#SOZialVwcJiztoBG,
+#regelcJiztoBG {
+  border: 1px solid;
+  padding: 10px 20px 10px 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.element-page-items .form-control {
+  width: 20px;
+  height: 20px;
 }
 </style>

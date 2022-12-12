@@ -33,9 +33,3 @@ if (
   formViewerStore.setCurrentPage(tree.value.children[0].id);
 }
 </script>
-<style scoped>
-.form-view {
-  max-height: 80vh;
-  overflow-x: scroll;
-}
-</style>

@@ -51,6 +51,8 @@ function initKeycloak() {
         locale: "de",
         redirectUri: window.location.origin + window.location.pathname + "/",
       });
+    } else {
+      store.setKeycloak(keycloak);
     }
   };
 
