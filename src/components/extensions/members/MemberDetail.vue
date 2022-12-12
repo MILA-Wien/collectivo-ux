@@ -17,15 +17,16 @@ const successToast = () => {
     severity:'success',
     summary: 'Success',
     detail: "User has been updated.",
-    life: 3000,
+    life: 5000,
   })
 }
-const errorToast = () => {
+const errorToast = (e:any) => {
   toast.add({
     severity:'error',
     summary: 'Error',
-    detail: "Something went wrong.",
-    life: 3000,
+    detail: `Update failed. Request-id: "${
+              e?.response?.headers["x-request-id"]
+            }" Response: "${JSON.stringify(e.response.data)}"`,
   })
 }
 
@@ -50,7 +51,7 @@ async function save() {
     const response = await membersStore.updateMember(member_attributes.value);
     successToast();
   } catch (error) {
-    errorToast();
+    errorToast(error);
   }
   emit("close");
   isSaving.value = false

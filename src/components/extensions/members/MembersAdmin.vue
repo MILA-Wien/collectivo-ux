@@ -21,7 +21,6 @@ function deleteMember(member: Member) {
 </script>
 
 <template>
-  <Toast />
   <div class="members-wrapper">
     <div v-if="membersLoadingError !== null" class="error">
       <h2>{{ $t("Error while loading Members") }}</h2>
