@@ -8,7 +8,6 @@ import InputText from 'primevue/inputtext';
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { boolean } from "mathjs";
 const { t } = useI18n();
 
 const emit = defineEmits(["open:member", "update:member", "delete:member"]);
@@ -50,25 +49,21 @@ const exportCSV = () => {
     <Toolbar class="mb-4">
       <template #start>
       </template>
-
       <template #end>
-          <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
+          <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV" />
       </template>
     </Toolbar>
 
     <DataTable
       :value="members.results"
+      v-model:selection="selectedMembers"
+      dataKey="id"
+      ref="dt"
+
       :paginator="true"
       :rows="10"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50]"
-      dataKey="id"
-      ref="dt"
-      v-model:selection="selectedMembers"
-      responsiveLayout="scroll"
-      :globalFilterFields="['id', 'first_name']"
-      filterDisplay="menu"
-      v-model:filters="filters1"
+      :rowsPerPageOptions="[10, 20, 50, 100]"
       :currentPageReportTemplate="
         t('Showing') +
         ' {first} ' +
@@ -77,8 +72,16 @@ const exportCSV = () => {
         t('of') +
         ' {totalRecords}'
       "
+
+      :globalFilterFields="['id', 'first_name']"
+      filterDisplay="menu"
+      v-model:filters="filters1"
+
       sortField="id"
       :sortOrder="1"
+
+      responsiveLayout="scroll"
+      :resizableColumns="true" columnResizeMode="fit" showGridlines
     >
       <Column selectionMode="multiple"></Column>
       <Column field="id" :header="t('ID')" :sortable="true" :showFilterMatchModes="false">
