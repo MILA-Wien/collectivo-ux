@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useMembershipStore } from "@/stores/membership";
-import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
-import Listbox from 'primevue/listbox';
-import Calendar from 'primevue/calendar';
 import { ref, watch } from 'vue';
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { useToast } from 'primevue/usetoast';
+import Toast from "primevue/toast";
+import { useMenuStore } from "@/stores/menu";
+import Listbox from 'primevue/listbox';
+
+const menuStore = useMenuStore();
+menuStore.setTitle("Membership");
 
 const membershipStore = useMembershipStore();
 membershipStore.getMembershipSchema();
@@ -96,11 +99,20 @@ async function save() {
     return;
   }
   else if (membership.value) {
-    membershipStore.updateMembership(membership.value);
+    try {
+      await membershipStore.updateMembership(membership.value);
+      toast.add({ severity: 'success', summary: t('Profile updated'), life: 5000 });
+    } catch(e:any) {
+      toast.add({ severity: 'error', summary: t('Update failed'), detail: `Request-id: "${
+              e?.response?.headers["x-request-id"]
+            }" `});
+      alert(`${JSON.stringify(e.response.data)}`)
+    }
   }
   else {
     throw new TypeError("Membership value is empty");
   }
+  submitted.value = false;
 }
 function schemaToPrime(choices: any) {
   let schema: Array<Object> = [];
@@ -120,7 +132,7 @@ function schemaToPrime(choices: any) {
     <div v-else class="members-table">
       <div v-for="(value, key) in membershipSchema" :key="value ? key + value.input_type : key" class="field">
         <div v-if="value.read_only">
-          <h3>{{ value?.label }}</h3>
+          <h3>{{ t(value?.label) }}</h3>
           <div v-if="value.input_type === 'date'">
             <InputText disabled
               :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' :''" />
@@ -131,8 +143,8 @@ function schemaToPrime(choices: any) {
         </div>
         <div v-else>
           <div v-if="(value?.input_type === 'text' || value?.input_type === 'email')">
-            <h3 v-if="value.required">{{ value?.label }}*</h3>
-            <h3 v-else>{{ value?.label }}</h3>
+            <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
+            <h3 v-else>{{ t(value?.label) }}</h3>
 
             <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
               @change="updateInputText($event, key)"
@@ -141,10 +153,10 @@ function schemaToPrime(choices: any) {
             <br />
             <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
           </div>
-          <div v-else-if="value?.input_type === 'radio'">
-            <div v-if="key === 'gender'">
-              <h3 v-if="value.required">{{ value?.label }}*</h3>
-              <h3 v-else>{{ value?.label }}</h3>
+          <div v-else-if="value?.input_type === 'radio'" >
+            <div v-if="key === 'gender'" class="w-56">
+              <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
+              <h3 v-else>{{ t(value?.label) }}</h3>
               <Listbox v-model="selectedGender" :options="schemaToPrime(value.choices)" optionLabel="name"
                 placeholder="Select Gender(s)" @click="updateRadioGender($event, key)" />
               <br />
@@ -159,37 +171,9 @@ function schemaToPrime(choices: any) {
         </div>
         <br />
       </div>
-      <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
+      <ButtonPrime :label="t('Save')" icon="pi pi-check" :loading="submitted" @click="save()" autofocus />
 
     </div>
   </div>
 </template>
 
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-.required {
-  color: red;
-}
-
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
-}
-</style>
