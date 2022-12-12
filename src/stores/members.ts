@@ -8,17 +8,19 @@ type MembersState = {
   membersLoaded: boolean;
   membersLoadingError: string | null;
   registrationSchema: Schema | null;
+  registrationFinished: boolean;
 };
 
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
-    ({
-      members: null,
-      membersLoaded: false,
-      membersLoadingError: null,
-      registrationSchema: null,
-    } as MembersState),
+  ({
+    members: null,
+    membersLoaded: false,
+    membersLoadingError: null,
+    registrationSchema: null,
+    registrationFinished: false,
+  } as MembersState),
   actions: {
     async getMembers() {
       membersMembersFn()
@@ -66,5 +68,8 @@ export const useMembersStore = defineStore({
         this.registrationSchema = response;
       });
     },
+    setRegistrationFinished() {
+      this.registrationFinished = true;
+    }
   },
 });

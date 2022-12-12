@@ -1,16 +1,12 @@
 <template>
   <div class="element-page" name="page">
-    <h2 v-if="page?.name">{{ t(page.name) }}</h2>
+    <h2 v-if="page?.name" class="mb-2">{{ t(page.name) }}</h2>
     <div
       v-for="(e, i) in page?.children"
       v-bind:key="e.type + '_' + String(i)"
       class="element-page-items"
     >
-      <ElementBlueprint
-        :element="e"
-        :path="[page?.id]"
-        @formSubmit="$emit('formSubmit')"
-      />
+      <ElementBlueprint :element="e" :path="[page?.id]" @formSubmit="submit()"/>
     </div>
   </div>
 </template>
@@ -19,7 +15,7 @@
 import { computed, watch } from "vue";
 import ElementBlueprint from "./Element.vue";
 import { useFormViewerStore } from "@/stores/formviewer";
-import { minLength, required, maxLength } from "@vuelidate/validators";
+import { minLength, required, maxLength, minValue, maxValue } from "@vuelidate/validators";
 import { ElementPage, type Element } from "@/formviewer/types/elements";
 import { useVuelidate } from "@vuelidate/core";
 import { useToast } from "primevue/usetoast";
@@ -51,7 +47,7 @@ for (let i = 0; i < allElements.value.length; i++) {
   const element = allElements.value[i];
   if (element.properties?.required) {
     const selector = element.properties?.extId;
-    if (element && element.properties?.required && selector) {
+    if (element?.properties?.required && selector) {
       // check conditions
       if (
         element.properties?.conditions &&
@@ -77,6 +73,27 @@ for (let i = 0; i < allElements.value.length; i++) {
         };
       }
     }
+    if (element?.properties?.validations && element?.properties?.validations.length > 0) {
+      const selector = element.properties?.extId;
+      if (selector) {
+        for (let i = 0; i < element.properties?.validations.length; i++) {
+
+          const validation = element.properties?.validations[i];
+          if(!rules[selector]) {
+            rules[selector] = {};
+          }
+          if (validation.type === "minValue" && validation.value) {
+            rules[selector].minValue = minValue(validation?.value);
+            rules[selector].$autoDirty = true;
+          }
+          else if (validation.type === "maxValue"  && validation.value)  {
+            rules[selector].maxValue = maxValue(validation.value);
+            rules[selector].$autoDirty = true;
+          };
+        }
+      }
+    }
+
   }
 }
 const v$ = useVuelidate(rules, formViewerStore.values);
@@ -106,6 +123,11 @@ watch(
     }
   }
 );
+const emit = defineEmits(["formSubmit"]);
+
+function submit() {
+  emit("formSubmit");
+}
 </script>
 
 <style scoped>
@@ -114,7 +136,6 @@ watch(
   display: flex;
   text-align: left;
   margin: 0px 0px 5px 00px;
-  padding: 10px;
   flex-direction: column;
   border-radius: 5px;
 }

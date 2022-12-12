@@ -6,16 +6,18 @@ export type UserStoreState = {
   isLoggedIn: boolean;
   token: string | undefined;
   authenticated: boolean;
+  keycloak: any | null;
 };
 
 export const useUserStore = defineStore({
   id: "user",
   state: () =>
-    ({
-      user: <User>{
-        authenticated: false,
-      },
-    } as UserStoreState),
+  ({
+    user: <User>{
+      authenticated: false,
+    },
+    keycloak: null,
+  } as UserStoreState),
 
   actions: {
     setToken(token: string | undefined) {
@@ -30,6 +32,8 @@ export const useUserStore = defineStore({
     },
     setTokenParsed(tokenParsed: any) {
       this.user!.tokenParsed = tokenParsed;
+      if (!this.keycloak) return;
+      this.setUserInfo(this.keycloak.userInfo);
     },
     setUserInfo(userInfo: any) {
       this.user!.userInfo = userInfo;
@@ -55,11 +59,27 @@ export const useUserStore = defineStore({
     setProfile(profile: any) {
       this.user!.profile = profile;
     },
+    setKeycloak(keycloak: any) {
+      this.keycloak = keycloak;
+    },
     logout() {
       const logOutUrl = this.user!.logoutUrl;
       this.user = null;
       location.href = logOutUrl;
     },
+    updateUserInfo() {
+      if (!this.keycloak) return;
+      return this.keycloak.updateToken(30).then(() => {
+        this.setToken(this.keycloak.token);
+        this.keycloak.loadUserInfo().then(() => {
+          this.user!.userInfo = this.keycloak.userInfo;
+        });
+      });
+    },
+    finishRegistration() {
+      if (!this.keycloak) return;
+      this.keycloak.login();
+    }
   },
   getters: {},
 });
