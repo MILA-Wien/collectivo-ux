@@ -102,8 +102,11 @@ async function save() {
     try {
       await membershipStore.updateMembership(membership.value);
       toast.add({ severity: 'success', summary: t('Profile updated'), life: 5000 });
-    } catch(e) {
-      toast.add({ severity: 'error', summary: t('Update failed') + ': ' + e , life: 5000 });
+    } catch(e:any) {
+      toast.add({ severity: 'error', summary: t('Update failed'), detail: `Request-id: "${
+              e?.response?.headers["x-request-id"]
+            }" `});
+      alert(`${JSON.stringify(e.response.data)}`)
     }
   }
   else {
