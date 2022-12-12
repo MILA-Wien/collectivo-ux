@@ -47,6 +47,8 @@
     "As a person": "Als Person",
     "As an organisation": "Als Organisation",
     "Personal data": "Persönliche Daten",
+    "Email address": "E-Mail Adresse",
+    "Change mail or password": "E-Mail oder Passwort ändern",
     "Gender": "Geschlecht",
     "Diverse": "Divers",
     "Female": "Weiblich",
@@ -77,7 +79,6 @@
     "Active": "Aktiv",
     "Investing": "Investierend",
     "How many shares do you want?": "Wieviele Genossenschaftsanteile willst du zeichnen?",
-    "Starting date of your membership": "Beginn deiner Mitgliedschaft",
     "Number of shares": "Anzahl an Anteilen",
     "Payment type": "Zahlungsart",
     "Bank account number (IBAN)": "Kontonummer (IBAN)",
@@ -98,9 +99,6 @@
     "Dashboard": "Startseite",
     "Open test iframe": "Test iframe öffnen",
     "Open test webcomponent": "Test webcomponent öffnen",
-    "Profile updated": "Profil aktualisiert",
-    "Update failed": "Akualisierung abgebrochen",
-
 
     "Main menu": "Hauptmenü",
     "Membership number": "Mitgliedsnummer"
