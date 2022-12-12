@@ -63,7 +63,7 @@ async function submit() {
       const preparedValue: any = [];
       JSON.parse(JSON.stringify(v)).forEach((e: any, i: number) => {
         if (e) {
-          preparedValue.push(i);
+          preparedValue.push(i+1);
         }
       });
       registerData[k] = preparedValue;
