@@ -50,7 +50,7 @@ const rules: any = {
   address_country: { required },
 };
 const v$ = useVuelidate(rules, membership);
-watch(membershipSchema, (value) => {
+watch(membershipSchema, () => {
   const dict: Array<Array<string | any>> = Object.entries(JSON.parse(JSON.stringify(membershipSchema.value)));
     for (let i = 0; i < dict.length; i++) {
     if (dict[i][1].required) {
@@ -113,7 +113,7 @@ async function save() {
   submitted.value = true;
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) {
-    toast.add({ severity: 'error', summary: t('Error'), detail: v$.value.$errors[0].$message, life: 5000 });
+    toast.add({ severity: 'error', summary: t('Error'), detail: typeof v$.value.$errors[0].$message === 'string'? t(v$.value.$errors[0].$message):"", life: 5000 });
     return;
   }
   else if (membership.value) {
@@ -184,7 +184,7 @@ function schemaToPrime(choices: any) {
               <br />
               <div v-for="category of (schemaToPrime(value.choices) as any)" class="field-radiobutton">
                 <RadioButton :inputId="category.name" name="key" :value="category.name" v-model="selectedGender" @click="updateRadioButton(category.name, key)"/>
-                <label class="genderLabel">{{ t(capitalized(category.name)) }}</label>
+                <label  :for="category.name" class="genderLabel">{{ t(capitalized(category.name)) }}</label>
               </div>
               <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
             </div>
