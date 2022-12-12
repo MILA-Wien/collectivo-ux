@@ -45,15 +45,15 @@ export const useMembersStore = defineStore({
       console.log("id", id);
     },
     async updateMember(member: Member) {
-      membersMembersPatch(member).then((response: any) => {
-        console.log("updateMember", response);
-        const memberIndex = this.members?.results?.findIndex((m: Member) => {
-          return m.id === response.id;
-        });
-        if (memberIndex) {
-          this.members!.results![memberIndex] = response;
-        }
+      const response = await membersMembersPatch(member)
+      // Save updated member data in store
+      const memberIndex = this.members?.results?.findIndex((m: Member) => {
+        return m.id === response.data.id;
       });
+      if (memberIndex !== null && memberIndex !== undefined) {
+        this.members!.results![memberIndex] = response.data;
+      }
+      return response
     },
     async deleteMember(member: Member) {
       alert("deleteMember not yet implemented " + member.id);
