@@ -24,6 +24,15 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
+      path: "/membership/registration",
+      name: "registration",
+      meta: {
+        requiresAuth: true,
+      },
+      component: () =>
+        import("../components/extensions/membership/RegistrationForm.vue"),
+    },
+    {
       path: "/:extension/:component",
       name: "extension",
       meta: {
@@ -31,7 +40,13 @@ const router = createRouter({
       },
       component: () => import("../views/ExtensionView.vue"),
     },
+    {
+      path: "/members/profile",
+      name: "profile",
+      component: () => import("../components/extensions/membership/MembershipProfile.vue"),
+    },
   ],
 });
 
 export default router;
+

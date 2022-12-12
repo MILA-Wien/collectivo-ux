@@ -54,11 +54,21 @@ export interface User {
   profile: any;
 }
 export interface Member {
-  id?: number;
-  user_id?: string;
-  user_attr: string | null;
-  create_attr?: string | null;
-  admin_attr?: string | null;
+  id?: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+  gender?: Array<String>;
+  address_street?: string;
+  address_number?: string;
+  address_stair?: string;
+  address_door?: string;
+  address_postcode?: string;
+  address_city?: string;
+  address_country?: string;
+  phone?: string;
+  membership_start?: Date;
+  shares_number?: string;
 }
 export interface Members {
   count?: number;

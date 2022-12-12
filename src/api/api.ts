@@ -1,7 +1,8 @@
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
 import type { Member } from "./types";
-const BASE_URL = import.meta.env.VITE_APP_API + "/api/";
+import { baseURL } from "@/app.config";
+const BASE_URL = baseURL + "/api/";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -13,7 +14,7 @@ api.interceptors.request.use(
     const token = store.user!.token;
     if (token && config.headers) {
       config.headers.Authorization = `Token ${token}`;
-      config.headers["Accept"] = "application/json; version=1.0";
+      config.headers["Accept"] = "application/json; version=0.1.0";
     }
     return config;
   },
@@ -30,16 +31,26 @@ api.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401) {
-      // const store = useUserStore();
       // store.logout();
       alert("Error 401:" + error.response.data.detail);
+    } else if (error.response.status === 403) {
+      alert("Error 403:" + error.response.data.detail);
+    } else if (error.response.status === 404) {
+      if (
+        error.response.data.detail === "Incorrect authentication credentials."
+      ) {
+        const store = useUserStore();
+        store.logout();
+      }
+    } else if (error.response.status === 500) {
+      alert("Error 500:" + error.response.data.detail);
     }
     return Promise.reject(error);
   }
 );
 
 export const coreVersionFn = async () => {
-  const response = await api.get("/collectivo/version");
+  const response = await api.get("/collectivo/about/");
   return response.data;
 };
 
@@ -84,14 +95,20 @@ export const dashboardTiles = async () => {
 };
 // get membership
 export const getMembershipFn = async () => {
-  const response = await api.get("/members/me");
+  const response = await api.get("/members/profile");
   return response.data;
 };
 
 //update membership
 export const updateMembershipFn = async (member: Member) => {
-  const response = await api.put("/members/me", member);
+  const response = await api.patch("/members/profile", member);
   return response;
+};
+
+// get profile schema
+export const getProfileSchemaFn = async () => {
+  const response = await api.get("/members/profile/schema/");
+  return response.data; //or response? When to choose?
 };
 
 export const getRegisterSchemaFn = async () => {

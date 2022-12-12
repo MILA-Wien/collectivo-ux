@@ -59,9 +59,7 @@ export const useMembersStore = defineStore({
       alert("deleteMember not yet implemented " + member.id);
     },
     async register(registrationData: any) {
-      registerMemberFn(registrationData).then((response: any) => {
-        console.log("register", response);
-      });
+      return registerMemberFn(registrationData);
     },
     async loadRegisterSchema() {
       getRegisterSchemaFn().then((response) => {

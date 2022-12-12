@@ -11,6 +11,10 @@ Run the following command to start the app (it needs docker and docker-compose t
 docker compose build && docker compose up -d
 ```
 Then go to `http://localhost:8001/` in your browser to see the app.
+## Environment variables
+We have the following environment variables:
+* `VITE_API_URL`: the url of the backend api
+* `VITE_KEYCLOAK_URL`: the url of the keycloak server
 
 ## Development
 

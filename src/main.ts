@@ -26,10 +26,7 @@ app.use(createPinia());
 // init keycloak
 const keycloakInstance = initKeycloak();
 keycloakInstance
-  .then((keycloak) => {
-    console.log("keycloakInstance", keycloak);
-
-    // init translations
+  .then(() => {
     app.use(i18n);
     loadLocaleMessages(i18n, "en");
     loadLocaleMessages(i18n, "de");
