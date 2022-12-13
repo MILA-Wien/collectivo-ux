@@ -1,6 +1,6 @@
 <template>
   <div class="number">
-    <PrimeNumber :name="element.id" v-model="value" />
+    <PrimeNumber :name="element.id" v-model="value" :useGrouping="false"/>
   </div>
 </template>
 <script setup lang="ts">
