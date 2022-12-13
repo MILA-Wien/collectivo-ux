@@ -12,12 +12,12 @@ export type UserStoreState = {
 export const useUserStore = defineStore({
   id: "user",
   state: () =>
-  ({
-    user: <User>{
-      authenticated: false,
-    },
-    keycloak: null,
-  } as UserStoreState),
+    ({
+      user: <User>{
+        authenticated: false,
+      },
+      keycloak: null,
+    } as UserStoreState),
 
   actions: {
     setToken(token: string | undefined) {
@@ -79,7 +79,7 @@ export const useUserStore = defineStore({
     finishRegistration() {
       if (!this.keycloak) return;
       this.keycloak.login();
-    }
+    },
   },
   getters: {},
 });

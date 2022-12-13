@@ -3,5 +3,4 @@ import VersionItem from "../VersionItem.vue";
 
 test("Version Item", async () => {
   expect(VersionItem).toBeTruthy();
-
 });

@@ -27,3 +27,9 @@ const { user } = storeToRefs(userStore);
   background-color: #f6f0e7;
 }
 </style>
+<style lang="scss">
+.p-button {
+  background-color: #2db3a5;
+  border-color: #2db3a5;
+}
+</style>

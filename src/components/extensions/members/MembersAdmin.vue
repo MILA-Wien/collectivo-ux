@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import type { Member } from "@/api/types";
+import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
+import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
 import MembersTable from "./MembersTable.vue";
 
+const menuStore = useMenuStore();
+menuStore.setTitle("Members");
+
+const editMember = ref(false);
 const membersStore = useMembersStore();
 if (membersStore.membersLoaded === false) {
   membersStore.getMembers();
 }
 const { members, membersLoadingError } = storeToRefs(membersStore);
-function updateMember(member: Member) {
-  membersStore.updateMember(member);
-}
-function deleteMember(member: Member) {
-  membersStore.deleteMember(member);
-}
 </script>
 
 <template>
@@ -27,11 +26,7 @@ function deleteMember(member: Member) {
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <MembersTable
-        :members="members"
-        @update:member="updateMember($event)"
-        @delete:member="deleteMember($event)"
-      />
+      <MembersTable :members="members" :editMember="editMember" />
     </div>
   </div>
 </template>

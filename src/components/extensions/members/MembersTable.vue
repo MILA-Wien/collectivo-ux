@@ -4,9 +4,13 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
 import MemberDetail from "./MemberDetail.vue";
+import InputText from "primevue/inputtext";
+import Toolbar from "primevue/toolbar";
+import Button from "primevue/button";
+import { FilterMatchMode } from "primevue/api";
+import JsonCSV from "vue-json-csv";
 const { t } = useI18n();
 
-const emit = defineEmits(["update:member", "delete:member"]);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
   members: {
@@ -14,24 +18,57 @@ const props = defineProps({
     required: true,
   },
 });
+const datatable = ref();
 let selectedMember = ref({});
+const selectedMembers = ref();
 const editMember = ref(false);
 function edit(event: any) {
   selectedMember.value = event;
   editMember.value = true;
 }
+
+const filters1 = ref({
+  id: { value: null, matchMode: FilterMatchMode.EQUALS },
+  first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  last_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  email: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
+  membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
+});
 </script>
 
 <template>
   <div class="members-table">
+    <Toolbar class="mb-4">
+      <template #start> </template>
+      <template #end>
+        <Button label="Export" icon="pi pi-upload" :disabled="!selectedMembers">
+          <JsonCSV
+            v-if="selectedMembers"
+            :data="selectedMembers"
+            :fields="[
+              'id',
+              'first_name',
+              'last_name',
+              'email',
+              'person_type',
+              'membership_type',
+            ]"
+            :name="t('members') + '.csv'"
+          ></JsonCSV>
+        </Button>
+      </template>
+    </Toolbar>
+
     <DataTable
       :value="members.results"
+      v-model:selection="selectedMembers"
+      dataKey="id"
+      ref="datatable"
       :paginator="true"
       :rows="10"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50]"
-      responsiveLayout="scroll"
-      :globalFilterFields="['id', 'user_id', 'user_attr']"
+      :rowsPerPageOptions="[10, 20, 50, 100]"
       :currentPageReportTemplate="
         t('Showing') +
         ' {first} ' +
@@ -40,34 +77,116 @@ function edit(event: any) {
         t('of') +
         ' {totalRecords}'
       "
+      :globalFilterFields="['id', 'first_name']"
+      filterDisplay="menu"
+      v-model:filters="filters1"
+      sortField="id"
+      :sortOrder="1"
+      responsiveLayout="scroll"
+      :resizableColumns="true"
+      columnResizeMode="fit"
+      showGridlines
     >
-      <Column field="id" :header="t('Id')"></Column>
-      <Column field="user_id" :header="t('user_id')"></Column>
-      <Column field="user_attr" :header="t('user_attr')"></Column>
-      <Column field="admin_attr" :header="t('admin_attr')"></Column>
+      <Column selectionMode="multiple"></Column>
+      <Column
+        field="id"
+        :header="t('ID')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
+        </template>
+      </Column>
+      <Column
+        field="first_name"
+        :header="t('Vorname')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
+        </template>
+      </Column>
+      <Column
+        field="last_name"
+        :header="t('Nachname')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
+        </template>
+      </Column>
+
+      <Column
+        field="email"
+        :header="t('Email')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
+        </template>
+      </Column>
+      <Column
+        field="person_type"
+        :header="t('Typ')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
+        </template>
+      </Column>
+      <Column
+        field="membership_type"
+        :header="t('Status')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
+        </template>
+      </Column>
       <Column :header="t('actions')">
         <template #body="slotProps">
           <ButtonPrime
             icon="pi pi-pencil"
-            class="p-button-rounded p-button-success p-mr-2"
+            class="p-button-rounded"
             @click="edit(slotProps.data)"
           />
-          <ButtonPrime
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-danger"
-            @click="emit('delete:member', slotProps.data)"
-          ></ButtonPrime>
         </template>
       </Column>
-      <template #paginatorstart>
-        <ButtonPrime type="button" icon="pi pi-refresh" class="p-button-text" />
-      </template>
     </DataTable>
     <MemberDetail
       v-if="editMember"
       :member="selectedMember"
       @close="editMember = false"
-      @change="emit('update:member', $event)"
     />
   </div>
 </template>

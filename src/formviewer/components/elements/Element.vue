@@ -11,25 +11,33 @@
         "
       >
         <label class="element-label" v-if="!element.properties.hideLabel">
-          {{ element.properties.label ? t(element.properties.label) : t(element.type) }}
+          {{
+            element.properties.label
+              ? t(element.properties.label)
+              : t(element.type)
+          }}
           <span class="required" v-if="element.properties.required">*</span>
         </label>
       </div>
       <div
-        v-if="
-          (element.type == 'formset') &&
-          !element.properties.hideLabel
-        "
+        v-if="element.type == 'formset' && !element.properties.hideLabel"
         class="element-header"
       >
         <h3 class="mt-6">
-          {{ element.properties.label ? t(element.properties.label) : t(element.type) }}
+          {{
+            element.properties.label
+              ? t(element.properties.label)
+              : t(element.type)
+          }}
           <span class="required" v-if="element.properties.required">*</span>
         </h3>
       </div>
 
       <div
-        v-if="element.properties.description !== undefined && element.type != 'calculation'"
+        v-if="
+          element.properties.description !== undefined &&
+          element.type != 'calculation'
+        "
         class="description font-light text-sm"
       >
         {{ t(element.properties.description) }}
@@ -91,7 +99,10 @@
         >
         </PrimeCheckbox>
       </div>
-      <div v-else-if="element.properties.htmlType !== undefined" class="html-input">
+      <div
+        v-else-if="element.properties.htmlType !== undefined"
+        class="html-input"
+      >
         <PrimeText
           v-if="element.properties.htmlType === 'text'"
           @change="valueChange($event)"
@@ -127,14 +138,22 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, defineAsyncComponent, ref, watch } from "vue";
+import {
+  defineProps,
+  defineEmits,
+  defineAsyncComponent,
+  ref,
+  watch,
+} from "vue";
 import { useFormViewerStore } from "../../../stores/formviewer";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const ElementBlueprint = defineAsyncComponent(() => import("./Element.vue"));
-const Calculation = defineAsyncComponent(() => import("./ElementCalculation.vue"));
+const Calculation = defineAsyncComponent(
+  () => import("./ElementCalculation.vue")
+);
 const RadioGroup = defineAsyncComponent(() => import("./RadioGroup.vue"));
 const CheckboxGroup = defineAsyncComponent(() => import("./CheckboxGroup.vue"));
 const Number = defineAsyncComponent(() => import("./ElementNumber.vue"));
@@ -142,7 +161,9 @@ const Date = defineAsyncComponent(() => import("./ElementDate.vue"));
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 const PrimeText = defineAsyncComponent(() => import("primevue/inputtext"));
 const PrimeTextarea = defineAsyncComponent(() => import("primevue/textarea"));
-const PrimeCheckbox = defineAsyncComponent(() => import("primevue/inputswitch"));
+const PrimeCheckbox = defineAsyncComponent(
+  () => import("primevue/inputswitch")
+);
 const formViewerStore = useFormViewerStore();
 const props = defineProps({
   element: {
@@ -182,7 +203,9 @@ function buttonClick(element: any) {
     emit("formSubmit");
   }
 }
-let value: any = ref(formViewerStore.getValueForId(props.element.properties.extId));
+let value: any = ref(
+  formViewerStore.getValueForId(props.element.properties.extId)
+);
 watch(value, (val: any) => {
   valueChange(val);
 });

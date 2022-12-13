@@ -3,11 +3,11 @@
     <div v-for="error of validation.$errors" :key="error.$uid">
       <PrimeMessage v-if="registrationSchema" severity="error">
         {{
-            t(
-              registrationSchema[error.$propertyPath]
-                ? registrationSchema[error.$propertyPath].label
-                : ""
-            )
+          t(
+            registrationSchema[error.$propertyPath]
+              ? registrationSchema[error.$propertyPath].label
+              : ""
+          )
         }}:
         {{ t(error.$message.toString()) }}
       </PrimeMessage>
@@ -15,8 +15,11 @@
     <FormView @formSubmit="submit" v-if="!registrationFinished"></FormView>
     <div v-else>
       <p class="my-5">
-        {{ t("Deine Beitrittserklärung wurde erfolgreich eingereicht! In den nächsten Tagen senden wir dir eine Email\
-                mit den weiteren Schritten.")
+        {{
+          t(
+            "Deine Beitrittserklärung wurde erfolgreich eingereicht! In den nächsten Tagen senden wir dir eine Email\
+                mit den weiteren Schritten."
+          )
         }}
       </p>
       <RouterLink to="/">
@@ -54,7 +57,9 @@ memberStore.loadRegisterSchema();
 const { registrationSchema, registrationFinished } = storeToRefs(memberStore);
 const userStore = useUserStore();
 // check if user is already registered
-if (userStore.user?.tokenParsed?.realm_access?.roles?.includes("members_user")) {
+if (
+  userStore.user?.tokenParsed?.realm_access?.roles?.includes("members_user")
+) {
   registrationFinished.value = true;
 }
 async function submit() {
@@ -81,21 +86,26 @@ async function submit() {
   } catch (e: any) {
     console.log(e);
     alert(
-      `Registration failed:\n request-id: ${e?.response?.headers["x-request-id"]
+      `Registration failed:\n request-id: ${
+        e?.response?.headers["x-request-id"]
       } \n${JSON.stringify(e?.response?.data)}`
     );
   }
-
 }
 // Add informations from keycloak to the form
 if (userStore.user) {
   formViewerStore.updateValue("email", userStore.user.tokenParsed.email);
-  formViewerStore.updateValue("first_name", userStore.user.tokenParsed.given_name);
-  formViewerStore.updateValue("last_name", userStore.user.tokenParsed.family_name);
+  formViewerStore.updateValue(
+    "first_name",
+    userStore.user.tokenParsed.family_name
+  );
+  formViewerStore.updateValue(
+    "last_name",
+    userStore.user.tokenParsed.given_name
+  );
 }
 // Add default values
 formViewerStore.updateValue("address_country", "Österreich");
 formViewerStore.updateValue("address_city", "Wien");
 formViewerStore.updateValue("phone", "+43");
-
 </script>

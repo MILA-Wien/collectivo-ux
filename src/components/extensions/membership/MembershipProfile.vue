@@ -5,12 +5,12 @@ import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
-import { ref, watch } from 'vue';
-import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
-import { useToast } from 'primevue/usetoast';
+import { ref, watch } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
-import RadioButton from 'primevue/radiobutton';
+import RadioButton from "primevue/radiobutton";
 
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
@@ -30,12 +30,10 @@ const { membership, membershipSchema } = storeToRefs(membershipStore);
 
 watch(membership, (value) => {
   selectedGender.value = value ? value["gender"] : "";
-})
-
-
+});
 
 async function openKeycloakAccount() {
-  const accountUrl = await user.value?.accountUrl
+  const accountUrl = await user.value?.accountUrl;
   window.open(accountUrl, "_blank");
 }
 
@@ -51,15 +49,17 @@ const rules: any = {
 };
 const v$ = useVuelidate(rules, membership);
 watch(membershipSchema, () => {
-  const dict: Array<Array<string | any>> = Object.entries(JSON.parse(JSON.stringify(membershipSchema.value)));
-    for (let i = 0; i < dict.length; i++) {
+  const dict: Array<Array<string | any>> = Object.entries(
+    JSON.parse(JSON.stringify(membershipSchema.value))
+  );
+  for (let i = 0; i < dict.length; i++) {
     if (dict[i][1].required) {
       if (!Object.keys(rules).includes(dict[i][0])) {
         throw TypeError("Missing required field in rules");
       }
     }
   }
-})
+});
 
 function updateInputText(event: any, key: string | number) {
   if (membership.value) {
@@ -86,56 +86,66 @@ function convertDate(value: string) {
     let year = datePart[0].substring(2);
     let month = datePart[1];
     let day = datePart[2];
-    return day + '.' + month + '.' + year;
+    return day + "." + month + "." + year;
   }
 }
 
 function returnErrorMessage(key: any) {
   if (Object.keys(rules).includes(key)) {
     return v$.value[key].required.$message;
-  }
-  else {
+  } else {
     return false;
   }
 }
 
 function isInvalid(key: any) {
   if (Object.keys(rules).includes(key)) {
-    return (v$.value[key].$invalid && submitted) || v$.value[key].$pending.$response;
-  }
-  else {
+    return (
+      (v$.value[key].$invalid && submitted) || v$.value[key].$pending.$response
+    );
+  } else {
     return false;
   }
 }
-
 
 async function save() {
   submitted.value = true;
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) {
-    toast.add({ severity: 'error', summary: t('Error'), detail: typeof v$.value.$errors[0].$message === 'string'? t(v$.value.$errors[0].$message):"", life: 5000 });
+    toast.add({
+      severity: "error",
+      summary: t("Error"),
+      detail:
+        typeof v$.value.$errors[0].$message === "string"
+          ? t(v$.value.$errors[0].$message)
+          : "",
+      life: 5000,
+    });
     return;
-  }
-  else if (membership.value) {
+  } else if (membership.value) {
     try {
       await membershipStore.updateMembership(membership.value);
-      toast.add({ severity: 'success', summary: t('Profile updated'), life: 5000 });
+      toast.add({
+        severity: "success",
+        summary: t("Profile updated"),
+        life: 5000,
+      });
     } catch (e: any) {
       toast.add({
-        severity: 'error', summary: t('Update failed'), detail: `Request-id: "${e?.response?.headers["x-request-id"]
-          }" `
+        severity: "error",
+        summary: t("Update failed"),
+        detail: `Request-id: "${e?.response?.headers["x-request-id"]}" `,
       });
     }
-  }
-  else {
+  } else {
     throw new TypeError("Membership value is empty");
   }
 }
 
 function schemaToPrime(choices: any) {
   let schema: Array<Object> = [];
-  Object.keys(choices).forEach(key => {
-    schema.push({ name: choices[key], code: choices[key] })
+  Object.keys(choices).forEach((key) => {
+    schema.push({ name: choices[key], code: choices[key] });
   });
   return schema;
 }
@@ -144,25 +154,45 @@ function schemaToPrime(choices: any) {
 <template>
   <div>
     <Toast />
-    <div v-if="membershipSchema === null && membership === null" class="loading">
+    <div
+      v-if="membershipSchema === null && membership === null"
+      class="loading"
+    >
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <div v-for="(value, key) in membershipSchema" :key="value ? key + value.input_type : key" class="field">
+      <div
+        v-for="(value, key) in membershipSchema"
+        :key="value ? key + value.input_type : key"
+        class="field"
+      >
         <div v-if="value.read_only">
           <h3>{{ t(value?.label) }}</h3>
           <div v-if="value.input_type === 'date'">
-            <InputText disabled
-              :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' : ''" />
+            <InputText
+              disabled
+              :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' : ''"
+            />
           </div>
           <div v-else-if="value?.input_type === 'email'">
-            <InputText disabled :value="membership ? membership[key as keyof typeof membership] : ''" />
-            <div class="changeMailButton" >
-              <ButtonPrime :label="t('Change mail or password')" icon="pi pi-envelope" @click="openKeycloakAccount()" autofocus />
+            <InputText
+              disabled
+              :value="membership ? membership[key as keyof typeof membership] : ''"
+            />
+            <div class="changeMailButton">
+              <ButtonPrime
+                :label="t('Change mail or password')"
+                icon="pi pi-envelope"
+                @click="openKeycloakAccount()"
+                autofocus
+              />
             </div>
           </div>
           <div v-else>
-            <InputText disabled :value="membership ? membership[key as keyof typeof membership] : ''" />
+            <InputText
+              disabled
+              :value="membership ? membership[key as keyof typeof membership] : ''"
+            />
           </div>
         </div>
         <div v-else>
@@ -170,35 +200,64 @@ function schemaToPrime(choices: any) {
             <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
             <h3 v-else>{{ t(value?.label) }}</h3>
 
-            <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
+            <InputText
+              id="user-attr-{{value}}"
+              :type="value?.input_type"
+              aria-describedby="user-attr-{{value}}-help"
               @change="updateInputText($event, key)"
               :value="membership ? membership[key as keyof typeof membership] : ''"
-              :class="{ 'p-invalid': isInvalid(key) }" />
+              :class="{ 'p-invalid': isInvalid(key) }"
+            />
             <br />
-            <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
+            <span v-if="isInvalid(key)" class="p-error">{{
+              returnErrorMessage(key)
+            }}</span>
           </div>
           <div v-else-if="value?.input_type === 'radio'">
             <div v-if="key === 'gender'" class="w-56">
               <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
               <h3 v-else>{{ t(value?.label) }}</h3>
               <br />
-              <div v-for="category of (schemaToPrime(value.choices) as any)" class="field-radiobutton" :key="category.name">
-                <RadioButton :inputId="category.name" name="key" :value="category.name" v-model="selectedGender" @click="updateRadioButton(category.name, key)"/>
-                <label  :for="category.name" class="genderLabel">{{ t(capitalized(category.name)) }}</label>
+              <div
+                v-for="category of (schemaToPrime(value.choices) as any)"
+                class="field-radiobutton"
+                :key="category.name"
+              >
+                <RadioButton
+                  :inputId="category.name"
+                  name="key"
+                  :value="category.name"
+                  v-model="selectedGender"
+                  @click="updateRadioButton(category.name, key)"
+                />
+                <label :for="category.name" class="genderLabel">{{
+                  t(capitalized(category.name))
+                }}</label>
               </div>
-              <span v-if="isInvalid(key)" class="p-error">{{ returnErrorMessage(key) }}</span>
+              <span v-if="isInvalid(key)" class="p-error">{{
+                returnErrorMessage(key)
+              }}</span>
             </div>
           </div>
           <div v-else>
             <h3>{{ value?.label }} Else-Case!!</h3>
-            <InputText id="user-attr-{{value}}" :type="value?.input_type" aria-describedby="user-attr-{{value}}-help"
-              :value="value" :disabled="typeof key === 'string' ? key === 'id' : false" />
+            <InputText
+              id="user-attr-{{value}}"
+              :type="value?.input_type"
+              aria-describedby="user-attr-{{value}}-help"
+              :value="value"
+              :disabled="typeof key === 'string' ? key === 'id' : false"
+            />
           </div>
         </div>
         <br />
       </div>
-      <ButtonPrime :label="t('Save')" icon="pi pi-check" @click="save()" autofocus />
-
+      <ButtonPrime
+        :label="t('Save')"
+        icon="pi pi-check"
+        @click="save()"
+        autofocus
+      />
     </div>
   </div>
 </template>
@@ -207,8 +266,7 @@ function schemaToPrime(choices: any) {
 .genderLabel {
   padding-left: 10px;
 }
-.changeMailButton{
+.changeMailButton {
   padding-top: 10px;
 }
 </style>
-
