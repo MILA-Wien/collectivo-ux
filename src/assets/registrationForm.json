@@ -272,7 +272,7 @@
                                     "children": []
                                 },
                                 {
-                                    "type": "number",
+                                    "type": "textfield",
                                     "properties": {
                                         "label": "Stair",
                                         "conditions": [],
@@ -283,7 +283,7 @@
                                     "children": []
                                 },
                                 {
-                                    "type": "number",
+                                    "type": "textfield",
                                     "properties": {
                                         "label": "Door",
                                         "conditions": [],
