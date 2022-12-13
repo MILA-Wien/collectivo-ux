@@ -87,8 +87,8 @@ async function submit() {
 // Add informations from keycloak to the form
 if (userStore.user) {
   formViewerStore.updateValue("email", userStore.user.tokenParsed.email);
-  formViewerStore.updateValue("first_name", userStore.user.tokenParsed.family_name);
-  formViewerStore.updateValue("last_name", userStore.user.tokenParsed.given_name);
+  formViewerStore.updateValue("first_name", userStore.user.tokenParsed.given_name);
+  formViewerStore.updateValue("last_name", userStore.user.tokenParsed.family_name);
 }
 // Add default values
 formViewerStore.updateValue("address_country", "Österreich");
