@@ -5,7 +5,9 @@ store.getVersion();
 </script>
 
 <template>
-  <span v-if="store.version" id="version-string"> version {{ store.version.version }} </span>
+  <span v-if="store.version" id="version-string">
+    version {{ store.version.version }}
+  </span>
   <span v-else>loading ...</span>
 </template>
 

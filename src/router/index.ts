@@ -43,15 +43,16 @@ const router = createRouter({
     {
       path: "/members/members",
       name: "members",
-      component: () => import("../components/extensions/members/MembersAdmin.vue"),
+      component: () =>
+        import("../components/extensions/members/MembersAdmin.vue"),
     },
     {
       path: "/members/profile",
       name: "profile",
-      component: () => import("../components/extensions/membership/MembershipProfile.vue"),
+      component: () =>
+        import("../components/extensions/membership/MembershipProfile.vue"),
     },
   ],
 });
 
 export default router;
-

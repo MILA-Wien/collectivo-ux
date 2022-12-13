@@ -24,7 +24,9 @@
         </RouterLink>
         <MenuMain />
         <span class="grow"></span>
-        <span class="my-3 text-sm" id="version">collectivo — <VersionItem /></span>
+        <span class="my-3 text-sm" id="version"
+          >collectivo — <VersionItem
+        /></span>
       </div>
     </div>
   </div>

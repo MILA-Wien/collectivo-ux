@@ -4,13 +4,12 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
 import MemberDetail from "./MemberDetail.vue";
-import InputText from 'primevue/inputtext';
-import Toolbar from 'primevue/toolbar';
-import Button from 'primevue/button';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import InputText from "primevue/inputtext";
+import Toolbar from "primevue/toolbar";
+import Button from "primevue/button";
+import { FilterMatchMode } from "primevue/api";
 const { t } = useI18n();
 
-const emit = defineEmits(["open:member", "update:member", "delete:member"]);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
   members: {
@@ -43,14 +42,16 @@ const exportCSV = () => {
 </script>
 
 <template>
-
   <div class="members-table">
-
     <Toolbar class="mb-4">
-      <template #start>
-      </template>
+      <template #start> </template>
       <template #end>
-          <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV" />
+        <Button
+          label="Export"
+          icon="pi pi-upload"
+          class="p-button-help"
+          @click="exportCSV"
+        />
       </template>
     </Toolbar>
 
@@ -59,7 +60,6 @@ const exportCSV = () => {
       v-model:selection="selectedMembers"
       dataKey="id"
       ref="dt"
-
       :paginator="true"
       :rows="10"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
@@ -72,47 +72,100 @@ const exportCSV = () => {
         t('of') +
         ' {totalRecords}'
       "
-
       :globalFilterFields="['id', 'first_name']"
       filterDisplay="menu"
       v-model:filters="filters1"
-
       sortField="id"
       :sortOrder="1"
-
       responsiveLayout="scroll"
-      :resizableColumns="true" columnResizeMode="fit" showGridlines
+      :resizableColumns="true"
+      columnResizeMode="fit"
+      showGridlines
     >
       <Column selectionMode="multiple"></Column>
-      <Column field="id" :header="t('ID')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+      <Column
+        field="id"
+        :header="t('ID')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
         </template>
       </Column>
-      <Column field="first_name" :header="t('Vorname')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+      <Column
+        field="first_name"
+        :header="t('Vorname')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
         </template>
       </Column>
-      <Column field="last_name" :header="t('Nachname')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+      <Column
+        field="last_name"
+        :header="t('Nachname')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
         </template>
       </Column>
 
-      <Column field="email" :header="t('Email')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+      <Column
+        field="email"
+        :header="t('Email')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
         </template>
       </Column>
-      <Column field="person_type" :header="t('Typ')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+      <Column
+        field="person_type"
+        :header="t('Typ')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
         </template>
       </Column>
-      <Column field="membership_type" :header="t('Status')" :sortable="true" :showFilterMatchModes="false">
-        <template #filter="{filterModel}">
-          <InputText type="text" v-model="filterModel.value" class="p-column-filter"/>
+      <Column
+        field="membership_type"
+        :header="t('Status')"
+        :sortable="true"
+        :showFilterMatchModes="false"
+      >
+        <template #filter="{ filterModel }">
+          <InputText
+            type="text"
+            v-model="filterModel.value"
+            class="p-column-filter"
+          />
         </template>
       </Column>
       <Column :header="t('actions')">
