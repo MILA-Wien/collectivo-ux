@@ -31,10 +31,9 @@ api.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401) {
-      // store.logout();
-      alert("Error 401:" + error.response.data.detail);
+      console.log("Error 401", error.response.data.detail);
     } else if (error.response.status === 403) {
-      alert("Error 403:" + error.response.data.detail);
+      console.log("Error 403", error.response.data.detail);
     } else if (error.response.status === 404) {
       if (
         error.response.data.detail === "Incorrect authentication credentials."
@@ -43,7 +42,7 @@ api.interceptors.response.use(
         store.logout();
       }
     } else if (error.response.status === 500) {
-      alert("Error 500:" + error.response.data.detail);
+      console.log("Error 500", error.response.data.detail);
     }
     return Promise.reject(error);
   }
