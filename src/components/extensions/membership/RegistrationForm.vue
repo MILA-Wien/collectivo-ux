@@ -19,10 +19,13 @@
                 mit den weiteren Schritten.")
         }}
       </p>
-      <PrimeButton @click="registrationFinishedBtn()" v-bind:label="t('Return to dashboard')" />
+      <RouterLink to="/">
+        <ButtonPrime> {{ t("Return to dashboard") }} </ButtonPrime>
+      </RouterLink>
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import FormView from "@/formviewer/components/FormView.vue";
 import { useFormViewerStore } from "@/stores/formviewer";
@@ -32,7 +35,6 @@ import { useMembersStore } from "@/stores/members";
 import { useUserStore } from "@/stores/user";
 import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
-import { defineAsyncComponent } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import PrimeMessage from "primevue/message";
 const menuStore = useMenuStore();
@@ -52,7 +54,7 @@ memberStore.loadRegisterSchema();
 const { registrationSchema, registrationFinished } = storeToRefs(memberStore);
 const userStore = useUserStore();
 // check if user is already registered
-if (userStore.user?.tokenParsed?.realm_access?.roles?.includes("is_member")) {
+if (userStore.user?.tokenParsed?.realm_access?.roles?.includes("members_user")) {
   registrationFinished.value = true;
 }
 async function submit() {
@@ -71,6 +73,7 @@ async function submit() {
   }
   try {
     await memberStore.register(registerData);
+    userStore.finishRegistration();
     memberStore.setRegistrationFinished();
   } catch (e: any) {
     console.log(e);
@@ -92,8 +95,4 @@ formViewerStore.updateValue("address_country", "Österreich");
 formViewerStore.updateValue("address_city", "Wien");
 formViewerStore.updateValue("phone", "+43");
 
-const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
-function registrationFinishedBtn() {
-  userStore.finishRegistration();
-}
 </script>

@@ -7,6 +7,19 @@
             "id": "FINTaFRUUKNk",
             "children": [
                 {
+                    "type": "paragraph",
+                    "properties": {
+                        "htmlType": "p",
+                        "conditions": [],
+                        "label": "Willkommen bei MILA!",
+                        "description": "Um der Genossenschaft in Gründung beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
+                        "content": "",
+                        "extId": "gEVwcJiztoBGsss"
+                    },
+                    "id": "SOZialVwcJiztoBGsss",
+                    "children": []
+                },
+                {
                     "type": "singleChoice",
                     "properties": {
                         "label": "What type of membership do you want?",
