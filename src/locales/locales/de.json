@@ -40,13 +40,15 @@
     "Back": "Zurück",
 
     "Please fill out the required fields": "Bitte füll die erforderlichen Felder aus.",
-    "Value is required": "Dieses Feld ist erforderlich.",
+    "Value is required": "Ein Eingabewert ist erforderlich.",
     "Membership application": "Beitrittserklärung",
     "Click here to fill out your application to become a member of the MILA cooperative.": "Klicke hier um deine Beitrittserklärung zur MILA Genossenschaft in Gründung auszufüllen.",
     "What type of membership do you want?": "Wie wirst du Genossenschaftsmitglied?",
     "As a person": "Als Person",
     "As an organisation": "Als Organisation",
     "Personal data": "Persönliche Daten",
+    "Email address": "E-Mail Adresse",
+    "Change mail or password": "E-Mail oder Passwort ändern",
     "Gender": "Geschlecht",
     "Diverse": "Divers",
     "Female": "Weiblich",
@@ -77,6 +79,7 @@
     "Active": "Aktiv",
     "Investing": "Investierend",
     "How many shares do you want?": "Wieviele Genossenschaftsanteile willst du zeichnen?",
+    "Starting date of your membership": "Beginn deiner Mitgliedschaft",
     "Number of shares": "Anzahl an Anteilen",
     "Payment type": "Zahlungsart",
     "Bank account number (IBAN)": "Kontonummer (IBAN)",
@@ -97,6 +100,8 @@
     "Dashboard": "Startseite",
     "Open test iframe": "Test iframe öffnen",
     "Open test webcomponent": "Test webcomponent öffnen",
+    "Profile updated": "Profil aktualisiert",
+    "Update failed": "Aktualisierung abgebrochen",
 
     "Main menu": "Hauptmenü",
     "Membership number": "Mitgliedsnummer"
