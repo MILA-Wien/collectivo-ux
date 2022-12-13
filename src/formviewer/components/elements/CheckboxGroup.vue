@@ -18,14 +18,19 @@
 </template>
 <script setup lang="ts">
 import { defineProps, defineEmits, ref } from "vue";
+import { useFormViewerStore } from "@/stores/formviewer";
 const props = defineProps<{
   element: any;
 }>();
+const valueFromStore = useFormViewerStore().getValueForId(props.element.properties.extId);
 const emit = defineEmits(["change"]);
 const values = ref(props.element.properties.values.map(() => false));
-props.element.properties.options.forEach(
-  (o: string) => (values.value[o] = false)
-);
+if (!valueFromStore) {
+  props.element.properties.options.forEach((o: string) => (values.value[o] = false));
+} else {
+  values.value = valueFromStore;
+}
+
 function toggleValue(v: number) {
   if (values.value[v] == undefined) values[v] = true;
   else values[v] != values[v];
