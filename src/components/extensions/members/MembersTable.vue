@@ -8,6 +8,7 @@ import InputText from "primevue/inputtext";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
+import JsonCSV from "vue-json-csv";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,7 +18,7 @@ const props = defineProps({
     required: true,
   },
 });
-const dt = ref();
+const datatable = ref();
 let selectedMember = ref({});
 const selectedMembers = ref();
 const editMember = ref(false);
@@ -35,10 +36,6 @@ const filters1 = ref({
   membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
-const exportCSV = () => {
-  // TODO This exports ALL members but should only export selectedMembers
-  dt.value.exportCSV();
-};
 </script>
 
 <template>
@@ -46,12 +43,21 @@ const exportCSV = () => {
     <Toolbar class="mb-4">
       <template #start> </template>
       <template #end>
-        <Button
-          label="Export"
-          icon="pi pi-upload"
-          class="p-button-help"
-          @click="exportCSV"
-        />
+        <Button label="Export" icon="pi pi-upload" :disabled="!selectedMembers">
+          <JsonCSV
+            v-if="selectedMembers"
+            :data="selectedMembers"
+            :fields="[
+              'id',
+              'first_name',
+              'last_name',
+              'email',
+              'person_type',
+              'membership_type',
+            ]"
+            :name="t('members') + '.csv'"
+          ></JsonCSV>
+        </Button>
       </template>
     </Toolbar>
 
@@ -59,7 +65,7 @@ const exportCSV = () => {
       :value="members.results"
       v-model:selection="selectedMembers"
       dataKey="id"
-      ref="dt"
+      ref="datatable"
       :paginator="true"
       :rows="10"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
