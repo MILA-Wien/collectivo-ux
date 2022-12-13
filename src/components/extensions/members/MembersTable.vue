@@ -8,7 +8,7 @@ import InputText from "primevue/inputtext";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
-import JsonCSV from "vue-json-csv";
+const JsonCSV = require('vue-json-csv');
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
