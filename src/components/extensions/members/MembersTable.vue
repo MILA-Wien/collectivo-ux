@@ -8,7 +8,7 @@ import InputText from "primevue/inputtext";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
-const JsonCSV = require('vue-json-csv');
+import JsonCSV from "vue-json-csv";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,7 +35,6 @@ const filters1 = ref({
   person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
   membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
-
 </script>
 
 <template>
