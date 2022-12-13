@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
+import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
 import MembersTable from "./MembersTable.vue";
+
+const menuStore = useMenuStore();
+menuStore.setTitle("Members");
 
 const editMember = ref(false);
 const membersStore = useMembersStore();
