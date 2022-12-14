@@ -22,11 +22,15 @@ import { useFormViewerStore } from "@/stores/formviewer";
 const props = defineProps<{
   element: any;
 }>();
-const valueFromStore = useFormViewerStore().getValueForId(props.element.properties.extId);
+const valueFromStore = useFormViewerStore().getValueForId(
+  props.element.properties.extId
+);
 const emit = defineEmits(["change"]);
 const values = ref(props.element.properties.values.map(() => false));
 if (!valueFromStore) {
-  props.element.properties.options.forEach((o: string) => (values.value[o] = false));
+  props.element.properties.options.forEach(
+    (o: string) => (values.value[o] = false)
+  );
 } else {
   values.value = valueFromStore;
 }
