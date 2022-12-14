@@ -114,6 +114,7 @@ function nextPage() {
   v$.value.$validate().then((isFormCorrect: boolean) => {
     if (isFormCorrect) {
       formViewerStore.nextPage();
+      document.getElementsByClassName("element-page")[0]?.scrollIntoView();
     } else {
       toast.add({
         severity: "error",
