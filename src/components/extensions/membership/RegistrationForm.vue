@@ -39,6 +39,7 @@ import { useUserStore } from "@/stores/user";
 import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
 import { useVuelidate } from "@vuelidate/core";
+import { electronicFormatIBAN } from "ibantools"
 import PrimeMessage from "primevue/message";
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership application");
@@ -65,7 +66,11 @@ if (
 async function submit() {
   const registerData = formViewerStore.values;
   for (const k in registerData) {
-    const v = registerData[k]; // OK
+    const v = registerData[k];
+    if (k == "bank_account_iban") {
+      registerData[k] = electronicFormatIBAN(v) || '';
+    }
+    // fix multiselect fields
     if (typeof v === "object") {
       const preparedValue: any = [];
       const parsed = JSON.parse(JSON.stringify(v));
@@ -79,6 +84,7 @@ async function submit() {
       registerData[k] = preparedValue;
     }
   }
+
   try {
     await memberStore.register(registerData);
     userStore.finishRegistration();

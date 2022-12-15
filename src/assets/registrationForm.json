@@ -694,7 +694,7 @@
                     "children": []
                 },
                 {
-                    "type":"calculation",
+                    "type": "calculation",
                     "properties": {
                         "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. in Gründung beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
                         "description": "€",
@@ -785,6 +785,12 @@
                                 ],
                                 "label": "Bank account number (IBAN)",
                                 "required": true,
+                                "validations": [
+                                    {
+                                        "type": "isValidIBAN",
+                                        "value":true
+                                    }
+                                ],
                                 "extId": "bank_account_iban"
                             },
                             "id": "ARLbytOMwxxT",
@@ -891,7 +897,7 @@
                         "description": "You can find more information about the working groups here: https://www.mila.wien/de/mitmachen/arbeitsgruppen/",
                         "conditions": [],
                         "htmlType": "checkbox",
-                        "extId":"groups_interested",
+                        "extId": "groups_interested",
                         "options": [
                             "Infogespräche",
                             "Sortiment",
@@ -924,7 +930,7 @@
                         "label": "What are your occupations/skills/interests?",
                         "htmlType": "checkbox",
                         "conditions": [],
-                        "extId":"skills",
+                        "extId": "skills",
                         "options": [
                             "Immobilien/Architektur/Planung",
                             "Einzelhandel",
