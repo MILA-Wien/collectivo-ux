@@ -65,7 +65,8 @@ if (
 async function submit() {
   const registerData = formViewerStore.values;
   for (const k in registerData) {
-    const v = registerData[k]; // OK
+    const v = registerData[k];
+    // fix multiselect fields
     if (typeof v === "object") {
       const preparedValue: any = [];
       const parsed = JSON.parse(JSON.stringify(v));

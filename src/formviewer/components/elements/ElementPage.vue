@@ -28,8 +28,10 @@ import {
 } from "@vuelidate/validators";
 import { ElementPage, type Element } from "@/formviewer/types/elements";
 import { useVuelidate } from "@vuelidate/core";
+import { helpers } from '@vuelidate/validators'
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import { isValidIBAN } from "ibantools"
 const { t } = useI18n();
 
 const formViewerStore = useFormViewerStore();
@@ -53,6 +55,10 @@ const allElements = computed(() => {
   return [];
 });
 let rules: any = {};
+const validAccountNumber = helpers.withParams(
+  { type: "validValue" },
+  (value: string) => isValidIBAN(value)
+);
 for (let i = 0; i < allElements.value.length; i++) {
   const element = allElements.value[i];
   if (element.properties?.required) {
@@ -100,6 +106,11 @@ for (let i = 0; i < allElements.value.length; i++) {
           } else if (validation.type === "maxValue" && validation.value) {
             rules[selector].maxValue = maxValue(validation.value);
             rules[selector].$autoDirty = true;
+          } else if (validation.type === "isValidIBAN") {
+            rules[selector].isValidIBAN = helpers.withMessage(
+              "The provided IBAN is wrong, please check again.",
+              validAccountNumber
+            );
           }
         }
       }
