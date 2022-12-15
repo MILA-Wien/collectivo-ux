@@ -5,7 +5,7 @@ import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
 import MemberDetail from "./MemberDetail.vue";
 import InputText from "primevue/inputtext";
-import MultiSelect from 'primevue/multiselect';
+import MultiSelect from "primevue/multiselect";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
@@ -33,25 +33,29 @@ function edit(event: any) {
 }
 
 // List of columns from schema
-const columns: any[] = []
+const columns: any[] = [];
 for (const [key, value] of Object.entries(props.schema)) {
-  console.log(value)
-  columns.push(
-    {
-      field: key,
-      header: t(value.label),
-      sortable: true,
-      filter: true,
-      filterMatchMode: FilterMatchMode.CONTAINS,}
-  );
+  console.log(value);
+  columns.push({
+    field: key,
+    header: t(value.label),
+    sortable: true,
+    filter: true,
+    filterMatchMode: FilterMatchMode.CONTAINS,
+  });
 }
 
 // Selected columns
 const selectedColumns = ref<any[]>([]);
 const startingColumns = [
-  'id', 'first_name', 'last_name', 'email', 'person_type']
+  "id",
+  "first_name",
+  "last_name",
+  "email",
+  "person_type",
+];
 for (const col of startingColumns) {
-  selectedColumns.value.push(columns.find(c => c.field === col));
+  selectedColumns.value.push(columns.find((c) => c.field === col));
 }
 
 const filters1 = ref({
@@ -68,8 +72,10 @@ const filters1 = ref({
   <div class="members-table">
     <Toolbar class="mb-4">
       <template #start>
-        <div style="text-align:left">
-          <MultiSelect v-model="selectedColumns" :options="columns"
+        <div style="text-align: left">
+          <MultiSelect
+            v-model="selectedColumns"
+            :options="columns"
             optionLabel="header"
             :filter="true"
             placeholder="Columns"
@@ -126,14 +132,18 @@ const filters1 = ref({
       columnResizeMode="fit"
       showGridlines
     >
-
       <!-- Selection column -->
       <Column selectionMode="multiple"></Column>
 
       <!-- Content columns -->
-      <Column v-for="col of selectedColumns"
-          :field="col.field" :header="col.header"
-          :sortable="col.sortable" :filter="col.filter">
+      <Column
+        v-for="col of selectedColumns"
+        :field="col.field"
+        :header="col.header"
+        :key="col.field"
+        :sortable="col.sortable"
+        :filter="col.filter"
+      >
         <template #filter="{ filterModel }">
           <InputText
             type="text"

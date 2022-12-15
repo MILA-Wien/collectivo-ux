@@ -1,4 +1,9 @@
-import { getMembersSchemaFn, getSummarySchemaFn, getRegisterSchemaFn, registerMemberFn } from "./../api/api";
+import {
+  getMembersSchemaFn,
+  getSummarySchemaFn,
+  getRegisterSchemaFn,
+  registerMemberFn,
+} from "./../api/api";
 import type { Members, Member, Schema } from "./../api/types";
 import { defineStore } from "pinia";
 import { membersMembersFn, membersMembersPatch } from "@/api/api";
@@ -28,8 +33,10 @@ export const useMembersStore = defineStore({
   actions: {
     async getMembers() {
       try {
-        const[membersSchema, summarySchema, members] = await Promise.all([
-          getMembersSchemaFn(), getSummarySchemaFn(), membersMembersFn()
+        const [membersSchema, summarySchema, members] = await Promise.all([
+          getMembersSchemaFn(),
+          getSummarySchemaFn(),
+          membersMembersFn(),
         ]);
         this.membersSchema = membersSchema;
         this.summarySchema = summarySchema;
