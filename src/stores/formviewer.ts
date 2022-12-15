@@ -36,7 +36,6 @@ export const useFormViewerStore = defineStore({
       this.values[id] = value;
       this.validateCurrentPage = false;
     },
-
     nextPage() {
       this.validateCurrentPage = false;
       const index = this.tree?.children?.findIndex(
@@ -73,6 +72,9 @@ export const useFormViewerStore = defineStore({
     },
     getValueForId: (state) => (id: string) => {
       return state.values[id];
+    },
+    getCurrentPage: (state) => {
+      return state.currentPage;
     },
     getValidateCurrentPage: (state) => {
       return state.validateCurrentPage;
