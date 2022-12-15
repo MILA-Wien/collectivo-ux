@@ -5,6 +5,7 @@ import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
 import MemberDetail from "./MemberDetail.vue";
 import InputText from "primevue/inputtext";
+import MultiSelect from 'primevue/multiselect';
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
@@ -31,6 +32,28 @@ function edit(event: any) {
   editMember.value = true;
 }
 
+// List of columns from schema
+const columns: any[] = []
+for (const [key, value] of Object.entries(props.schema)) {
+  console.log(value)
+  columns.push(
+    {
+      field: key,
+      header: t(value.label),
+      sortable: true,
+      filter: true,
+      filterMatchMode: FilterMatchMode.CONTAINS,}
+  );
+}
+
+// Selected columns
+const selectedColumns = ref<any[]>([]);
+const startingColumns = [
+  'id', 'first_name', 'last_name', 'email', 'person_type']
+for (const col of startingColumns) {
+  selectedColumns.value.push(columns.find(c => c.field === col));
+}
+
 const filters1 = ref({
   id: { value: null, matchMode: FilterMatchMode.EQUALS },
   first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -44,7 +67,19 @@ const filters1 = ref({
 <template>
   <div class="members-table">
     <Toolbar class="mb-4">
-      <template #start> </template>
+      <template #start>
+        <div style="text-align:left">
+          <MultiSelect v-model="selectedColumns" :options="columns"
+            optionLabel="header"
+            :filter="true"
+            placeholder="Columns"
+            :maxSelectedLabels="0"
+            selectedItemsLabel="Columns"
+            scrollHeight="400px"
+            class="w-32"
+          />
+        </div>
+      </template>
       <template #end>
         <Button label="Export" icon="pi pi-upload" :disabled="!selectedMembers">
           <JsonCSV
@@ -91,41 +126,14 @@ const filters1 = ref({
       columnResizeMode="fit"
       showGridlines
     >
+
+      <!-- Selection column -->
       <Column selectionMode="multiple"></Column>
-      <Column
-        field="id"
-        :header="t('ID')"
-        :sortable="true"
-        :showFilterMatchModes="false"
-      >
-        <template #filter="{ filterModel }">
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-          />
-        </template>
-      </Column>
-      <Column
-        field="first_name"
-        :header="t('Vorname')"
-        :sortable="true"
-        :showFilterMatchModes="false"
-      >
-        <template #filter="{ filterModel }">
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-          />
-        </template>
-      </Column>
-      <Column
-        field="last_name"
-        :header="t('Nachname')"
-        :sortable="true"
-        :showFilterMatchModes="false"
-      >
+
+      <!-- Content columns -->
+      <Column v-for="col of selectedColumns"
+          :field="col.field" :header="col.header"
+          :sortable="col.sortable" :filter="col.filter">
         <template #filter="{ filterModel }">
           <InputText
             type="text"
@@ -135,48 +143,7 @@ const filters1 = ref({
         </template>
       </Column>
 
-      <Column
-        field="email"
-        :header="t('Email')"
-        :sortable="true"
-        :showFilterMatchModes="false"
-      >
-        <template #filter="{ filterModel }">
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-          />
-        </template>
-      </Column>
-      <Column
-        field="person_type"
-        :header="t('Typ')"
-        :sortable="true"
-        :showFilterMatchModes="false"
-      >
-        <template #filter="{ filterModel }">
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-          />
-        </template>
-      </Column>
-      <Column
-        field="membership_type"
-        :header="t('Status')"
-        :sortable="true"
-        :showFilterMatchModes="false"
-      >
-        <template #filter="{ filterModel }">
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-          />
-        </template>
-      </Column>
+      <!-- Action column for member details -->
       <Column :header="t('actions')">
         <template #body="slotProps">
           <ButtonPrime
@@ -187,6 +154,8 @@ const filters1 = ref({
         </template>
       </Column>
     </DataTable>
+
+    <!-- Dialogue for member details -->
     <MemberDetail
       v-if="editMember"
       :member="selectedMember"
