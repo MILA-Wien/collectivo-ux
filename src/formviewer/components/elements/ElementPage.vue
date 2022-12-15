@@ -31,7 +31,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { helpers } from '@vuelidate/validators'
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
-import { isValidIBAN } from "ibantools"
+import { isValidIBAN, electronicFormatIBAN } from "ibantools"
 const { t } = useI18n();
 
 const formViewerStore = useFormViewerStore();
@@ -57,7 +57,10 @@ const allElements = computed(() => {
 let rules: any = {};
 const validAccountNumber = helpers.withParams(
   { type: "validValue" },
-  (value: string) => isValidIBAN(value)
+  (value: string) => {
+    const iban = electronicFormatIBAN(value)
+    return isValidIBAN(iban || '')
+  }
 );
 for (let i = 0; i < allElements.value.length; i++) {
   const element = allElements.value[i];
