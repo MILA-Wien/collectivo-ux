@@ -17,6 +17,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  schema: {
+    type: Object,
+    required: true,
+  },
 });
 const datatable = ref();
 let selectedMember = ref({});

@@ -1,10 +1,12 @@
-import { getRegisterSchemaFn, registerMemberFn } from "./../api/api";
+import { getMembersSchemaFn, getSummarySchemaFn, getRegisterSchemaFn, registerMemberFn } from "./../api/api";
 import type { Members, Member, Schema } from "./../api/types";
 import { defineStore } from "pinia";
 import { membersMembersFn, membersMembersPatch } from "@/api/api";
 
 type MembersState = {
   members: Members | null;
+  membersSchema: Schema | null;
+  summarySchema: Schema | null;
   membersLoaded: boolean;
   membersLoadingError: string | null;
   registrationSchema: Schema | null;
@@ -16,6 +18,8 @@ export const useMembersStore = defineStore({
   state: () =>
     ({
       members: null,
+      membersSchema: null,
+      summarySchema: null,
       membersLoaded: false,
       membersLoadingError: null,
       registrationSchema: null,
@@ -23,19 +27,23 @@ export const useMembersStore = defineStore({
     } as MembersState),
   actions: {
     async getMembers() {
-      membersMembersFn()
-        .then((response) => {
-          if (this.members === null) {
-            this.members = { results: [] };
-          }
-          this.members.results = response.data;
-          this.membersLoaded = true;
-          this.membersLoadingError = null;
-        })
-        .catch((error) => {
-          console.log("members error", error);
-          this.membersLoadingError = error.message;
-        });
+      try {
+        const[membersSchema, summarySchema, members] = await Promise.all([
+          getMembersSchemaFn(), getSummarySchemaFn(), membersMembersFn()
+        ]);
+        this.membersSchema = membersSchema;
+        this.summarySchema = summarySchema;
+
+        if (this.members === null) {
+          this.members = { results: [] };
+        }
+        this.members.results = members.data;
+        this.membersLoaded = true;
+        this.membersLoadingError = null;
+      } catch (error: any) {
+        console.log("members error", error);
+        this.membersLoadingError = error.message;
+      }
     },
     async getMembersNext(nextUrl: string) {
       console.log("nextUrl", nextUrl);
