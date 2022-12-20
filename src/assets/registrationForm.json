@@ -754,7 +754,7 @@
                         "extId": "shares_payment_type",
                         "required": true,
                         "options": [
-                            "Jetzt SEPA Bankeinzug genemigen!"
+                            "Jetzt SEPA Bankeinzug genehmigen!"
                         ],
                         "values": [
                             "sepa"
