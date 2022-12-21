@@ -648,7 +648,7 @@
                         "label": "How many shares do you want?",
                         "conditions": [],
                         "content": "",
-                        "description": "Mit den Genossenschaftsanteilen bauen wir Eigenkapital auf, das wir für die Eröffnung unseres Supermarkts benötigen. Der Genossenschaftsanteil bei MILA ist sozial gestaffelt: Der Regelanteil ist € 180, der Sozialanteil € 20. Wie empfehlen mehr als den Regelanteil zu zeichnen, gemäß deiner finanziellen Möglichkeiten.",
+                        "description": "Mit den Genossenschaftsanteilen bauen wir Eigenkapital auf, das wir für die Eröffnung unseres Supermarkts benötigen. Der Genossenschaftsanteil bei MILA ist sozial gestaffelt: Der Regelanteil ist € 180, der Sozialanteil € 20. Wir empfehlen mehr als den Regelanteil zu zeichnen, gemäß deiner finanziellen Möglichkeiten.",
                         "htmlType": "radio",
                         "required": true,
                         "options": [
