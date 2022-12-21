@@ -35,6 +35,7 @@ function edit(event: any) {
 
 // List of columns from schema
 const columns: any[] = [];
+const filters = ref<{ [key: string]: any }>({});
 for (const [key, value] of Object.entries(props.schema)) {
   columns.push({
     field: key,
@@ -46,8 +47,10 @@ for (const [key, value] of Object.entries(props.schema)) {
 
   // Add choices to column
   if (value.choices == undefined) {
+    filters.value[key] = { value: null, matchMode: FilterMatchMode.CONTAINS };
     continue;
   }
+  filters.value[key] = { value: null, matchMode: FilterMatchMode.EQUALS };
   columns[columns.length - 1].choices = [];
   for (const [key2, value2] of Object.entries(value.choices) as any) {
     columns[columns.length - 1].choices.push({
@@ -71,16 +74,6 @@ for (const col of startingColumns) {
   selectedColumns.value.push(columns.find((c) => c.field === col));
 }
 
-// TODO GENERATE FROM SCHEMA
-const filters1 = ref({
-  id: { value: null, matchMode: FilterMatchMode.EQUALS },
-  first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  last_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  email: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
-  membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
-  membership_status: { value: null, matchMode: FilterMatchMode.EQUALS },
-});
 </script>
 
 <template>
@@ -93,11 +86,11 @@ const filters1 = ref({
             :options="columns"
             optionLabel="header"
             :filter="true"
-            placeholder="Columns"
+            :placeholder="t('Columns')"
             :maxSelectedLabels="0"
-            selectedItemsLabel="Columns"
+            :selectedItemsLabel="t('Columns')"
             scrollHeight="400px"
-            class="w-32"
+            class="w-26"
           />
         </div>
       </template>
@@ -140,7 +133,7 @@ const filters1 = ref({
       "
       :globalFilterFields="['id', 'first_name']"
       filterDisplay="menu"
-      v-model:filters="filters1"
+      v-model:filters="filters"
       sortField="first_name"
       :sortOrder="1"
       responsiveLayout="scroll"

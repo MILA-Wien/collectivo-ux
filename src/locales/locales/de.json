@@ -131,5 +131,7 @@
     "natural": "Person",
     "legal": "Organisation",
     "active": "Aktiv",
-    "investing": "Investierend"
+    "investing": "Investierend",
+
+    "Columns": "Spalten"
 }
