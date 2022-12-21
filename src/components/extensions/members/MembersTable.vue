@@ -99,17 +99,8 @@ for (const col of startingColumns) {
           <JsonCSV
             v-if="selectedMembers"
             :data="selectedMembers"
-            :fields="[
-              'id',
-              'first_name',
-              'last_name',
-              'email',
-              'person_type',
-              'membership_type',
-            ]"
             :name="t('members') + '.csv'"
           ></JsonCSV>
-          <!-- TODO: EXPORT SELECTED COLUMNS -->
         </Button>
       </template>
     </Toolbar>
