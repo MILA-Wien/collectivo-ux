@@ -10,6 +10,7 @@ import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
 import JsonCSV from "vue-json-csv";
+import Dropdown from 'primevue/dropdown';
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,7 +36,6 @@ function edit(event: any) {
 // List of columns from schema
 const columns: any[] = [];
 for (const [key, value] of Object.entries(props.schema)) {
-  console.log(value);
   columns.push({
     field: key,
     header: t(value.label),
@@ -43,6 +43,18 @@ for (const [key, value] of Object.entries(props.schema)) {
     filter: true,
     filterMatchMode: FilterMatchMode.CONTAINS,
   });
+
+  // Add choices to column
+  if (value.choices == undefined) {
+    continue;
+  }
+  columns[columns.length - 1].choices = [];
+  for (const [key2, value2] of Object.entries(value.choices) as any) {
+    columns[columns.length - 1].choices.push({
+      label: t(value2),
+      value: key2,
+    });
+  }
 }
 
 // Selected columns
@@ -51,13 +63,15 @@ const startingColumns = [
   "id",
   "first_name",
   "last_name",
-  "email",
   "person_type",
+  "membership_type",
+  "shares_number",
 ];
 for (const col of startingColumns) {
   selectedColumns.value.push(columns.find((c) => c.field === col));
 }
 
+// TODO GENERATE FROM SCHEMA
 const filters1 = ref({
   id: { value: null, matchMode: FilterMatchMode.EQUALS },
   first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -65,6 +79,7 @@ const filters1 = ref({
   email: { value: null, matchMode: FilterMatchMode.CONTAINS },
   person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
   membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
+  membership_status: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 </script>
 
@@ -101,6 +116,7 @@ const filters1 = ref({
             ]"
             :name="t('members') + '.csv'"
           ></JsonCSV>
+          <!-- TODO: EXPORT SELECTED COLUMNS -->
         </Button>
       </template>
     </Toolbar>
@@ -125,7 +141,7 @@ const filters1 = ref({
       :globalFilterFields="['id', 'first_name']"
       filterDisplay="menu"
       v-model:filters="filters1"
-      sortField="id"
+      sortField="first_name"
       :sortOrder="1"
       responsiveLayout="scroll"
       :resizableColumns="true"
@@ -135,7 +151,7 @@ const filters1 = ref({
       <!-- Selection column -->
       <Column selectionMode="multiple"></Column>
 
-      <!-- Content columns -->
+      <!-- Content columns from schema -->
       <Column
         v-for="col of selectedColumns"
         :field="col.field"
@@ -144,7 +160,27 @@ const filters1 = ref({
         :sortable="col.sortable"
         :filter="col.filter"
       >
-        <template #filter="{ filterModel }">
+        <template #body="{data}" v-if="col.choices != undefined">
+          <span class="bg-amber-200 px-1 py-0.5">{{ t(data[col.field]) }}</span>
+        </template>
+
+        <!-- Filter for choices -->
+        <template #filter="{filterModel}" v-if="col.choices != undefined">
+          <Dropdown v-model="filterModel.value" :options="col.choices" placeholder="Any" class="p-column-filter" :showClear="true"
+          optionLabel="label" optionValue="value">
+          <template #value="slotProps">
+            <span class="bg-amber-200 px-1 py-0.5" v-if="slotProps.value">{{t(slotProps.value)}}</span>
+            <span v-else>{{slotProps.placeholder}}</span>
+          </template>
+          <template #option="slotProps">
+            <!-- TODO Future option: :class="'customer-badge status-' -->
+            <span class="bg-amber-200 px-1 py-0.5">{{t(slotProps.option.label)}}</span>
+          </template>
+          </Dropdown>
+        </template>
+
+        <!-- Filter for other fields -->
+        <template #filter="{ filterModel }" v-else>
           <InputText
             type="text"
             v-model="filterModel.value"
