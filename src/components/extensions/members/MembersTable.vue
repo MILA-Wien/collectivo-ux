@@ -26,7 +26,7 @@ const props = defineProps({
 });
 const datatable = ref();
 let selectedMember = ref({});
-const selectedMembers = ref();
+const selectedMembers = ref([]);
 const editMember = ref(false);
 function edit(event: any) {
   selectedMember.value = event;
@@ -95,12 +95,12 @@ for (const col of startingColumns) {
         </div>
       </template>
       <template #end>
-        <Button label="Export" icon="pi pi-upload" :disabled="!selectedMembers">
+        <Button :label="t('Export CSV')" :disabled="!(selectedMembers.length>0)">
           <JsonCSV
-            v-if="selectedMembers"
+            v-if="selectedMembers.length>0"
             :data="selectedMembers"
             :name="t('members') + '.csv'"
-          ></JsonCSV>
+          >{{t('Export CSV')}}</JsonCSV>
         </Button>
       </template>
     </Toolbar>
