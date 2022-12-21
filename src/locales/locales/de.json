@@ -108,7 +108,7 @@
     "Main menu": "Hauptmenü",
     "Membership number": "Mitgliedsnummer",
 
-    "Person type": "Typ",
+    "Person type": "P-Typ",
     "Address postcode": "PLZ",
     "Address city": "Stadt",
     "Address street": "Straße",
@@ -116,7 +116,7 @@
     "Address stair": "Stiege",
     "Address door": "Tür",
     "Address country": "Land",
-    "Membership type": "Mitgliedschaft",
+    "Membership type": "M-Typ",
     "Membership start": "Beitritt",
     "Membership end": "Austritt",
     "Membership cancelled": "Kündigung",
@@ -134,5 +134,6 @@
     "investing": "Investierend",
 
     "Columns": "Spalten",
-    "Export CSV": "CSV exportieren"
+    "Export CSV": "CSV exportieren",
+    "Copy emails": "E-Mails kopieren"
 }

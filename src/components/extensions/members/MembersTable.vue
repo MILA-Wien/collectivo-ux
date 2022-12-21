@@ -11,6 +11,7 @@ import Button from "primevue/button";
 import { FilterMatchMode } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import Dropdown from 'primevue/dropdown';
+import { useToast } from "primevue/usetoast";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25,8 +26,9 @@ const props = defineProps({
   },
 });
 const datatable = ref();
+const toast = useToast();
 let selectedMember = ref({});
-const selectedMembers = ref([]);
+const selectedMembers = ref<any[]>([]);
 const editMember = ref(false);
 function edit(event: any) {
   selectedMember.value = event;
@@ -74,6 +76,34 @@ for (const col of startingColumns) {
   selectedColumns.value.push(columns.find((c) => c.field === col));
 }
 
+// Copy emails to clipboard
+function copyEmails() {
+  const emails = selectedMembers.value
+    .filter((m) => m.email)
+    .map((m) => m.email)
+    .join(", ");
+  navigator.clipboard.writeText(emails).then(
+  () => {
+    // clipboard successfully set
+    toast.add({
+      severity: "success",
+      summary: "Success",
+      detail: "Emails copied to clipboard.",
+      life: 5000,
+    });
+  },
+  () => {
+    // clipboard write failed
+    toast.add({
+      severity: "failure",
+      summary: "Failure",
+      detail: "Could not copy emails to clipboard.",
+      life: 5000,
+    });
+  }
+  );
+}
+
 </script>
 
 <template>
@@ -95,6 +125,13 @@ for (const col of startingColumns) {
         </div>
       </template>
       <template #end>
+        <div class="mx-2">
+        <Button
+          :label="t('Copy emails')"
+          :disabled="!(selectedMembers.length>0)"
+          @click="copyEmails">
+        </Button>
+        </div>
         <Button :label="t('Export CSV')" :disabled="!(selectedMembers.length>0)">
           <JsonCSV
             v-if="selectedMembers.length>0"
