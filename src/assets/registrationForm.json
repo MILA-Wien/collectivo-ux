@@ -134,7 +134,12 @@
                             "type": "date",
                             "properties": {
                                 "label": "Birthday",
-                                "conditions": [],
+                                "conditions": [
+                                    {
+                                        "target": "person_type",
+                                        "value": "natural"
+                                    }
+                                ],
                                 "content": "",
                                 "required": true,
                                 "extId": "birthday"
@@ -146,7 +151,12 @@
                             "type": "textfield",
                             "properties": {
                                 "label": "Occupation",
-                                "conditions": [],
+                                "conditions": [
+                                    {
+                                        "target": "person_type",
+                                        "value": "natural"
+                                    }
+                                ],
                                 "content": "",
                                 "required": true,
                                 "extId": "occupation"
