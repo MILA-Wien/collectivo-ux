@@ -41,6 +41,7 @@ async function openKeycloakAccount() {
 // Required fields need to be added manually and will be checked afterwards, if each field is contained in membershipSchema
 const rules: any = {
   gender: { required },
+  occupation: { required },
   address_street: { required },
   address_number: { required },
   address_postcode: { required },

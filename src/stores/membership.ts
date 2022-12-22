@@ -35,6 +35,7 @@ export const useMembershipStore = defineStore({
             last_name: response.last_name,
             shares_number: response.shares_number,
             gender: response.gender,
+            occupation: response.occupation,
             phone: response.phone,
             email: response.email,
             address_street: response.address_street,
