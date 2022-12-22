@@ -108,7 +108,7 @@
     "Main menu": "Hauptmenü",
     "Membership number": "Mitgliedsnummer",
 
-    "Person type": "P-Typ",
+    "Person type": "Typ",
     "Address postcode": "PLZ",
     "Address city": "Stadt",
     "Address street": "Straße",
@@ -116,7 +116,7 @@
     "Address stair": "Stiege",
     "Address door": "Tür",
     "Address country": "Land",
-    "Membership type": "M-Typ",
+    "Membership type": "Mitglied",
     "Membership start": "Beitritt",
     "Membership end": "Austritt",
     "Membership cancelled": "Kündigung",
