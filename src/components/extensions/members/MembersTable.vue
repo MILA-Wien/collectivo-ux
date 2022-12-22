@@ -54,10 +54,12 @@ for (const [key, value] of Object.entries(props.schema)) {
   }
   filters.value[key] = { value: null, matchMode: FilterMatchMode.EQUALS };
   columns[columns.length - 1].choices = [];
+  var i = 0;
   for (const [key2, value2] of Object.entries(value.choices) as any) {
     columns[columns.length - 1].choices.push({
       label: t(value2),
       value: key2,
+      key: ++i,
     });
   }
 }
@@ -70,6 +72,7 @@ const startingColumns = [
   "last_name",
   "person_type",
   "membership_type",
+  "membership_status",
   "shares_number",
 ];
 for (const col of startingColumns) {
@@ -102,6 +105,24 @@ function copyEmails() {
     });
   }
   );
+}
+
+// List of windscribe color classes
+const bgClasses = [
+  "bg-indigo-200",
+  "bg-cyan-200",
+  "bg-green-200",
+  "bg-yellow-200",
+  "bg-red-200",
+  "bg-purple-200",
+  "bg-pink-200",
+  "bg-blue-200",
+  "bg-gray-200",
+];
+
+// Get background color class for key of choices
+function keyToBgClass(i: number) {
+  return bgClasses[i % bgClasses.length];
 }
 
 </script>
@@ -181,21 +202,29 @@ function copyEmails() {
         :sortable="col.sortable"
         :filter="col.filter"
       >
-        <template #body="{data}" v-if="col.choices != undefined">
-          <span class="bg-amber-200 px-1 py-0.5">{{ t(data[col.field]) }}</span>
+
+        <!-- Body for choices -->
+        <template #body="{data}" v-if="col.choices != null">
+          <span v-if="data[col.field] != null" class="px-1 py-0.5" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
+            {{ t(col.choices.find((c:any) => c.value == data[col.field]).label) }}
+          </span>
         </template>
 
         <!-- Filter for choices -->
         <template #filter="{filterModel}" v-if="col.choices != undefined">
-          <Dropdown v-model="filterModel.value" :options="col.choices" placeholder="Any" class="p-column-filter" :showClear="true"
+          <Dropdown v-model="filterModel.value" :options="col.choices"
+          placeholder="Any" class="p-column-filter" :showClear="true"
           optionLabel="label" optionValue="value">
           <template #value="slotProps">
-            <span class="bg-amber-200 px-1 py-0.5" v-if="slotProps.value">{{t(slotProps.value)}}</span>
+            <span class="px-1 py-0.5" :class="keyToBgClass(col.choices.find((c:any) => c.value == slotProps.value).key)" v-if="slotProps.value">
+              {{ t(col.choices.find((c:any) => c.value === slotProps.value).label) }}
+            </span>
             <span v-else>{{slotProps.placeholder}}</span>
           </template>
           <template #option="slotProps">
-            <!-- TODO Future option: :class="'customer-badge status-' -->
-            <span class="bg-amber-200 px-1 py-0.5">{{t(slotProps.option.label)}}</span>
+            <span class="px-1 py-0.5" :class="keyToBgClass(slotProps.option.key)">
+              {{t(slotProps.option.label)}}
+            </span>
           </template>
           </Dropdown>
         </template>
@@ -215,7 +244,7 @@ function copyEmails() {
         <template #body="slotProps">
           <ButtonPrime
             icon="pi pi-pencil"
-            class="p-button-rounded"
+            class="p-button-sm"
             @click="edit(slotProps.data)"
           />
         </template>
@@ -232,6 +261,11 @@ function copyEmails() {
 </template>
 
 <style scoped>
+.p-button-sm {
+  padding: 3px 6px 3px 6px ;
+  width: auto;
+}
+
 h1 {
   font-weight: 500;
   font-size: 2.6rem;
