@@ -8,7 +8,7 @@ import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import Dropdown from 'primevue/dropdown';
 import { useToast } from "primevue/usetoast";
@@ -42,19 +42,17 @@ for (const [key, value] of Object.entries(props.schema)) {
   columns.push({
     field: key,
     header: t(value.label),
-    inputType: value.inputType,
-    sortable: true,
-    filter: true,
-    filterMatchMode: FilterMatchMode.CONTAINS,
+    inputType: value.input_type,
+
   });
 
+  // Initialize filters with default settings
+  filters.value[key] = {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.CONTAINS}]};
+
   // Add choices to column
-  // TODO Filter mode for multiple choice
   if (value.choices == undefined) {
-    filters.value[key] = { value: null, matchMode: FilterMatchMode.CONTAINS };
     continue;
   }
-  filters.value[key] = { value: null, matchMode: FilterMatchMode.EQUALS };
   columns[columns.length - 1].choices = [];
 
   // TODO: Change from i to index
@@ -66,6 +64,7 @@ for (const [key, value] of Object.entries(props.schema)) {
       key: ++i,
     });
   }
+
 }
 
 // Selected columns
@@ -185,7 +184,6 @@ function keyToBgClass(i: number) {
         t('of') +
         ' {totalRecords}'
       "
-      :globalFilterFields="['id', 'first_name']"
       filterDisplay="menu"
       v-model:filters="filters"
       sortField="first_name"
@@ -217,20 +215,37 @@ function keyToBgClass(i: number) {
 
           <!-- Handle data[col.field] is array -->
           <div v-if="Array.isArray(data[col.field])">
-            <div v-for="item in data[col.field]" :key="item" class="py-0.5 px-1.5 w-min drop-shadow rounded" :class="keyToBgClass(col.choices.find((c:any) => c.value == item).key)">
+            <div v-for="item in data[col.field]" :key="item" class="c-tag" :class="keyToBgClass(col.choices.find((c:any) => c.value == item).key)">
               {{ col.choices.find((c:any) => c.value == item).label }}
             </div>
           </div>
-          <div v-else-if="data[col.field] != null" class="py-0.5 px-1.5 w-min drop-shadow rounded" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
+          <div v-else-if="data[col.field] != null" class="c-tag" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
             {{ col.choices.find((c:any) => c.value == data[col.field]).label }}
           </div>
         </template>
 
         <!-- Filter for choices -->
         <template #filter="{filterModel}" v-if="col.choices != undefined">
-          <Dropdown v-model="filterModel.value" :options="col.choices"
-          placeholder="Any" class="p-column-filter" :showClear="true"
-          optionLabel="label" optionValue="value">
+
+          <!-- Multiple choice -->
+          <MultiSelect v-if="col.inputType == 'multiselect'"
+              v-model="filterModel.value" :options="col.choices"
+              optionLabel="label" optionValue="value" placeholder="Any"
+              class="p-column-filter">
+            <template #option="slotProps">
+                <div class="p-multiselect-representative-option">
+                    <span>{{slotProps.option.label}}</span>
+                </div>
+            </template>
+          </MultiSelect>
+
+          <!-- Single choice -->
+          <Dropdown v-else
+          v-model="filterModel.value" :options="col.choices"
+          optionLabel="label" optionValue="value" placeholder="Any"
+          class="p-column-filter"
+          :showClear="true"
+          >
           <template #value="slotProps">
             <span class="px-1 py-0.5" :class="keyToBgClass(col.choices.find((c:any) => c.value == slotProps.value).key)" v-if="slotProps.value">
               {{ col.choices.find((c:any) => c.value === slotProps.value).label }}
@@ -243,7 +258,9 @@ function keyToBgClass(i: number) {
             </span>
           </template>
           </Dropdown>
+
         </template>
+
 
         <!-- Filter for other fields -->
         <template #filter="{ filterModel }" v-else>
@@ -280,6 +297,13 @@ function keyToBgClass(i: number) {
 .p-button-sm {
   padding: 3px 6px 3px 6px ;
   width: auto;
+}
+
+.c-tag {
+  padding: 2px 4px 1px 4px;
+  font-size: 12px;
+  width: min-content;
+  border-radius: 0.1rem;
 }
 
 h1 {
