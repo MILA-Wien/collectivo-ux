@@ -205,9 +205,9 @@ function keyToBgClass(i: number) {
 
         <!-- Body for choices -->
         <template #body="{data}" v-if="col.choices != null">
-          <span v-if="data[col.field] != null" class="px-1 py-0.5" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
+          <div v-if="data[col.field] != null" class="py-0.5 px-1.5 w-min drop-shadow rounded" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
             {{ t(col.choices.find((c:any) => c.value == data[col.field]).label) }}
-          </span>
+          </div>
         </template>
 
         <!-- Filter for choices -->

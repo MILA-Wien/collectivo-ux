@@ -39,6 +39,7 @@ const { user } = storeToRefs(userStore);
 
 .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
     vertical-align: middle;
+    white-space: normal;
 }
 
 .p-checkbox.p-component {
