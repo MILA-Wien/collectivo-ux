@@ -42,18 +42,22 @@ for (const [key, value] of Object.entries(props.schema)) {
   columns.push({
     field: key,
     header: t(value.label),
+    inputType: value.inputType,
     sortable: true,
     filter: true,
     filterMatchMode: FilterMatchMode.CONTAINS,
   });
 
   // Add choices to column
+  // TODO Filter mode for multiple choice
   if (value.choices == undefined) {
     filters.value[key] = { value: null, matchMode: FilterMatchMode.CONTAINS };
     continue;
   }
   filters.value[key] = { value: null, matchMode: FilterMatchMode.EQUALS };
   columns[columns.length - 1].choices = [];
+
+  // TODO: Change from i to index
   var i = 0;
   for (const [key2, value2] of Object.entries(value.choices) as any) {
     columns[columns.length - 1].choices.push({
@@ -74,6 +78,7 @@ const startingColumns = [
   "membership_type",
   "membership_status",
   "shares_number",
+  "tags"
 ];
 for (const col of startingColumns) {
   selectedColumns.value.push(columns.find((c) => c.field === col));
@@ -202,11 +207,22 @@ function keyToBgClass(i: number) {
         :sortable="col.sortable"
         :filter="col.filter"
       >
+        <!-- TODO Bulk Edit Button -->
+        <!-- <template #header>
+            <Button type="button" icon="pi pi-cog"></Button>
+        </template> -->
 
         <!-- Body for choices -->
-        <template #body="{data}" v-if="col.choices != null">
-          <div v-if="data[col.field] != null" class="py-0.5 px-1.5 w-min drop-shadow rounded" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
-            {{ t(col.choices.find((c:any) => c.value == data[col.field]).label) }}
+        <template #body="{data}" v-if="col.choices != undefined">
+
+          <!-- Handle data[col.field] is array -->
+          <div v-if="Array.isArray(data[col.field])">
+            <div v-for="item in data[col.field]" :key="item" class="py-0.5 px-1.5 w-min drop-shadow rounded" :class="keyToBgClass(col.choices.find((c:any) => c.value == item).key)">
+              {{ col.choices.find((c:any) => c.value == item).label }}
+            </div>
+          </div>
+          <div v-else-if="data[col.field] != null" class="py-0.5 px-1.5 w-min drop-shadow rounded" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
+            {{ col.choices.find((c:any) => c.value == data[col.field]).label }}
           </div>
         </template>
 
@@ -217,7 +233,7 @@ function keyToBgClass(i: number) {
           optionLabel="label" optionValue="value">
           <template #value="slotProps">
             <span class="px-1 py-0.5" :class="keyToBgClass(col.choices.find((c:any) => c.value == slotProps.value).key)" v-if="slotProps.value">
-              {{ t(col.choices.find((c:any) => c.value === slotProps.value).label) }}
+              {{ col.choices.find((c:any) => c.value === slotProps.value).label }}
             </span>
             <span v-else>{{slotProps.placeholder}}</span>
           </template>
