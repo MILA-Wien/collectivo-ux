@@ -59,6 +59,7 @@ export interface Member {
   first_name?: string;
   last_name?: string;
   gender?: Array<String>;
+  occupation?: string;
   address_street?: string;
   address_number?: string;
   address_stair?: string;

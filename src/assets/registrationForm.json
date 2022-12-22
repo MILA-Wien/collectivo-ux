@@ -134,17 +134,24 @@
                             "type": "date",
                             "properties": {
                                 "label": "Birthday",
-                                "conditions": [
-                                    {
-                                        "target": "person_type",
-                                        "value": "natural"
-                                    }
-                                ],
+                                "conditions": [],
                                 "content": "",
                                 "required": true,
                                 "extId": "birthday"
                             },
                             "id": "skNWSarXVbcC",
+                            "children": []
+                        },
+                        {
+                            "type": "textfield",
+                            "properties": {
+                                "label": "Occupation",
+                                "conditions": [],
+                                "content": "",
+                                "required": true,
+                                "extId": "occupation"
+                            },
+                            "id": "s7bf0f87llkh8",
                             "children": []
                         },
                         {
