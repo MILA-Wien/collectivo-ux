@@ -39,15 +39,27 @@ async function openKeycloakAccount() {
 
 // Vuelidate block
 // Required fields need to be added manually and will be checked afterwards, if each field is contained in membershipSchema
-const rules: any = {
-  gender: { required },
-  occupation: { required },
-  address_street: { required },
-  address_number: { required },
-  address_postcode: { required },
-  address_city: { required },
-  address_country: { required },
-};
+const rules: any = {}
+for (var key in membershipSchema.value) {
+  if (membershipSchema.value[key].required) {
+    if (membershipSchema.value[key].condition?
+    rules[key] = { required }
+  }
+}
+
+// const rules = {
+//   first_name: { required },
+//   last_name: { required },
+//   birth_date: { required
+
+//   gender: { required },
+//   occupation: { required },
+//   address_street: { required },
+//   address_number: { required },
+//   address_postcode: { required },
+//   address_city: { required },
+//   address_country: { required },
+// };
 const v$ = useVuelidate(rules, membership);
 watch(membershipSchema, () => {
   const dict: Array<Array<string | any>> = Object.entries(
@@ -167,6 +179,8 @@ function schemaToPrime(choices: any) {
         :key="value ? key + value.input_type : key"
         class="field"
       >
+
+        <!-- Read only fields -->
         <div v-if="value.read_only">
           <h3>{{ t(value?.label) }}</h3>
           <div v-if="value.input_type === 'date'">
@@ -196,6 +210,8 @@ function schemaToPrime(choices: any) {
             />
           </div>
         </div>
+
+        <!-- Editable fields -->
         <div v-else>
           <div v-if="value?.input_type === 'text'">
             <h3 v-if="value.required">{{ t(value?.label) }}*</h3>
