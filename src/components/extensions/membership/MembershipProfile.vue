@@ -11,16 +11,21 @@ const membershipStore = useMembershipStore();
 membershipStore.getMembershipSchema();
 membershipStore.getMembership();
 const { membership, membershipSchema } = storeToRefs(membershipStore);
-
 </script>
 
 <template>
   <div class="members-wrapper">
-    <div v-if="membership === null || membershipSchema === null" class="loading">
+    <div
+      v-if="membership === null || membershipSchema === null"
+      class="loading"
+    >
       <h2>{{ $t("Loading membership data") }}</h2>
     </div>
     <div v-else class="members-table">
-      <MembershipProfileDetail :membership="membership" :membershipSchema="membershipSchema" />
+      <MembershipProfileDetail
+        :membership="membership"
+        :membershipSchema="membershipSchema"
+      />
     </div>
   </div>
 </template>

@@ -30,7 +30,7 @@ export const useMembershipStore = defineStore({
           if (response === null) {
             this.membership = {};
           }
-          this.membership = response
+          this.membership = response;
         })
         .catch((error) => {
           console.log("get membership error", error);

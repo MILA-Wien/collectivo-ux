@@ -5,7 +5,7 @@ import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
-import { ref, watch } from "vue";
+import { ref, watch, toRef } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, requiredIf } from "@vuelidate/validators";
 import { useToast } from "primevue/usetoast";
@@ -25,14 +25,16 @@ menuStore.setTitle("Membership");
 
 // Get membership data and schema from store
 const props = defineProps({
-  membership: {type: Object, required: true},
-  membershipSchema: {type: Object, required: true},
+  membership: { type: Object, required: true },
+  membershipSchema: { type: Object, required: true },
 });
+const membership = toRef(props, "membership");
+const membershipSchema = toRef(props, "membershipSchema");
 
 // Reference for selected gender radio button
 const selectedGender = ref();
-selectedGender.value = props.membership["gender"]
-watch(props.membership, (value) => {
+selectedGender.value = membership.value["gender"];
+watch(membership.value, (value) => {
   selectedGender.value = value ? value["gender"] : "";
 });
 
@@ -43,41 +45,42 @@ async function openKeycloakAccount() {
 }
 
 // Check if a schema condition is true
-function checkCondition(condition:any) {
+function checkCondition(condition: any) {
   if (condition == null) {
     return true;
   }
-  const memberdata = JSON.parse(JSON.stringify(props.membership));
-  let cond = memberdata[condition.field] == condition.value;
+  let cond = membership.value[condition.field] == condition.value;
   return cond;
 }
 
 // Set validation rules
-const rules: any = {}
-for (var key in props.membershipSchema) {
-  const schemaField = props.membershipSchema[key];
+const rules: any = {};
+for (var key in membershipSchema.value) {
+  const schemaField = membershipSchema.value[key];
   if (schemaField.required) {
     if (schemaField.condition == null) {
-      rules[key] = { required }
+      rules[key] = { required };
     } else {
       // Required only if field is visible
-      rules[key] = { requiredIfCondition: requiredIf(() => {
-        return checkCondition(schemaField.condition)
-      })}
+      rules[key] = {
+        requiredIfCondition: requiredIf(() => {
+          return checkCondition(schemaField.condition);
+        }),
+      };
     }
   }
 }
-const v$ = useVuelidate(rules, props.membership);
+const v$ = useVuelidate(rules, membership.value);
 
 function updateInputText(event: any, key: string | number) {
-  if (props.membership) {
-    props.membership[key as keyof typeof props.membership] = event.target.value;
+  if (membership.value) {
+    membership.value[key as keyof typeof membership.value] = event.target.value;
   }
 }
 
 function updateRadioButton(label: any, key: string) {
-  if (props.membership) {
-    props.membership[key as keyof typeof props.membership] = label;
+  if (membership.value) {
+    membership.value[key as keyof typeof membership.value] = label;
   }
 }
 
@@ -100,8 +103,10 @@ function convertDate(value: string) {
 
 function returnErrorMessage(key: any) {
   if (Object.keys(rules).includes(key)) {
-    // TODO: Should also work for requiredIf
-    return v$.value[key].required?.$message;
+    if (v$.value[key].requiredIfCondition) {
+      return t(v$.value[key].requiredIfCondition.$message || "");
+    }
+    return t(v$.value[key].required?.$message || "");
   } else {
     return false;
   }
@@ -131,9 +136,9 @@ async function save() {
       life: 5000,
     });
     return;
-  } else if (props.membership) {
+  } else if (membership.value) {
     try {
-      await membershipStore.updateMembership(props.membership);
+      await membershipStore.updateMembership(membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),
@@ -158,8 +163,6 @@ function schemaToPrime(choices: any) {
   });
   return schema;
 }
-
-
 </script>
 
 <template>
@@ -175,7 +178,6 @@ function schemaToPrime(choices: any) {
       <div
         v-for="(value, key) in membershipSchema"
         :key="value ? key + value.input_type : key"
-
       >
         <div v-if="checkCondition(value.condition)" class="field">
           <div v-if="value.read_only">
@@ -205,7 +207,7 @@ function schemaToPrime(choices: any) {
             <div v-else-if="value?.choices != null">
               <InputText
                 disabled
-                :value="t(membership[key] ? membership[key]: '')"
+                :value="t(membership[key] ? membership[key] : '')"
               />
             </div>
 
@@ -260,7 +262,6 @@ function schemaToPrime(choices: any) {
                 }}</span>
               </div>
             </div>
-
           </div>
           <br />
         </div>
