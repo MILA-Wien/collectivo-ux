@@ -70,6 +70,7 @@ export interface Member {
   phone?: string;
   membership_start?: Date;
   shares_number?: string;
+  person_type?: string;
 }
 export interface Members {
   count?: number;
