@@ -30,24 +30,7 @@ export const useMembershipStore = defineStore({
           if (response === null) {
             this.membership = {};
           }
-          this.membership = {
-            first_name: response.first_name,
-            last_name: response.last_name,
-            shares_number: response.shares_number,
-            gender: response.gender,
-            occupation: response.occupation,
-            phone: response.phone,
-            email: response.email,
-            address_street: response.address_street,
-            address_number: response.address_number,
-            address_stair: response.address_stair,
-            address_door: response.address_door,
-            address_postcode: response.address_postcode,
-            address_city: response.address_city,
-            address_country: response.address_country,
-            id: response.id,
-            membership_start: response.membership_start,
-          };
+          this.membership = response;
         })
         .catch((error) => {
           console.log("get membership error", error);

@@ -28,10 +28,10 @@ import {
 } from "@vuelidate/validators";
 import { ElementPage, type Element } from "@/formviewer/types/elements";
 import { useVuelidate } from "@vuelidate/core";
-import { helpers } from '@vuelidate/validators'
+import { helpers } from "@vuelidate/validators";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
-import { isValidIBAN, electronicFormatIBAN } from "ibantools"
+import { isValidIBAN, electronicFormatIBAN } from "ibantools";
 const { t } = useI18n();
 
 const formViewerStore = useFormViewerStore();
@@ -58,8 +58,8 @@ let rules: any = {};
 const validAccountNumber = helpers.withParams(
   { type: "validValue" },
   (value: string) => {
-    const iban = electronicFormatIBAN(value)
-    return isValidIBAN(iban || '')
+    const iban = electronicFormatIBAN(value);
+    return isValidIBAN(iban || "");
   }
 );
 for (let i = 0; i < allElements.value.length; i++) {

@@ -15,7 +15,8 @@
 
     "Membership": "Mitgliedschaft",
     "Member data": "Mitgliedsdaten",
-    "Loading members": "Lade Mitglieder",
+    "Loading members": "Lade Mitgliederdaten ...",
+    "Loading membership data": "Lade Mitgliedschaftsdaten ...",
     "Showing": "Zeige",
     "to": "bis",
     "of": "von",
@@ -23,6 +24,11 @@
     "Edit user": "Benutzer bearbeiten",
     "Cancel": "Abbrechen",
     "Save": "Speichern",
+
+    "natural": "Natürliche Person",
+    "legal": "Organisation",
+    "active": "Aktiv",
+    "investing": "Investierend",
 
     "Members": "Mitglieder",
     "members": "Mitglieder",
@@ -40,7 +46,8 @@
     "Back": "Zurück",
 
     "Please fill out the required fields": "Bitte füll die erforderlichen Felder aus.",
-    "Value is required": "Ein Eingabewert ist erforderlich.",
+    "The value is required": "Bitte füll die erforderlichen Felder aus.",
+    "Value is required": "Bitte füll die erforderlichen Felder aus.",
     "Membership application": "Beitrittserklärung",
     "Click here to fill out your application to become a member of the MILA cooperative.": "Klicke hier um deine Beitrittserklärung zur MILA Genossenschaft in Gründung auszufüllen.",
     "What type of membership do you want?": "Wie wirst du Genossenschaftsmitglied?",
@@ -74,6 +81,7 @@
     "Country": "Land",
     "Phone number": "Telefonnummer",
     "Type of person": "Art der Person",
+    "Type of membership": "Art der Mitgliedschaft",
     "Which type of membership do you choose?": "Welche Art der Genossenschaftsmitgliedschaft wählst du?",
     "As an organisation, you will be an investing member. As an investing member, you support us financially, but you cannot shop.": "Als Organisation bist du automatisch ein investierendes Mitglied. Als investierendes Mitglied unterstützt du uns finanziell, kannst jedoch nicht einkaufen.",
     "Only as an active member do you have the opportunity to shop after the opening of the supermarket. As an investing member, you support us financially, but you cannot shop.": "Nur als aktives Mitglied hast du nach der Eröffnung des Supermarkts die Möglichkeit einzukaufen. Als investierendes Mitglied unterstützt du uns finanziell, kannst jedoch nicht einkaufen.",
