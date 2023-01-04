@@ -1,4 +1,4 @@
-FROM node:16 AS build-env
+FROM node:18 AS build-env
 
 # Create app directory
 WORKDIR /app
@@ -10,12 +10,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY ./package.json package.json
 COPY ./yarn.lock yarn.lock
-RUN yarn
+RUN  yarn install --frozen-lockfile
 
 COPY . .
 
 # If you are building your code for production
-RUN yarn install --frozen-lockfile
+RUN yarn build
 
 # Running
 FROM nginx:alpine
