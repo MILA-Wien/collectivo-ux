@@ -1,6 +1,6 @@
 import {
   getMembersSchemaFn,
-  getSummarySchemaFn,
+  getMembersSummarySchemaFn,
   getRegisterSchemaFn,
   registerMemberFn,
 } from "./../api/api";
@@ -35,7 +35,7 @@ export const useMembersStore = defineStore({
       try {
         const [membersSchema, summarySchema, members] = await Promise.all([
           getMembersSchemaFn(),
-          getSummarySchemaFn(),
+          getMembersSummarySchemaFn(),
           membersMembersFn(),
         ]);
         this.membersSchema = membersSchema;

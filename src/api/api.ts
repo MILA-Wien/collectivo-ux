@@ -110,7 +110,7 @@ export const getProfileSchemaFn = async () => {
   return response.data; //or response? When to choose?
 };
 
-export const getSummarySchemaFn = async () => {
+export const getMembersSummarySchemaFn = async () => {
   const response = await api.get("/members/summary/schema/");
   return response.data; //or response? When to choose?
 };
