@@ -174,7 +174,7 @@ function keyToBgClass(i: number) {
       dataKey="id"
       ref="datatable"
       :paginator="true"
-      :rows="10"
+      :rows="100"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       :rowsPerPageOptions="[10, 20, 50, 100]"
       :currentPageReportTemplate="
