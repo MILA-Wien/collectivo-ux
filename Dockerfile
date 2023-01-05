@@ -1,4 +1,4 @@
-FROM node:16 AS build-env
+FROM node:18 AS build-env
 
 # Create app directory
 WORKDIR /app
@@ -9,7 +9,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Install app dependencies
 
 COPY ./package.json package.json
-RUN yarn
+COPY ./yarn.lock yarn.lock
+RUN  yarn install --frozen-lockfile
 
 COPY . .
 
