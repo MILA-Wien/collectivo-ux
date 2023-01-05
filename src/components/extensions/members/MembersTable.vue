@@ -12,6 +12,7 @@ import { FilterMatchMode, FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import Dropdown from 'primevue/dropdown';
 import { useToast } from "primevue/usetoast";
+import type { Member } from "../../../api/types";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,7 +29,7 @@ const props = defineProps({
 const datatable = ref();
 const toast = useToast();
 let selectedMember = ref({});
-const selectedMembers = ref<any[]>([]);
+const selectedMembers = ref<Member[]>([]);
 const editMember = ref(false);
 function edit(event: any) {
   selectedMember.value = event;
