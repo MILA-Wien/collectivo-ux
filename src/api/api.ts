@@ -87,6 +87,17 @@ export const membersMembersPatch = async (member: Member) => {
   return response;
 };
 
+// Member objects
+const tags_path = "/members/tags/"
+export const getMembersTagsFn = async () =>
+  api.get(tags_path);
+export const postMembersTagsFn = async (tag:any) =>
+  api.post(tags_path, tag);
+export const patchMembersTagsFn = async (tag: any) =>
+  api.patch(`${tags_path}${tag.id}/`, tag);
+export const deleteMembersTagsFn = async (tag:any) =>
+  api.delete(`${tags_path}${tag.id}/`);
+
 // Dashboard
 export const dashboardTiles = async () => {
   const response = api.get(`/dashboard/tiles/?limit=10`);

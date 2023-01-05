@@ -1,10 +1,12 @@
-import { getRegisterSchemaFn, registerMemberFn } from "./../api/api";
+import { getRegisterSchemaFn, registerMemberFn, getMembersTagsFn, patchMembersTagsFn, postMembersTagsFn } from "./../api/api";
 import type { Members, Member, Schema } from "./../api/types";
 import { defineStore } from "pinia";
 import { membersMembersFn, membersMembersPatch } from "@/api/api";
 
 type MembersState = {
+  errors: Object;
   members: Members | null;
+  tags: any | null;
   membersLoaded: boolean;
   membersLoadingError: string | null;
   registrationSchema: Schema | null;
@@ -16,6 +18,7 @@ export const useMembersStore = defineStore({
   state: () =>
     ({
       members: null,
+      tags: null,
       membersLoaded: false,
       membersLoadingError: null,
       registrationSchema: null,
@@ -71,5 +74,28 @@ export const useMembersStore = defineStore({
     setRegistrationFinished() {
       this.registrationFinished = true;
     },
+
+    // Tags
+    async getTags() {
+      const response = await getMembersTagsFn();
+      this.tags = response.data
+    },
+    async updateTag(tag:any) {
+      const response = await patchMembersTagsFn(tag);
+      // Update data in store
+      const index = this.tags?.findIndex((m: any) => {
+        return m.id === response.data.id;
+      });
+      if (index !== null && index !== undefined) {
+        this.tags![index] = response.data;
+      }
+      return response;
+    },
+    async createTag(tag:any) {
+      const response = await postMembersTagsFn(tag);
+      this.tags.push(response.data);
+      return response;
+    }
+
   },
 });
