@@ -158,9 +158,9 @@ function keyToBgClass(i: number) {
           @click="copyEmails">
         </Button>
         </div>
-        <Button :label="t('Export CSV')" :disabled="!(selectedMembers.length>0)">
+        <Button :label="t('Export CSV')" :disabled="!(selectedMembers?.length>0)">
           <JsonCSV
-            v-if="selectedMembers.length>0"
+            v-if="selectedMembers?.length>0"
             :data="selectedMembers"
             :name="t('members') + '.csv'"
           >{{t('Export CSV')}}</JsonCSV>
