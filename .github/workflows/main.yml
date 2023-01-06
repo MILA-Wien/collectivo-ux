@@ -127,7 +127,7 @@ jobs:
           rename: '@jaywcjlove/github-action-package-test'
       - name: Build container image
         run: |
-          docker build -t milawien/collectivo-ux:latest -t milawien/collectivo-ux:${{ steps.info.outputs.version }} .
+          docker build -t milawien/collectivo-ux:latest -t milawien/collectivo-ux:${{ steps.info.outputs.version }}
     build-collectivo-ux-docker-push:
     name: Build collectivo-ux docker and push to dockerhub on main branch
     runs-on: ubuntu-latest
