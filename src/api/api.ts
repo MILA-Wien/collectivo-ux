@@ -104,9 +104,19 @@ export const updateMembershipFn = async (member: Member) => {
   return response;
 };
 
-// get profile schema
+// get schemas
 export const getProfileSchemaFn = async () => {
   const response = await api.get("/members/profile/schema/");
+  return response.data; //or response? When to choose?
+};
+
+export const getMembersSummarySchemaFn = async () => {
+  const response = await api.get("/members/summary/schema/");
+  return response.data; //or response? When to choose?
+};
+
+export const getMembersSchemaFn = async () => {
+  const response = await api.get("/members/members/schema/");
   return response.data; //or response? When to choose?
 };
 

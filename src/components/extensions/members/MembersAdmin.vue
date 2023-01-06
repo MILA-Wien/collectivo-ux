@@ -13,7 +13,8 @@ const membersStore = useMembersStore();
 if (membersStore.membersLoaded === false) {
   membersStore.getMembers();
 }
-const { members, membersLoadingError } = storeToRefs(membersStore);
+const { members, summarySchema, membersLoadingError } =
+  storeToRefs(membersStore);
 </script>
 
 <template>
@@ -26,7 +27,11 @@ const { members, membersLoadingError } = storeToRefs(membersStore);
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <MembersTable :members="members" :editMember="editMember" />
+      <MembersTable
+        :members="members"
+        :schema="summarySchema!"
+        :editMember="editMember"
+      />
     </div>
   </div>
 </template>

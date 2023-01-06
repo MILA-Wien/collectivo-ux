@@ -115,5 +115,34 @@
     "Update failed": "Aktualisierung abgebrochen",
 
     "Main menu": "Hauptmenü",
-    "Membership number": "Mitgliedsnummer"
+    "Membership number": "Mitgliedsnummer",
+
+    "Person type": "Typ",
+    "Address postcode": "PLZ",
+    "Address city": "Stadt",
+    "Address street": "Straße",
+    "Address number": "Hausnummer",
+    "Address stair": "Stiege",
+    "Address door": "Tür",
+    "Address country": "Land",
+    "Membership type": "Mitglied",
+    "Membership start": "Beitritt",
+    "Membership end": "Austritt",
+    "Membership cancelled": "Kündigung",
+    "Membership status": "Status",
+    "Shares number": "Anteile",
+    "Survey contact": "Umfrage Erstkontakt",
+    "Survey motivation": "Umfrage Motivation",
+    "Skills": "Umfrage Fähigkeiten",
+    "Groups interested": "Umfrage Arbeitsgruppe",
+    "User id": "Benutzer ID (Keycloak)",
+
+    "natural": "Person",
+    "legal": "Organisation",
+    "active": "Aktiv",
+    "investing": "Investierend",
+
+    "Columns": "Spalten",
+    "Export CSV": "CSV exportieren",
+    "Copy emails": "E-Mails kopieren"
 }
