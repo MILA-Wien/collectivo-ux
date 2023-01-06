@@ -129,7 +129,7 @@ jobs:
         run: |
           docker build -t milawien/collectivo-ux:latest -t milawien/collectivo-ux:${{ steps.info.outputs.version }} 
   build-collectivo-ux-docker-push:
-    name: Build collectivo-ux docker and push to dockerhub on main branch
+    name: Release collectivo-ux to docker hub
     runs-on: ubuntu-latest
     needs: [build-collectivo-ux-docker]
     if: github.ref == 'refs/heads/main'
