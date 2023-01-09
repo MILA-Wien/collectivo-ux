@@ -44,7 +44,6 @@ for (const [key, value] of Object.entries(props.schema)) {
     field: key,
     header: t(value.label),
     inputType: value.input_type,
-
   });
 
   // Initialize filters with default settings
@@ -203,7 +202,7 @@ function keyToBgClass(i: number) {
         :field="col.field"
         :header="col.header"
         :key="col.field"
-        :sortable="col.sortable"
+        :sortable="true"
         :filter="col.filter"
       >
         <!-- TODO Bulk Edit Button -->
