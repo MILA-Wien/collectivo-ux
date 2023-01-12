@@ -40,6 +40,15 @@ const router = createRouter({
         import("../components/extensions/members/MembersAdmin.vue"),
     },
     {
+      path: "/members/emails",
+      name: "members",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () =>
+        import("../components/extensions/members/MembersEmails.vue"),
+    },
+    {
       path: "/members/profile",
       name: "profile",
       meta: {

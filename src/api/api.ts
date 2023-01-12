@@ -120,6 +120,18 @@ export const getMembersSchemaFn = async () => {
   return response.data; //or response? When to choose?
 };
 
+export const getMembersEmailCampaignsFn = async () => {
+  return await api.get("/members/emails/campaigns/");
+};
+
+export const getMembersEmailTemplatesFn = async () => {
+  return await api.get("/members/emails/templates/");
+};
+
+export const getMembersEmailDesignsFn = async () => {
+  return await api.get("/members/emails/designs/");
+};
+
 export const getRegisterSchemaFn = async () => {
   const response = await api.get("/members/register/schema");
   return response.data;
@@ -129,3 +141,13 @@ export const registerMemberFn = async (member: any) => {
   const response = await api.post("/members/register", member);
   return response.data;
 };
+
+export const APIObjects = {
+  membersEmailsDesigns: "/members/emails/designs/",
+  membersEmailsTemplates: "/members/emails/templates/",
+  membersEmailsCampaigns: "/members/emails/campaigns/",
+}
+
+export function get(endpoint: keyof typeof APIObjects) {
+  return api.get(APIObjects[endpoint]);
+}
