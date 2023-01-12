@@ -3,10 +3,15 @@ import {
   getMembersSummarySchemaFn,
   getRegisterSchemaFn,
   registerMemberFn,
+  getMembersEmailCampaignsFn,
+  getMembersEmailTemplatesFn,
+  getMembersEmailDesignsFn,
 } from "./../api/api";
 import type { Members, Member, Schema } from "./../api/types";
-import { defineStore } from "pinia";
-import { membersMembersFn, membersMembersPatch } from "@/api/api";
+import { defineStore, storeToRefs } from "pinia";
+import { membersMembersFn, membersMembersPatch, APIObjects, get } from "@/api/api";
+
+
 
 type MembersState = {
   members: Members | null;
@@ -16,7 +21,26 @@ type MembersState = {
   membersLoadingError: string | null;
   registrationSchema: Schema | null;
   registrationFinished: boolean;
+  membersEmailsCampaigns: any;
+  membersEmailsTemplates: any;
+  membersEmailsDesigns: any;
 };
+
+// Create type that is overlap between APIObjects and MembersState
+type MembersAPIObjects = keyof typeof APIObjects & keyof MembersState;
+
+function createObjectManager(objectName: MembersAPIObjects, store: any) {
+  if (store[objectName] === undefined) {
+    throw new Error(`Object ${objectName} does not exist in store`);
+  }
+  return {
+    objectName: objectName,
+    async get() {
+      const response = await get(objectName);
+      store[objectName] = response.data;
+    }
+  }
+}
 
 export const useMembersStore = defineStore({
   id: "members",
@@ -29,6 +53,9 @@ export const useMembersStore = defineStore({
       membersLoadingError: null,
       registrationSchema: null,
       registrationFinished: false,
+      membersEmailsCampaigns: null,
+      membersEmailsTemplates: null,
+      membersEmailsDesigns: null,
     } as MembersState),
   actions: {
     async getMembers() {
@@ -85,6 +112,9 @@ export const useMembersStore = defineStore({
     },
     setRegistrationFinished() {
       this.registrationFinished = true;
+    },
+    getManager(objectName: keyof typeof APIObjects) {
+      return createObjectManager(objectName, this)
     },
   },
 });
