@@ -48,7 +48,7 @@ function closeModal() {
 async function save() {
   isSaving.value = true;
   try {
-    await membersStore.updateTag(member_attributes.value);
+    await membersStore.updateObject(member_attributes.value);
     successToast();
   } catch (error) {
     errorToast(error);
