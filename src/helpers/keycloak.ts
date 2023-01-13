@@ -26,14 +26,21 @@ function initKeycloak() {
     store.setAccountUrl(keycloak.createAccountUrl());
     store.setRedirectUri(keycloak.redirectUri);
   };
+  function forceLogout() {
+    console.log("forceLogout")
+    alert("Something went wrong with your authentication. Please log in again.");
+    keycloak.logout();
+  };
   keycloak.onAuthError = () => {
     console.log("onAuthError");
+    forceLogout()
   };
   keycloak.onAuthRefreshSuccess = () => {
     console.log("onAuthRefreshSuccess");
   };
   keycloak.onAuthRefreshError = () => {
     console.log("onAuthRefreshError");
+    forceLogout()
   };
   keycloak.onAuthLogout = () => {
     console.log("onAuthLogout");

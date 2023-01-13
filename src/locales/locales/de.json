@@ -3,7 +3,7 @@
     "menu.Login": "Login",
     "menu.Menu": "Menu",
     "Log out": "Abmelden",
-
+    "Something went wrong with your authentication. Please log in again.": "Es gab ein Problem mit deiner Anmeldung. Bitte melde dich erneut an.",
     "Counter": "Zähler",
     "Increment": "Hinzufügen",
 
