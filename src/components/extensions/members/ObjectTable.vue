@@ -41,11 +41,17 @@ const selectedObjects = ref();
 
 const editActive = ref(false);
 const editObject = ref({});
+const editCreate = ref(false)
 function edit(event: any) {
   editObject.value = event;
+  editCreate.value = false;
   editActive.value = true;
 }
-
+function create() {
+  editObject.value = {};
+  editCreate.value = true;
+  editActive.value = true;
+}
 // const filters1 = ref({
 //   id: { value: null, matchMode: FilterMatchMode.EQUALS },
 //   first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -61,8 +67,8 @@ function edit(event: any) {
     <Toolbar class="mb-4">
       <template #start> </template>
       <template #end>
-        <Button label="Create" />
-        <Button label="Delete" :disabled="!selectedObjects" />
+        <Button :label="t('Create')" @click="create()"  
+         class="p-button-success" />
       </template>
     </Toolbar>
 
@@ -108,7 +114,7 @@ function edit(event: any) {
 
     <ObjectDetail
       v-if="editActive"
-      :object="editObject"
+      :object="editObject" :create="editCreate"
       :store="store" :name="name" :schema="schema"
       @close="editActive = false"
     />

@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { useI18n } from "vue-i18n";
+
 import MemberDetail from "./MemberDetail.vue";
 import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
@@ -13,6 +13,7 @@ import JsonCSV from "vue-json-csv";
 import Dropdown from 'primevue/dropdown';
 import { useToast } from "primevue/usetoast";
 import type { Member } from "../../../api/types";
+import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

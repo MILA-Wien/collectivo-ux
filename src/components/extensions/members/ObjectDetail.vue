@@ -12,14 +12,36 @@ import type { endpoints } from "@/api/api";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
-const membersStore = useMembersStore();
-const object_label = "tag"
+
+const props = defineProps({
+  store: {
+    type: Object as PropType<StoreGeneric>,
+    required: true,
+  },
+  name: {
+    type: String as PropType<keyof typeof endpoints>,
+    required: true,
+  },
+  object: {
+    type: Object,
+    required: true,
+  },
+  create: {
+    type: Boolean,
+    required: true,
+  },
+  schema: {
+    type: Object,
+    required: true,
+  },
+});
+
 const toast = useToast();
 const successToast = () => {
   toast.add({
     severity: "success",
     summary: "Success",
-    detail: object_label + " has been updated.",
+    detail: props.name + " has been updated.",
     life: 5000,
   });
 };
@@ -33,42 +55,57 @@ const errorToast = (e: any) => {
   });
 };
 
-const props = defineProps({
-  store: {
-    type: Object as PropType<StoreGeneric>,
-    required: true,
-  },
-  name: {
-    type: String as PropType<keyof typeof endpoints>,
-    required: true,
-  },
-  object: {
-    type: Object || null,
-    required: true,
-  },
-  schema: {
-    type: Object,
-    required: true,
-  },
-});
-
-const member_attributes = ref(JSON.parse(JSON.stringify(props.object)));
-
+// Create temporary copy of object
+console.log(props.object)
+const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
+console.log(object_temp.value)
 const displayModal = ref(true);
 const isSaving = ref(false);
-
+delete props.schema.id
 function closeModal() {
   emit("close");
 }
-async function save() {
+async function createObject() {
   isSaving.value = true;
   try {
-    await props.store.update(
-      props.name,
-      member_attributes.value['id'],
-      member_attributes.value);
+      await props.store.create(
+        props.name,
+        object_temp.value);
+    
     successToast();
   } catch (error) {
+    console.log(error)
+    errorToast(error);
+  }
+  emit("close");
+  isSaving.value = false;
+}
+async function saveObject() {
+  console.log(object_temp.value)
+  isSaving.value = true;
+    try {
+      await props.store.update(
+        props.name,
+        object_temp.value['id'],
+        object_temp.value);
+
+    successToast();
+  } catch (error) {
+    console.log(error)
+    errorToast(error);
+  }
+  emit("close");
+  isSaving.value = false;
+}
+async function deleteObject() {
+  isSaving.value = true;
+    try {
+      await props.store.delete(
+        props.name,
+        object_temp.value['id']);
+    successToast();
+  } catch (error) {
+    console.log(error)
     errorToast(error);
   }
   emit("close");
@@ -78,10 +115,10 @@ async function save() {
 <template>
   <div>
     <Dialog
-      :header="t('Edit user') + ' ' + object.id"
+      :header="t(name) + ' ' + object.id"
       v-model:visible="displayModal"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
-      :style="{ width: '50vw' }"
+      :style="{ width: '80vw' }"
       :modal="true"
       @hide="closeModal"
     >
@@ -90,31 +127,71 @@ async function save() {
           v-for="(field, name, index) in schema"
           :key="name" class="field"
         >
-          <label for="attr-{{name}}">{{ field.label }}</label>
-          <InputText
-            id="attr-{{name}}"
-            type="text"
-            aria-describedby="attr-{{value}}-help"
-            v-model="object[name]"
-            :disabled="field.read_only"
-          />
 
-          <small id="user-attr-{{value}}-help" class="p-info">{{ field }}</small>
+          <label for="attr-{{name}}">{{ field.label }}</label>
+          <div v-if="field.input_type === 'select'">
+            <Dropdown 
+              v-model="object_temp[name]" 
+              :options="field.options" 
+              optionLabel="label" 
+              optionValue="value"
+              :filter="true"
+              :disabled="field.read_only"
+              placeholder="Select a choice" />
+          </div>
+          <div v-else-if="field.input_type === 'html'">
+            TODO CHANGE THIS TO A HTML EDIT FIELD<br/>
+            <InputText
+              id="attr-{{name}}"
+              type="text"
+              aria-describedby="attr-{{value}}-help"
+              v-model="object_temp[name]"
+              :disabled="field.read_only"
+            />
+          </div>
+          <div v-else>
+            <InputText
+              id="attr-{{name}}"
+              type="text"
+              aria-describedby="attr-{{value}}-help"
+              v-model="object_temp[name]"
+              :disabled="field.read_only"
+            />
+          </div>
+          <small v-if="field.help_text" id="user-attr-{{value}}-help" class="p-info">{{ field.help_text }}</small>
         </div>
       </div>
       <template #footer>
+        
+        
+        <ButtonPrime
+          v-if="create"
+          :label="t('Create')"
+          :loading="isSaving"
+          icon="pi pi-check"
+          class="p-button-success"
+          @click="createObject()"
+        />
+        <ButtonPrime
+          v-else
+          :label="t('Save')"
+          :loading="isSaving"
+          icon="pi pi-check"
+          @click="saveObject()"
+        />
+        
         <ButtonPrime
           :label="t('Cancel')"
           icon="pi pi-times"
           @click="closeModal"
-          class="p-button-text"
+          class="p-button-secondary"
         />
         <ButtonPrime
-          :label="t('Save')"
-          :loading="isSaving"
-          icon="pi pi-check"
-          @click="save()"
-          autofocus
+          :label="t('Delete')"
+          v-if="!create"
+          icon="pi pi-trash"
+          @click="deleteObject()"
+          class="p-button-danger"
         />
       </template>
     </Dialog>

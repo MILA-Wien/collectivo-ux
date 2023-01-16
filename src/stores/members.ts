@@ -3,15 +3,10 @@ import {
   getMembersSummarySchemaFn,
   getRegisterSchemaFn,
   registerMemberFn,
-  getMembersEmailCampaignsFn,
-  getMembersEmailTemplatesFn,
-  getMembersEmailDesignsFn,
 } from "./../api/api";
 import type { Members, Member, Schema } from "./../api/types";
-import { defineStore, storeToRefs } from "pinia";
+import { defineStore } from "pinia";
 import { membersMembersFn, membersMembersPatch, endpoints, API } from "@/api/api";
-
-
 
 type MembersState = {
   members: Members | null;
@@ -123,15 +118,28 @@ export const useMembersStore = defineStore({
     setRegistrationFinished() {
       this.registrationFinished = true;
     },
-    getManager(objectName: keyof typeof endpoints) {
-      return createObjectManager(objectName, this)
-    },
     async get(objectName: MembersEndpoints) {
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
         API.get(objectName),
       ]);
-      // const response = await API.get(objectName);
+
+      // Extend schema
+      for (const [key, value] of Object.entries(schema.data) as any) {
+        if (value.choices == undefined) {
+          continue;
+        }
+        value.options = [];
+        var i = 0;
+        for (const [key2, value2] of Object.entries(value.choices) as any) {
+          value.options.push({
+            label: value2,
+            value: parseInt(key2),
+            key: ++i,
+          });
+        }
+      }
+      
       this[objectName] = {
         schema: schema.data,
         objects: objects.data,
