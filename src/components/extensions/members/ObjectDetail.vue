@@ -6,6 +6,10 @@ import { useMembersStore } from "@/stores/members";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 
+import type { PropType } from "vue";
+import type { StoreGeneric } from "pinia";
+import type { endpoints } from "@/api/api";
+
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
 const membersStore = useMembersStore();
@@ -30,13 +34,24 @@ const errorToast = (e: any) => {
 };
 
 const props = defineProps({
+  store: {
+    type: Object as PropType<StoreGeneric>,
+    required: true,
+  },
+  name: {
+    type: String as PropType<keyof typeof endpoints>,
+    required: true,
+  },
   object: {
+    type: Object || null,
+    required: true,
+  },
+  schema: {
     type: Object,
     required: true,
   },
 });
 
-console.log(props.object);
 const member_attributes = ref(JSON.parse(JSON.stringify(props.object)));
 
 const displayModal = ref(true);
@@ -48,7 +63,10 @@ function closeModal() {
 async function save() {
   isSaving.value = true;
   try {
-    await membersStore.updateObject(member_attributes.value);
+    await props.store.update(
+      props.name,
+      member_attributes.value['id'],
+      member_attributes.value);
     successToast();
   } catch (error) {
     errorToast(error);
@@ -69,22 +87,19 @@ async function save() {
     >
       <div class="modal-content">
         <div
-          v-for="(value, key) in Object.keys(member_attributes)"
-          :key="value ? key + value : key"
-          class="field"
+          v-for="(field, name, index) in schema"
+          :key="name" class="field"
         >
-          <label for="user-attr-{{value}}">{{ value }}</label>
+          <label for="attr-{{name}}">{{ field.label }}</label>
           <InputText
-            id="user-attr-{{value}}"
+            id="attr-{{name}}"
             type="text"
-            aria-describedby="user-attr-{{value}}-help"
-            v-model="member_attributes[value]"
-            :disabled="value === 'id' || value === 'user_id'"
+            aria-describedby="attr-{{value}}-help"
+            v-model="object[name]"
+            :disabled="field.read_only"
           />
 
-          <small id="user-attr-{{value}}-help" class="p-info"
-            >The User attribute {{ value }}.</small
-          >
+          <small id="user-attr-{{value}}-help" class="p-info">{{ field }}</small>
         </div>
       </div>
       <template #footer>

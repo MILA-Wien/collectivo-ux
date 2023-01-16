@@ -8,19 +8,34 @@ import ObjectDetail from "./ObjectDetail.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 
+import type { PropType } from "vue";
+import type { StoreGeneric } from "pinia";
+import type { endpoints } from "@/api/api";
+
 import { FilterMatchMode } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
-  data: {
+  store: {
+    type: Object as PropType<StoreGeneric>,
+    required: true,
+  },
+  name: {
+    type: String as PropType<keyof typeof endpoints>,
+    required: true,
+  },
+  objects: {
     type: Array,
+    required: true,
+  },
+  schema: {
+    type: Object,
     required: true,
   },
 });
 
-// console.log(props.data)
 const datatable = ref();
 const selectedObjects = ref();
 
@@ -52,7 +67,7 @@ function edit(event: any) {
     </Toolbar>
 
     <DataTable
-      :value="data"
+      :value="objects"
       v-model:selection="selectedObjects"
       dataKey="id"
       ref="datatable"
@@ -77,7 +92,7 @@ function edit(event: any) {
       class="p-datatable-sm"
     >
 
-      <Column v-for="(value, col) in data[0]" :header="col" :key="col" :field="col">
+      <Column v-for="(value, col) in objects[0]" :header="col" :key="col" :field="col">
       </Column>
       <Column>
         <template #body="slotProps">
@@ -94,6 +109,7 @@ function edit(event: any) {
     <ObjectDetail
       v-if="editActive"
       :object="editObject"
+      :store="store" :name="name" :schema="schema"
       @close="editActive = false"
     />
 

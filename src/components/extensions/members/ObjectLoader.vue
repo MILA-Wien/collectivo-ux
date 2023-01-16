@@ -5,7 +5,7 @@ import { storeToRefs, type Store } from "pinia";
 import type { StoreGeneric } from "pinia";
 import ObjectTable from "./ObjectTable.vue";
 import ProgressSpinner from 'primevue/progressspinner';
-import type { APIObjects } from "@/api/api";
+import type { endpoints } from "@/api/api";
 
 const props = defineProps({
   store: {
@@ -13,18 +13,17 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof APIObjects>,
+    type: String as PropType<keyof typeof endpoints>,
     required: true,
   },
 });
 
 const error = ref<Object|null>(null);
-const api = props.store.getManager(props.name);
 const data = storeToRefs(props.store)[props.name];
 
 // Load data
 if (data.value === null) {
-  api.get().catch((e: any) => {error.value = e})
+  props.store.get(props.name).catch((e: any) => {error.value = e})
 }
 
 </script>
@@ -32,13 +31,13 @@ if (data.value === null) {
 <template>
   <div>
     <div v-if="error !== null">
-      <p>There was an error loading the data. <br/> {{error}}</p>
+      <p>There was an error loading the data.<br/>{{error}}</p>
     </div>
     <div v-else-if="data === null">
       <ProgressSpinner />
     </div>
     <div v-else>
-      <ObjectTable :data="data"/>
+      <ObjectTable :store="store" :name="name" :objects="data.objects" :schema="data.schema"/>
     </div>
   </div>
 </template>
