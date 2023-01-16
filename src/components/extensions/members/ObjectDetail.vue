@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
 import { useI18n } from "vue-i18n";
-import { useMembersStore } from "@/stores/members";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 
@@ -55,10 +54,9 @@ const errorToast = (e: any) => {
   });
 };
 
-// Create temporary copy of object
-console.log(props.object)
+// Create temporary copy of the object
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
-console.log(object_temp.value)
+
 const displayModal = ref(true);
 const isSaving = ref(false);
 delete props.schema.id
@@ -162,8 +160,6 @@ async function deleteObject() {
         </div>
       </div>
       <template #footer>
-        
-        
         <ButtonPrime
           v-if="create"
           :label="t('Create')"
