@@ -3,7 +3,7 @@ import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import ObjectLoader from "./ObjectLoader.vue";
+import ObjectLoader from '@/components/datatable/ObjectLoader.vue';
 
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();

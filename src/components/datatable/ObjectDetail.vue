@@ -4,7 +4,7 @@ import Dialog from "primevue/dialog";
 import { useI18n } from "vue-i18n";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-
+import { useConfirm } from "primevue/useconfirm";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
@@ -109,9 +109,21 @@ async function deleteObject() {
   emit("close");
   isSaving.value = false;
 }
+
+const confirm = useConfirm();
+const confirmDelete = () => {
+  confirm.require({
+    message: 'Are you sure you want to delete this object?',
+    header: 'Confirmation',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {deleteObject()},
+  })
+};
+
 </script>
 <template>
   <div>
+    <ConfirmDialog></ConfirmDialog>
     <Dialog
       :header="t(name) + ' ' + object.id"
       v-model:visible="displayModal"
@@ -186,7 +198,7 @@ async function deleteObject() {
           :label="t('Delete')"
           v-if="!create"
           icon="pi pi-trash"
-          @click="deleteObject()"
+          @click="confirmDelete()"
           class="p-button-danger"
         />
       </template>
