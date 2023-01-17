@@ -6,7 +6,12 @@ import {
 } from "./../api/api";
 import type { Members, Member, Schema } from "./../api/types";
 import { defineStore } from "pinia";
-import { membersMembersFn, membersMembersPatch, endpoints, API } from "@/api/api";
+import {
+  membersMembersFn,
+  membersMembersPatch,
+  endpoints,
+  API,
+} from "@/api/api";
 
 type MembersState = {
   members: Members | null;
@@ -23,29 +28,6 @@ type MembersState = {
 
 // Create type that is overlap between Endpoints and MembersState
 type MembersEndpoints = keyof typeof endpoints & keyof MembersState;
-
-function createObjectManager(objectName: MembersEndpoints, store: any) {
-  if (store[objectName] === undefined) {
-    throw new Error(`Object ${objectName} does not exist in store`);
-  }
-  return {
-    objectName: objectName,
-    async get() {
-      const response = await API.get(objectName);
-      store[objectName] = response.data;
-    },
-    async update(pk: Number, payload: Object) {
-      const response = await API.patch(objectName, pk, payload);
-      const memberIndex = store[objectName]?.results?.findIndex((m: Member) => {
-        return m.id === response.data.id;
-      });
-      if (memberIndex !== null && memberIndex !== undefined) {
-        store[objectName]!.results![memberIndex] = response.data;
-      }
-      return response;
-    },
-  }
-}
 
 export const useMembersStore = defineStore({
   id: "members",
@@ -125,26 +107,26 @@ export const useMembersStore = defineStore({
       ]);
 
       // Extend schema
-      for (const [key, value] of Object.entries(schema.data) as any) {
+      for (const value of Object.values(schema.data) as any) {
         if (value.choices == undefined) {
           continue;
         }
         value.options = [];
-        var i = 0;
+        let i = 0;
         for (const [key2, value2] of Object.entries(value.choices) as any) {
           value.options.push({
             label: value2,
-            value: parseInt(key2),
+            value: parseInt(key2), // Keys are Integers in actual data
             key: ++i,
           });
         }
       }
-      
+
       this[objectName] = {
         schema: schema.data,
         objects: objects.data,
-      }
-      console.log(this[objectName])
+      };
+      console.log(this[objectName]);
     },
     async update(objectName: MembersEndpoints, pk: Number, payload: Object) {
       const response = await API.patch(objectName, pk, payload);

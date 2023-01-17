@@ -3,7 +3,6 @@ import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
-import InputText from "primevue/inputtext";
 import ObjectDetail from "./ObjectDetail.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
@@ -12,8 +11,6 @@ import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 
-import { FilterMatchMode } from "primevue/api";
-import JsonCSV from "vue-json-csv";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,7 +38,7 @@ const selectedObjects = ref();
 
 const editActive = ref(false);
 const editObject = ref({});
-const editCreate = ref(false)
+const editCreate = ref(false);
 function edit(event: any) {
   editObject.value = event;
   editCreate.value = false;
@@ -67,8 +64,11 @@ function create() {
     <Toolbar class="mb-4">
       <template #start> </template>
       <template #end>
-        <Button :label="t('Create')" @click="create()"  
-         class="p-button-success" />
+        <Button
+          :label="t('Create')"
+          @click="create()"
+          class="p-button-success"
+        />
       </template>
     </Toolbar>
 
@@ -97,8 +97,12 @@ function create() {
       showGridlines
       class="p-datatable-sm"
     >
-
-      <Column v-for="(value, col) in objects[0]" :header="col" :key="col" :field="col">
+      <Column
+        v-for="(value, col) in objects[0]"
+        :header="col"
+        :key="col"
+        :field="col"
+      >
       </Column>
       <Column>
         <template #body="slotProps">
@@ -109,18 +113,18 @@ function create() {
           />
         </template>
       </Column>
-
     </DataTable>
 
     <ObjectDetail
       v-if="editActive"
-      :object="editObject" :create="editCreate"
-      :store="store" :name="name" :schema="schema"
+      :object="editObject"
+      :create="editCreate"
+      :store="store"
+      :name="name"
+      :schema="schema"
       @close="editActive = false"
     />
-
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

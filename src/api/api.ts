@@ -152,12 +152,13 @@ export const endpoints = {
   membersEmailsDesigns: "/members/emails/designs/",
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
-}
+};
 
 export const API = {
-
   get: async function (endpoint: keyof typeof endpoints, pk?: Number) {
-    if (pk === undefined) {return await api.get(endpoints[endpoint]);}
+    if (pk === undefined) {
+      return await api.get(endpoints[endpoint]);
+    }
     return await api.get(`${endpoints[endpoint]}${pk}/`);
   },
 
@@ -169,12 +170,15 @@ export const API = {
     return await api.post(endpoints[endpoint], payload);
   },
 
-  patch: async function (endpoint: keyof typeof endpoints, pk: Number, payload: Object) {
+  patch: async function (
+    endpoint: keyof typeof endpoints,
+    pk: Number,
+    payload: Object
+  ) {
     return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
   },
 
   delete: async function (endpoint: keyof typeof endpoints, pk: Number) {
     return await api.delete(`${endpoints[endpoint]}${pk}/`);
-  }
-
-}
+  },
+};

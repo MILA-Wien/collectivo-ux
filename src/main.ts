@@ -14,10 +14,10 @@ import PasswordPrime from "primevue/password";
 import Menu from "primevue/menu";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
-import Dialog from 'primevue/dialog';
-import Dropdown from 'primevue/dropdown';
-import ConfirmDialog from 'primevue/confirmdialog';
-import ConfirmationService from 'primevue/confirmationservice';
+import Dialog from "primevue/dialog";
+import Dropdown from "primevue/dropdown";
+import ConfirmDialog from "primevue/confirmdialog";
+import ConfirmationService from "primevue/confirmationservice";
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
@@ -45,9 +45,9 @@ keycloakInstance
     app.component("PasswordPrime", PasswordPrime);
     app.component("PrimeMenu", Menu);
     app.component("ToastPrime", Toast);
-    app.component("Dropdown", Dropdown);
-    app.component("Dialog", Dialog);
-    app.component("ConfirmDialog", ConfirmDialog); 
+    app.component("DropdownPrime", Dropdown);
+    app.component("DialogPrime", Dialog);
+    app.component("ConfirmDialogPrime", ConfirmDialog);
 
     // init view router
     app.use(router);

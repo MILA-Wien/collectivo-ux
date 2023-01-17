@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { PropType } from "vue";
-import { storeToRefs, type Store } from "pinia";
+import { storeToRefs } from "pinia";
 import type { StoreGeneric } from "pinia";
 import ObjectTable from "./ObjectTable.vue";
-import ProgressSpinner from 'primevue/progressspinner';
+import ProgressSpinner from "primevue/progressspinner";
 import type { endpoints } from "@/api/api";
 
 const props = defineProps({
@@ -18,29 +18,34 @@ const props = defineProps({
   },
 });
 
-const error = ref<Object|null>(null);
+const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name];
 
 // Load data
 if (data.value === null) {
-  props.store.get(props.name).catch((e: any) => {error.value = e})
+  props.store.get(props.name).catch((e: any) => {
+    error.value = e;
+  });
 }
-
 </script>
 
 <template>
   <div>
     <div v-if="error !== null">
-      <p>There was an error loading the data.<br/>{{error}}</p>
+      <p>There was an error loading the data.<br />{{ error }}</p>
     </div>
     <div v-else-if="data === null">
       <ProgressSpinner />
     </div>
     <div v-else>
-      <ObjectTable :store="store" :name="name" :objects="data.objects" :schema="data.schema"/>
+      <ObjectTable
+        :store="store"
+        :name="name"
+        :objects="data.objects"
+        :schema="data.schema"
+      />
     </div>
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
