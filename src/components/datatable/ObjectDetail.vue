@@ -115,13 +115,22 @@ const confirmDelete = () => {
     },
   });
 };
+
+function getHeader() {
+  if (props.create) {
+    return t("Create") + ": " + t(props.name);
+  } else {
+    return t(props.name) + " " + props.object.id;
+  }
+}
+
 </script>
 
 <template>
   <div>
-    <ConfirmDialog></ConfirmDialog>
+    <ConfirmDialogPrime></ConfirmDialogPrime>
     <DialogPrime
-      :header="t(name) + ' ' + object.id"
+      :header="getHeader()"
       v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '80vw' }"
@@ -154,9 +163,26 @@ const confirmDelete = () => {
                 optionLabel="label"
                 optionValue="value"
                 :filter="true"
-                :disabled="field.read_only"
                 placeholder="Select a choice"
+                :showClear="true"
               />
+            </div>
+
+            <div v-else-if="field.input_type === 'multiselect'">
+              <MultiSelectPrime
+                v-model="object_temp[name]"
+                :options="field.options"
+                optionLabel="label"
+                optionValue="value"
+                :maxSelectedLabels="0"
+                :selectedItemsLabel="`${object_temp[name]?.length} selected`"
+                :filter="true"
+                placeholder="Select multiple choices"
+              />
+            </div>
+
+            <div v-else-if="field.input_type === 'checkbox'">
+              <InputSwitchPrime v-model="object_temp[name]"/>
             </div>
 
             <div v-else-if="field.input_type === 'html'">

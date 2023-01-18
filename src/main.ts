@@ -10,7 +10,9 @@ import "./assets/main.css";
 import PrimeVue from "primevue/config";
 import Button from "primevue/button";
 import InputTextPrime from "primevue/inputtext";
+import InputSwitch from 'primevue/inputswitch';
 import PasswordPrime from "primevue/password";
+import MultiSelect from 'primevue/multiselect';
 import Menu from "primevue/menu";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
@@ -48,6 +50,8 @@ keycloakInstance
     app.component("DropdownPrime", Dropdown);
     app.component("DialogPrime", Dialog);
     app.component("ConfirmDialogPrime", ConfirmDialog);
+    app.component("InputSwitchPrime", InputSwitch);
+    app.component("MultiSelectPrime", MultiSelect);
 
     // init view router
     app.use(router);

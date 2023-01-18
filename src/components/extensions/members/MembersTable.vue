@@ -2,10 +2,9 @@
 import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-
 import MemberDetail from "./MemberDetail.vue";
-import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
+import { useMembersStore } from "@/stores/members";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -27,6 +26,7 @@ const props = defineProps({
     required: true,
   },
 });
+const membersStore = useMembersStore();
 const datatable = ref();
 const toast = useToast();
 let selectedMember = ref({});
@@ -114,6 +114,14 @@ function copyEmails() {
   );
 }
 
+
+// Send emails
+async function sendEmails() {
+  // TODO Forward user to /members/emails -> campaigns and open campaign create
+  // dialog. The recipients should be preselected with the currently selected
+  // members in the table.
+}
+
 // List of windscribe color classes
 const bgClasses = [
   "bg-indigo-200",
@@ -137,7 +145,7 @@ function keyToBgClass(i: number) {
   <div class="members-table">
     <Toolbar class="mb-4">
       <template #start>
-        <div style="text-align: left">
+        <div class="m-1 text-left">
           <MultiSelect
             v-model="selectedColumns"
             :options="columns"
@@ -152,7 +160,15 @@ function keyToBgClass(i: number) {
         </div>
       </template>
       <template #end>
-        <div class="mx-2">
+        <div class="m-1">
+          <Button
+            :label="t('Send emails')"
+            :disabled="!(selectedMembers.length > 0)"
+            @click="sendEmails"
+          >
+          </Button>
+        </div>
+        <div class="m-1">
           <Button
             :label="t('Copy emails')"
             :disabled="!(selectedMembers.length > 0)"
@@ -160,17 +176,19 @@ function keyToBgClass(i: number) {
           >
           </Button>
         </div>
-        <Button
-          :label="t('Export CSV')"
-          :disabled="!(selectedMembers?.length > 0)"
-        >
-          <JsonCSV
-            v-if="selectedMembers?.length > 0"
-            :data="selectedMembers"
-            :name="t('members') + '.csv'"
-            >{{ t("Export CSV") }}</JsonCSV
+        <div class="m-1">
+          <Button
+            :label="t('Export CSV')"
+            :disabled="!(selectedMembers?.length > 0)"
           >
-        </Button>
+            <JsonCSV
+              v-if="selectedMembers?.length > 0"
+              :data="selectedMembers"
+              :name="t('members') + '.csv'"
+              >{{ t("Export CSV") }}</JsonCSV
+            >
+          </Button>
+        </div>
       </template>
     </Toolbar>
 
@@ -321,6 +339,7 @@ function keyToBgClass(i: number) {
       :member="selectedMember"
       @close="editMember = false"
     />
+
   </div>
 </template>
 
