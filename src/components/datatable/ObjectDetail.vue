@@ -123,7 +123,6 @@ function getHeader() {
     return t(props.name) + " " + props.object.id;
   }
 }
-
 </script>
 
 <template>
@@ -182,7 +181,7 @@ function getHeader() {
             </div>
 
             <div v-else-if="field.input_type === 'checkbox'">
-              <InputSwitchPrime v-model="object_temp[name]"/>
+              <InputSwitchPrime v-model="object_temp[name]" />
             </div>
 
             <div v-else-if="field.input_type === 'html'">

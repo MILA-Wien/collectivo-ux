@@ -4,7 +4,6 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MemberDetail from "./MemberDetail.vue";
 import MultiSelect from "primevue/multiselect";
-import { useMembersStore } from "@/stores/members";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -26,7 +25,7 @@ const props = defineProps({
     required: true,
   },
 });
-const membersStore = useMembersStore();
+
 const datatable = ref();
 const toast = useToast();
 let selectedMember = ref({});
@@ -113,7 +112,6 @@ function copyEmails() {
     }
   );
 }
-
 
 // Send emails
 async function sendEmails() {
@@ -339,7 +337,6 @@ function keyToBgClass(i: number) {
       :member="selectedMember"
       @close="editMember = false"
     />
-
   </div>
 </template>
 
