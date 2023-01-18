@@ -49,14 +49,6 @@ function create() {
   editCreate.value = true;
   editActive.value = true;
 }
-// const filters1 = ref({
-//   id: { value: null, matchMode: FilterMatchMode.EQUALS },
-//   first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-//   last_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-//   email: { value: null, matchMode: FilterMatchMode.CONTAINS },
-//   person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
-//   membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
-// });
 </script>
 
 <template>
