@@ -4,6 +4,8 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import MemberDetail from "./MemberDetail.vue";
 import MultiSelect from "primevue/multiselect";
+import { useMembersStore } from "@/stores/members";
+import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -21,6 +23,10 @@ const props = defineProps({
     required: true,
   },
   schema: {
+    type: Object,
+    required: true,
+  },
+  emailCampaignSchema: {
     type: Object,
     required: true,
   },
@@ -114,10 +120,15 @@ function copyEmails() {
 }
 
 // Send emails
-async function sendEmails() {
-  // TODO Forward user to /members/emails -> campaigns and open campaign create
-  // dialog. The recipients should be preselected with the currently selected
-  // members in the table.
+const editActive = ref(false);
+const editObject = ref({});
+const editCreate = ref(false);
+function sendEmails() {
+  editObject.value = {
+    recipients: selectedMembers.value.map((m) => m.id),
+  };
+  editCreate.value = true;
+  editActive.value = true;
 }
 
 // List of windscribe color classes
@@ -336,6 +347,16 @@ function keyToBgClass(i: number) {
       v-if="editMember"
       :member="selectedMember"
       @close="editMember = false"
+    />
+
+    <ObjectDetail
+      v-if="editActive"
+      :object="editObject"
+      :create="editCreate"
+      :store="useMembersStore()"
+      :name="'membersEmailsCampaigns'"
+      :schema="emailCampaignSchema"
+      @close="editActive = false"
     />
   </div>
 </template>
