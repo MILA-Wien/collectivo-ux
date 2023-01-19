@@ -1,7 +1,7 @@
 <template>
   <div class="editor-wrapper">
     <Button
-      v-if="!html"
+      v-if="html"
       :label="t('Html editor')"
       @click="html = !html"
       class="html-toogle"
