@@ -2,7 +2,7 @@ name: Release tag
 on:
   push:
     tags:
-      - '*'
+      - '**'
 jobs:
   build-collectivo-ux-docker-push:
     name: Release collectivo-ux to docker hub
@@ -22,5 +22,5 @@ jobs:
           rename: '@jaywcjlove/github-action-package-test'
       - name: Build container image
         run: |
-          docker build -t milawien/collectivo-ux:${{ steps.info.outputs.version }} .
-          docker push milawien/collectivo-ux:${{ steps.info.outputs.version }} 
+          docker build -t milawien/collectivo-ux:v${{ steps.info.outputs.version }} .
+          docker push milawien/collectivo-ux:v${{ steps.info.outputs.version }} 

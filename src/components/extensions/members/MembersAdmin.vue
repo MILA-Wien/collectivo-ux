@@ -13,17 +13,29 @@ const membersStore = useMembersStore();
 if (membersStore.membersLoaded === false) {
   membersStore.getMembers();
 }
-const { members, summarySchema, membersLoadingError } =
+
+const { members, summarySchema, membersLoadingError, membersEmailsCampaigns } =
   storeToRefs(membersStore);
+
+// Load members emails campaigns schema
+const error = ref<Object | null>(null);
+if (membersEmailsCampaigns.value === null) {
+  membersStore.get("membersEmailsCampaigns").catch((e: any) => {
+    error.value = e;
+  });
+}
 </script>
 
 <template>
   <div class="members-wrapper">
-    <div v-if="membersLoadingError !== null" class="error">
+    <div v-if="membersLoadingError !== null || error !== null" class="error">
       <h2>{{ $t("Error while loading Members") }}</h2>
       <p class="error-message">{{ membersLoadingError }}</p>
     </div>
-    <div v-else-if="members === null" class="loading">
+    <div
+      v-else-if="members === null || membersEmailsCampaigns === null"
+      class="loading"
+    >
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
@@ -31,6 +43,7 @@ const { members, summarySchema, membersLoadingError } =
         :members="members"
         :schema="summarySchema!"
         :editMember="editMember"
+        :emailCampaignSchema="membersEmailsCampaigns.schema"
       />
     </div>
   </div>

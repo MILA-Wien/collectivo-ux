@@ -3,42 +3,52 @@ import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useI18n } from "vue-i18n";
-import InputText from "primevue/inputtext";
 import ObjectDetail from "./ObjectDetail.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 
-import { FilterMatchMode } from "primevue/api";
-import JsonCSV from "vue-json-csv";
+import type { PropType } from "vue";
+import type { StoreGeneric } from "pinia";
+import type { endpoints } from "@/api/api";
+
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
-  data: {
+  store: {
+    type: Object as PropType<StoreGeneric>,
+    required: true,
+  },
+  name: {
+    type: String as PropType<keyof typeof endpoints>,
+    required: true,
+  },
+  objects: {
     type: Array,
+    required: true,
+  },
+  schema: {
+    type: Object,
     required: true,
   },
 });
 
-// console.log(props.data)
 const datatable = ref();
 const selectedObjects = ref();
 
 const editActive = ref(false);
 const editObject = ref({});
+const editCreate = ref(false);
 function edit(event: any) {
   editObject.value = event;
+  editCreate.value = false;
   editActive.value = true;
 }
-
-// const filters1 = ref({
-//   id: { value: null, matchMode: FilterMatchMode.EQUALS },
-//   first_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-//   last_name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-//   email: { value: null, matchMode: FilterMatchMode.CONTAINS },
-//   person_type: { value: null, matchMode: FilterMatchMode.EQUALS },
-//   membership_type: { value: null, matchMode: FilterMatchMode.EQUALS },
-// });
+function create() {
+  editObject.value = {};
+  editCreate.value = true;
+  editActive.value = true;
+}
 </script>
 
 <template>
@@ -46,13 +56,16 @@ function edit(event: any) {
     <Toolbar class="mb-4">
       <template #start> </template>
       <template #end>
-        <Button label="Create" />
-        <Button label="Delete" :disabled="!selectedObjects" />
+        <Button
+          :label="t('Create')"
+          @click="create()"
+          class="p-button-success"
+        />
       </template>
     </Toolbar>
 
     <DataTable
-      :value="data"
+      :value="objects"
       v-model:selection="selectedObjects"
       dataKey="id"
       ref="datatable"
@@ -76,8 +89,12 @@ function edit(event: any) {
       showGridlines
       class="p-datatable-sm"
     >
-
-      <Column v-for="(value, col) in data[0]" :header="col" :key="col" :field="col">
+      <Column
+        v-for="(value, col) in objects[0]"
+        :header="col"
+        :key="col"
+        :field="col"
+      >
       </Column>
       <Column>
         <template #body="slotProps">
@@ -88,17 +105,18 @@ function edit(event: any) {
           />
         </template>
       </Column>
-
     </DataTable>
 
     <ObjectDetail
       v-if="editActive"
       :object="editObject"
+      :create="editCreate"
+      :store="store"
+      :name="name"
+      :schema="schema"
       @close="editActive = false"
     />
-
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

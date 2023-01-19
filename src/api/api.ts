@@ -32,6 +32,12 @@ api.interceptors.response.use(
   function (error) {
     if (error.response.status === 401) {
       console.log("Error 401", error.response.data.detail);
+      if (
+        error.response.data.detail === "Incorrect authentication credentials."
+      ) {
+        const store = useUserStore();
+        store.logout();
+      }
     } else if (error.response.status === 403) {
       console.log("Error 403", error.response.data.detail);
     } else if (error.response.status === 404) {
@@ -142,12 +148,37 @@ export const registerMemberFn = async (member: any) => {
   return response.data;
 };
 
-export const APIObjects = {
+export const endpoints = {
   membersEmailsDesigns: "/members/emails/designs/",
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
-}
+};
 
-export function get(endpoint: keyof typeof APIObjects) {
-  return api.get(APIObjects[endpoint]);
-}
+export const API = {
+  get: async function (endpoint: keyof typeof endpoints, pk?: Number) {
+    if (pk === undefined) {
+      return await api.get(endpoints[endpoint]);
+    }
+    return await api.get(`${endpoints[endpoint]}${pk}/`);
+  },
+
+  getSchema: async function (endpoint: keyof typeof endpoints) {
+    return await api.get(`${endpoints[endpoint]}schema/`);
+  },
+
+  post: async function (endpoint: keyof typeof endpoints, payload: Object) {
+    return await api.post(endpoints[endpoint], payload);
+  },
+
+  patch: async function (
+    endpoint: keyof typeof endpoints,
+    pk: Number,
+    payload: Object
+  ) {
+    return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
+  },
+
+  delete: async function (endpoint: keyof typeof endpoints, pk: Number) {
+    return await api.delete(`${endpoints[endpoint]}${pk}/`);
+  },
+};

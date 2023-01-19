@@ -38,6 +38,9 @@
     "Hello,": "Hallo",
     "tile.members_registration_tile": "Registrierung",
 
+    "Create": "Erstellen",
+    "Update": "Aktualisieren",
+    "Delete": "Löschen",
     "Edit": "Bearbeiten",
     "Error": "Fehler",
     "Registration": "Registrierung",

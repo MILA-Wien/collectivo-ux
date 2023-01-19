@@ -37,13 +37,14 @@ const { user } = storeToRefs(userStore);
   font-size: 14px;
 }
 
-.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td, .p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th{
-  padding:5px 10px 5px 10px;
+.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td,
+.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th {
+  padding: 5px 10px 5px 10px;
 }
 
 .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
-    vertical-align: middle;
-    white-space: normal;
+  vertical-align: middle;
+  white-space: normal;
 }
 
 .p-checkbox.p-component {
