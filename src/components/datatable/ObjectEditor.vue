@@ -1,10 +1,31 @@
 <template>
   <div class="editor-wrapper">
-    <Button label="Toggle Html edit " @click="html = !html" class="html-toogle"/>
-    <Textarea v-if="html" v-model="data" :autoResize="true" rows="5" cols="30" />
-    <editor v-else v-model="data" :disabled="disabled" editorStyle="height: 320px" />
+    <Button
+      v-if="!html"
+      :label="t('Html editor')"
+      @click="html = !html"
+      class="html-toogle"
+    />
+    <Button
+      v-if="!html"
+      :label="t('Visual editor')"
+      @click="html = !html"
+      class="html-toogle"
+    />
+    <Textarea
+      v-if="html"
+      v-model="data"
+      :autoResize="true"
+      rows="5"
+      cols="30"
+    />
+    <editor
+      v-else
+      v-model="data"
+      :disabled="disabled"
+      editorStyle="height: 320px"
+    />
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -12,6 +33,9 @@ import Textarea from "primevue/textarea";
 import Button from "primevue/button";
 import Editor from "primevue/editor";
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps({
   modelValue: String,
