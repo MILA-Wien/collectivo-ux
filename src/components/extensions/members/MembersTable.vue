@@ -226,6 +226,7 @@ function keyToBgClass(i: number) {
       :resizableColumns="true"
       columnResizeMode="fit"
       showGridlines
+      class="p-datatable-sm members-table"
     >
       <!-- Selection column -->
       <Column selectionMode="multiple"></Column>
@@ -361,10 +362,21 @@ function keyToBgClass(i: number) {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
 .p-button-sm {
   padding: 3px 6px 3px 6px;
   width: auto;
+}
+
+.members-table.p-component {
+  font-size: 14px;
+}
+
+.members-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
+.members-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
+  padding: 5px 10px 5px 10px;
+  vertical-align: middle;
+  white-space: normal;
 }
 
 .c-tag {

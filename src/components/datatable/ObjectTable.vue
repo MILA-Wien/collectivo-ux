@@ -87,7 +87,7 @@ function create() {
       :resizableColumns="true"
       columnResizeMode="fit"
       showGridlines
-      class="p-datatable-sm"
+      class="p-datatable-sm object-table"
     >
       <Column
         v-for="(value, col) in objects[0]"
@@ -119,4 +119,15 @@ function create() {
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss">
+.object-table.p-component {
+  font-size: 14px;
+}
+
+.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
+.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
+  padding: 5px 10px 5px 10px;
+  vertical-align: middle;
+  white-space: normal;
+}
+</style>

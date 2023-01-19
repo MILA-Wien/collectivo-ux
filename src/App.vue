@@ -33,19 +33,6 @@ const { user } = storeToRefs(userStore);
   border-color: #2db3a5;
 }
 
-.p-datatable.p-component {
-  font-size: 14px;
-}
-
-.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td,
-.p-datatable.p-datatable-gridlines .p-datatable-thead > tr > th {
-  padding: 5px 10px 5px 10px;
-}
-
-.p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
-  vertical-align: middle;
-  white-space: normal;
-}
 
 .p-checkbox.p-component {
   display: flex;
