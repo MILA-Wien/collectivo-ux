@@ -6,6 +6,7 @@ import { useConfirm } from "primevue/useconfirm";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
+import ObjectEditor from "@/components/datatable/ObjectEditor.vue";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -185,14 +186,7 @@ function getHeader() {
             </div>
 
             <div v-else-if="field.input_type === 'html'">
-              TODO CHANGE THIS TO A HTML EDIT FIELD<br />
-              <InputTextPrime
-                id="attr-{{name}}"
-                type="text"
-                aria-describedby="attr-{{value}}-help"
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-              />
+              <object-editor v-model="object_temp[name]"></object-editor>
             </div>
 
             <div v-else>
