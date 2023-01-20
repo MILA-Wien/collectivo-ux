@@ -32,6 +32,12 @@ api.interceptors.response.use(
   function (error) {
     if (error.response.status === 401) {
       console.log("Error 401", error.response.data.detail);
+      if (
+        error.response.data.detail === "Incorrect authentication credentials."
+      ) {
+        const store = useUserStore();
+        store.logout();
+      }
     } else if (error.response.status === 403) {
       console.log("Error 403", error.response.data.detail);
     } else if (error.response.status === 404) {
@@ -120,6 +126,18 @@ export const getMembersSchemaFn = async () => {
   return response.data; //or response? When to choose?
 };
 
+export const getMembersEmailCampaignsFn = async () => {
+  return await api.get("/members/emails/campaigns/");
+};
+
+export const getMembersEmailTemplatesFn = async () => {
+  return await api.get("/members/emails/templates/");
+};
+
+export const getMembersEmailDesignsFn = async () => {
+  return await api.get("/members/emails/designs/");
+};
+
 export const getRegisterSchemaFn = async () => {
   const response = await api.get("/members/register/schema");
   return response.data;
@@ -128,4 +146,39 @@ export const getRegisterSchemaFn = async () => {
 export const registerMemberFn = async (member: any) => {
   const response = await api.post("/members/register", member);
   return response.data;
+};
+
+export const endpoints = {
+  membersEmailsDesigns: "/members/emails/designs/",
+  membersEmailsTemplates: "/members/emails/templates/",
+  membersEmailsCampaigns: "/members/emails/campaigns/",
+};
+
+export const API = {
+  get: async function (endpoint: keyof typeof endpoints, pk?: Number) {
+    if (pk === undefined) {
+      return await api.get(endpoints[endpoint]);
+    }
+    return await api.get(`${endpoints[endpoint]}${pk}/`);
+  },
+
+  getSchema: async function (endpoint: keyof typeof endpoints) {
+    return await api.get(`${endpoints[endpoint]}schema/`);
+  },
+
+  post: async function (endpoint: keyof typeof endpoints, payload: Object) {
+    return await api.post(endpoints[endpoint], payload);
+  },
+
+  patch: async function (
+    endpoint: keyof typeof endpoints,
+    pk: Number,
+    payload: Object
+  ) {
+    return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
+  },
+
+  delete: async function (endpoint: keyof typeof endpoints, pk: Number) {
+    return await api.delete(`${endpoints[endpoint]}${pk}/`);
+  },
 };

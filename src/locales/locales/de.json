@@ -38,6 +38,9 @@
     "Hello,": "Hallo",
     "tile.members_registration_tile": "Registrierung",
 
+    "Create": "Erstellen",
+    "Update": "Aktualisieren",
+    "Delete": "Löschen",
     "Edit": "Bearbeiten",
     "Error": "Fehler",
     "Registration": "Registrierung",
@@ -144,5 +147,8 @@
 
     "Columns": "Spalten",
     "Export CSV": "CSV exportieren",
-    "Copy emails": "E-Mails kopieren"
+    "Copy emails": "E-Mails kopieren",
+
+    "Html editor": "HTML Editor",
+    "Visual editor": "Visueller Editor"
 }

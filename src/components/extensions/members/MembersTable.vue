@@ -2,17 +2,18 @@
 import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { useI18n } from "vue-i18n";
 import MemberDetail from "./MemberDetail.vue";
-import InputText from "primevue/inputtext";
 import MultiSelect from "primevue/multiselect";
+import { useMembersStore } from "@/stores/members";
+import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
-import Dropdown from 'primevue/dropdown';
+import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import type { Member } from "../../../api/types";
+import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25,7 +26,12 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  emailCampaignSchema: {
+    type: Object,
+    required: true,
+  },
 });
+
 const datatable = ref();
 const toast = useToast();
 let selectedMember = ref({});
@@ -47,7 +53,10 @@ for (const [key, value] of Object.entries(props.schema)) {
   });
 
   // Initialize filters with default settings
-  filters.value[key] = {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.CONTAINS}]};
+  filters.value[key] = {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  };
 
   // Add choices to column
   if (value.choices == undefined) {
@@ -64,7 +73,6 @@ for (const [key, value] of Object.entries(props.schema)) {
       key: ++i,
     });
   }
-
 }
 
 // Selected columns
@@ -77,7 +85,7 @@ const startingColumns = [
   "membership_type",
   "membership_status",
   "shares_number",
-  "tags"
+  "tags",
 ];
 for (const col of startingColumns) {
   selectedColumns.value.push(columns.find((c) => c.field === col));
@@ -90,25 +98,37 @@ function copyEmails() {
     .map((m) => m.email)
     .join(", ");
   navigator.clipboard.writeText(emails).then(
-  () => {
-    // clipboard successfully set
-    toast.add({
-      severity: "success",
-      summary: "Success",
-      detail: "Emails copied to clipboard.",
-      life: 5000,
-    });
-  },
-  () => {
-    // clipboard write failed
-    toast.add({
-      severity: "failure",
-      summary: "Failure",
-      detail: "Could not copy emails to clipboard.",
-      life: 5000,
-    });
-  }
+    () => {
+      // clipboard successfully set
+      toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: "Emails copied to clipboard.",
+        life: 5000,
+      });
+    },
+    () => {
+      // clipboard write failed
+      toast.add({
+        severity: "failure",
+        summary: "Failure",
+        detail: "Could not copy emails to clipboard.",
+        life: 5000,
+      });
+    }
   );
+}
+
+// Send emails
+const editActive = ref(false);
+const editObject = ref({});
+const editCreate = ref(false);
+function sendEmails() {
+  editObject.value = {
+    recipients: selectedMembers.value.map((m) => m.id),
+  };
+  editCreate.value = true;
+  editActive.value = true;
 }
 
 // List of windscribe color classes
@@ -128,14 +148,13 @@ const bgClasses = [
 function keyToBgClass(i: number) {
   return bgClasses[i % bgClasses.length];
 }
-
 </script>
 
 <template>
   <div class="members-table">
     <Toolbar class="mb-4">
       <template #start>
-        <div style="text-align: left">
+        <div class="m-1 text-left">
           <MultiSelect
             v-model="selectedColumns"
             :options="columns"
@@ -150,20 +169,35 @@ function keyToBgClass(i: number) {
         </div>
       </template>
       <template #end>
-        <div class="mx-2">
-        <Button
-          :label="t('Copy emails')"
-          :disabled="!(selectedMembers.length>0)"
-          @click="copyEmails">
-        </Button>
+        <div class="m-1">
+          <Button
+            :label="t('Send emails')"
+            :disabled="!(selectedMembers.length > 0)"
+            @click="sendEmails"
+          >
+          </Button>
         </div>
-        <Button :label="t('Export CSV')" :disabled="!(selectedMembers?.length>0)">
-          <JsonCSV
-            v-if="selectedMembers?.length>0"
-            :data="selectedMembers"
-            :name="t('members') + '.csv'"
-          >{{t('Export CSV')}}</JsonCSV>
-        </Button>
+        <div class="m-1">
+          <Button
+            :label="t('Copy emails')"
+            :disabled="!(selectedMembers.length > 0)"
+            @click="copyEmails"
+          >
+          </Button>
+        </div>
+        <div class="m-1">
+          <Button
+            :label="t('Export CSV')"
+            :disabled="!(selectedMembers?.length > 0)"
+          >
+            <JsonCSV
+              v-if="selectedMembers?.length > 0"
+              :data="selectedMembers"
+              :name="t('members') + '.csv'"
+              >{{ t("Export CSV") }}</JsonCSV
+            >
+          </Button>
+        </div>
       </template>
     </Toolbar>
 
@@ -192,6 +226,7 @@ function keyToBgClass(i: number) {
       :resizableColumns="true"
       columnResizeMode="fit"
       showGridlines
+      class="p-datatable-sm members-table"
     >
       <!-- Selection column -->
       <Column selectionMode="multiple"></Column>
@@ -211,56 +246,80 @@ function keyToBgClass(i: number) {
         </template> -->
 
         <!-- Body for choices -->
-        <template #body="{data}" v-if="col.choices != undefined">
-
+        <template #body="{ data }" v-if="col.choices != undefined">
           <!-- Handle data[col.field] is array -->
           <div v-if="Array.isArray(data[col.field])">
-            <div v-for="item in data[col.field]" :key="item" class="c-tag" :class="keyToBgClass(col.choices.find((c:any) => c.value == item).key)">
-              {{ col.choices.find((c:any) => c.value == item).label }}
+            <div
+              v-for="item in data[col.field]"
+              :key="item"
+              class="c-tag"
+              :class="keyToBgClass(col.choices.find((c:any) => c.value == item).key)"
+            >
+              {{ col.choices.find((c: any) => c.value == item).label }}
             </div>
           </div>
-          <div v-else-if="data[col.field] != null" class="c-tag" :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)">
-            {{ col.choices.find((c:any) => c.value == data[col.field]).label }}
+          <div
+            v-else-if="data[col.field] != null"
+            class="c-tag"
+            :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)"
+          >
+            {{ col.choices.find((c: any) => c.value == data[col.field]).label }}
           </div>
         </template>
 
         <!-- Filter for choices -->
-        <template #filter="{filterModel}" v-if="col.choices != undefined">
-
+        <template #filter="{ filterModel }" v-if="col.choices != undefined">
           <!-- Multiple choice -->
-          <MultiSelect v-if="col.inputType == 'multiselect'"
-              v-model="filterModel.value" :options="col.choices"
-              optionLabel="label" optionValue="value" placeholder="Any"
-              class="p-column-filter">
+          <MultiSelect
+            v-if="col.inputType == 'multiselect'"
+            v-model="filterModel.value"
+            :options="col.choices"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Any"
+            class="p-column-filter"
+          >
             <template #option="slotProps">
-                <div class="p-multiselect-representative-option">
-                    <span>{{slotProps.option.label}}</span>
-                </div>
+              <div class="p-multiselect-representative-option">
+                <span>{{ slotProps.option.label }}</span>
+              </div>
             </template>
           </MultiSelect>
 
           <!-- Single choice -->
-          <Dropdown v-else
-          v-model="filterModel.value" :options="col.choices"
-          optionLabel="label" optionValue="value" placeholder="Any"
-          class="p-column-filter"
-          :showClear="true"
+          <Dropdown
+            v-else
+            v-model="filterModel.value"
+            :options="col.choices"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Any"
+            class="p-column-filter"
+            :showClear="true"
           >
-          <template #value="slotProps">
-            <span class="px-1 py-0.5" :class="keyToBgClass(col.choices.find((c:any) => c.value == slotProps.value).key)" v-if="slotProps.value">
-              {{ col.choices.find((c:any) => c.value === slotProps.value).label }}
-            </span>
-            <span v-else>{{slotProps.placeholder}}</span>
-          </template>
-          <template #option="slotProps">
-            <span class="px-1 py-0.5" :class="keyToBgClass(slotProps.option.key)">
-              {{t(slotProps.option.label)}}
-            </span>
-          </template>
+            <template #value="slotProps">
+              <span
+                class="px-1 py-0.5"
+                :class="keyToBgClass(col.choices.find((c:any) => c.value == slotProps.value).key)"
+                v-if="slotProps.value"
+              >
+                {{
+                  col.choices.find((c: any) => c.value === slotProps.value)
+                    .label
+                }}
+              </span>
+              <span v-else>{{ slotProps.placeholder }}</span>
+            </template>
+            <template #option="slotProps">
+              <span
+                class="px-1 py-0.5"
+                :class="keyToBgClass(slotProps.option.key)"
+              >
+                {{ t(slotProps.option.label) }}
+              </span>
+            </template>
           </Dropdown>
-
         </template>
-
 
         <!-- Filter for other fields -->
         <template #filter="{ filterModel }" v-else>
@@ -290,13 +349,34 @@ function keyToBgClass(i: number) {
       :member="selectedMember"
       @close="editMember = false"
     />
+
+    <ObjectDetail
+      v-if="editActive"
+      :object="editObject"
+      :create="editCreate"
+      :store="useMembersStore()"
+      :name="'membersEmailsCampaigns'"
+      :schema="emailCampaignSchema"
+      @close="editActive = false"
+    />
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
 .p-button-sm {
-  padding: 3px 6px 3px 6px ;
+  padding: 3px 6px 3px 6px;
   width: auto;
+}
+
+.members-table.p-component {
+  font-size: 14px;
+}
+
+.members-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
+.members-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
+  padding: 5px 10px 5px 10px;
+  vertical-align: middle;
+  white-space: normal;
 }
 
 .c-tag {
