@@ -3,6 +3,7 @@
     <!-- Backdrop -->
     <div
       :class="getSideBarOpen ? 'block' : 'hidden'"
+      id="collectivo-backdrop"
       @click="toggleSideBar()"
       class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"
     ></div>

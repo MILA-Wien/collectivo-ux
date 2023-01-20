@@ -11,7 +11,7 @@ const { user } = storeToRefs(userStore);
 <template>
   <div class="flex h-screen bg-mila font-sans" v-if="user?.authenticated">
     <MenuView />
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div id="collectivo-main" class="flex-1 flex flex-col overflow-hidden">
       <HeaderView />
       <main class="flex-1 overflow-x-hidden overflow-y-auto">
         <div class="mx-auto px-6 py-4">
@@ -32,7 +32,6 @@ const { user } = storeToRefs(userStore);
   background-color: #2db3a5;
   border-color: #2db3a5;
 }
-
 .p-checkbox.p-component {
   display: flex;
 }

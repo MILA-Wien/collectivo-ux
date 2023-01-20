@@ -41,7 +41,7 @@ const router = createRouter({
     },
     {
       path: "/members/emails",
-      name: "members",
+      name: "emails",
       meta: {
         isMembersAdmin: true,
       },
