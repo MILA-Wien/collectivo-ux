@@ -33,7 +33,6 @@ const { user } = storeToRefs(userStore);
   border-color: #2db3a5;
 }
 
-
 .p-checkbox.p-component {
   display: flex;
 }
