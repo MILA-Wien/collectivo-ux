@@ -84,7 +84,6 @@ const startingColumns = [
   "last_name",
   "person_type",
   "membership_type",
-  "membership_status",
   "shares_number",
   "tags",
 ];
