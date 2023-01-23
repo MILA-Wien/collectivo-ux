@@ -16,7 +16,7 @@
                         "content": "",
                         "extId": "gEVwcJiztoBGsss"
                     },
-                    "id": "SOZialVwcJiztoBGsss",
+                    "id": "welcome-paragraph",
                     "children": []
                 },
                 {
@@ -37,7 +37,7 @@
                         "extId": "person_type",
                         "description": ""
                     },
-                    "id": "hCyBgyqSimyU",
+                    "id": "person-type",
                     "children": []
                 },
                 {
@@ -48,7 +48,7 @@
                         "extId": "woSqVbVIKwHd",
                         "buttonType": "next"
                     },
-                    "id": "QLeEwzRDCuqz",
+                    "id": "next-page-button",
                     "children": []
                 }
             ]
@@ -91,7 +91,7 @@
                                         "extId": "first_name",
                                         "required": true
                                     },
-                                    "id": "sJsmSmZUQhtG",
+                                    "id": "first-name-input", 
                                     "children": []
                                 },
                                 {
@@ -103,7 +103,7 @@
                                         "extId": "last_name",
                                         "required": true
                                     },
-                                    "id": "sJsmSmZUQhtG",
+                                    "id": "last-name-input",
                                     "children": []
                                 }
                             ]
@@ -127,7 +127,7 @@
                                 "required": true,
                                 "extId": "gender"
                             },
-                            "id": "poKddqtVrGPs",
+                            "id": "gender-radio",
                             "children": []
                         },
                         {
@@ -144,7 +144,7 @@
                                 "required": true,
                                 "extId": "birthday"
                             },
-                            "id": "skNWSarXVbcC",
+                            "id": "birthdate-input",
                             "children": []
                         },
                         {
@@ -161,7 +161,7 @@
                                 "required": true,
                                 "extId": "occupation"
                             },
-                            "id": "s7bf0f87llkh8",
+                            "id": "occupation-input",
                             "children": []
                         },
                         {
@@ -278,7 +278,7 @@
                                         "extId": "address_street",
                                         "required": true
                                     },
-                                    "id": "XtGQbUHzUKHl",
+                                    "id": "address-street-input",
                                     "children": []
                                 },
                                 {
@@ -290,7 +290,7 @@
                                         "extId": "address_number",
                                         "required": true
                                     },
-                                    "id": "mKoTGeoIFHqb",
+                                    "id": "address-street-number-input",
                                     "children": []
                                 },
                                 {
@@ -335,7 +335,7 @@
                                         "extId": "address_postcode",
                                         "required": true
                                     },
-                                    "id": "eGIMUDzZmIXl",
+                                    "id": "address-postcode-input",
                                     "children": []
                                 },
                                 {
@@ -347,7 +347,7 @@
                                         "required": true,
                                         "extId": "address_city"
                                     },
-                                    "id": "JDoKLTEXhcsl",
+                                    "id": "address-city-input",
                                     "children": []
                                 },
                                 {
@@ -360,7 +360,7 @@
                                         "required": true,
                                         "extId": "address_country"
                                     },
-                                    "id": "WCEHZtmfzgZB",
+                                    "id": "address-country-input",
                                     "children": []
                                 }
                             ]
@@ -603,7 +603,7 @@
                                 "extId": "ETcyDpIIfqdX",
                                 "buttonType": "next"
                             },
-                            "id": "ETcyDpIIfqdX",
+                            "id": "next-page-button",
                             "children": []
                         }
                     ]
@@ -810,7 +810,7 @@
                                 ],
                                 "extId": "bank_account_iban"
                             },
-                            "id": "ARLbytOMwxxT",
+                            "id": "bank-account-input",
                             "children": []
                         },
                         {
@@ -827,7 +827,7 @@
                                 "required": true,
                                 "extId": "bank_account_owner"
                             },
-                            "id": "BZLbytOMwxxT",
+                            "id": "bank-account-owner-input",
                             "children": []
                         }
                     ]
@@ -860,7 +860,7 @@
                                 "extId": "PuuykphDkxDQ",
                                 "buttonType": "next"
                             },
-                            "id": "FlmRKTJhcvQC",
+                            "id": "next-page-button",
                             "children": []
                         }
                     ]
@@ -938,7 +938,7 @@
                             "9"
                         ]
                     },
-                    "id": "UndNuxZaNGg",
+                    "id": "groups-interested-input",
                     "children": []
                 },
                 {
@@ -967,7 +967,7 @@
                             "7"
                         ]
                     },
-                    "id": "NaUnduxZaNGg",
+                    "id": "skills-input",
                     "children": []
                 },
                 {
@@ -998,7 +998,7 @@
                                 "extId": "FGwyLArCyWKu",
                                 "buttonType": "next"
                             },
-                            "id": "FGwyLArCyWKu",
+                            "id": "next-page-button",
                             "children": []
                         }
                     ]
@@ -1019,7 +1019,7 @@
                         "description": "Ich unterstütze die Öffentlichkeitsarbeit und erlaube MILA Bildmaterial auf dem ich zu sehen bin zu verwenden. Nähere Informationen zur Datenverarbeitung des Bildmaterials unter https://www.mila.wien/de/datenschutzerklaerung/",
                         "extId": "public_use_approved"
                     },
-                    "id": "checkbox_1_yrSdwKHT",
+                    "id": "public-use-approved-checkbox",
                     "children": []
                 },
                 {
@@ -1031,7 +1031,7 @@
                         "description": "Ja, ich komme verbindlich am 1.2.2023 um 18 Uhr zur Gründung in der Brunnenpassage am Yppenplatz. Wenn du zur Gründungsversammlung kommst, kannst du Gründerin von MILA Mitmach-Supermarkt e.G. sein. Deine Teilnahme ist für eine Aufnahme als Mitglied aber nicht nötig.",
                         "extId": "founding_event"
                     },
-                    "id": "checkbox_2_yrSdwKHT",
+                    "id": "founding-event-checkbox",
                     "children": []
                 },
                 {
@@ -1110,7 +1110,7 @@
                                 "extId": "NanuLArCyWKu",
                                 "buttonType": "submit"
                             },
-                            "id": "NanuLArCyWKu",
+                            "id": "submit-button",
                             "children": []
                         }
                     ]

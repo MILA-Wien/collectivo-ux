@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 </script>
 <template>
-  <div>
+  <div id="members-registration-tile">
     <p class="pb-4">
       {{
         t(
@@ -12,7 +12,7 @@ const { t } = useI18n();
       }}
     </p>
     <RouterLink to="/membership/registration">
-      <ButtonPrime> {{ t("Continue") }} </ButtonPrime>
+      <ButtonPrime id="members-registration-tile-continue"> {{ t("Continue") }} </ButtonPrime>
     </RouterLink>
   </div>
 </template>
