@@ -6,6 +6,7 @@ import MemberDetail from "./MemberDetail.vue";
 import MultiSelect from "primevue/multiselect";
 import { useMembersStore } from "@/stores/members";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
+import MembersBulkEdit from "./MembersBulkEdit.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -83,7 +84,6 @@ const startingColumns = [
   "last_name",
   "person_type",
   "membership_type",
-  "membership_status",
   "shares_number",
   "tags",
 ];
@@ -131,6 +131,12 @@ function sendEmails() {
   editActive.value = true;
 }
 
+// Bulk edit
+const bulkEditIsActive = ref(false);
+function bulkEdit() {
+  bulkEditIsActive.value = true;
+}
+
 // List of windscribe color classes
 const bgClasses = [
   "bg-indigo-200",
@@ -169,6 +175,14 @@ function keyToBgClass(i: number) {
         </div>
       </template>
       <template #end>
+        <div class="m-1">
+          <Button
+            :label="t('Bulk edit')"
+            :disabled="!(selectedMembers.length > 0)"
+            @click="bulkEdit"
+          >
+          </Button>
+        </div>
         <div class="m-1">
           <Button
             :label="t('Send emails')"
@@ -350,6 +364,7 @@ function keyToBgClass(i: number) {
       @close="editMember = false"
     />
 
+    <!-- Dialogue for email campaign details -->
     <ObjectDetail
       v-if="editActive"
       :object="editObject"
@@ -358,6 +373,14 @@ function keyToBgClass(i: number) {
       :name="'membersEmailsCampaigns'"
       :schema="emailCampaignSchema"
       @close="editActive = false"
+    />
+
+    <!-- Dialogue for member bulk edit -->
+    <MembersBulkEdit
+      v-if="bulkEditIsActive"
+      :members="selectedMembers"
+      :schema="schema"
+      @close="bulkEditIsActive = false"
     />
   </div>
 </template>
