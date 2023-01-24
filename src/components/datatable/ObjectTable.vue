@@ -6,7 +6,7 @@ import { useI18n } from "vue-i18n";
 import ObjectDetail from "./ObjectDetail.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
-
+import PrimeMultiSelect from "primevue/multiselect";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
@@ -33,6 +33,52 @@ const props = defineProps({
   },
 });
 
+function formatDate(date: string) {
+  return new Date(date).toLocaleString('de-AT');
+}
+
+// List of columns from schema
+const columns: any[] = [];
+const filters = ref<{ [key: string]: any }>({});
+for (const [key, value] of Object.entries(props.schema)) {
+  columns.push({
+    field: key,
+    header: t(value.label),
+    input_type: value.input_type,
+  });
+
+  // // Initialize filters with default settings
+  // filters.value[key] = {
+  //   operator: FilterOperator.AND,
+  //   constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+  // };
+
+  // Add choices to column
+  if (value.choices == undefined) {
+    continue;
+  }
+  columns[columns.length - 1].choices = [];
+
+  var i = 0;
+  for (const [key2, value2] of Object.entries(value.choices) as any) {
+    columns[columns.length - 1].choices.push({
+      label: t(value2),
+      value: key2,
+      key: ++i,
+    });
+  }
+}
+
+// Selected columns
+const selectedColumns = ref<any[]>([]);
+const defaultColumns = ['id', 'name', 'created'];
+for (const col of defaultColumns) {
+  if (!columns.find((c) => c.field === col)) {
+    continue;
+  }
+  selectedColumns.value.push(columns.find((c) => c.field === col));
+}
+
 const datatable = ref();
 const selectedObjects = ref();
 
@@ -54,7 +100,21 @@ function create() {
 <template>
   <div class="datatable">
     <Toolbar class="mb-4">
-      <template #start> </template>
+      <template #start>
+        <div class="m-1 text-left">
+          <PrimeMultiSelect
+            v-model="selectedColumns"
+            :options="columns"
+            optionLabel="header"
+            :filter="true"
+            :placeholder="t('Columns')"
+            :maxSelectedLabels="0"
+            :selectedItemsLabel="t('Columns')"
+            scrollHeight="400px"
+            class="w-26"
+          />
+        </div>
+      </template>
       <template #end>
         <Button
           :label="t('Create')"
@@ -90,12 +150,21 @@ function create() {
       class="p-datatable-sm object-table"
     >
       <Column
-        v-for="(value, col) in objects[0]"
-        :header="col"
-        :key="col"
-        :field="col"
+        v-for="col of selectedColumns"
+        :header="col.header"
+        :key="col.field"
+        :field="col.field"
+        :sortable="true"
       >
+
+        <!-- Body for choices -->
+        <template #body="{ data }" v-if="col.input_type=='datetime'">
+          <!-- Handle datetime -->
+          {{ formatDate(data[col.field]) }}
+        </template>
+
       </Column>
+
       <Column>
         <template #body="slotProps">
           <ButtonPrime
