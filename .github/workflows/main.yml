@@ -1,6 +1,11 @@
 name: Collectivo-ux build
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '!**'
 jobs:
   build:
     name: Build collectivo-ux
