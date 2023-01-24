@@ -11,6 +11,7 @@ import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
+import InputText from 'primevue/inputtext';
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import type { Member } from "../../../api/types";
