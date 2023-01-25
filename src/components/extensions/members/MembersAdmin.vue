@@ -24,6 +24,11 @@ if (membersEmailsCampaigns.value === null) {
     error.value = e;
   });
 }
+if (membersEmailsCampaigns.value === null) {
+  membersStore.get("membersEmailsCampaigns").catch((e: any) => {
+    error.value = e;
+  });
+}
 </script>
 
 <template>

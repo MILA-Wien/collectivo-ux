@@ -39,6 +39,7 @@ const toast = useToast();
 let selectedMember = ref({});
 const selectedMembers = ref<Member[]>([]);
 const editMember = ref(false);
+const editMemberCreate = ref(false);
 function edit(event: any) {
   selectedMember.value = event;
   editMember.value = true;
@@ -264,14 +265,7 @@ function keyToBgClass(i: number) {
         <template #body="{ data }" v-if="col.choices != undefined">
           <!-- Handle data[col.field] is array -->
           <div v-if="Array.isArray(data[col.field])">
-            <div
-              v-for="item in data[col.field]"
-              :key="item"
-              class="c-tag"
-              :class="keyToBgClass(col.choices.find((c:any) => c.value == item).key)"
-            >
-              {{ col.choices.find((c: any) => c.value == item).label }}
-            </div>
+            {{ data[col.field].length }}
           </div>
           <div
             v-else-if="data[col.field] != null"
@@ -279,6 +273,9 @@ function keyToBgClass(i: number) {
             :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)"
           >
             {{ col.choices.find((c: any) => c.value == data[col.field]).label }}
+          </div>
+          <div v-else>
+            0
           </div>
         </template>
 
@@ -359,9 +356,13 @@ function keyToBgClass(i: number) {
     </DataTable>
 
     <!-- Dialogue for member details -->
-    <MemberDetail
+    <ObjectDetail
       v-if="editMember"
-      :member="selectedMember"
+      :object="selectedMember"
+      :create="editMemberCreate"
+      :store="useMembersStore()"
+      :name="'membersMembers'"
+      :schema="schema"
       @close="editMember = false"
     />
 
