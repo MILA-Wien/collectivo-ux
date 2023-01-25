@@ -22,8 +22,8 @@ const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name];
 
 // Load data
-if (data.value === null) {
-  props.store.get(props.name).catch((e: any) => {
+if (!data.value.loaded) {
+  props.store.getList(props.name).catch((e: any) => {
     error.value = e;
   });
 }
@@ -34,14 +34,14 @@ if (data.value === null) {
     <div v-if="error !== null">
       <p>There was an error loading the data.<br />{{ error }}</p>
     </div>
-    <div v-else-if="data === null">
+    <div v-else-if="!data.loaded">
       <ProgressSpinner />
     </div>
     <div v-else>
       <ObjectTable
         :store="store"
         :name="name"
-        :objects="data.objects"
+        :objects="data.data"
         :schema="data.schema"
       />
     </div>
