@@ -124,37 +124,94 @@ function getHeader() {
     return t(props.name) + " " + props.object.id;
   }
 }
+
+const filterValue = ref("");
+function isFiltered(name: string) {
+  if (filterValue.value === "") {
+    return true;
+  }
+  return t(props.schema[name].label)
+    .toLowerCase()
+    .includes(filterValue.value.toLowerCase());
+}
 </script>
 
 <template>
   <div>
     <ConfirmDialogPrime></ConfirmDialogPrime>
     <DialogPrime
-      :header="getHeader()"
       v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '80vw' }"
       :modal="true"
       @hide="closeModal"
     >
-      <div class="modal-content">
-        <!-- Read only fields -->
-        <div v-if="!create">
-          <div v-for="(field, name, i) in schema" :key="i" class="field">
-            <div v-if="field.read_only">
-              <span class="font-bold">{{ field.label }}</span
-              >: {{ object_temp[name] }}
-            </div>
+    <template #header>
+      <div class="flex flex-col">
+        <h2>{{getHeader()}}</h2>
+
+        <div class="object-detail-filter w-full mt-3">
+          <!-- Filter -->
+          <i class="pi pi-filter m-auto pl-1 pr-3 inline-block" style="font-size: 1.2rem"></i>
+          <InputTextPrime
+            id="filter"
+            v-model="filterValue"
+            placeholder="Filter"
+            type="text"
+            class="w-96 inline-block"
+          />
+
+          <div class="ml-10 mr-2 mt-2 inline-block" >
+          <ButtonPrime
+            v-if="create"
+            :label="t('Create')"
+            :loading="isSaving"
+            icon="pi pi-check"
+            class="p-button-success"
+            @click="createObject()"
+          />
+          <ButtonPrime
+            v-else
+            :label="t('Save')"
+            :loading="isSaving"
+            icon="pi pi-check"
+            @click="updateObject()"
+          />
+          </div>
+          <div class="mx-2 mt-2 inline-block">
+          <ButtonPrime
+            :label="t('Cancel')"
+            icon="pi pi-times"
+            @click="closeModal"
+            class="p-button-secondary"
+          />
+          </div>
+          <div class="mx-2 mt-2 inline-block">
+          <ButtonPrime
+            :label="t('Delete')"
+            v-if="!create"
+            icon="pi pi-trash"
+            @click="confirmDelete()"
+            class="p-button-danger"
+          />
           </div>
         </div>
 
+      </div>
+    </template>
+
+      <div class="object-detail-fields mt-5">
         <!-- Editable fields based on input type -->
-        <div v-for="(field, name, i) in schema" :key="i" class="field">
-          <div v-if="!field.read_only">
-            <label for="attr-{{name}}">
-              {{ field.label }}
-              <span v-if="field.required" class="text-red-600">*</span>
-            </label>
+        <div v-for="(field, name, i) in schema" :key="i" class="field"
+            :style="isFiltered(name)? '': 'position:absolute'">
+          <div v-if="isFiltered(name)">
+
+            <div class="mb-1">
+              <label for="attr-{{name}}">
+                {{ t(field.label) }}
+                <span v-if="field.required" class="text-red-600">*</span>
+              </label>
+            </div>
 
             <div v-if="field.input_type === 'select'">
               <DropdownPrime
@@ -165,6 +222,7 @@ function getHeader() {
                 :filter="true"
                 placeholder="Select a choice"
                 :showClear="true"
+                class="w-full"
               />
             </div>
 
@@ -178,6 +236,7 @@ function getHeader() {
                 :selectedItemsLabel="`${object_temp[name]?.length} selected`"
                 :filter="true"
                 placeholder="Select multiple choices"
+                class="w-full"
               />
             </div>
 
@@ -196,6 +255,7 @@ function getHeader() {
                 aria-describedby="attr-{{value}}-help"
                 v-model="object_temp[name]"
                 :disabled="field.read_only"
+                class="w-full"
               />
             </div>
 
@@ -208,51 +268,24 @@ function getHeader() {
           </div>
         </div>
       </div>
-      <template #footer>
-        <ButtonPrime
-          v-if="create"
-          :label="t('Create')"
-          :loading="isSaving"
-          icon="pi pi-check"
-          class="p-button-success"
-          @click="createObject()"
-        />
-        <ButtonPrime
-          v-else
-          :label="t('Save')"
-          :loading="isSaving"
-          icon="pi pi-check"
-          @click="updateObject()"
-        />
-        <ButtonPrime
-          :label="t('Cancel')"
-          icon="pi pi-times"
-          @click="closeModal"
-          class="p-button-secondary"
-        />
-        <ButtonPrime
-          :label="t('Delete')"
-          v-if="!create"
-          icon="pi pi-trash"
-          @click="confirmDelete()"
-          class="p-button-danger"
-        />
-      </template>
+
     </DialogPrime>
   </div>
 </template>
-<style scoped>
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+<style lang="scss">
+.object-detail-fields {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  gap: 10px;
 }
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 8px;
 }
 label {
   font-weight: bold;
+}
+.p-dialog .p-dialog-header, .p-dialog .p-dialog-footer{
+  background-color: rgb(236, 236, 236);
 }
 </style>
