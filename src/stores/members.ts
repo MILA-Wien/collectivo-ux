@@ -86,7 +86,7 @@ export const useMembersStore = defineStore({
       const response = await API.delete(objectName, pk);
       const object = this[objectName];
       if (object.data instanceof Array) {
-        const index = this[objectName]?.data?.findIndex((m: DataObject) => {
+        const index = object.data.findIndex((m: DataObject) => {
           return m.id === response.data.id;
         });
         if (index !== null && index !== undefined) {
