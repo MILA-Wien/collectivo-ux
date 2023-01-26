@@ -18,7 +18,6 @@ import JsonCSV from "vue-json-csv";
 import { FilterService } from "primevue/api";
 
 const { t } = useI18n();
-
 const props = defineProps({
   store: {
     type: Object as PropType<StoreGeneric>,
@@ -38,6 +37,8 @@ const props = defineProps({
   },
 });
 
+
+// Formatting functions for data view in table ----------------------------- //
 function formatDateTime(date: string) {
   return new Date(date).toLocaleString("de-AT");
 }
@@ -47,6 +48,9 @@ function formatMultiSelect(data: any) {
   return `${len} ${t(str)}`;
 }
 
+
+// Filter functions (match modes) ------------------------------------------ //
+const filters = ref<{ [key: string]: any }>({});
 FilterService.register("isNull", (a) => a == undefined);
 const matchModes: any = {
   text: [
@@ -57,6 +61,11 @@ const matchModes: any = {
   ],
   date: [
     { label: "Equals", value: FilterMatchMode.EQUALS },
+    { label: "Before", value: FilterMatchMode.LESS_THAN },
+    { label: "After", value: FilterMatchMode.GREATER_THAN },
+    { label: "Is Empty", value: "isNull" },
+  ],
+  datetime: [
     { label: "Before", value: FilterMatchMode.LESS_THAN },
     { label: "After", value: FilterMatchMode.GREATER_THAN },
     { label: "Is Empty", value: "isNull" },
@@ -78,7 +87,6 @@ const matchModes: any = {
     { label: "Is Empty", value: "isNull" },
   ],
 };
-
 function getDefaultMatchMode(input_type: string) {
   if (matchModes[input_type]) {
     return matchModes[input_type][0].value;
@@ -86,10 +94,18 @@ function getDefaultMatchMode(input_type: string) {
     return;
   }
 }
+function clearFilters() {
+  for (const value of Object.values(filters.value)) {
+    value.constraints[0].value = null;
+  }
+}
 
-// List of columns from schema
+// Data columns ------------------------------------------------------------ //
 const columns: any[] = [];
-const filters = ref<{ [key: string]: any }>({});
+const selectedColumns = ref<any[]>([]);
+
+
+
 var column_index = 0;
 for (const [key, value] of Object.entries(props.schema)) {
   columns.push({
@@ -99,7 +115,7 @@ for (const [key, value] of Object.entries(props.schema)) {
     index: ++column_index,
   });
 
-  // Initialize filters with default settings
+  // Set default filters
   filters.value[key] = {
     operator: FilterOperator.AND,
     constraints: [
@@ -122,20 +138,8 @@ for (const [key, value] of Object.entries(props.schema)) {
     });
   }
 }
-console.log(columns)
-function clearFilters() {
-  for (const value of Object.values(filters.value)) {
-    value.constraints[0].value = null;
-  }
-}
 
-// Selected columns
-const selectedColumns = ref<any[]>([]);
-watch(selectedColumns, (val) => {
-  // Sort columns by index
-  val.sort((a, b) => a.index - b.index);
-})
-
+// Set default columns
 // TODO: Load default columns from schema
 const defaultColumns = ["sent", "name", "status", "template", "design"];
 for (const col of defaultColumns) {
@@ -145,18 +149,26 @@ for (const col of defaultColumns) {
   selectedColumns.value.push(columns.find((c) => c.field === col));
 }
 
+// Maintain column order
+selectedColumns.value.sort((a, b) => a.index - b.index)
+watch(selectedColumns, (val) => {
+  val.sort((a, b) => a.index - b.index);
+})
+
+// Datatable --------------------------------------------------------------- //
 const datatable = ref();
 const selectedObjects = ref();
 
+// Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
 const editObject = ref({});
 const editCreate = ref(false);
-function edit(event: any) {
+function editObjectFn(event: any) {
   editObject.value = event;
   editCreate.value = false;
   editActive.value = true;
 }
-function create() {
+function createObjectFn() {
   editObject.value = {};
   editCreate.value = true;
   editActive.value = true;
@@ -164,13 +176,12 @@ function create() {
 </script>
 
 <template>
-  <div class="datatable">
     <Toolbar class="mb-4">
       <template #start>
         <div class="m-1 text-left">
           <Button
             :label="t('Create')"
-            @click="create()"
+            @click="createObjectFn()"
             class="p-button-success"
           >
           </Button>
@@ -216,7 +227,7 @@ function create() {
         </div>
       </template>
     </Toolbar>
-
+    <div class="datatable" style="height: calc(100vh - 350px)">
     <DataTable
       :value="objects"
       v-model:selection="selectedObjects"
@@ -241,6 +252,8 @@ function create() {
       class="p-datatable-sm object-table"
       filterDisplay="menu"
       v-model:filters="filters"
+      :scrollable="true"
+      scrollHeight="flex"
     >
       <!-- Selection column -->
       <Column selectionMode="multiple"></Column>
@@ -342,7 +355,7 @@ function create() {
           <ButtonPrime
             icon="pi pi-pencil"
             class="p-button-text p-button-sm"
-            @click="edit(slotProps.data)"
+            @click="editObjectFn(slotProps.data)"
           />
         </template>
       </Column>
@@ -364,7 +377,9 @@ function create() {
 .object-table.p-component {
   font-size: 14px;
 }
-
+.p-datatable.p-datatable-gridlines .p-paginator-bottom {
+  border-width: 1px 1px 1px 1px;
+}
 .object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
 .object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
   padding: 5px 10px 5px 10px;
