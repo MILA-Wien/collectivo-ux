@@ -148,7 +148,7 @@ function getHeader() {
           </div>
         </div>
 
-        <!-- Editable fields -->
+        <!-- Editable fields based on input type -->
         <div v-for="(field, name, i) in schema" :key="i" class="field">
           <div v-if="!field.read_only">
             <label for="attr-{{name}}">

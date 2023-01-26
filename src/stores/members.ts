@@ -41,9 +41,11 @@ export const useMembersStore = defineStore({
         value.options = [];
         let i = 0;
         for (const [key2, value2] of Object.entries(value.choices) as any) {
+          const parsed = parseInt(key2);
+          const key3 = isNaN(parsed)? key2 : parsed;
           value.options.push({
             label: value2,
-            value: parseInt(key2), // Keys are Integers in actual data
+            value: key3,
             key: ++i,
           });
         }

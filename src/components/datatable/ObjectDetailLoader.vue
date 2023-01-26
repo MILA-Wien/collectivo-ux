@@ -33,11 +33,10 @@ const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name];
 
 // Load data
-if (!data.value.loaded) {
-  props.store.getDetail(props.name, props.pk).catch((e: any) => {
-    error.value = e;
-  });
-}
+data.value.loaded = false;
+props.store.getDetail(props.name, props.pk).catch((e: any) => {
+  error.value = e;
+});
 
 </script>
 
