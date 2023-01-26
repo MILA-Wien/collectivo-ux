@@ -120,7 +120,18 @@ export interface SchemaCondition {
 
 // Store attributes
 // Attributes can either be for a single object or a list of objects
-interface DataGeneric {schema: Schema; data:any; loaded: boolean};
-export interface DataObject {id: number|null; [key: string]: any};
-export interface DataDetail extends DataGeneric {data: DataObject};
-export interface DataList extends DataGeneric {data: Array<DataObject>};
+interface DataGeneric {
+  schema: Schema;
+  data: any;
+  loaded: boolean;
+}
+export interface DataObject {
+  id: number | null;
+  [key: string]: any;
+}
+export interface DataDetail extends DataGeneric {
+  data: DataObject;
+}
+export interface DataList extends DataGeneric {
+  data: Array<DataObject>;
+}

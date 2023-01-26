@@ -3,27 +3,28 @@ import { defineStore } from "pinia";
 import { API } from "@/api/api";
 
 type membersStore = {
-  membersSummary: DataList,
-  membersMembers: DataDetail,
-  membersProfile: DataDetail,
-  membersRegister: DataDetail,
-  membersEmailsCampaigns: DataList,
-  membersEmailsTemplates: DataList,
-  membersEmailsDesigns: DataList,
-}
+  membersSummary: DataList;
+  membersMembers: DataDetail;
+  membersProfile: DataDetail;
+  membersRegister: DataDetail;
+  membersEmailsCampaigns: DataList;
+  membersEmailsTemplates: DataList;
+  membersEmailsDesigns: DataList;
+};
 type membersObject = keyof membersStore;
 
 export const useMembersStore = defineStore({
   id: "members",
-  state: () => ({
-    membersMembers: {schema: {}, data: {id: null}, loaded: false},
-    membersSummary: {schema: {}, data: [], loaded: false},
-    membersProfile: {schema: {}, data: {id: null}, loaded: false},
-    membersRegister: {schema: {}, data: {id: null}, loaded: false},
-    membersEmailsCampaigns: {schema: {}, data: [], loaded: false},
-    membersEmailsTemplates: {schema: {}, data: [], loaded: false},
-    membersEmailsDesigns: {schema: {}, data: [], loaded: false},
-  } as membersStore),
+  state: () =>
+    ({
+      membersMembers: { schema: {}, data: { id: null }, loaded: false },
+      membersSummary: { schema: {}, data: [], loaded: false },
+      membersProfile: { schema: {}, data: { id: null }, loaded: false },
+      membersRegister: { schema: {}, data: { id: null }, loaded: false },
+      membersEmailsCampaigns: { schema: {}, data: [], loaded: false },
+      membersEmailsTemplates: { schema: {}, data: [], loaded: false },
+      membersEmailsDesigns: { schema: {}, data: [], loaded: false },
+    } as membersStore),
 
   actions: {
     async _get(store: any, objectName: membersObject, pk?: Number) {
@@ -60,7 +61,7 @@ export const useMembersStore = defineStore({
     },
     async getDetail(objectName: membersObject, pk: Number) {
       // Get schema and single object and save in store
-      if ((this[objectName].data instanceof Array)) {
+      if (this[objectName].data instanceof Array) {
         throw `Object ${objectName} needs to be called with getList`;
       }
       this._get(this, objectName, pk);
@@ -92,7 +93,7 @@ export const useMembersStore = defineStore({
           object.data.splice(index, 1);
         }
       } else {
-        object.data = {id: null};
+        object.data = { id: null };
       }
       return response;
     },

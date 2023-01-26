@@ -88,8 +88,10 @@ export const endpoints = {
 
 // Generic API functions
 export const API = {
-  get: async function (endpoint: keyof typeof endpoints, pk?: Number):
-      Promise<AxiosResponse<any, any>> {
+  get: async function (
+    endpoint: keyof typeof endpoints,
+    pk?: Number
+  ): Promise<AxiosResponse<any, any>> {
     if (pk === undefined) {
       return await api.get(endpoints[endpoint]);
     }
