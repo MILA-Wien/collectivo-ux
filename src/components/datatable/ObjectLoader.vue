@@ -3,7 +3,7 @@ import { ref } from "vue";
 import type { PropType } from "vue";
 import { storeToRefs } from "pinia";
 import type { StoreGeneric } from "pinia";
-import ObjectTable from "./ObjectTable.vue";
+import ObjectTableFrame from "./ObjectTableFrame.vue";
 import ProgressSpinner from "primevue/progressspinner";
 import type { endpoints } from "@/api/api";
 
@@ -38,7 +38,7 @@ if (!data.value.loaded) {
       <ProgressSpinner />
     </div>
     <div v-else>
-      <ObjectTable
+      <ObjectTableFrame
         :store="store"
         :name="name"
         :objects="data.data"

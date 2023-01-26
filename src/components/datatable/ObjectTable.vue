@@ -1,22 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { useI18n } from "vue-i18n";
-import ObjectDetail from "./ObjectDetail.vue";
-import Toolbar from "primevue/toolbar";
-import Button from "primevue/button";
+
 import PrimeDropdown from "primevue/dropdown";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeInputText from "primevue/inputtext";
-// import PrimeCalendar from "primevue/calendar";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
-import JsonCSV from "vue-json-csv";
-import { FilterService } from "primevue/api";
-
+import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps({
   store: {
@@ -35,8 +28,41 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  filters: {
+    type: Object,
+    required: true,
+  },
+  matchModes: {
+    type: Object,
+    required: true,
+  },
+  selectedObjects: {
+    type: Object as PropType<any[]>,
+    required: true,
+  },
+  selectedColumns: {
+    type: Object as PropType<any[]>,
+    required: true,
+  },
+  editObject: {
+    type: Object,
+    required: true,
+  },
+  editActive: {
+    type: Boolean,
+    required: true,
+  },
+  editCreate: {
+    type: Boolean,
+    required: true,
+  },
 });
 
+const emit = defineEmits([
+  'update:editCreate', 'update:editActive',
+  'update:editObject', 'update:selectedObjects',
+  'update:selectedColumns', 'update:filters',
+]);
 
 // Formatting functions for data view in table ----------------------------- //
 function formatDateTime(date: string) {
@@ -58,194 +84,27 @@ function formatGeneric(data: string|null) {
   return data;
 }
 
-// Filter functions (match modes) ------------------------------------------ //
-const filters = ref<{ [key: string]: any }>({});
-
-FilterService.register("isNull", (a) => a == undefined);
-FilterService.register("inList", (a, b) => {
-  if (a == undefined) {return false;}
-  if (b == undefined) {return true;}
-  let list: string[] = b.split(/;|,| /).map((s: any) => s.trim());
-  return list.includes(a.toString());
-} );
-
-const matchModes: any = {
-  text: [
-    { label: "Contains", value: FilterMatchMode.CONTAINS },
-    { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
-    { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
-    { label: "In List", value: "inList" },
-    { label: "Is Empty", value: "isNull" },
-  ],
-  date: [
-    { label: "Equals", value: FilterMatchMode.EQUALS },
-    { label: "Before", value: FilterMatchMode.LESS_THAN },
-    { label: "After", value: FilterMatchMode.GREATER_THAN },
-    { label: "Is Empty", value: "isNull" },
-  ],
-  datetime: [
-    { label: "Before", value: FilterMatchMode.LESS_THAN },
-    { label: "After", value: FilterMatchMode.GREATER_THAN },
-    { label: "Is Empty", value: "isNull" },
-  ],
-  multiselect: [
-    { label: "Contains", value: FilterMatchMode.CONTAINS },
-    { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
-    { label: "Equals", value: FilterMatchMode.EQUALS },
-    { label: "Is Empty", value: "isNull" },
-  ],
-  select: [
-    { label: "Equals", value: FilterMatchMode.EQUALS },
-    { label: "Is Empty", value: "isNull" },
-  ],
-  number: [
-    { label: "In List", value: "inList" },
-    { label: "Equals", value: FilterMatchMode.EQUALS },
-    { label: "Less Than", value: FilterMatchMode.LESS_THAN },
-    { label: "Greater Than", value: FilterMatchMode.GREATER_THAN },
-    { label: "Is Empty", value: "isNull" },
-  ],
-};
-function getDefaultMatchMode(input_type: string) {
-  if (matchModes[input_type]) {
-    return matchModes[input_type][0].value;
-  } else {
-    return;
-  }
-}
-function clearFilters() {
-  for (const value of Object.values(filters.value)) {
-    value.constraints[0].value = null;
-  }
-}
-
-// Data columns ------------------------------------------------------------ //
-const columns: any[] = [];
-const selectedColumns = ref<any[]>([]);
-
-
-
-var column_index = 0;
-for (const [key, value] of Object.entries(props.schema)) {
-  columns.push({
-    field: key,
-    header: t(value.label),
-    input_type: value.input_type,
-    index: ++column_index,
-  });
-
-  // Set default filters
-  filters.value[key] = {
-    operator: FilterOperator.AND,
-    constraints: [
-      { value: null, matchMode: getDefaultMatchMode(value.input_type) },
-    ],
-  };
-
-  // Add choices to column
-  if (value.choices == undefined) {
-    continue;
-  }
-  columns[columns.length - 1].choice_list = [];
-  columns[columns.length - 1].choices = value.choices;
-  var i = 0;
-  for (const [key2, value2] of Object.entries(value.choices) as any) {
-    columns[columns.length - 1].choice_list.push({
-      label: t(value2),
-      value: key2,
-      key: ++i,
-    });
-  }
-}
-
-// Set default columns
-// TODO: Load default columns from schema
-const defaultColumns = ["sent", "name", "status", "template", "design", "body"];
-for (const col of defaultColumns) {
-  if (!columns.find((c) => c.field === col)) {
-    continue;
-  }
-  selectedColumns.value.push(columns.find((c) => c.field === col));
-}
-
-// Maintain column order
-selectedColumns.value.sort((a, b) => a.index - b.index)
-watch(selectedColumns, (val) => {
-  val.sort((a, b) => a.index - b.index);
-})
-
 // Datatable --------------------------------------------------------------- //
 const datatable = ref();
-const selectedObjects = ref();
+const selectedObjects = ref(props.selectedObjects)
+watch (selectedObjects, (val) => {
+  emit('update:selectedObjects', val)
+})
+const filters = ref(props.filters)
+watch (filters, (val) => {
+  emit('update:filters', val)
+})
 
-// Dialogs ----------------------------------------------------------------- //
-const editActive = ref(false);
-const editObject = ref({});
-const editCreate = ref(false);
+// Dialogues --------------------------------------------------------------- //
 function editObjectFn(event: any) {
-  editObject.value = event;
-  editCreate.value = false;
-  editActive.value = true;
-}
-function createObjectFn() {
-  editObject.value = {};
-  editCreate.value = true;
-  editActive.value = true;
+  emit('update:editObject', event)
+  console.log(event)
+  emit('update:editCreate', false)
+  emit('update:editActive', true)
 }
 </script>
 
 <template>
-    <Toolbar class="mb-4">
-      <template #start>
-        <div class="m-1 text-left">
-          <Button
-            :label="t('Create')"
-            @click="createObjectFn()"
-            class="p-button-success"
-          >
-          </Button>
-        </div>
-        <div class="m-1 text-left">
-          <PrimeMultiSelect
-            v-model="selectedColumns"
-            :options="columns"
-            optionLabel="header"
-            :filter="true"
-            :placeholder="t('Columns')"
-            :maxSelectedLabels="0"
-            :selectedItemsLabel="t('Columns')"
-            scrollHeight="400px"
-            class="w-26"
-          />
-        </div>
-      </template>
-      <template #end>
-        <div class="m-1">
-          <Button
-            type="button"
-            icon="pi pi-filter-slash"
-            label="Clear"
-            class="p-button-outlined"
-            @click="clearFilters()"
-          >
-          </Button>
-        </div>
-        <div class="m-1">
-          <Button
-            :label="t('Download')"
-            :disabled="!(selectedObjects?.length > 0)"
-          >
-            <JsonCSV
-              v-if="selectedObjects?.length > 0"
-              :data="selectedObjects"
-              name="export.csv"
-            >
-              {{ t("Download") }}
-            </JsonCSV>
-          </Button>
-        </div>
-      </template>
-    </Toolbar>
     <div class="datatable" style="height: calc(100vh - 350px); width:100%">
     <DataTable
       :value="objects"
@@ -253,7 +112,7 @@ function createObjectFn() {
       dataKey="id"
       ref="datatable"
       :paginator="true"
-      :rows="10"
+      :rows="50"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       :rowsPerPageOptions="[10, 20, 50, 100]"
       :currentPageReportTemplate="
@@ -272,7 +131,6 @@ function createObjectFn() {
       columnResizeMode="fit"
       :scrollable="true"
       scrollHeight="flex"
-
     >
       <!-- Selection column -->
       <Column selectionMode="multiple" style="width:50px; max-width: 50px;" :frozen="true"></Column>
@@ -382,16 +240,6 @@ function createObjectFn() {
       </Column>
 
     </DataTable>
-
-    <ObjectDetail
-      v-if="editActive"
-      :object="editObject"
-      :create="editCreate"
-      :store="store"
-      :name="name"
-      :schema="schema"
-      @close="editActive = false"
-    />
   </div>
 </template>
 

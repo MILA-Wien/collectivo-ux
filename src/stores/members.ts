@@ -17,17 +17,17 @@ export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
-      membersMembers: { schema: {}, data: { id: null }, loaded: false },
-      membersSummary: { schema: {}, data: [], loaded: false },
-      membersProfile: { schema: {}, data: { id: null }, loaded: false },
-      membersRegister: { schema: {}, data: { id: null }, loaded: false },
-      membersEmailsCampaigns: { schema: {}, data: [], loaded: false },
-      membersEmailsTemplates: { schema: {}, data: [], loaded: false },
-      membersEmailsDesigns: { schema: {}, data: [], loaded: false },
+      membersMembers: { schema: {}, data: { id: null }, loaded: false, schemaLoaded: false },
+      membersSummary: { schema: {}, data: [], loaded: false, schemaLoaded: false },
+      membersProfile: { schema: {}, data: { id: null }, loaded: false, schemaLoaded: false },
+      membersRegister: { schema: {}, data: { id: null }, loaded: false, schemaLoaded: false },
+      membersEmailsCampaigns: { schema: {}, data: [], loaded: false, schemaLoaded: false },
+      membersEmailsTemplates: { schema: {}, data: [], loaded: false, schemaLoaded: false },
+      membersEmailsDesigns: { schema: {}, data: [], loaded: false, schemaLoaded: false },
     } as membersStore),
 
   actions: {
-    async _get(store: any, objectName: membersObject, pk?: Number) {
+    async _getSchemaAndListOrDetail(objectName: membersObject, pk?: Number) {
       // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
@@ -48,28 +48,41 @@ export const useMembersStore = defineStore({
           });
         }
       }
-      store[objectName].data = objects.data;
-      store[objectName].schema = schema.data;
-      store[objectName].loaded = true;
+      this[objectName].data = objects.data;
+      this[objectName].schema = schema.data;
+      this[objectName].loaded = true;
+      this[objectName].schemaLoaded = true;
+    },
+    async getSchema(objectName: membersObject) {
+      // Get schema and save in store
+      const schema = await API.getSchema(objectName);
+      this[objectName].schema = schema.data;
+      this[objectName].schemaLoaded = true;
     },
     async getList(objectName: membersObject) {
       // Get schema and list of objects and save in store
       if (!(this[objectName].data instanceof Array)) {
         throw `Object ${objectName} needs to be called with getDetail`;
       }
-      this._get(this, objectName);
+      this._getSchemaAndListOrDetail(objectName);
     },
     async getDetail(objectName: membersObject, pk: Number) {
       // Get schema and single object and save in store
       if (this[objectName].data instanceof Array) {
         throw `Object ${objectName} needs to be called with getList`;
       }
-      this._get(this, objectName, pk);
+      this._getSchemaAndListOrDetail(objectName, pk);
     },
     async update(objectName: membersObject, pk: Number, payload: Object) {
       // Update object and save in store
       const response = await API.patch(objectName, pk, payload);
-      const object = this[objectName];
+      let object = this[objectName]
+
+      // Special case for membersMembers
+      if (objectName == 'membersMembers') {
+        object = this['membersSummary']
+      }
+
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {
           return m.id === response.data.id;
@@ -87,8 +100,11 @@ export const useMembersStore = defineStore({
       const object = this[objectName];
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {
-          return m.id === response.data.id;
+          return m.id === pk;
         });
+        if (index == -1) {
+          throw `Object with id ${pk} not found in store`;
+        }
         if (index !== null && index !== undefined) {
           object.data.splice(index, 1);
         }

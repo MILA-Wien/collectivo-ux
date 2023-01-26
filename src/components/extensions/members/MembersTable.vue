@@ -1,27 +1,36 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import MemberDetail from "./MemberDetail.vue";
+import { ref, watch } from "vue";
 import MultiSelect from "primevue/multiselect";
 import { useMembersStore } from "@/stores/members";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
+import ObjectDetailLoader from "@/components/datatable/ObjectDetailLoader.vue";
+import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import MembersBulkEdit from "./MembersBulkEdit.vue";
 import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import { FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
-import InputText from "primevue/inputtext";
-import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import type { Member } from "../../../api/types";
 import { useI18n } from "vue-i18n";
+import type { PropType } from "vue";
+import type { StoreGeneric } from "pinia";
+import type { endpoints } from "@/api/api";
+import { matchModes, getDefaultMatchMode } from "@/helpers/filters";
+
 const { t } = useI18n();
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
-  members: {
-    type: Object,
+  store: {
+    type: Object as PropType<StoreGeneric>,
+    required: true,
+  },
+  name: {
+    type: String as PropType<keyof typeof endpoints>,
+    required: true,
+  },
+  objects: {
+    type: Array,
     required: true,
   },
   schema: {
@@ -34,43 +43,50 @@ const props = defineProps({
   },
 });
 
-const datatable = ref();
 const toast = useToast();
-let selectedMember = ref({});
+let selectedMember = ref({id: null});
 const selectedMembers = ref<Member[]>([]);
 const editMember = ref(false);
 const editMemberCreate = ref(false);
-function edit(event: any) {
-  selectedMember.value = event;
-  editMember.value = true;
+
+// Filter functions (match modes) ------------------------------------------ //
+const filters = ref<{ [key: string]: any }>({});
+function clearFilters() {
+  for (const value of Object.values(filters.value)) {
+    value.constraints[0].value = null;
+  }
 }
 
-// List of columns from schema
+// Data columns ------------------------------------------------------------ //
 const columns: any[] = [];
-const filters = ref<{ [key: string]: any }>({});
+const selectedColumns = ref<any[]>([]);
+
+var column_index = 0;
 for (const [key, value] of Object.entries(props.schema)) {
   columns.push({
     field: key,
     header: t(value.label),
-    inputType: value.input_type,
+    input_type: value.input_type,
+    index: ++column_index,
   });
 
-  // Initialize filters with default settings
+  // Set default filters
   filters.value[key] = {
     operator: FilterOperator.AND,
-    constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+    constraints: [
+      { value: null, matchMode: getDefaultMatchMode(value.input_type) },
+    ],
   };
 
   // Add choices to column
   if (value.choices == undefined) {
     continue;
   }
-  columns[columns.length - 1].choices = [];
-
-  // TODO: Change from i to index
+  columns[columns.length - 1].choice_list = [];
+  columns[columns.length - 1].choices = value.choices;
   var i = 0;
   for (const [key2, value2] of Object.entries(value.choices) as any) {
-    columns[columns.length - 1].choices.push({
+    columns[columns.length - 1].choice_list.push({
       label: t(value2),
       value: key2,
       key: ++i,
@@ -78,21 +94,30 @@ for (const [key, value] of Object.entries(props.schema)) {
   }
 }
 
-// Selected columns
-const selectedColumns = ref<any[]>([]);
-const startingColumns = [
-  "id",
+// Set default columns
+// TODO: Load default columns from schema
+const defaultColumns = [
   "first_name",
   "last_name",
   "person_type",
   "membership_type",
   "shares_number",
-  "tags",
-];
-for (const col of startingColumns) {
+  "tags",];
+for (const col of defaultColumns) {
+  if (!columns.find((c) => c.field === col)) {
+    continue;
+  }
   selectedColumns.value.push(columns.find((c) => c.field === col));
 }
 
+// Maintain column order
+selectedColumns.value.sort((a, b) => a.index - b.index)
+watch(selectedColumns, (val) => {
+  val.sort((a, b) => a.index - b.index);
+})
+
+
+// Extra tools ------------------------------------------------------------- //
 // Copy emails to clipboard
 function copyEmails() {
   const emails = selectedMembers.value
@@ -137,24 +162,6 @@ function sendEmails() {
 const bulkEditIsActive = ref(false);
 function bulkEdit() {
   bulkEditIsActive.value = true;
-}
-
-// List of windscribe color classes
-const bgClasses = [
-  "bg-indigo-200",
-  "bg-cyan-200",
-  "bg-green-200",
-  "bg-yellow-200",
-  "bg-red-200",
-  "bg-purple-200",
-  "bg-pink-200",
-  "bg-blue-200",
-  "bg-gray-200",
-];
-
-// Get background color class for key of choices
-function keyToBgClass(i: number) {
-  return bgClasses[i % bgClasses.length];
 }
 </script>
 
@@ -217,150 +224,29 @@ function keyToBgClass(i: number) {
       </template>
     </Toolbar>
 
-    <DataTable
-      :value="members.results"
-      v-model:selection="selectedMembers"
-      dataKey="id"
-      ref="datatable"
-      :paginator="true"
-      :rows="100"
-      paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50, 100]"
-      :currentPageReportTemplate="
-        t('Showing') +
-        ' {first} ' +
-        t('to') +
-        ' {last} ' +
-        t('of') +
-        ' {totalRecords}'
-      "
-      filterDisplay="menu"
+    <!-- Data Table -->
+    <ObjectTable
+      :store="store"
+      :name="name"
+      :objects="objects"
+      :schema="schema"
+      :matchModes="matchModes"
+      :selectedColumns="selectedColumns"
       v-model:filters="filters"
-      sortField="first_name"
-      :sortOrder="1"
-      responsiveLayout="scroll"
-      :resizableColumns="true"
-      columnResizeMode="fit"
-      showGridlines
-      class="p-datatable-sm members-table"
-    >
-      <!-- Selection column -->
-      <Column selectionMode="multiple"></Column>
-
-      <!-- Content columns from schema -->
-      <Column
-        v-for="col of selectedColumns"
-        :field="col.field"
-        :header="col.header"
-        :key="col.field"
-        :sortable="true"
-        :filter="col.filter"
-      >
-        <!-- TODO Bulk Edit Button -->
-        <!-- <template #header>
-            <Button type="button" icon="pi pi-cog"></Button>
-        </template> -->
-
-        <!-- Body for choices -->
-        <template #body="{ data }" v-if="col.choices != undefined">
-          <!-- Handle data[col.field] is array -->
-          <div v-if="Array.isArray(data[col.field])">
-            {{ data[col.field].length }}
-          </div>
-          <div
-            v-else-if="data[col.field] != null"
-            class="c-tag"
-            :class="keyToBgClass(col.choices.find((c:any) => c.value == data[col.field]).key)"
-          >
-            {{ col.choices.find((c: any) => c.value == data[col.field]).label }}
-          </div>
-          <div v-else>0</div>
-        </template>
-
-        <!-- Filter for choices -->
-        <template #filter="{ filterModel }" v-if="col.choices != undefined">
-          <!-- Multiple choice -->
-          <MultiSelect
-            v-if="col.inputType == 'multiselect'"
-            v-model="filterModel.value"
-            :options="col.choices"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Any"
-            class="p-column-filter"
-          >
-            <template #option="slotProps">
-              <div class="p-multiselect-representative-option">
-                <span>{{ slotProps.option.label }}</span>
-              </div>
-            </template>
-          </MultiSelect>
-
-          <!-- Single choice -->
-          <Dropdown
-            v-else
-            v-model="filterModel.value"
-            :options="col.choices"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Any"
-            class="p-column-filter"
-            :showClear="true"
-          >
-            <template #value="slotProps">
-              <span
-                class="px-1 py-0.5"
-                :class="keyToBgClass(col.choices.find((c:any) => c.value == slotProps.value).key)"
-                v-if="slotProps.value"
-              >
-                {{
-                  col.choices.find((c: any) => c.value === slotProps.value)
-                    .label
-                }}
-              </span>
-              <span v-else>{{ slotProps.placeholder }}</span>
-            </template>
-            <template #option="slotProps">
-              <span
-                class="px-1 py-0.5"
-                :class="keyToBgClass(slotProps.option.key)"
-              >
-                {{ t(slotProps.option.label) }}
-              </span>
-            </template>
-          </Dropdown>
-        </template>
-
-        <!-- Filter for other fields -->
-        <template #filter="{ filterModel }" v-else>
-          <InputText
-            type="text"
-            v-model="filterModel.value"
-            class="p-column-filter"
-          />
-        </template>
-      </Column>
-
-      <!-- Action column for member details -->
-      <Column :header="t('actions')">
-        <template #body="slotProps">
-          <ButtonPrime
-            icon="pi pi-pencil"
-            class="p-button-sm"
-            @click="edit(slotProps.data)"
-          />
-        </template>
-      </Column>
-    </DataTable>
+      v-model:selectedObjects="selectedMembers"
+      v-model:editObject="selectedMember"
+      v-model:editActive="editMember"
+      v-model:editCreate="editMemberCreate"
+    />
 
     <!-- Dialogue for member details -->
-    <ObjectDetail
+    <!-- TODO: This has to change to membersMembers (incl. schema) -->
+    <ObjectDetailLoader
       v-if="editMember"
-      :object="selectedMember"
+      :pk="selectedMember.id"
       :create="editMemberCreate"
       :store="useMembersStore()"
       :name="'membersMembers'"
-      :schema="schema"
       @close="editMember = false"
     />
 
@@ -384,38 +270,3 @@ function keyToBgClass(i: number) {
     />
   </div>
 </template>
-
-<style lang="scss">
-.p-button-sm {
-  padding: 3px 6px 3px 6px;
-  width: auto;
-}
-
-.members-table.p-component {
-  font-size: 14px;
-}
-
-.members-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
-.members-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
-  padding: 5px 10px 5px 10px;
-  vertical-align: middle;
-  white-space: normal;
-}
-
-.c-tag {
-  padding: 2px 4px 1px 4px;
-  font-size: 12px;
-  width: min-content;
-  border-radius: 0.1rem;
-}
-
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-</style>
