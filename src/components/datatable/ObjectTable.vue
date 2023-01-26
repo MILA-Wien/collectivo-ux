@@ -47,16 +47,34 @@ function formatMultiSelect(data: any) {
   const str = len > 1 ? "objects" : "object";
   return `${len} ${t(str)}`;
 }
-
+function formatGeneric(data: string|null) {
+  // Shorten strings that are longer than 30 characters
+  if (data == undefined) {
+    return "";
+  }
+  if (data.length > 30) {
+    return data.substring(0, 30) + "...";
+  }
+  return data;
+}
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
+
 FilterService.register("isNull", (a) => a == undefined);
+FilterService.register("inList", (a, b) => {
+  if (a == undefined) {return false;}
+  if (b == undefined) {return true;}
+  let list: string[] = b.split(/;|,| /).map((s: any) => s.trim());
+  return list.includes(a.toString());
+} );
+
 const matchModes: any = {
   text: [
     { label: "Contains", value: FilterMatchMode.CONTAINS },
     { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
     { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
+    { label: "In List", value: "inList" },
     { label: "Is Empty", value: "isNull" },
   ],
   date: [
@@ -81,6 +99,7 @@ const matchModes: any = {
     { label: "Is Empty", value: "isNull" },
   ],
   number: [
+    { label: "In List", value: "inList" },
     { label: "Equals", value: FilterMatchMode.EQUALS },
     { label: "Less Than", value: FilterMatchMode.LESS_THAN },
     { label: "Greater Than", value: FilterMatchMode.GREATER_THAN },
@@ -141,7 +160,7 @@ for (const [key, value] of Object.entries(props.schema)) {
 
 // Set default columns
 // TODO: Load default columns from schema
-const defaultColumns = ["sent", "name", "status", "template", "design"];
+const defaultColumns = ["sent", "name", "status", "template", "design", "body"];
 for (const col of defaultColumns) {
   if (!columns.find((c) => c.field === col)) {
     continue;
@@ -227,7 +246,7 @@ function createObjectFn() {
         </div>
       </template>
     </Toolbar>
-    <div class="datatable" style="height: calc(100vh - 350px)">
+    <div class="datatable" style="height: calc(100vh - 350px); width:100%">
     <DataTable
       :value="objects"
       v-model:selection="selectedObjects"
@@ -245,19 +264,28 @@ function createObjectFn() {
         t('of') +
         ' {totalRecords}'
       "
-      responsiveLayout="scroll"
-      :resizableColumns="true"
-      columnResizeMode="fit"
       showGridlines
       class="p-datatable-sm object-table"
       filterDisplay="menu"
       v-model:filters="filters"
+      :resizableColumns="true"
+      columnResizeMode="fit"
       :scrollable="true"
       scrollHeight="flex"
+
     >
       <!-- Selection column -->
-      <Column selectionMode="multiple"></Column>
-
+      <Column selectionMode="multiple" style="width:50px; max-width: 50px;" :frozen="true"></Column>
+      <!-- Edit column -->
+      <Column  style="width:50px; max-width: 50px;" :frozen="true">
+        <template #body="slotProps">
+          <ButtonPrime
+            icon="pi pi-pencil"
+            class="p-button-text p-button-sm"
+            @click="editObjectFn(slotProps.data)"
+          />
+        </template>
+      </Column>
       <!-- Content columns -->
       <Column
           v-for="col of selectedColumns"
@@ -266,11 +294,11 @@ function createObjectFn() {
           :field="col.field"
           :sortable="true"
           :filterMatchModeOptions="matchModes[col.input_type]">
+
         <!-- Custom bodies for different input types -->
         <template
-          #body="{ data }"
-          v-if="col.input_type == 'date' || col.input_type == 'datetime'"
-        >
+            #body="{ data }"
+            v-if="col.input_type == 'date' || col.input_type == 'datetime'">
           {{ formatDateTime(data[col.field]) }}
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'select'">
@@ -281,6 +309,10 @@ function createObjectFn() {
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
           {{ formatMultiSelect(data[col.field]) }}
+        </template>
+        <template #body="{ data }" v-else>
+          <!-- TODO: Inspect function to show objects -->
+          {{ formatGeneric(data[col.field]) }}
         </template>
 
         <!-- Custom filters for different input types -->
@@ -349,16 +381,6 @@ function createObjectFn() {
         </template>
       </Column>
 
-      <!-- Edit column -->
-      <Column>
-        <template #body="slotProps">
-          <ButtonPrime
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm"
-            @click="editObjectFn(slotProps.data)"
-          />
-        </template>
-      </Column>
     </DataTable>
 
     <ObjectDetail
@@ -383,8 +405,9 @@ function createObjectFn() {
 .object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
 .object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
   padding: 5px 10px 5px 10px;
-  vertical-align: middle;
-  white-space: normal;
+  word-break: break-all;
+  // vertical-align: middle;
+  // white-space: normal;
 }
 .tag {
   font-size: 13px;
