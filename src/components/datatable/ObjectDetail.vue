@@ -140,65 +140,13 @@ function isFiltered(name: string) {
   <div>
     <ConfirmDialogPrime></ConfirmDialogPrime>
     <DialogPrime
+      :header="getHeader()"
       v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '80vw' }"
       :modal="true"
       @hide="closeModal"
     >
-    <template #header>
-      <div class="flex flex-col">
-        <h2>{{getHeader()}}</h2>
-
-        <div class="object-detail-filter w-full mt-3">
-          <!-- Filter -->
-          <i class="pi pi-filter m-auto pl-1 pr-3 inline-block" style="font-size: 1.2rem"></i>
-          <InputTextPrime
-            id="filter"
-            v-model="filterValue"
-            placeholder="Filter"
-            type="text"
-            class="w-96 inline-block"
-          />
-
-          <div class="ml-10 mr-2 mt-2 inline-block" >
-          <ButtonPrime
-            v-if="create"
-            :label="t('Create')"
-            :loading="isSaving"
-            icon="pi pi-check"
-            class="p-button-success"
-            @click="createObject()"
-          />
-          <ButtonPrime
-            v-else
-            :label="t('Save')"
-            :loading="isSaving"
-            icon="pi pi-check"
-            @click="updateObject()"
-          />
-          </div>
-          <div class="mx-2 mt-2 inline-block">
-          <ButtonPrime
-            :label="t('Cancel')"
-            icon="pi pi-times"
-            @click="closeModal"
-            class="p-button-secondary"
-          />
-          </div>
-          <div class="mx-2 mt-2 inline-block">
-          <ButtonPrime
-            :label="t('Delete')"
-            v-if="!create"
-            icon="pi pi-trash"
-            @click="confirmDelete()"
-            class="p-button-danger"
-          />
-          </div>
-        </div>
-
-      </div>
-    </template>
 
       <div class="object-detail-fields mt-5">
         <!-- Editable fields based on input type -->
@@ -269,6 +217,46 @@ function isFiltered(name: string) {
         </div>
       </div>
 
+      <!-- Footer -->
+      <template #footer>
+        <div class="object-detail-filter flex flex-row mt-5 items-center">
+          <i class="pi pi-filter m-auto pl-1 pr-3" style="font-size: 1.2rem"></i>
+          <InputTextPrime
+            id="filter"
+            v-model="filterValue"
+            placeholder="Filter"
+            type="text"
+            class="w-96"
+          />
+          <div class="grow"></div>
+          <ButtonPrime
+            v-if="create"
+            :label="t('Create')"
+            :loading="isSaving"
+            icon="pi pi-check"
+            class="p-button-success"
+            @click="createObject()"/>
+          <ButtonPrime
+            v-else
+            :label="t('Save')"
+            :loading="isSaving"
+            icon="pi pi-check"
+            @click="updateObject()"/>
+          <ButtonPrime
+            :label="t('Cancel')"
+            icon="pi pi-times"
+            @click="closeModal"
+            class="p-button-secondary"/>
+          <ButtonPrime
+            :label="t('Delete')"
+            v-if="!create"
+            icon="pi pi-trash"
+            @click="confirmDelete()"
+            style="margin-right: 0px"
+            class="p-button-danger"/>
+        </div>
+      </template>
+
     </DialogPrime>
   </div>
 </template>
@@ -277,7 +265,8 @@ function isFiltered(name: string) {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, 250px);
-  gap: 10px;
+  gap: 20px;
+  place-content: left;
 }
 .field {
   padding: 8px;
