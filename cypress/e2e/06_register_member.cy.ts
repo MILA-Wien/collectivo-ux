@@ -45,6 +45,9 @@ describe("register user not member filling out only compulsory fields and checkb
       //cy.get('#founding-event-checkbox > .boolean input').check();
 
       cy.get("#submit-button > .button button").click();
+      cy.intercept('/api/members/register').as('new-member');
+      //cy.wait('@new-member').then(console.log)
+      //cy.wait('@new-user').should('have.property', 'response.statusCode', 201)
 
       //TODO intercept response
       //TODO validate response
