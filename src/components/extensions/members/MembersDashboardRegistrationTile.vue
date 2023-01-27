@@ -12,7 +12,9 @@ const { t } = useI18n();
       }}
     </p>
     <RouterLink to="/membership/registration">
-      <ButtonPrime id="members-registration-tile-continue"> {{ t("Continue") }} </ButtonPrime>
+      <ButtonPrime id="members-registration-tile-continue">
+        {{ t("Continue") }}
+      </ButtonPrime>
     </RouterLink>
   </div>
 </template>
