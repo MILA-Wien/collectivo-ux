@@ -145,6 +145,7 @@ function isFiltered(name: string) {
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '80vw' }"
       :modal="true"
+      :maximizable="true"
       @hide="closeModal"
     >
 
