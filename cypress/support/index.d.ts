@@ -1,6 +1,10 @@
 /// <reference types="cypress" />
 declare namespace Cypress {
-    interface Chainable<Subject = any> {
-        login(email : string, password?: string): Chainable<any>;
+    interface Chainable {
+        /**
+       * Custom command to login into collectivo via UI
+       * @example cy.login('test_member_01@example.com', 'iAmNotSafe')
+       */
+        login(email : string, password?: string): Chainable<void>;
     }
 }

@@ -1023,12 +1023,12 @@
                     "children": []
                 },
                 {
-                    "type": "boolean",
+                    "type": "paragraph",
                     "properties": {
-                        "htmlType": "checkbox",
+                        "htmlType": "p",
                         "conditions": [],
-                        "label": "Kommst du zur Gründungsversammlung am 1.2.2023 um 18 Uhr?",
-                        "description": "Ja, ich komme verbindlich am 1.2.2023 um 18 Uhr zur Gründung in der Brunnenpassage am Yppenplatz. Wenn du zur Gründungsversammlung kommst, kannst du Gründerin von MILA Mitmach-Supermarkt e.G. sein. Deine Teilnahme ist für eine Aufnahme als Mitglied aber nicht nötig.",
+                        "label": "Die Anmeldung zur Gründungsversammlung am 1.2.2023 ist leider geschlossen.",
+                        "content": "Die max. Teilnehmer*innenzahl ist bereits erreicht. Wir freuen uns dennoch sehr, dich als Mitglied begrüßen zu dürfen!",
                         "extId": "founding_event"
                     },
                     "id": "founding-event-checkbox",
