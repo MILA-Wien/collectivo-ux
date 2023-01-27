@@ -70,7 +70,7 @@ function formatDateTime(date: string) {
 }
 function formatMultiSelect(data: any) {
   const len = Array.isArray(data) ? data.length : 0;
-  const str = len > 1 ? "objects" : "object";
+  const str = len !== 1 ? "objects" : "object";
   return `${len} ${t(str)}`;
 }
 function formatGeneric(data: string|null) {
