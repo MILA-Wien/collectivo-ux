@@ -17,13 +17,48 @@ export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
-      membersMembers: { schema: {}, data: { id: null }, loaded: false, schemaLoaded: false },
-      membersSummary: { schema: {}, data: [], loaded: false, schemaLoaded: false },
-      membersProfile: { schema: {}, data: { id: null }, loaded: false, schemaLoaded: false },
-      membersRegister: { schema: {}, data: { id: null }, loaded: false, schemaLoaded: false },
-      membersEmailsCampaigns: { schema: {}, data: [], loaded: false, schemaLoaded: false },
-      membersEmailsTemplates: { schema: {}, data: [], loaded: false, schemaLoaded: false },
-      membersEmailsDesigns: { schema: {}, data: [], loaded: false, schemaLoaded: false },
+      membersMembers: {
+        schema: {},
+        data: { id: null },
+        loaded: false,
+        schemaLoaded: false,
+      },
+      membersSummary: {
+        schema: {},
+        data: [],
+        loaded: false,
+        schemaLoaded: false,
+      },
+      membersProfile: {
+        schema: {},
+        data: { id: null },
+        loaded: false,
+        schemaLoaded: false,
+      },
+      membersRegister: {
+        schema: {},
+        data: { id: null },
+        loaded: false,
+        schemaLoaded: false,
+      },
+      membersEmailsCampaigns: {
+        schema: {},
+        data: [],
+        loaded: false,
+        schemaLoaded: false,
+      },
+      membersEmailsTemplates: {
+        schema: {},
+        data: [],
+        loaded: false,
+        schemaLoaded: false,
+      },
+      membersEmailsDesigns: {
+        schema: {},
+        data: [],
+        loaded: false,
+        schemaLoaded: false,
+      },
     } as membersStore),
 
   actions: {
@@ -42,7 +77,7 @@ export const useMembersStore = defineStore({
         let i = 0;
         for (const [key2, value2] of Object.entries(value.choices) as any) {
           const parsed = parseInt(key2);
-          const key3 = isNaN(parsed)? key2 : parsed;
+          const key3 = isNaN(parsed) ? key2 : parsed;
           value.options.push({
             label: value2,
             value: key3,
@@ -50,6 +85,7 @@ export const useMembersStore = defineStore({
           });
         }
       }
+      console.log(objects.data);
       this[objectName].data = objects.data;
       this[objectName].schema = schema.data;
       this[objectName].loaded = true;
@@ -78,11 +114,11 @@ export const useMembersStore = defineStore({
     async update(objectName: membersObject, pk: Number, payload: Object) {
       // Update object and save in store
       const response = await API.patch(objectName, pk, payload);
-      let object = this[objectName]
+      let object = this[objectName];
 
       // Special case for membersMembers
-      if (objectName == 'membersMembers') {
-        object = this['membersSummary']
+      if (objectName == "membersMembers") {
+        object = this["membersSummary"];
       }
 
       if (object.data instanceof Array) {
@@ -129,14 +165,13 @@ export const useMembersStore = defineStore({
     // Special cases
     async getMembersProfile() {
       // Get schema and profile and save in store
-      this._getSchemaAndListOrDetail('membersProfile');
+      this._getSchemaAndListOrDetail("membersProfile");
     },
     async updateMembersProfile(payload: Object) {
       // Update profile and save in store
-      const response = await API.patchWithoutPk('membersProfile', payload);
+      const response = await API.patchWithoutPk("membersProfile", payload);
       this.membersProfile.data = response.data;
       // TODO: Also update in members summary
     },
-
   },
 });

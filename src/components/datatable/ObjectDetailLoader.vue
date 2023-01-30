@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 
-const { t } = useI18n();
 const emit = defineEmits(["close"]);
 
 const props = defineProps({
@@ -37,7 +35,6 @@ data.value.loaded = false;
 props.store.getDetail(props.name, props.pk).catch((e: any) => {
   error.value = e;
 });
-
 </script>
 
 <template>

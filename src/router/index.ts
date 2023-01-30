@@ -19,8 +19,7 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
-      component: () =>
-        import("../components/members/MembersRegistration.vue"),
+      component: () => import("../components/members/MembersRegistration.vue"),
     },
     {
       path: "/:extension/:component",
@@ -36,8 +35,7 @@ const router = createRouter({
       meta: {
         isMembersAdmin: true,
       },
-      component: () =>
-        import("../components/members/MembersAdmin.vue"),
+      component: () => import("../components/members/MembersAdmin.vue"),
     },
     {
       path: "/members/emails",
@@ -45,8 +43,7 @@ const router = createRouter({
       meta: {
         isMembersAdmin: true,
       },
-      component: () =>
-        import("../components/members/MembersEmails.vue"),
+      component: () => import("../components/members/MembersEmails.vue"),
     },
     {
       path: "/members/profile",
@@ -55,8 +52,7 @@ const router = createRouter({
         requiresAuth: true,
         isMember: true,
       },
-      component: () =>
-        import("../components/members/MembersProfileLoader.vue"),
+      component: () => import("../components/members/MembersProfileLoader.vue"),
     },
   ],
 });

@@ -30,8 +30,8 @@ const props = defineProps({
 });
 const membership = toRef(props, "membership");
 const membershipSchema = toRef(props, "membershipSchema");
-console.log(props.membership)
-console.log(membership.value)
+console.log(props.membership);
+console.log(membership.value);
 // Reference for selected gender radio button
 const selectedGender = ref();
 selectedGender.value = membership.value["gender"];

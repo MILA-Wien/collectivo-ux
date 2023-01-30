@@ -55,7 +55,7 @@ const { tree } = storeToRefs(formViewerStore);
 tree.value = treeData;
 
 const membersStore = useMembersStore();
-membersStore.getSchema('membersRegister');
+membersStore.getSchema("membersRegister");
 const { membersRegister } = storeToRefs(membersStore);
 const registrationSchema = membersRegister.value.schema;
 const registrationFinished = ref(false);
@@ -89,7 +89,7 @@ async function submit() {
   }
 
   try {
-    await membersStore.create('membersRegister', registerData);
+    await membersStore.create("membersRegister", registerData);
     userStore.finishRegistration();
     registrationFinished.value = true;
   } catch (e: any) {

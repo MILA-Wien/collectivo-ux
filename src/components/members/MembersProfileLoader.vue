@@ -11,8 +11,8 @@ menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
 const membersStore = useMembersStore();
 membersStore.getMembersProfile().catch((e: any) => {
-    error.value = e;
-  });
+  error.value = e;
+});
 const { membersProfile } = storeToRefs(membersStore);
 </script>
 

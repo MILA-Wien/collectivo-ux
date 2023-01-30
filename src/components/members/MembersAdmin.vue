@@ -9,14 +9,13 @@ const menuStore = useMenuStore();
 menuStore.setTitle("Members");
 
 const membersStore = useMembersStore();
-const { membersSummary, membersEmailsCampaigns } =
-  storeToRefs(membersStore);
+const { membersSummary, membersEmailsCampaigns } = storeToRefs(membersStore);
 
 const error = ref<Object | null>(null);
 
 if (membersSummary.value.loaded === false) {
   membersStore.getList("membersSummary").catch((e: any) => {
-    error.value = e
+    error.value = e;
   });
 }
 
@@ -25,7 +24,6 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
     error.value = e;
   });
 }
-
 </script>
 
 <template>
@@ -35,7 +33,10 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
       <p class="error-message">{{ error }}</p>
     </div>
     <div
-      v-else-if="membersSummary.loaded === false || membersEmailsCampaigns.schemaLoaded === false"
+      v-else-if="
+        membersSummary.loaded === false ||
+        membersEmailsCampaigns.schemaLoaded === false
+      "
       class="loading"
     >
       <h2>{{ $t("Loading members") }}</h2>

@@ -11,7 +11,7 @@ import Button from "primevue/button";
 import { FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import { useToast } from "primevue/usetoast";
-import type { Member } from "../../../api/types";
+import type { Member } from "../../api/types";
 import { useI18n } from "vue-i18n";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
@@ -44,7 +44,7 @@ const props = defineProps({
 });
 
 const toast = useToast();
-let selectedMember = ref({id: null});
+let selectedMember = ref({ id: null });
 const selectedMembers = ref<Member[]>([]);
 const editMember = ref(false);
 const editMemberCreate = ref(false);
@@ -102,7 +102,8 @@ const defaultColumns = [
   "person_type",
   "membership_type",
   "shares_number",
-  "tags",];
+  "tags",
+];
 for (const col of defaultColumns) {
   if (!columns.find((c) => c.field === col)) {
     continue;
@@ -111,11 +112,10 @@ for (const col of defaultColumns) {
 }
 
 // Maintain column order
-selectedColumns.value.sort((a, b) => a.index - b.index)
+selectedColumns.value.sort((a, b) => a.index - b.index);
 watch(selectedColumns, (val) => {
   val.sort((a, b) => a.index - b.index);
-})
-
+});
 
 // Extra tools ------------------------------------------------------------- //
 // Copy emails to clipboard
@@ -184,6 +184,16 @@ function bulkEdit() {
         </div>
       </template>
       <template #end>
+        <div class="m-1">
+          <PrimeButton
+            type="button"
+            icon="pi pi-filter-slash"
+            label="Clear"
+            class="p-button-outlined"
+            @click="clearFilters()"
+          >
+          </PrimeButton>
+        </div>
         <div class="m-1">
           <Button
             :label="t('Bulk edit')"

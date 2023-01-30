@@ -7,6 +7,7 @@ import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import ObjectEditor from "@/components/datatable/ObjectEditor.vue";
+import PrimeTextarea from "primevue/textarea";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -148,13 +149,15 @@ function isFiltered(name: string) {
       :maximizable="true"
       @hide="closeModal"
     >
-
       <div class="object-detail-fields mt-5">
         <!-- Editable fields based on input type -->
-        <div v-for="(field, name, i) in schema" :key="i" class="field"
-            :style="isFiltered(name)? '': 'position:absolute'">
+        <div
+          v-for="(field, name, i) in schema"
+          :key="i"
+          class="field"
+          :style="isFiltered(name) ? '' : 'position:absolute'"
+        >
           <div v-if="isFiltered(name)">
-
             <div class="mb-1">
               <label for="attr-{{name}}">
                 {{ t(field.label) }}
@@ -172,6 +175,7 @@ function isFiltered(name: string) {
                 placeholder="Select a choice"
                 :showClear="true"
                 class="w-full"
+                :disabled="field.read_only"
               />
             </div>
 
@@ -186,11 +190,22 @@ function isFiltered(name: string) {
                 :filter="true"
                 placeholder="Select multiple choices"
                 class="w-full"
+                :disabled="field.read_only"
               />
             </div>
 
             <div v-else-if="field.input_type === 'checkbox'">
-              <InputSwitchPrime v-model="object_temp[name]" />
+              <InputSwitchPrime
+                v-model="object_temp[name]"
+                :disabled="field.read_only"
+              />
+            </div>
+
+            <div v-else-if="field.input_type === 'textarea'">
+              <PrimeTextarea
+                v-model="object_temp[name]"
+                :disabled="field.read_only"
+              />
             </div>
 
             <div v-else-if="field.input_type === 'html'">
@@ -221,7 +236,10 @@ function isFiltered(name: string) {
       <!-- Footer -->
       <template #footer>
         <div class="object-detail-filter flex flex-row mt-5 items-center">
-          <i class="pi pi-filter m-auto pl-1 pr-3" style="font-size: 1.2rem"></i>
+          <i
+            class="pi pi-filter m-auto pl-1 pr-3"
+            style="font-size: 1.2rem"
+          ></i>
           <InputTextPrime
             id="filter"
             v-model="filterValue"
@@ -236,28 +254,31 @@ function isFiltered(name: string) {
             :loading="isSaving"
             icon="pi pi-check"
             class="p-button-success"
-            @click="createObject()"/>
+            @click="createObject()"
+          />
           <ButtonPrime
             v-else
             :label="t('Save')"
             :loading="isSaving"
             icon="pi pi-check"
-            @click="updateObject()"/>
+            @click="updateObject()"
+          />
           <ButtonPrime
             :label="t('Cancel')"
             icon="pi pi-times"
             @click="closeModal"
-            class="p-button-secondary"/>
+            class="p-button-secondary"
+          />
           <ButtonPrime
             :label="t('Delete')"
             v-if="!create"
             icon="pi pi-trash"
             @click="confirmDelete()"
             style="margin-right: 0px"
-            class="p-button-danger"/>
+            class="p-button-danger"
+          />
         </div>
       </template>
-
     </DialogPrime>
   </div>
 </template>
@@ -275,7 +296,8 @@ function isFiltered(name: string) {
 label {
   font-weight: bold;
 }
-.p-dialog .p-dialog-header, .p-dialog .p-dialog-footer{
+.p-dialog .p-dialog-header,
+.p-dialog .p-dialog-footer {
   background-color: rgb(236, 236, 236);
 }
 </style>

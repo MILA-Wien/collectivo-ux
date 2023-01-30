@@ -59,9 +59,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-  'update:editCreate', 'update:editActive',
-  'update:editObject', 'update:selectedObjects',
-  'update:selectedColumns', 'update:filters',
+  "update:editCreate",
+  "update:editActive",
+  "update:editObject",
+  "update:selectedObjects",
+  "update:selectedColumns",
+  "update:filters",
 ]);
 
 // Formatting functions for data view in table ----------------------------- //
@@ -73,7 +76,7 @@ function formatMultiSelect(data: any) {
   const str = len !== 1 ? "objects" : "object";
   return `${len} ${t(str)}`;
 }
-function formatGeneric(data: string|null) {
+function formatGeneric(data: string | null) {
   // Shorten strings that are longer than 30 characters
   if (data == undefined) {
     return "";
@@ -86,26 +89,26 @@ function formatGeneric(data: string|null) {
 
 // Datatable --------------------------------------------------------------- //
 const datatable = ref();
-const selectedObjects = ref(props.selectedObjects)
-watch (selectedObjects, (val) => {
-  emit('update:selectedObjects', val)
-})
-const filters = ref(props.filters)
-watch (filters, (val) => {
-  emit('update:filters', val)
-})
+const selectedObjects = ref(props.selectedObjects);
+watch(selectedObjects, (val) => {
+  emit("update:selectedObjects", val);
+});
+const filters = ref(props.filters);
+watch(filters, (val) => {
+  emit("update:filters", val);
+});
 
 // Dialogues --------------------------------------------------------------- //
 function editObjectFn(event: any) {
-  emit('update:editObject', event)
-  console.log(event)
-  emit('update:editCreate', false)
-  emit('update:editActive', true)
+  emit("update:editObject", event);
+  console.log(event);
+  emit("update:editCreate", false);
+  emit("update:editActive", true);
 }
 </script>
 
 <template>
-    <div class="datatable" style="height: calc(100vh - 350px); width:100%">
+  <div class="datatable" style="height: calc(100vh - 350px); width: 100%">
     <DataTable
       :value="objects"
       v-model:selection="selectedObjects"
@@ -133,9 +136,13 @@ function editObjectFn(event: any) {
       scrollHeight="flex"
     >
       <!-- Selection column -->
-      <Column selectionMode="multiple" style="width:50px; max-width: 50px;" :frozen="true"></Column>
+      <Column
+        selectionMode="multiple"
+        style="width: 50px; max-width: 50px"
+        :frozen="true"
+      ></Column>
       <!-- Edit column -->
-      <Column  style="width:50px; max-width: 50px;" :frozen="true">
+      <Column style="width: 50px; max-width: 50px" :frozen="true">
         <template #body="slotProps">
           <ButtonPrime
             icon="pi pi-pencil"
@@ -146,17 +153,18 @@ function editObjectFn(event: any) {
       </Column>
       <!-- Content columns -->
       <Column
-          v-for="col of selectedColumns"
-          :header="col.header"
-          :key="col.field"
-          :field="col.field"
-          :sortable="true"
-          :filterMatchModeOptions="matchModes[col.input_type]">
-
+        v-for="col of selectedColumns"
+        :header="col.header"
+        :key="col.field"
+        :field="col.field"
+        :sortable="true"
+        :filterMatchModeOptions="matchModes[col.input_type]"
+      >
         <!-- Custom bodies for different input types -->
         <template
-            #body="{ data }"
-            v-if="col.input_type == 'date' || col.input_type == 'datetime'">
+          #body="{ data }"
+          v-if="col.input_type == 'date' || col.input_type == 'datetime'"
+        >
           {{ formatDateTime(data[col.field]) }}
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'select'">
@@ -238,7 +246,6 @@ function editObjectFn(event: any) {
           </div>
         </template>
       </Column>
-
     </DataTable>
   </div>
 </template>

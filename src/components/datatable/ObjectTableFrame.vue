@@ -92,10 +92,10 @@ for (const col of defaultColumns) {
 }
 
 // Maintain column order
-selectedColumns.value.sort((a, b) => a.index - b.index)
+selectedColumns.value.sort((a, b) => a.index - b.index);
 watch(selectedColumns, (val) => {
   val.sort((a, b) => a.index - b.index);
-})
+});
 
 // Datatable --------------------------------------------------------------- //
 const selectedObjects = ref([]);
@@ -112,7 +112,6 @@ function createObjectFn() {
 </script>
 
 <template>
-
   <!-- Toolbar -->
   <PrimeToolbar class="mb-4">
     <template #start>
@@ -191,5 +190,4 @@ function createObjectFn() {
     :schema="schema"
     @close="editActive = false"
   />
-
 </template>
