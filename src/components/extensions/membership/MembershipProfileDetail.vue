@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMembershipStore } from "@/stores/membership";
+import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
@@ -17,7 +17,7 @@ const { user } = storeToRefs(userStore);
 const { t } = useI18n();
 const toast = useToast();
 const submitted = ref(false);
-const membershipStore = useMembershipStore();
+const membersStore = useMembersStore();
 
 // Set page title
 const menuStore = useMenuStore();
@@ -138,7 +138,7 @@ async function save() {
     return;
   } else if (membership.value) {
     try {
-      await membershipStore.updateMembership(membership.value);
+      await membersStore.updateMembersProfile(membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),

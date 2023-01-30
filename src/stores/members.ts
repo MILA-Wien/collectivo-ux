@@ -125,5 +125,18 @@ export const useMembersStore = defineStore({
       }
       return response;
     },
+
+    // Special cases
+    async getMembersProfile() {
+      // Get schema and profile and save in store
+      this._getSchemaAndListOrDetail('membersProfile');
+    },
+    async updateMembersProfile(payload: Object) {
+      // Update profile and save in store
+      const response = await API.patchWithoutPk('membersProfile', payload);
+      this.membersProfile.data = response.data;
+      // TODO: Also update in members summary
+    },
+
   },
 });

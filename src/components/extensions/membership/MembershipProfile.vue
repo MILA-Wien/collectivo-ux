@@ -1,32 +1,33 @@
 <script setup lang="ts">
-import { useMembershipStore } from "@/stores/membership";
+import { ref } from "vue";
+import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
 import MembershipProfileDetail from "./MembershipProfileDetail.vue";
+import PrimeProgressSpinner from "primevue/progressspinner";
 
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
-
-const membershipStore = useMembershipStore();
-membershipStore.getMembershipSchema();
-membershipStore.getMembership();
-const { membership, membershipSchema } = storeToRefs(membershipStore);
+const error = ref<Object | null>(null);
+const membersStore = useMembersStore();
+membersStore.getMembersProfile().catch((e: any) => {
+    error.value = e;
+  });
+const { membersProfile } = storeToRefs(membersStore);
 </script>
 
 <template>
-  <div class="members-wrapper">
-    <div
-      v-if="membership === null || membershipSchema === null"
-      class="loading"
-    >
-      <h2>{{ $t("Loading membership data") }}</h2>
-    </div>
-    <div v-else class="members-table">
-      <MembershipProfileDetail
-        :membership="membership"
-        :membershipSchema="membershipSchema"
-      />
-    </div>
+  <div v-if="error !== null">
+    <p>There was an error loading the data.</p>
+  </div>
+  <div v-else-if="!membersProfile.loaded">
+      <PrimeProgressSpinner />
+  </div>
+  <div v-else class="members-table">
+    <MembershipProfileDetail
+      :membership="membersProfile.data"
+      :membershipSchema="membersProfile.schema"
+    />
   </div>
 </template>
 

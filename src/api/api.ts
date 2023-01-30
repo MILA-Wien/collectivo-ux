@@ -97,15 +97,12 @@ export const API = {
     }
     return await api.get(`${endpoints[endpoint]}${pk}/`);
   },
-
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
   },
-
   post: async function (endpoint: keyof typeof endpoints, payload: Object) {
     return await api.post(endpoints[endpoint], payload);
   },
-
   patch: async function (
     endpoint: keyof typeof endpoints,
     pk: Number,
@@ -113,7 +110,12 @@ export const API = {
   ) {
     return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
   },
-
+  patchWithoutPk: async function (
+    endpoint: keyof typeof endpoints,
+    payload: Object
+  ) {
+    return await api.patch(`${endpoints[endpoint]}`, payload);
+  },
   delete: async function (endpoint: keyof typeof endpoints, pk: Number) {
     return await api.delete(`${endpoints[endpoint]}${pk}/`);
   },
