@@ -21,7 +21,7 @@ const { membersProfile } = storeToRefs(membersStore);
     <p>There was an error loading the data.</p>
   </div>
   <div v-else-if="!membersProfile.loaded">
-      <PrimeProgressSpinner />
+    <PrimeProgressSpinner />
   </div>
   <div v-else class="members-table">
     <MembersProfile
