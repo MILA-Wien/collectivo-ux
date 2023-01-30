@@ -8,17 +8,7 @@ import "./assets/main.css";
 
 //PrimeVue imports
 import PrimeVue from "primevue/config";
-import Button from "primevue/button";
-import InputTextPrime from "primevue/inputtext";
-import InputSwitch from "primevue/inputswitch";
-import PasswordPrime from "primevue/password";
-import MultiSelect from "primevue/multiselect";
-import Menu from "primevue/menu";
 import ToastService from "primevue/toastservice";
-import Toast from "primevue/toast";
-import Dialog from "primevue/dialog";
-import Dropdown from "primevue/dropdown";
-import ConfirmDialog from "primevue/confirmdialog";
 import ConfirmationService from "primevue/confirmationservice";
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
@@ -42,16 +32,6 @@ keycloakInstance
     app.use(PrimeVue);
     app.use(ToastService);
     app.use(ConfirmationService);
-    app.component("InputTextPrime", InputTextPrime);
-    app.component("ButtonPrime", Button);
-    app.component("PasswordPrime", PasswordPrime);
-    app.component("PrimeMenu", Menu);
-    app.component("ToastPrime", Toast);
-    app.component("DropdownPrime", Dropdown);
-    app.component("DialogPrime", Dialog);
-    app.component("ConfirmDialogPrime", ConfirmDialog);
-    app.component("InputSwitchPrime", InputSwitch);
-    app.component("MultiSelectPrime", MultiSelect);
 
     // init view router
     app.use(router);
