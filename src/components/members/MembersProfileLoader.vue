@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
-import MembershipProfileDetail from "./MembershipProfileDetail.vue";
+import MembersProfile from "./MembersProfile.vue";
 import PrimeProgressSpinner from "primevue/progressspinner";
 
 const menuStore = useMenuStore();
@@ -24,7 +24,7 @@ const { membersProfile } = storeToRefs(membersStore);
       <PrimeProgressSpinner />
   </div>
   <div v-else class="members-table">
-    <MembershipProfileDetail
+    <MembersProfile
       :membership="membersProfile.data"
       :membershipSchema="membersProfile.schema"
     />

@@ -14,13 +14,13 @@ const router = createRouter({
       redirect: "/", // redirect to dashboard
     },
     {
-      path: "/membership/registration",
+      path: "/members/registration",
       name: "registration",
       meta: {
         requiresAuth: true,
       },
       component: () =>
-        import("../components/extensions/membership/RegistrationForm.vue"),
+        import("../components/members/MembersRegistration.vue"),
     },
     {
       path: "/:extension/:component",
@@ -37,7 +37,7 @@ const router = createRouter({
         isMembersAdmin: true,
       },
       component: () =>
-        import("../components/extensions/members/MembersAdmin.vue"),
+        import("../components/members/MembersAdmin.vue"),
     },
     {
       path: "/members/emails",
@@ -46,7 +46,7 @@ const router = createRouter({
         isMembersAdmin: true,
       },
       component: () =>
-        import("../components/extensions/members/MembersEmails.vue"),
+        import("../components/members/MembersEmails.vue"),
     },
     {
       path: "/members/profile",
@@ -56,7 +56,7 @@ const router = createRouter({
         isMember: true,
       },
       component: () =>
-        import("../components/extensions/membership/MembershipProfile.vue"),
+        import("../components/members/MembersProfileLoader.vue"),
     },
   ],
 });

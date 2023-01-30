@@ -11,7 +11,7 @@ const { t } = useI18n();
         )
       }}
     </p>
-    <RouterLink to="/membership/registration">
+    <RouterLink to="/members/registration">
       <ButtonPrime> {{ t("Continue") }} </ButtonPrime>
     </RouterLink>
   </div>
