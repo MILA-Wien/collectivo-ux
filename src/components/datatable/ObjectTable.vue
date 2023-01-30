@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-
+import PrimeDataTable from "primevue/datatable";
+import PrimeColumn from "primevue/column";
+import PrimeButton from "primevue/button";
 import PrimeDropdown from "primevue/dropdown";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeInputText from "primevue/inputtext";
@@ -109,7 +109,7 @@ function editObjectFn(event: any) {
 
 <template>
   <div class="datatable" style="height: calc(100vh - 350px); width: 100%">
-    <DataTable
+    <PrimeDataTable
       :value="objects"
       v-model:selection="selectedObjects"
       dataKey="id"
@@ -136,23 +136,23 @@ function editObjectFn(event: any) {
       scrollHeight="flex"
     >
       <!-- Selection column -->
-      <Column
+      <PrimeColumn
         selectionMode="multiple"
         style="width: 50px; max-width: 50px"
         :frozen="true"
-      ></Column>
+      ></PrimeColumn>
       <!-- Edit column -->
-      <Column style="width: 50px; max-width: 50px" :frozen="true">
+      <PrimeColumn style="width: 50px; max-width: 50px" :frozen="true">
         <template #body="slotProps">
-          <ButtonPrime
+          <PrimeButton
             icon="pi pi-pencil"
             class="p-button-text p-button-sm"
             @click="editObjectFn(slotProps.data)"
           />
         </template>
-      </Column>
+      </PrimeColumn>
       <!-- Content columns -->
-      <Column
+      <PrimeColumn
         v-for="col of selectedColumns"
         :header="col.header"
         :key="col.field"
@@ -245,8 +245,8 @@ function editObjectFn(event: any) {
             </div>
           </div>
         </template>
-      </Column>
-    </DataTable>
+      </PrimeColumn>
+    </PrimeDataTable>
   </div>
 </template>
 

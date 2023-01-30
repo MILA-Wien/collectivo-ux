@@ -85,7 +85,7 @@ export const useMembersStore = defineStore({
           });
         }
       }
-      console.log(objects.data);
+
       this[objectName].data = objects.data;
       this[objectName].schema = schema.data;
       this[objectName].loaded = true;

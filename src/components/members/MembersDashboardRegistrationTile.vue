@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from "vue-i18n";
+import PrimeButton from "primevue/button";
 const { t } = useI18n();
 </script>
 <template>
@@ -12,7 +13,7 @@ const { t } = useI18n();
       }}
     </p>
     <RouterLink to="/members/registration">
-      <ButtonPrime> {{ t("Continue") }} </ButtonPrime>
+      <PrimeButton> {{ t("Continue") }} </PrimeButton>
     </RouterLink>
   </div>
 </template>

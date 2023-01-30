@@ -7,6 +7,13 @@ import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import ObjectEditor from "@/components/datatable/ObjectEditor.vue";
+import PrimeDialog from "primevue/dialog";
+import PrimeButton from "primevue/button";
+import PrimeInputText from "primevue/inputtext";
+import PrimeConfirmDialog from "primevue/confirmdialog";
+import PrimeInputSwitch from "primevue/inputswitch";
+import PrimeDropdown from "primevue/dropdown";
+import PrimeMultiSelect from "primevue/multiselect";
 import PrimeTextarea from "primevue/textarea";
 
 const { t } = useI18n();
@@ -79,7 +86,6 @@ async function createObject() {
   isSaving.value = false;
 }
 async function updateObject() {
-  console.log(object_temp.value);
   isSaving.value = true;
   try {
     await props.store.update(
@@ -139,8 +145,8 @@ function isFiltered(name: string) {
 
 <template>
   <div>
-    <ConfirmDialogPrime></ConfirmDialogPrime>
-    <DialogPrime
+    <PrimeConfirmDialog></PrimeConfirmDialog>
+    <PrimeDialog
       :header="getHeader()"
       v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
@@ -166,7 +172,7 @@ function isFiltered(name: string) {
             </div>
 
             <div v-if="field.input_type === 'select'">
-              <DropdownPrime
+              <PrimeDropdown
                 v-model="object_temp[name]"
                 :options="field.options"
                 optionLabel="label"
@@ -180,7 +186,7 @@ function isFiltered(name: string) {
             </div>
 
             <div v-else-if="field.input_type === 'multiselect'">
-              <MultiSelectPrime
+              <PrimeMultiSelect
                 v-model="object_temp[name]"
                 :options="field.options"
                 optionLabel="label"
@@ -195,7 +201,7 @@ function isFiltered(name: string) {
             </div>
 
             <div v-else-if="field.input_type === 'checkbox'">
-              <InputSwitchPrime
+              <PrimeInputSwitch
                 v-model="object_temp[name]"
                 :disabled="field.read_only"
               />
@@ -213,7 +219,7 @@ function isFiltered(name: string) {
             </div>
 
             <div v-else>
-              <InputTextPrime
+              <PrimeInputText
                 id="attr-{{name}}"
                 type="text"
                 aria-describedby="attr-{{value}}-help"
@@ -240,7 +246,7 @@ function isFiltered(name: string) {
             class="pi pi-filter m-auto pl-1 pr-3"
             style="font-size: 1.2rem"
           ></i>
-          <InputTextPrime
+          <PrimeInputText
             id="filter"
             v-model="filterValue"
             placeholder="Filter"
@@ -248,7 +254,7 @@ function isFiltered(name: string) {
             class="w-96"
           />
           <div class="grow"></div>
-          <ButtonPrime
+          <PrimeButton
             v-if="create"
             :label="t('Create')"
             :loading="isSaving"
@@ -256,20 +262,20 @@ function isFiltered(name: string) {
             class="p-button-success"
             @click="createObject()"
           />
-          <ButtonPrime
+          <PrimeButton
             v-else
             :label="t('Save')"
             :loading="isSaving"
             icon="pi pi-check"
             @click="updateObject()"
           />
-          <ButtonPrime
+          <PrimeButton
             :label="t('Cancel')"
             icon="pi pi-times"
             @click="closeModal"
             class="p-button-secondary"
           />
-          <ButtonPrime
+          <PrimeButton
             :label="t('Delete')"
             v-if="!create"
             icon="pi pi-trash"
@@ -279,7 +285,7 @@ function isFiltered(name: string) {
           />
         </div>
       </template>
-    </DialogPrime>
+    </PrimeDialog>
   </div>
 </template>
 <style lang="scss">

@@ -11,6 +11,7 @@ import { required, requiredIf } from "@vuelidate/validators";
 import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
 import RadioButton from "primevue/radiobutton";
+import PrimeButton from "primevue/button";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -30,8 +31,7 @@ const props = defineProps({
 });
 const membership = toRef(props, "membership");
 const membershipSchema = toRef(props, "membershipSchema");
-console.log(props.membership);
-console.log(membership.value);
+
 // Reference for selected gender radio button
 const selectedGender = ref();
 selectedGender.value = membership.value["gender"];
@@ -195,7 +195,7 @@ function schemaToPrime(choices: any) {
                 :value="membership ? membership[key as keyof typeof membership] : ''"
               />
               <div class="changeMailButton">
-                <ButtonPrime
+                <PrimeButton
                   :label="t('Change mail or password')"
                   icon="pi pi-envelope"
                   @click="openKeycloakAccount()"
@@ -267,7 +267,7 @@ function schemaToPrime(choices: any) {
           <br />
         </div>
       </div>
-      <ButtonPrime
+      <PrimeButton
         :label="t('Save')"
         icon="pi pi-check"
         @click="save()"

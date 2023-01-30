@@ -1,5 +1,5 @@
 <template>
-  <ToastPrime />
+  <PrimeToast />
   <PrimeMenu :model="items" v-if="items.length > 0" id="main_menu" />
 </template>
 
@@ -11,6 +11,8 @@ import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import type { ExtensionMenu } from "@/api/types";
 import { useUserStore } from "@/stores/user";
+import PrimeMenu from "primevue/menu";
+import PrimeToast from "primevue/toast";
 
 const { t } = useI18n();
 const menuStore = useMenuStore();

@@ -7,7 +7,7 @@ import ObjectDetailLoader from "@/components/datatable/ObjectDetailLoader.vue";
 import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import MembersBulkEdit from "./MembersBulkEdit.vue";
 import Toolbar from "primevue/toolbar";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import { FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import { useToast } from "primevue/usetoast";
@@ -195,31 +195,31 @@ function bulkEdit() {
           </PrimeButton>
         </div>
         <div class="m-1">
-          <Button
+          <PrimeButton
             :label="t('Bulk edit')"
             :disabled="!(selectedMembers.length > 0)"
             @click="bulkEdit"
           >
-          </Button>
+          </PrimeButton>
         </div>
         <div class="m-1">
-          <Button
+          <PrimeButton
             :label="t('Send emails')"
             :disabled="!(selectedMembers.length > 0)"
             @click="sendEmails"
           >
-          </Button>
+          </PrimeButton>
         </div>
         <div class="m-1">
-          <Button
+          <PrimeButton
             :label="t('Copy emails')"
             :disabled="!(selectedMembers.length > 0)"
             @click="copyEmails"
           >
-          </Button>
+          </PrimeButton>
         </div>
         <div class="m-1">
-          <Button
+          <PrimeButton
             :label="t('Export CSV')"
             :disabled="!(selectedMembers?.length > 0)"
           >
@@ -229,7 +229,7 @@ function bulkEdit() {
               :name="t('members') + '.csv'"
               >{{ t("Export CSV") }}</JsonCSV
             >
-          </Button>
+          </PrimeButton>
         </div>
       </template>
     </Toolbar>

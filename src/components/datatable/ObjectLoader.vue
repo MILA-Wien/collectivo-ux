@@ -4,7 +4,7 @@ import type { PropType } from "vue";
 import { storeToRefs } from "pinia";
 import type { StoreGeneric } from "pinia";
 import ObjectTableFrame from "./ObjectTableFrame.vue";
-import ProgressSpinner from "primevue/progressspinner";
+import PrimeProgressSpinner from "primevue/progressspinner";
 import type { endpoints } from "@/api/api";
 
 const props = defineProps({
@@ -35,7 +35,7 @@ if (!data.value.loaded) {
       <p>There was an error loading the data.<br />{{ error }}</p>
     </div>
     <div v-else-if="!data.loaded">
-      <ProgressSpinner />
+      <PrimeProgressSpinner />
     </div>
     <div v-else>
       <ObjectTableFrame

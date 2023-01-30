@@ -23,7 +23,7 @@
         }}
       </p>
       <RouterLink to="/">
-        <ButtonPrime> {{ t("Return to dashboard") }} </ButtonPrime>
+        <PrimeButton> {{ t("Return to dashboard") }} </PrimeButton>
       </RouterLink>
     </div>
   </div>
@@ -34,6 +34,7 @@ import FormView from "@/formviewer/components/FormView.vue";
 import { useFormViewerStore } from "@/stores/formviewer";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
+import PrimeButton from "primevue/button";
 import treeData from "@/assets/registrationForm.json";
 import { useMembersStore } from "@/stores/members";
 import { useUserStore } from "@/stores/user";
