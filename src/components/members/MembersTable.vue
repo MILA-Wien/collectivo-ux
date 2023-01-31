@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRef, watch } from "vue";
+import { ref, watch } from "vue";
 import MultiSelect from "primevue/multiselect";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectDetailLoader from "@/components/datatable/ObjectDetailLoader.vue";
@@ -50,15 +50,13 @@ const editMemberCreate = ref(false);
 // Update content of selected members is objects are changed in store
 const selectedMembers = ref<any[]>([]);
 const { membersSummary } = storeToRefs(props.store);
-watch(
-  membersSummary.value,
-  () => {
-    const temp_selected = JSON.parse(JSON.stringify(selectedMembers.value));
-    selectedMembers.value = [];
-    for (const oldData of temp_selected) {
-      const newData = props.objects.find((m:any) => m.id === oldData.id)
-      selectedMembers.value.push(newData);
-    }
+watch(membersSummary.value, () => {
+  const temp_selected = JSON.parse(JSON.stringify(selectedMembers.value));
+  selectedMembers.value = [];
+  for (const oldData of temp_selected) {
+    const newData = props.objects.find((m: any) => m.id === oldData.id);
+    selectedMembers.value.push(newData);
+  }
 });
 
 // Filter functions (match modes) ------------------------------------------ //

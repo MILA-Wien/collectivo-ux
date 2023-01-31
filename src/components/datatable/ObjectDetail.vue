@@ -144,7 +144,6 @@ function isFiltered(name: string, field: any) {
     .toLowerCase()
     .includes(filterValue.value.toLowerCase());
 }
-
 </script>
 
 <template>
@@ -205,18 +204,21 @@ function isFiltered(name: string, field: any) {
               />
             </div>
 
-            <div v-else-if="field.input_type === 'checkbox'" class="flex flex-row">
+            <div
+              v-else-if="field.input_type === 'checkbox'"
+              class="flex flex-row"
+            >
               <PrimeInputSwitch
                 v-model="object_temp[name]"
                 :disabled="field.read_only"
                 class="flex-none mr-2"
               />
               <small
-              v-if="field.help_text"
-              id="user-attr-{{value}}-help"
-              class="p-info"
-              >{{ field.help_text }}</small
-            >
+                v-if="field.help_text"
+                id="user-attr-{{value}}-help"
+                class="p-info"
+                >{{ field.help_text }}</small
+              >
             </div>
 
             <div v-else-if="field.input_type === 'textarea'">

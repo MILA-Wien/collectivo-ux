@@ -106,7 +106,7 @@ export const API = {
   patch: async function (
     endpoint: keyof typeof endpoints,
     payload: Object,
-    pk?: Number,
+    pk?: Number
   ) {
     if (pk === undefined) {
       return await api.patch(endpoints[endpoint], payload);

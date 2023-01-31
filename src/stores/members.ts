@@ -43,9 +43,7 @@ export const useMembersStore = defineStore({
         (!(this[objectName].data instanceof Array) &&
           objects.data instanceof Array)
       ) {
-        throw new Error(
-          "API response does not match store data type."
-        );
+        throw new Error("API response does not match store data type.");
       }
 
       // Extend schema

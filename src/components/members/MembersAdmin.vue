@@ -32,15 +32,23 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
       <h2>{{ $t("Error while loading Members") }}</h2>
       <p class="error-message">{{ error }}</p>
     </div>
-    <div v-else-if="
-      membersSummary.loaded === false ||
-      membersEmailsCampaigns.schemaLoaded === false
-    " class="loading">
+    <div
+      v-else-if="
+        membersSummary.loaded === false ||
+        membersEmailsCampaigns.schemaLoaded === false
+      "
+      class="loading"
+    >
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
-      <MembersTable :store="membersStore" name="membersSummary" :objects="membersSummary.data"
-        :schema="membersSummary.schema" :emailCampaignSchema="membersEmailsCampaigns.schema" />
+      <MembersTable
+        :store="membersStore"
+        name="membersSummary"
+        :objects="membersSummary.data"
+        :schema="membersSummary.schema"
+        :emailCampaignSchema="membersEmailsCampaigns.schema"
+      />
     </div>
   </div>
 </template>

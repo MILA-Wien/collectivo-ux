@@ -139,7 +139,7 @@ async function save() {
     return;
   } else if (membership.value) {
     try {
-      await membersStore.update('membersProfile', membership.value);
+      await membersStore.update("membersProfile", membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),

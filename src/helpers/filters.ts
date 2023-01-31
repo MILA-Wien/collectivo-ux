@@ -13,9 +13,11 @@ function inListFilter(a: any, b: any) {
 }
 
 FilterService.register("isNull", (a, b) => {
-  console.log(a,b)
-  if (b !== true) {return true}
-  return (a == undefined || a == null || a == "");
+  console.log(a, b);
+  if (b !== true) {
+    return true;
+  }
+  return a == undefined || a == null || a == "";
 });
 FilterService.register("inList", (a, b) => inListFilter(a, b));
 FilterService.register("notInList", (a, b) => !inListFilter(a, b));
