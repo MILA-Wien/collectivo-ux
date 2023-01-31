@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, toRef, watch } from "vue";
 import MultiSelect from "primevue/multiselect";
-import { useMembersStore } from "@/stores/members";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectDetailLoader from "@/components/datatable/ObjectDetailLoader.vue";
 import ObjectTable from "@/components/datatable/ObjectTable.vue";
@@ -11,10 +10,9 @@ import PrimeButton from "primevue/button";
 import { FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import { useToast } from "primevue/usetoast";
-import type { Member } from "../../api/types";
 import { useI18n } from "vue-i18n";
 import type { PropType } from "vue";
-import type { StoreGeneric } from "pinia";
+import { storeToRefs, type StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import { matchModes, getDefaultMatchMode } from "@/helpers/filters";
 
@@ -44,10 +42,24 @@ const props = defineProps({
 });
 
 const toast = useToast();
-let selectedMember = ref({ id: null });
-const selectedMembers = ref<Member[]>([]);
+const selectedMember = ref({ id: null });
+
 const editMember = ref(false);
 const editMemberCreate = ref(false);
+
+// Update content of selected members is objects are changed in store
+const selectedMembers = ref<any[]>([]);
+const { membersSummary } = storeToRefs(props.store);
+watch(
+  membersSummary.value,
+  () => {
+    const temp_selected = JSON.parse(JSON.stringify(selectedMembers.value));
+    selectedMembers.value = [];
+    for (const oldData of temp_selected) {
+      const newData = props.objects.find((m:any) => m.id === oldData.id)
+      selectedMembers.value.push(newData);
+    }
+});
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
@@ -236,7 +248,7 @@ function bulkEdit() {
 
     <!-- Data Table -->
     <ObjectTable
-      :store="store"
+      :store="props.store"
       :name="name"
       :objects="objects"
       :schema="schema"
@@ -255,7 +267,7 @@ function bulkEdit() {
       v-if="editMember"
       :pk="selectedMember.id"
       :create="editMemberCreate"
-      :store="useMembersStore()"
+      :store="props.store"
       :name="'membersMembers'"
       @close="editMember = false"
     />
@@ -265,7 +277,7 @@ function bulkEdit() {
       v-if="editActive"
       :object="editObject"
       :create="editCreate"
-      :store="useMembersStore()"
+      :store="props.store"
       :name="'membersEmailsCampaigns'"
       :schema="emailCampaignSchema"
       @close="editActive = false"

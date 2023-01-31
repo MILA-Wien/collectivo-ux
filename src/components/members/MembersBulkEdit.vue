@@ -146,6 +146,7 @@ async function save() {
         <PrimeDropdown
           v-model="chosenColumn"
           :options="columns"
+          optionLabel="header"
           class="p-column-filter"
           placeholder="Select an attribute"
           :filter="true"
