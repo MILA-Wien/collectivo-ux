@@ -12,7 +12,11 @@ function inListFilter(a: any, b: any) {
   return list.includes(a.toString());
 }
 
-FilterService.register("isNull", (a) => a == undefined);
+FilterService.register("isNull", (a, b) => {
+  console.log(a,b)
+  if (b !== true) {return true}
+  return (a == undefined || a == null || a == "");
+});
 FilterService.register("inList", (a, b) => inListFilter(a, b));
 FilterService.register("notInList", (a, b) => !inListFilter(a, b));
 

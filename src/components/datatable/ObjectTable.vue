@@ -6,6 +6,7 @@ import PrimeButton from "primevue/button";
 import PrimeDropdown from "primevue/dropdown";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeInputText from "primevue/inputtext";
+import PrimeInputSwitch from "primevue/inputswitch";
 import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
@@ -183,7 +184,7 @@ function editObjectFn(event: any) {
 
         <!-- Custom filters for different input types -->
         <template #filter="{ filterModel }">
-          <div v-if="filterModel.matchMode != 'isNull'">
+          <div>
             <div v-if="col.input_type == 'multiselect'">
               <!-- Multiple choice -->
               <PrimeMultiSelect
@@ -234,6 +235,12 @@ function editObjectFn(event: any) {
               Datetime filter not implemented yet
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" :showTime="true" /> -->
+            </div>
+            <div v-else-if="filterModel.matchMode == 'isNull'">
+              <PrimeInputSwitch
+                v-model="filterModel.value"
+                class="p-column-filter"
+              />
             </div>
             <div v-else>
               <PrimeInputText
