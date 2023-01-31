@@ -115,7 +115,7 @@ async function save() {
     const actionFn = actions[chosenAction.value!];
     for (const member of members_temp.value) {
       actionFn(member, chosenColumn.value.field, chosenContent.value);
-      promises.push(membersStore.update("membersSummary", member.id, member));
+      promises.push(membersStore.update("membersSummary", member, member.id));
     }
     await Promise.all(promises);
     successToast();

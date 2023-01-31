@@ -23,7 +23,7 @@ const data = storeToRefs(props.store)[props.name];
 
 // Load data
 if (!data.value.loaded) {
-  props.store.getList(props.name).catch((e: any) => {
+  props.store.get(props.name).catch((e: any) => {
     error.value = e;
   });
 }

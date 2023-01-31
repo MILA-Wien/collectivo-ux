@@ -32,7 +32,7 @@ const data = storeToRefs(props.store)[props.name];
 
 // Load data
 data.value.loaded = false;
-props.store.getDetail(props.name, props.pk).catch((e: any) => {
+props.store.get(props.name, props.pk).catch((e: any) => {
   error.value = e;
 });
 </script>

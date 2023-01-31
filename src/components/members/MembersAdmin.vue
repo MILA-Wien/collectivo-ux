@@ -14,7 +14,7 @@ const { membersSummary, membersEmailsCampaigns } = storeToRefs(membersStore);
 const error = ref<Object | null>(null);
 
 if (membersSummary.value.loaded === false) {
-  membersStore.getList("membersSummary").catch((e: any) => {
+  membersStore.get("membersSummary").catch((e: any) => {
     error.value = e;
   });
 }

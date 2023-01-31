@@ -90,8 +90,8 @@ async function updateObject() {
   try {
     await props.store.update(
       props.name,
-      object_temp.value["id"],
-      object_temp.value
+      object_temp.value,
+      object_temp.value["id"]
     );
     successToast("Object has been updated.");
     emit("close");
