@@ -12,6 +12,13 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
+
+Cypress.Commands.add('login', (email, password) =>{
+    cy.visit("/");
+    cy.get("input[name=username]").type(email);
+    cy.get("input[name=password]").type(password ? password : "Test123!").type("{enter}"); // '{enter}' submits the form
+})
+
 //
 //
 // -- This is a child command --
