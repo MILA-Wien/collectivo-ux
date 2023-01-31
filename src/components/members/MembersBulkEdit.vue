@@ -115,7 +115,7 @@ async function save() {
     const actionFn = actions[chosenAction.value!];
     for (const member of members_temp.value) {
       actionFn(member, chosenColumn.value.field, chosenContent.value);
-      promises.push(membersStore.update("membersSummary", member, member.id));
+      promises.push(membersStore.update("membersMembers", member, member.id));
     }
     await Promise.all(promises);
     successToast();
@@ -148,6 +148,7 @@ async function save() {
           :options="columns"
           class="p-column-filter"
           placeholder="Select an attribute"
+          :filter="true"
         >
           <template #value="slotProps">
             <span v-if="slotProps.value">{{ slotProps.value.header }}</span>
@@ -170,6 +171,7 @@ async function save() {
             class="p-column-filter"
             :disabled="!chosenColumn"
             placeholder="Select an action"
+            :filter="true"
           >
           </PrimeDropdown>
           <div v-else>No bulk edit action available for this column.</div>
@@ -186,6 +188,7 @@ async function save() {
             placeholder="Select data for this action"
             optionLabel="label"
             optionValue="value"
+            :filter="true"
           >
           </PrimeDropdown>
 
