@@ -126,7 +126,6 @@ export const useMembersStore = defineStore({
         schema: schema.data,
         objects: objects.data,
       };
-      console.log(this[objectName]);
     },
     async update(objectName: MembersEndpoints, pk: Number, payload: Object) {
       const response = await API.patch(objectName, pk, payload);

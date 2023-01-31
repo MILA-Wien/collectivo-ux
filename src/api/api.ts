@@ -149,9 +149,12 @@ export const registerMemberFn = async (member: any) => {
 };
 
 export const endpoints = {
+  // Members
   membersEmailsDesigns: "/members/emails/designs/",
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
+  membersSkills: "/members/skills/",
+  membersGroups: "/members/groups/",
 };
 
 export const API = {

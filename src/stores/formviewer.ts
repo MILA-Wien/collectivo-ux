@@ -62,6 +62,9 @@ export const useFormViewerStore = defineStore({
     validatePage() {
       this.validateCurrentPage = true;
     },
+    loadOptions(id: string,endpoint: String) {
+      
+    }
   },
   getters: {
     getTree: (state) => {
