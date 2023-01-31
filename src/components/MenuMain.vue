@@ -6,7 +6,6 @@
 <script lang="ts" setup>
 import { ref, watch } from "vue";
 import { useMenuStore } from "@/stores/menu";
-import type { MenuItem } from "primevue/menuitem";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import type { ExtensionMenu } from "@/api/types";
@@ -18,7 +17,7 @@ const { t } = useI18n();
 const menuStore = useMenuStore();
 const userStore = useUserStore();
 const { menu } = storeToRefs(menuStore);
-const items = ref<MenuItem>([]);
+const items = ref<any[]>([]);
 
 function buildMenu(menu: ExtensionMenu) {
   items.value = [
