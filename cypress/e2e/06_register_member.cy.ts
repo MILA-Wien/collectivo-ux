@@ -70,30 +70,24 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
     cy.get("#first-name-input > .textfield input").clear().type("Ötz1");
     cy.get("#last-name-input > .textfield input").clear().type("CABBAG3");
     cy.get('[type="radio"]').check("male");
-    cy.get("#birthdate-input > .date input").clear().type("01.01.1990");
-    cy.get("#occupation-input > .textfield input").clear().type("lazy cat");
-    cy.get("#address-street-input > .textfield input")
-      .clear()
-      .type("ÄltGasseMitNötFünnyChars");
-    cy.get("#address-street-number-input > .number input")
-      .clear()
-      .type("28392");
-    cy.get("#address-postcode-input > .number input").clear().type("1111");
-    cy.get("#address-city-input > .textfield input").clear().type("Weän");
-    cy.get("#address-country-input > .textfield input")
-      .clear()
-      .type("Österland");
+    cy.get("#birthdate-input > .date input").clear().type("01.01.1990").blur();
+    cy.get("#occupation-input > .textfield input").type("lazy cat");
+    cy.get("#address-street-input > .textfield input").type(
+      "ÄltGasseMitNötFünnyChars"
+    );
+    cy.get("#address-street-number-input > .number input").type("28392");
+    cy.get("#address-postcode-input > .number input").type("1111");
+    cy.get("#address-city-input > .textfield input").type("Weän");
+    cy.get("#address-country-input > .textfield input").type("Österland");
     cy.get("#next-page-button > .button button").click();
     /* Page 3/5 */
     cy.get('[type="radio"]').check("active");
     cy.get('[type="radio"]').check("normal");
     cy.get('[type="radio"]').check("sepa");
-    cy.get("#bank-account-input > .textfield input")
-      .clear()
-      .type("AT592250039687965121");
-    cy.get("#bank-account-owner-input > .textfield input")
-      .clear()
-      .type("Ötz1 CABBAG3");
+    cy.get("#bank-account-input > .textfield input").type(
+      "AT592250039687965121"
+    );
+    cy.get("#bank-account-owner-input > .textfield input").type("Ötz1 CABBAG3");
     cy.get("#next-page-button > .button button").click();
     /* Page 4/5 */
     cy.get("#groups-interested-input > .multipleChoice input").check("1");
