@@ -1,73 +1,53 @@
 import type { DataObject, DataDetail, DataList } from "./../api/types";
+import { DataDetailTemplate, DataListTemplate } from "./../api/types";
 import { defineStore } from "pinia";
 import { API } from "@/api/api";
 
 type membersStore = {
-  membersSummary: DataList;
   membersMembers: DataDetail;
+  membersSummary: DataList;
   membersProfile: DataDetail;
   membersRegister: DataDetail;
   membersEmailsCampaigns: DataList;
   membersEmailsTemplates: DataList;
   membersEmailsDesigns: DataList;
 };
+
 type membersObject = keyof membersStore;
 
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
-      membersMembers: {
-        schema: {},
-        data: { id: null },
-        loaded: false,
-        schemaLoaded: false,
-      },
-      membersSummary: {
-        schema: {},
-        data: [],
-        loaded: false,
-        schemaLoaded: false,
-      },
-      membersProfile: {
-        schema: {},
-        data: { id: null },
-        loaded: false,
-        schemaLoaded: false,
-      },
-      membersRegister: {
-        schema: {},
-        data: { id: null },
-        loaded: false,
-        schemaLoaded: false,
-      },
-      membersEmailsCampaigns: {
-        schema: {},
-        data: [],
-        loaded: false,
-        schemaLoaded: false,
-      },
-      membersEmailsTemplates: {
-        schema: {},
-        data: [],
-        loaded: false,
-        schemaLoaded: false,
-      },
-      membersEmailsDesigns: {
-        schema: {},
-        data: [],
-        loaded: false,
-        schemaLoaded: false,
-      },
+      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
     } as membersStore),
 
   actions: {
-    async _getSchemaAndListOrDetail(objectName: membersObject, pk?: Number) {
+    async get(objectName: membersObject, pk?: Number) {
       // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
         API.get(objectName, pk),
       ]);
+
+      // Throw error if response does not match store data type
+      if (
+        (this[objectName].data instanceof Array &&
+          !(objects.data instanceof Array)) ||
+        (!(this[objectName].data instanceof Array) &&
+          objects.data instanceof Array)
+      ) {
+        throw new Error(
+          "API response does not match store data type."
+        );
+      }
+
       // Extend schema
       for (const value of Object.values(schema.data) as any) {
         if (value.choices == undefined) {
@@ -86,6 +66,7 @@ export const useMembersStore = defineStore({
         }
       }
 
+      // Save data in store
       this[objectName].data = objects.data;
       this[objectName].schema = schema.data;
       this[objectName].loaded = true;
@@ -97,26 +78,22 @@ export const useMembersStore = defineStore({
       this[objectName].schema = schema.data;
       this[objectName].schemaLoaded = true;
     },
-    async getList(objectName: membersObject) {
-      // Get schema and list of objects and save in store
-      if (!(this[objectName].data instanceof Array)) {
-        throw `Object ${objectName} needs to be called with getDetail`;
+    async create(objectName: membersObject, payload: Object) {
+      const response = await API.post(objectName, payload);
+      const object = this[objectName];
+      if (object.data instanceof Array) {
+        object.data.push(response.data);
+      } else {
+        object.data = response.data;
       }
-      this._getSchemaAndListOrDetail(objectName);
+      return response;
     },
-    async getDetail(objectName: membersObject, pk: Number) {
-      // Get schema and single object and save in store
-      if (this[objectName].data instanceof Array) {
-        throw `Object ${objectName} needs to be called with getList`;
-      }
-      this._getSchemaAndListOrDetail(objectName, pk);
-    },
-    async update(objectName: membersObject, pk: Number, payload: Object) {
+    async update(objectName: membersObject, payload: Object, pk?: Number) {
       // Update object and save in store
-      const response = await API.patch(objectName, pk, payload);
+      const response = await API.patch(objectName, payload, pk);
       let object = this[objectName];
 
-      // Special case for membersMembers
+      // Special case for membersMembers: Update added to summary list
       if (objectName == "membersMembers") {
         object = this["membersSummary"];
       }
@@ -150,28 +127,6 @@ export const useMembersStore = defineStore({
         object.data = { id: null };
       }
       return response;
-    },
-    async create(objectName: membersObject, payload: Object) {
-      const response = await API.post(objectName, payload);
-      const object = this[objectName];
-      if (object.data instanceof Array) {
-        object.data.push(response.data);
-      } else {
-        object.data = response.data;
-      }
-      return response;
-    },
-
-    // Special cases
-    async getMembersProfile() {
-      // Get schema and profile and save in store
-      this._getSchemaAndListOrDetail("membersProfile");
-    },
-    async updateMembersProfile(payload: Object) {
-      // Update profile and save in store
-      const response = await API.patchWithoutPk("membersProfile", payload);
-      this.membersProfile.data = response.data;
-      // TODO: Also update in members summary
     },
   },
 });

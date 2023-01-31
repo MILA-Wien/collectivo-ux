@@ -105,18 +105,18 @@ export const API = {
   },
   patch: async function (
     endpoint: keyof typeof endpoints,
-    pk: Number,
-    payload: Object
+    payload: Object,
+    pk?: Number,
   ) {
+    if (pk === undefined) {
+      return await api.patch(endpoints[endpoint], payload);
+    }
     return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
   },
-  patchWithoutPk: async function (
-    endpoint: keyof typeof endpoints,
-    payload: Object
-  ) {
-    return await api.patch(`${endpoints[endpoint]}`, payload);
-  },
-  delete: async function (endpoint: keyof typeof endpoints, pk: Number) {
+  delete: async function (endpoint: keyof typeof endpoints, pk?: Number) {
+    if (pk === undefined) {
+      return await api.delete(endpoints[endpoint]);
+    }
     return await api.delete(`${endpoints[endpoint]}${pk}/`);
   },
 };

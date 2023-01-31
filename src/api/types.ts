@@ -136,3 +136,18 @@ export interface DataList extends DataSchema {
   loaded: boolean;
   data: Array<DataObject>;
 }
+
+// Store templates
+export const DataListTemplate = {
+  schema: {},
+  data: [],
+  loaded: false,
+  schemaLoaded: false,
+};
+
+export const DataDetailTemplate = {
+  schema: {},
+  data: { id: null },
+  loaded: false,
+  schemaLoaded: false,
+};
