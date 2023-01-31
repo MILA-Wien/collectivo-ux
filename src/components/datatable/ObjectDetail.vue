@@ -128,12 +128,15 @@ function getHeader() {
   if (props.create) {
     return t("Create") + ": " + t(props.name);
   } else {
-    return t(props.name) + " " + props.object.id;
+    return t("Edit") + ": " + t(props.name);
   }
 }
 
 const filterValue = ref("");
-function isFiltered(name: string) {
+function isFiltered(name: string, field: any) {
+  if (props.create && field.read_only) {
+    return false;
+  }
   if (filterValue.value === "") {
     return true;
   }
@@ -141,6 +144,7 @@ function isFiltered(name: string) {
     .toLowerCase()
     .includes(filterValue.value.toLowerCase());
 }
+
 </script>
 
 <template>
@@ -162,9 +166,9 @@ function isFiltered(name: string) {
           v-for="(field, name, i) in schema"
           :key="i"
           class="field"
-          :style="isFiltered(name) ? '' : 'position:absolute'"
+          :style="isFiltered(name, field) ? '' : 'position:absolute'"
         >
-          <div v-if="isFiltered(name)">
+          <div v-if="isFiltered(name, field)">
             <div class="mb-1">
               <label for="attr-{{name}}">
                 {{ t(field.label) }}
@@ -201,11 +205,18 @@ function isFiltered(name: string) {
               />
             </div>
 
-            <div v-else-if="field.input_type === 'checkbox'">
+            <div v-else-if="field.input_type === 'checkbox'" class="flex flex-row">
               <PrimeInputSwitch
                 v-model="object_temp[name]"
                 :disabled="field.read_only"
+                class="flex-none mr-2"
               />
+              <small
+              v-if="field.help_text"
+              id="user-attr-{{value}}-help"
+              class="p-info"
+              >{{ field.help_text }}</small
+            >
             </div>
 
             <div v-else-if="field.input_type === 'textarea'">
@@ -231,7 +242,7 @@ function isFiltered(name: string) {
             </div>
 
             <small
-              v-if="field.help_text"
+              v-if="field.help_text && field.input_type !== 'checkbox'"
               id="user-attr-{{value}}-help"
               class="p-info"
               >{{ field.help_text }}</small
