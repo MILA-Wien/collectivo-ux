@@ -148,6 +148,7 @@ function isFiltered(name: string) {
     <PrimeConfirmDialog></PrimeConfirmDialog>
     <PrimeDialog
       :header="getHeader()"
+      class="object-detail"
       v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '80vw' }"
@@ -288,7 +289,8 @@ function isFiltered(name: string) {
     </PrimeDialog>
   </div>
 </template>
-<style lang="scss">
+
+<style scoped>
 .object-detail-fields {
   width: 100%;
   display: grid;
@@ -302,8 +304,11 @@ function isFiltered(name: string) {
 label {
   font-weight: bold;
 }
-.p-dialog .p-dialog-header,
-.p-dialog .p-dialog-footer {
+</style>
+
+<style lang="scss">
+.object-detail.p-dialog .p-dialog-header,
+.object-detail.p-dialog .p-dialog-footer {
   background-color: rgb(236, 236, 236);
 }
 </style>
