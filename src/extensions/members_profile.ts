@@ -1,2 +1,2 @@
-import MembershipProfile from "../components/extensions/membership/MembershipProfile.vue";
+import MembershipProfile from "../components/members/MembersProfile.vue";
 export default MembershipProfile;

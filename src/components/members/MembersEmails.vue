@@ -4,8 +4,6 @@ import { useMenuStore } from "@/stores/menu";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
 
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
@@ -14,7 +12,6 @@ menuStore.setTitle("Member Emails");
 
 <template>
   <TabView lazy>
-    <TabPanel header="Overview"> {{ t("Please select a tab") }} </TabPanel>
     <TabPanel header="Campaigns">
       <ObjectLoader :store="membersStore" :name="'membersEmailsCampaigns'" />
     </TabPanel>
@@ -26,5 +23,3 @@ menuStore.setTitle("Member Emails");
     </TabPanel>
   </TabView>
 </template>
-
-<style scoped></style>

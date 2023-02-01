@@ -1,2 +1,2 @@
-import Tile from "../components/extensions/members/MembersDashboardRegistrationTile.vue";
+import Tile from "../components/members/MembersDashboardRegistrationTile.vue";
 export default Tile;

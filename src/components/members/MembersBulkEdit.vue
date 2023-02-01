@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Dialog from "primevue/dialog";
 import { useMembersStore } from "@/stores/members";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
-import Dropdown from "primevue/dropdown";
+import PrimeDialog from "primevue/dialog";
+import PrimeDropdown from "primevue/dropdown";
+import PrimeButton from "primevue/button";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -114,7 +115,7 @@ async function save() {
     const actionFn = actions[chosenAction.value!];
     for (const member of members_temp.value) {
       actionFn(member, chosenColumn.value.field, chosenContent.value);
-      promises.push(membersStore.updateMember(member));
+      promises.push(membersStore.update("membersMembers", member, member.id));
     }
     await Promise.all(promises);
     successToast();
@@ -129,7 +130,7 @@ async function save() {
 
 <template>
   <div>
-    <Dialog
+    <PrimeDialog
       :header="
         t('Bulk edit selected') + ' ' + members.length + ' ' + t('members')
       "
@@ -142,11 +143,13 @@ async function save() {
       <div class="modal-content">
         <!-- Choose column -->
         <h3>{{ t("Attribute") }}</h3>
-        <Dropdown
+        <PrimeDropdown
           v-model="chosenColumn"
           :options="columns"
+          optionLabel="header"
           class="p-column-filter"
           placeholder="Select an attribute"
+          :filter="true"
         >
           <template #value="slotProps">
             <span v-if="slotProps.value">{{ slotProps.value.header }}</span>
@@ -157,27 +160,28 @@ async function save() {
               {{ t(slotProps.option.header) }}
             </span>
           </template>
-        </Dropdown>
+        </PrimeDropdown>
 
         <!-- Choose action -->
         <div v-if="chosenColumn">
           <h3>{{ t("Action type") }}</h3>
-          <Dropdown
+          <PrimeDropdown
             v-if="getActions(chosenColumn.input_type).length > 0"
             v-model="chosenAction"
             :options="getActions(chosenColumn.input_type)"
             class="p-column-filter"
             :disabled="!chosenColumn"
             placeholder="Select an action"
+            :filter="true"
           >
-          </Dropdown>
+          </PrimeDropdown>
           <div v-else>No bulk edit action available for this column.</div>
         </div>
 
         <!-- Choose data -->
         <div v-if="chosenAction">
           <h3>{{ t("Action data") }}</h3>
-          <Dropdown
+          <PrimeDropdown
             v-if="chosenColumn.input_type == 'multiselect'"
             v-model="chosenContent"
             :options="getOptions(chosenColumn)"
@@ -185,21 +189,22 @@ async function save() {
             placeholder="Select data for this action"
             optionLabel="label"
             optionValue="value"
+            :filter="true"
           >
-          </Dropdown>
+          </PrimeDropdown>
 
           <div v-else>This action is not yet supported.</div>
         </div>
       </div>
 
       <template #footer>
-        <ButtonPrime
+        <PrimeButton
           :label="t('Cancel')"
           icon="pi pi-times"
           @click="closeModal"
           class="p-button-text"
         />
-        <ButtonPrime
+        <PrimeButton
           :label="t('Save')"
           :loading="isSaving"
           :disabled="!chosenContent"
@@ -208,7 +213,7 @@ async function save() {
           autofocus
         />
       </template>
-    </Dialog>
+    </PrimeDialog>
   </div>
 </template>
 <style scoped>

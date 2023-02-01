@@ -1023,27 +1023,22 @@
                     "children": []
                 },
                 {
-                    "type": "paragraph",
+                    "type": "boolean",
                     "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Die Anmeldung zur Gründungsversammlung am 1.2.2023 ist leider geschlossen.",
-                        "content": "Die max. Teilnehmer*innenzahl ist bereits erreicht. Wir freuen uns dennoch sehr, dich als Mitglied begrüßen zu dürfen!",
-                        "extId": "founding_event"
-                    },
-                    "id": "checkbox_2_yrSdwKHT",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
+                        "htmlType": "checkbox",
                         "conditions": [],
                         "label": "Satzung",
-                        "content": "Die Satzung wird bei der Gründungsversammlung am 1.2.2023 beschlossen. Wenn du nicht bei der Gründungsversammlung bist, senden wir dir die Satzung zu, mit der Bitte um Bestätigung. Erst dann können wir dich als Genossenschaftsmitglied aufnehmen.",
-                        "extId": "g45gtrg"
+                        "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
+                        "extId": "statutes_approved",
+                        "required": true,
+                        "validations":[
+                           {
+                            "type":"sameAs",
+                            "state":true
+                           }
+                        ]
                     },
-                    "id": "g45gtrg",
+                    "id": "checkbox_statutes_approved",
                     "children": []
                 },
                 {
