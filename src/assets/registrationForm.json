@@ -1028,14 +1028,14 @@
                         "htmlType": "checkbox",
                         "conditions": [],
                         "label": "Satzung",
-                        "description": "TODO: TEXT AUSSTEHEND",
+                        "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
                         "extId": "statutes_approved",
                         "required": true,
                         "validations":[
                            {
                             "type":"sameAs",
                             "value":"true"
-                           } 
+                           }
                         ]
                     },
                     "id": "checkbox_statutes_approved",
