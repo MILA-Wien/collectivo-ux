@@ -46,6 +46,14 @@ const router = createRouter({
       component: () => import("../components/members/MembersEmails.vue"),
     },
     {
+      path: "/members/tags",
+      name: "tags",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/members/MembersTags.vue"),
+    },
+    {
       path: "/members/profile",
       name: "profile",
       meta: {

@@ -81,6 +81,7 @@ export const endpoints = {
   membersProfile: "/members/profile/",
   membersSummary: "/members/summary/",
   membersRegister: "/members/register/",
+  membersTags: "/members/tags/",
   membersEmailsDesigns: "/members/emails/designs/",
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
