@@ -1,2 +1,2 @@
-import MembersAdmin from "../components/extensions/members/MembersAdmin.vue";
+import MembersAdmin from "../components/members/MembersAdmin.vue";
 export default MembersAdmin;

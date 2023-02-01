@@ -1,22 +1,23 @@
 <template>
-  <ToastPrime />
+  <PrimeToast />
   <PrimeMenu :model="items" v-if="items.length > 0" id="main_menu" />
 </template>
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
 import { useMenuStore } from "@/stores/menu";
-import type { MenuItem } from "primevue/menuitem";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import type { ExtensionMenu } from "@/api/types";
 import { useUserStore } from "@/stores/user";
+import PrimeMenu from "primevue/menu";
+import PrimeToast from "primevue/toast";
 
 const { t } = useI18n();
 const menuStore = useMenuStore();
 const userStore = useUserStore();
 const { menu } = storeToRefs(menuStore);
-const items = ref<MenuItem>([]);
+const items = ref<any[]>([]);
 
 function buildMenu(menu: ExtensionMenu) {
   items.value = [
