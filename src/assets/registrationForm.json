@@ -1034,7 +1034,7 @@
                         "validations":[
                            {
                             "type":"sameAs",
-                            "value":"true"
+                            "state":true
                            }
                         ]
                     },

@@ -25,6 +25,7 @@ export interface ElementValidation {
   message: string;
   value?: string | number | null;
   values?: string[] | number[] | null;
+  state?: string | number | boolean | null;
 }
 export interface ElementCondition {
   target: string;
