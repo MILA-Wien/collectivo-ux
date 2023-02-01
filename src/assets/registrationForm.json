@@ -12,7 +12,7 @@
                         "htmlType": "p",
                         "conditions": [],
                         "label": "Willkommen bei MILA!",
-                        "description": "Um der Genossenschaft beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
+                        "description": "Um der Genossenschaft in Gründung beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
                         "content": "",
                         "extId": "gEVwcJiztoBGsss"
                     },
@@ -713,7 +713,7 @@
                 {
                     "type": "calculation",
                     "properties": {
-                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
+                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. in Gründung beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
                         "description": "€",
                         "conditions": [
                             {
@@ -738,7 +738,7 @@
                             }
                         ],
                         "content": "",
-                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
+                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
                         "extId": "gEVwcJiztoBG"
                     },
                     "id": "SOZialVwcJiztoBG",
@@ -755,7 +755,7 @@
                             }
                         ],
                         "content": "",
-                        "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
+                        "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
                         "extId": "gEasdVwcJiztoBG"
                     },
                     "id": "regelcJiztoBG",
