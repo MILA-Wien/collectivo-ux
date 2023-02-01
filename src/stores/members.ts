@@ -8,6 +8,7 @@ type membersStore = {
   membersSummary: DataList;
   membersProfile: DataDetail;
   membersRegister: DataDetail;
+  membersTags: DataList;
   membersEmailsCampaigns: DataList;
   membersEmailsTemplates: DataList;
   membersEmailsDesigns: DataList;
@@ -23,6 +24,7 @@ export const useMembersStore = defineStore({
       membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
       membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
       membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
       membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
       membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
