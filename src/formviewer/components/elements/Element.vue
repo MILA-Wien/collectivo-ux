@@ -199,7 +199,6 @@ function buttonClick(element: any) {
     formViewerStore.previousPage();
   } else if (element.properties.buttonType == "submit") {
     console.log("submit");
-    isLoading.value = true;
     emit("formSubmit");
   }
 }

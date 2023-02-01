@@ -111,7 +111,7 @@ for (let i = 0; i < allElements.value.length; i++) {
             rules[selector].maxValue = maxValue(validation.value);
             rules[selector].$autoDirty = true;
           } else if (validation.type === "sameAs" && validation.value) {
-            if (validation.value === "true")
+            if (validation.state === true)
               rules[selector].sameAs = helpers.withMessage(
                 `You have to accept the requiered field ${element.properties?.label}.`,
                 sameAs(validation.value)
