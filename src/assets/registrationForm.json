@@ -48,7 +48,7 @@
                         "extId": "woSqVbVIKwHd",
                         "buttonType": "next"
                     },
-                    "id": "next-page-button",
+                    "id": "next-page1-button",
                     "children": []
                 }
             ]
@@ -603,7 +603,7 @@
                                 "extId": "ETcyDpIIfqdX",
                                 "buttonType": "next"
                             },
-                            "id": "next-page-button",
+                            "id": "next-page2-button",
                             "children": []
                         }
                     ]
@@ -860,7 +860,7 @@
                                 "extId": "PuuykphDkxDQ",
                                 "buttonType": "next"
                             },
-                            "id": "next-page-button",
+                            "id": "next-page3-button",
                             "children": []
                         }
                     ]
@@ -998,7 +998,7 @@
                                 "extId": "FGwyLArCyWKu",
                                 "buttonType": "next"
                             },
-                            "id": "next-page-button",
+                            "id": "next-page4-button",
                             "children": []
                         }
                     ]

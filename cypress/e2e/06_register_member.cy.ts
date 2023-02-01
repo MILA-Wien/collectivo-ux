@@ -65,7 +65,7 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
     /* Page 1/5 */
     cy.get("div[id='welcome-paragraph']").should("exist");
     cy.get('[type="radio"]').check("natural");
-    cy.get("#next-page-button > .button button").click();
+    cy.get("#next-page1-button > .button button").click();
     /* Page 2/5 */
     cy.get("#first-name-input > .textfield input").clear().type("Ötz1");
     cy.get("#last-name-input > .textfield input").clear().type("CABBAG3");
@@ -79,7 +79,7 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
     cy.get("#address-postcode-input > .number input").click({force:true}).type("1111");
     cy.get("#address-city-input > .textfield input").click({force:true}).type("Weän");
     cy.get("#address-country-input > .textfield input").click({force:true}).type("Österland");
-    cy.get("#next-page-button > .button button").click();
+    cy.get("#next-page2-button > .button button").click();
     /* Page 3/5 */
     cy.get('[type="radio"]').check("active");
     cy.get('[type="radio"]').check("normal");
@@ -88,13 +88,13 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
       "AT592250039687965121"
     );
     cy.get("#bank-account-owner-input > .textfield input").type("Ötz1 CABBAG3");
-    cy.get("#next-page-button > .button button").click();
+    cy.get("#next-page3-button > .button button").click();
     /* Page 4/5 */
     cy.get("#groups-interested-input > .multipleChoice input").check("1");
     cy.get("#groups-interested-input > .multipleChoice input").check("9");
     cy.get("#skills-input > .multipleChoice input").check("1");
     cy.get("#skills-input > .multipleChoice input").check("7");
-    cy.get("#next-page-button > .button button").click();
+    cy.get("#next-page4-button > .button button").click();
     /* Page 5/5 */
     /* 
     Checkbox cannot be selected because of: https://stackoverflow.com/questions/47551639/access-element-whose-parent-is-hidden-cypress-io, workaround possible 
