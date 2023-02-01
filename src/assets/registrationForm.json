@@ -1029,7 +1029,14 @@
                         "conditions": [],
                         "label": "Satzung",
                         "description": "TODO: TEXT AUSSTEHEND",
-                        "extId": "statutes_approved"
+                        "extId": "statutes_approved",
+                        "required": true,
+                        "validations":[
+                           {
+                            "type":"sameAs",
+                            "value":"true"
+                           } 
+                        ]
                     },
                     "id": "checkbox_statutes_approved",
                     "children": []
