@@ -1,25 +1,25 @@
 <template>
   <div class="editor-wrapper">
-    <Button
+    <PrimeButton
       v-if="html"
       :label="t('Html editor')"
       @click="html = !html"
       class="html-toogle"
     />
-    <Button
+    <PrimeButton
       v-if="!html"
       :label="t('Visual editor')"
       @click="html = !html"
       class="html-toogle"
     />
-    <Textarea
+    <PrimeTextarea
       v-if="html"
       v-model="data"
       :autoResize="true"
       rows="5"
       cols="30"
     />
-    <editor
+    <prime-editor
       v-else
       v-model="data"
       :disabled="disabled"
@@ -29,9 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import Textarea from "primevue/textarea";
-import Button from "primevue/button";
-import Editor from "primevue/editor";
+import PrimeTextarea from "primevue/textarea";
+import PrimeButton from "primevue/button";
+import PrimeEditor from "primevue/editor";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 

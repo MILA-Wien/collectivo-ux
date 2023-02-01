@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMembershipStore } from "@/stores/membership";
+import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
@@ -11,13 +11,14 @@ import { required, requiredIf } from "@vuelidate/validators";
 import { useToast } from "primevue/usetoast";
 import Toast from "primevue/toast";
 import RadioButton from "primevue/radiobutton";
+import PrimeButton from "primevue/button";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const { t } = useI18n();
 const toast = useToast();
 const submitted = ref(false);
-const membershipStore = useMembershipStore();
+const membersStore = useMembersStore();
 
 // Set page title
 const menuStore = useMenuStore();
@@ -138,7 +139,7 @@ async function save() {
     return;
   } else if (membership.value) {
     try {
-      await membershipStore.updateMembership(membership.value);
+      await membersStore.update("membersProfile", membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),
@@ -194,7 +195,7 @@ function schemaToPrime(choices: any) {
                 :value="membership ? membership[key as keyof typeof membership] : ''"
               />
               <div class="changeMailButton">
-                <ButtonPrime
+                <PrimeButton
                   :label="t('Change mail or password')"
                   icon="pi pi-envelope"
                   @click="openKeycloakAccount()"
@@ -266,7 +267,7 @@ function schemaToPrime(choices: any) {
           <br />
         </div>
       </div>
-      <ButtonPrime
+      <PrimeButton
         :label="t('Save')"
         icon="pi pi-check"
         @click="save()"

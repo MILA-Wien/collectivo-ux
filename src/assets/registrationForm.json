@@ -12,7 +12,7 @@
                         "htmlType": "p",
                         "conditions": [],
                         "label": "Willkommen bei MILA!",
-                        "description": "Um der Genossenschaft in Gründung beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
+                        "description": "Um der Genossenschaft beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
                         "content": "",
                         "extId": "gEVwcJiztoBGsss"
                     },
@@ -713,7 +713,7 @@
                 {
                     "type": "calculation",
                     "properties": {
-                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. in Gründung beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
+                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
                         "description": "€",
                         "conditions": [
                             {
@@ -738,7 +738,7 @@
                             }
                         ],
                         "content": "",
-                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
+                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
                         "extId": "gEVwcJiztoBG"
                     },
                     "id": "SOZialVwcJiztoBG",
@@ -755,7 +755,7 @@
                             }
                         ],
                         "content": "",
-                        "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt G. in Gründung. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
+                        "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
                         "extId": "gEasdVwcJiztoBG"
                     },
                     "id": "regelcJiztoBG",
@@ -1023,27 +1023,22 @@
                     "children": []
                 },
                 {
-                    "type": "paragraph",
+                    "type": "boolean",
                     "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Die Anmeldung zur Gründungsversammlung am 1.2.2023 ist leider geschlossen.",
-                        "content": "Die max. Teilnehmer*innenzahl ist bereits erreicht. Wir freuen uns dennoch sehr, dich als Mitglied begrüßen zu dürfen!",
-                        "extId": "founding_event"
-                    },
-                    "id": "founding-event-checkbox",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
+                        "htmlType": "checkbox",
                         "conditions": [],
                         "label": "Satzung",
-                        "content": "Die Satzung wird bei der Gründungsversammlung am 1.2.2023 beschlossen. Wenn du nicht bei der Gründungsversammlung bist, senden wir dir die Satzung zu, mit der Bitte um Bestätigung. Erst dann können wir dich als Genossenschaftsmitglied aufnehmen.",
-                        "extId": "g45gtrg"
+                        "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
+                        "extId": "statutes_approved",
+                        "required": true,
+                        "validations":[
+                           {
+                            "type":"sameAs",
+                            "state":true
+                           }
+                        ]
                     },
-                    "id": "g45gtrg",
+                    "id": "checkbox_statutes_approved",
                     "children": []
                 },
                 {

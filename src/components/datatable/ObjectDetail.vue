@@ -7,6 +7,14 @@ import type { PropType } from "vue";
 import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import ObjectEditor from "@/components/datatable/ObjectEditor.vue";
+import PrimeDialog from "primevue/dialog";
+import PrimeButton from "primevue/button";
+import PrimeInputText from "primevue/inputtext";
+import PrimeConfirmDialog from "primevue/confirmdialog";
+import PrimeInputSwitch from "primevue/inputswitch";
+import PrimeDropdown from "primevue/dropdown";
+import PrimeMultiSelect from "primevue/multiselect";
+import PrimeTextarea from "primevue/textarea";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -78,13 +86,12 @@ async function createObject() {
   isSaving.value = false;
 }
 async function updateObject() {
-  console.log(object_temp.value);
   isSaving.value = true;
   try {
     await props.store.update(
       props.name,
-      object_temp.value["id"],
-      object_temp.value
+      object_temp.value,
+      object_temp.value["id"]
     );
     successToast("Object has been updated.");
     emit("close");
@@ -121,43 +128,55 @@ function getHeader() {
   if (props.create) {
     return t("Create") + ": " + t(props.name);
   } else {
-    return t(props.name) + " " + props.object.id;
+    return t("Edit") + ": " + t(props.name);
   }
+}
+
+const filterValue = ref("");
+function isFiltered(name: string, field: any) {
+  if (props.create && field.read_only) {
+    return false;
+  }
+  if (filterValue.value === "") {
+    return true;
+  }
+  return t(props.schema[name].label)
+    .toLowerCase()
+    .includes(filterValue.value.toLowerCase());
 }
 </script>
 
 <template>
   <div>
-    <ConfirmDialogPrime></ConfirmDialogPrime>
-    <DialogPrime
+    <PrimeConfirmDialog></PrimeConfirmDialog>
+    <PrimeDialog
       :header="getHeader()"
+      class="object-detail"
       v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '80vw' }"
       :modal="true"
+      :maximizable="true"
       @hide="closeModal"
     >
-      <div class="modal-content">
-        <!-- Read only fields -->
-        <div v-if="!create">
-          <div v-for="(field, name, i) in schema" :key="i" class="field">
-            <div v-if="field.read_only">
-              <span class="font-bold">{{ field.label }}</span
-              >: {{ object_temp[name] }}
+      <div class="object-detail-fields mt-5">
+        <!-- Editable fields based on input type -->
+        <div
+          v-for="(field, name, i) in schema"
+          :key="i"
+          class="field"
+          :style="isFiltered(name, field) ? '' : 'position:absolute'"
+        >
+          <div v-if="isFiltered(name, field)">
+            <div class="mb-1">
+              <label for="attr-{{name}}">
+                {{ t(field.label) }}
+                <span v-if="field.required" class="text-red-600">*</span>
+              </label>
             </div>
-          </div>
-        </div>
-
-        <!-- Editable fields -->
-        <div v-for="(field, name, i) in schema" :key="i" class="field">
-          <div v-if="!field.read_only">
-            <label for="attr-{{name}}">
-              {{ field.label }}
-              <span v-if="field.required" class="text-red-600">*</span>
-            </label>
 
             <div v-if="field.input_type === 'select'">
-              <DropdownPrime
+              <PrimeDropdown
                 v-model="object_temp[name]"
                 :options="field.options"
                 optionLabel="label"
@@ -165,11 +184,13 @@ function getHeader() {
                 :filter="true"
                 placeholder="Select a choice"
                 :showClear="true"
+                class="w-full"
+                :disabled="field.read_only"
               />
             </div>
 
             <div v-else-if="field.input_type === 'multiselect'">
-              <MultiSelectPrime
+              <PrimeMultiSelect
                 v-model="object_temp[name]"
                 :options="field.options"
                 optionLabel="label"
@@ -178,11 +199,33 @@ function getHeader() {
                 :selectedItemsLabel="`${object_temp[name]?.length} selected`"
                 :filter="true"
                 placeholder="Select multiple choices"
+                class="w-full"
+                :disabled="field.read_only"
               />
             </div>
 
-            <div v-else-if="field.input_type === 'checkbox'">
-              <InputSwitchPrime v-model="object_temp[name]" />
+            <div
+              v-else-if="field.input_type === 'checkbox'"
+              class="flex flex-row"
+            >
+              <PrimeInputSwitch
+                v-model="object_temp[name]"
+                :disabled="field.read_only"
+                class="flex-none mr-2"
+              />
+              <small
+                v-if="field.help_text"
+                id="user-attr-{{value}}-help"
+                class="p-info"
+                >{{ field.help_text }}</small
+              >
+            </div>
+
+            <div v-else-if="field.input_type === 'textarea'">
+              <PrimeTextarea
+                v-model="object_temp[name]"
+                :disabled="field.read_only"
+              />
             </div>
 
             <div v-else-if="field.input_type === 'html'">
@@ -190,17 +233,18 @@ function getHeader() {
             </div>
 
             <div v-else>
-              <InputTextPrime
+              <PrimeInputText
                 id="attr-{{name}}"
                 type="text"
                 aria-describedby="attr-{{value}}-help"
                 v-model="object_temp[name]"
                 :disabled="field.read_only"
+                class="w-full"
               />
             </div>
 
             <small
-              v-if="field.help_text"
+              v-if="field.help_text && field.input_type !== 'checkbox'"
               id="user-attr-{{value}}-help"
               class="p-info"
               >{{ field.help_text }}</small
@@ -208,51 +252,76 @@ function getHeader() {
           </div>
         </div>
       </div>
+
+      <!-- Footer -->
       <template #footer>
-        <ButtonPrime
-          v-if="create"
-          :label="t('Create')"
-          :loading="isSaving"
-          icon="pi pi-check"
-          class="p-button-success"
-          @click="createObject()"
-        />
-        <ButtonPrime
-          v-else
-          :label="t('Save')"
-          :loading="isSaving"
-          icon="pi pi-check"
-          @click="updateObject()"
-        />
-        <ButtonPrime
-          :label="t('Cancel')"
-          icon="pi pi-times"
-          @click="closeModal"
-          class="p-button-secondary"
-        />
-        <ButtonPrime
-          :label="t('Delete')"
-          v-if="!create"
-          icon="pi pi-trash"
-          @click="confirmDelete()"
-          class="p-button-danger"
-        />
+        <div class="object-detail-filter flex flex-row mt-5 items-center">
+          <i
+            class="pi pi-filter m-auto pl-1 pr-3"
+            style="font-size: 1.2rem"
+          ></i>
+          <PrimeInputText
+            id="filter"
+            v-model="filterValue"
+            placeholder="Filter"
+            type="text"
+            class="w-96"
+          />
+          <div class="grow"></div>
+          <PrimeButton
+            v-if="create"
+            :label="t('Create')"
+            :loading="isSaving"
+            icon="pi pi-check"
+            class="p-button-success"
+            @click="createObject()"
+          />
+          <PrimeButton
+            v-else
+            :label="t('Save')"
+            :loading="isSaving"
+            icon="pi pi-check"
+            @click="updateObject()"
+          />
+          <PrimeButton
+            :label="t('Cancel')"
+            icon="pi pi-times"
+            @click="closeModal"
+            class="p-button-secondary"
+          />
+          <PrimeButton
+            :label="t('Delete')"
+            v-if="!create"
+            icon="pi pi-trash"
+            @click="confirmDelete()"
+            style="margin-right: 0px"
+            class="p-button-danger"
+          />
+        </div>
       </template>
-    </DialogPrime>
+    </PrimeDialog>
   </div>
 </template>
+
 <style scoped>
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.object-detail-fields {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  gap: 20px;
+  place-content: left;
 }
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 8px;
 }
 label {
   font-weight: bold;
+}
+</style>
+
+<style lang="scss">
+.object-detail.p-dialog .p-dialog-header,
+.object-detail.p-dialog .p-dialog-footer {
+  background-color: rgb(236, 236, 236);
 }
 </style>

@@ -23,7 +23,7 @@
         }}
       </p>
       <RouterLink to="/">
-        <ButtonPrime> {{ t("Return to dashboard") }} </ButtonPrime>
+        <PrimeButton> {{ t("Return to dashboard") }} </PrimeButton>
       </RouterLink>
     </div>
   </div>
@@ -33,6 +33,8 @@
 import FormView from "@/formviewer/components/FormView.vue";
 import { useFormViewerStore } from "@/stores/formviewer";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import PrimeButton from "primevue/button";
 import treeData from "@/assets/registrationForm.json";
 import { useMembersStore } from "@/stores/members";
 import { useUserStore } from "@/stores/user";
@@ -53,9 +55,11 @@ const { tree } = storeToRefs(formViewerStore);
 // @ts-ignore
 tree.value = treeData;
 
-const memberStore = useMembersStore();
-memberStore.loadRegisterSchema();
-const { registrationSchema, registrationFinished } = storeToRefs(memberStore);
+const membersStore = useMembersStore();
+membersStore.getSchema("membersRegister");
+const { membersRegister } = storeToRefs(membersStore);
+const registrationSchema = membersRegister.value.schema;
+const registrationFinished = ref(false);
 const userStore = useUserStore();
 // check if user is already registered
 if (
@@ -86,9 +90,9 @@ async function submit() {
   }
 
   try {
-    await memberStore.register(registerData);
+    await membersStore.create("membersRegister", registerData);
     userStore.finishRegistration();
-    memberStore.setRegistrationFinished();
+    registrationFinished.value = true;
   } catch (e: any) {
     console.log(e);
     alert(

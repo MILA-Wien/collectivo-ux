@@ -2,7 +2,7 @@
   <header class="flex items-center justify-between px-6 pt-7 lg:pt-10">
     <div class="flex items-bottom">
       <div class="lg:hidden mr-5">
-        <Button
+        <PrimeButton
           @click="toggleSideBar()"
           icon="pi pi-align-left"
           class="p-button-outline"
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
