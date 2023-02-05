@@ -206,7 +206,7 @@
                                 "extId": "legal_name",
                                 "required": true
                             },
-                            "id": "yfMLKFbCbVyZ",
+                            "id": "lp-name-input",
                             "children": []
                         },
                         {
@@ -223,7 +223,7 @@
                                 "required": true,
                                 "extId": "legal_type"
                             },
-                            "id": "aDERADxZaNGg",
+                            "id": "lp-legal-type-input",
                             "children": []
                         },
                         {
@@ -240,7 +240,7 @@
                                 "required": true,
                                 "extId": "legal_id"
                             },
-                            "id": "ReLbytOMwxxT",
+                            "id": "lp-identification-number-input",
                             "children": []
                         }
                     ]
@@ -400,7 +400,7 @@
                                         "extId": "address_street",
                                         "required": true
                                     },
-                                    "id": "XtGQbUHzUKHl",
+                                    "id": "lp-address-street-input",
                                     "children": []
                                 },
                                 {
@@ -412,7 +412,7 @@
                                         "extId": "address_number",
                                         "required": true
                                     },
-                                    "id": "mKoTGeoIFHqb",
+                                    "id": "lp-address-street-number-input",
                                     "children": []
                                 },
                                 {
@@ -457,7 +457,7 @@
                                         "extId": "address_postcode",
                                         "required": true
                                     },
-                                    "id": "eGIMUDzZmIXl",
+                                    "id": "lp-address-postcode-input",
                                     "children": []
                                 },
                                 {
@@ -469,7 +469,7 @@
                                         "required": true,
                                         "extId": "address_city"
                                     },
-                                    "id": "JDoKLTEXhcsl",
+                                    "id": "lp-address-city-input",
                                     "children": []
                                 },
                                 {
@@ -482,7 +482,7 @@
                                         "required": true,
                                         "extId": "address_country"
                                     },
-                                    "id": "WCEHZtmfzgZB",
+                                    "id": "lp-address-country-input",
                                     "children": []
                                 }
                             ]
@@ -522,7 +522,7 @@
                                         "extId": "first_name",
                                         "required": true
                                     },
-                                    "id": "sJsmSmZUQhtG",
+                                    "id": "lp-first-name-input",
                                     "children": []
                                 },
                                 {
@@ -534,7 +534,7 @@
                                         "extId": "last_name",
                                         "required": true
                                     },
-                                    "id": "sJsmSmZUQhtG",
+                                    "id": "lp-last-name-input",
                                     "children": []
                                 }
                             ]
@@ -558,7 +558,7 @@
                                 "required": true,
                                 "extId": "gender"
                             },
-                            "id": "poKddqtVrGPs",
+                            "id": "lp-gender-radio",
                             "children": []
                         },
                         {
