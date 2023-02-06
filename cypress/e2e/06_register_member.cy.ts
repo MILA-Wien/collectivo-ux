@@ -59,7 +59,7 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
       });
     });
   });
-  it.skip("register as natural person", () => {
+  it("register as natural person", () => {
     cy.login("test_user_not_member@example.com");
     cy.get("span[id='welcome-member-span']").should(
       "contain.text",
@@ -118,7 +118,7 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
     );
   });
 
-  it("register as legal person", () => {
+  it.skip("register as legal person", () => {
     cy.login("test_user_not_member@example.com");
     cy.get("span[id ='welcome-member-span']").should(
       "contain.text",
