@@ -117,3 +117,37 @@ export interface SchemaCondition {
   condition: string;
   value: string;
 }
+
+// Store attributes
+// Attributes can either be for a single object or a list of objects
+export interface DataSchema {
+  schema: Schema;
+  schemaLoaded: boolean;
+}
+export interface DataObject {
+  id: number | null;
+  [key: string]: any;
+}
+export interface DataDetail extends DataSchema {
+  loaded: boolean;
+  data: DataObject;
+}
+export interface DataList extends DataSchema {
+  loaded: boolean;
+  data: Array<DataObject>;
+}
+
+// Store templates
+export const DataListTemplate = {
+  schema: {},
+  data: [],
+  loaded: false,
+  schemaLoaded: false,
+};
+
+export const DataDetailTemplate = {
+  schema: {},
+  data: { id: null },
+  loaded: false,
+  schemaLoaded: false,
+};

@@ -25,6 +25,7 @@ import {
   maxLength,
   minValue,
   maxValue,
+  sameAs,
 } from "@vuelidate/validators";
 import { ElementPage, type Element } from "@/formviewer/types/elements";
 import { useVuelidate } from "@vuelidate/core";
@@ -109,6 +110,14 @@ for (let i = 0; i < allElements.value.length; i++) {
           } else if (validation.type === "maxValue" && validation.value) {
             rules[selector].maxValue = maxValue(validation.value);
             rules[selector].$autoDirty = true;
+          } else if (validation.type === "sameAs" && validation.value) {
+            if (validation.state === true)
+              rules[selector].sameAs = helpers.withMessage(
+                `You have to accept the requiered field ${element.properties?.label}.`,
+                sameAs(validation.value)
+              );
+            else rules[selector].sameAs = sameAs(validation.value);
+            rules[selector].$autoDirty = true;
           } else if (validation.type === "isValidIBAN") {
             rules[selector].isValidIBAN = helpers.withMessage(
               "The provided IBAN is wrong, please check again.",
@@ -151,7 +160,18 @@ watch(
 const emit = defineEmits(["formSubmit"]);
 
 function submit() {
-  emit("formSubmit");
+  v$.value.$validate().then((isFormCorrect: boolean) => {
+    if (isFormCorrect) {
+      emit("formSubmit");
+    } else {
+      toast.add({
+        severity: "error",
+        summary: t("Error"),
+        detail: t("Please fill out the required fields"),
+        life: 5000,
+      });
+    }
+  });
 }
 </script>
 

@@ -8,19 +8,19 @@ import MembersTable from "./MembersTable.vue";
 const menuStore = useMenuStore();
 menuStore.setTitle("Members");
 
-const editMember = ref(false);
 const membersStore = useMembersStore();
-if (membersStore.membersLoaded === false) {
-  membersStore.getMembers();
+const { membersSummary, membersEmailsCampaigns } = storeToRefs(membersStore);
+
+const error = ref<Object | null>(null);
+
+if (membersSummary.value.loaded === false) {
+  membersStore.get("membersSummary").catch((e: any) => {
+    error.value = e;
+  });
 }
 
-const { members, summarySchema, membersLoadingError, membersEmailsCampaigns } =
-  storeToRefs(membersStore);
-
-// Load members emails campaigns schema
-const error = ref<Object | null>(null);
-if (membersEmailsCampaigns.value === null) {
-  membersStore.get("membersEmailsCampaigns").catch((e: any) => {
+if (membersEmailsCampaigns.value.schemaLoaded === false) {
+  membersStore.getSchema("membersEmailsCampaigns").catch((e: any) => {
     error.value = e;
   });
 }
@@ -28,21 +28,25 @@ if (membersEmailsCampaigns.value === null) {
 
 <template>
   <div class="members-wrapper">
-    <div v-if="membersLoadingError !== null || error !== null" class="error">
+    <div v-if="error !== null" class="error">
       <h2>{{ $t("Error while loading Members") }}</h2>
-      <p class="error-message">{{ membersLoadingError }}</p>
+      <p class="error-message">{{ error }}</p>
     </div>
     <div
-      v-else-if="members === null || membersEmailsCampaigns === null"
+      v-else-if="
+        membersSummary.loaded === false ||
+        membersEmailsCampaigns.schemaLoaded === false
+      "
       class="loading"
     >
       <h2>{{ $t("Loading members") }}</h2>
     </div>
     <div v-else class="members-table">
       <MembersTable
-        :members="members"
-        :schema="summarySchema!"
-        :editMember="editMember"
+        :store="membersStore"
+        name="membersSummary"
+        :objects="membersSummary.data"
+        :schema="membersSummary.schema"
         :emailCampaignSchema="membersEmailsCampaigns.schema"
       />
     </div>

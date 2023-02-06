@@ -1,110 +1,52 @@
-import {
-  getMembersSchemaFn,
-  getMembersSummarySchemaFn,
-  getRegisterSchemaFn,
-  registerMemberFn,
-} from "./../api/api";
-import type { Members, Member, Schema } from "./../api/types";
+import type { DataObject, DataDetail, DataList } from "./../api/types";
+import { DataDetailTemplate, DataListTemplate } from "./../api/types";
 import { defineStore } from "pinia";
-import {
-  membersMembersFn,
-  membersMembersPatch,
-  endpoints,
-  API,
-} from "@/api/api";
+import { API } from "@/api/api";
 
-type MembersState = {
-  members: Members | null;
-  membersSchema: Schema | null;
-  summarySchema: Schema | null;
-  membersLoaded: boolean;
-  membersLoadingError: string | null;
-  registrationSchema: Schema | null;
-  registrationFinished: boolean;
-  membersEmailsCampaigns: any;
-  membersEmailsTemplates: any;
-  membersEmailsDesigns: any;
+type membersStore = {
+  membersMembers: DataDetail;
+  membersSummary: DataList;
+  membersProfile: DataDetail;
+  membersRegister: DataDetail;
+  membersTags: DataList;
+  membersEmailsCampaigns: DataList;
+  membersEmailsTemplates: DataList;
+  membersEmailsDesigns: DataList;
 };
 
-// Create type that is overlap between Endpoints and MembersState
-type MembersEndpoints = keyof typeof endpoints & keyof MembersState;
+type membersObject = keyof membersStore;
 
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
-      members: null,
-      membersSchema: null,
-      summarySchema: null,
-      membersLoaded: false,
-      membersLoadingError: null,
-      registrationSchema: null,
-      registrationFinished: false,
-      membersEmailsCampaigns: null,
-      membersEmailsTemplates: null,
-      membersEmailsDesigns: null,
-    } as MembersState),
-  actions: {
-    async getMembers() {
-      try {
-        const [membersSchema, summarySchema, members] = await Promise.all([
-          getMembersSchemaFn(),
-          getMembersSummarySchemaFn(),
-          membersMembersFn(),
-        ]);
-        this.membersSchema = membersSchema;
-        this.summarySchema = summarySchema;
+      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+    } as membersStore),
 
-        if (this.members === null) {
-          this.members = { results: [] };
-        }
-        this.members.results = members.data;
-        this.membersLoaded = true;
-        this.membersLoadingError = null;
-      } catch (error: any) {
-        console.log("members error", error);
-        this.membersLoadingError = error.message;
-      }
-    },
-    async getMembersNext(nextUrl: string) {
-      console.log("nextUrl", nextUrl);
-    },
-    async getMembersPrevious(previousUrl: string) {
-      console.log("previousUrl", previousUrl);
-    },
-    async getMembersDetail(id: string) {
-      console.log("id", id);
-    },
-    async updateMember(member: Member) {
-      const response = await membersMembersPatch(member);
-      // Save updated member data in store
-      const memberIndex = this.members?.results?.findIndex((m: Member) => {
-        return m.id === response.data.id;
-      });
-      if (memberIndex !== null && memberIndex !== undefined) {
-        this.members!.results![memberIndex] = response.data;
-      }
-      return response;
-    },
-    async deleteMember(member: Member) {
-      alert("deleteMember not yet implemented " + member.id);
-    },
-    async register(registrationData: any) {
-      return registerMemberFn(registrationData);
-    },
-    async loadRegisterSchema() {
-      getRegisterSchemaFn().then((response) => {
-        this.registrationSchema = response;
-      });
-    },
-    setRegistrationFinished() {
-      this.registrationFinished = true;
-    },
-    async get(objectName: MembersEndpoints) {
+  actions: {
+    async get(objectName: membersObject, pk?: Number) {
+      // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
-        API.get(objectName),
+        API.get(objectName, pk),
       ]);
+
+      // Throw error if response does not match store data type
+      if (
+        (this[objectName].data instanceof Array &&
+          !(objects.data instanceof Array)) ||
+        (!(this[objectName].data instanceof Array) &&
+          objects.data instanceof Array)
+      ) {
+        throw new Error("API response does not match store data type.");
+      }
 
       // Extend schema
       for (const value of Object.values(schema.data) as any) {
@@ -114,9 +56,11 @@ export const useMembersStore = defineStore({
         value.options = [];
         let i = 0;
         for (const [key2, value2] of Object.entries(value.choices) as any) {
+          const parsed = parseInt(key2);
+          const key3 = isNaN(parsed) ? key2 : parsed;
           value.options.push({
             label: value2,
-            value: parseInt(key2), // Keys are Integers in actual data
+            value: key3,
             key: ++i,
           });
         }
@@ -127,29 +71,60 @@ export const useMembersStore = defineStore({
         objects: objects.data,
       };
     },
-    async update(objectName: MembersEndpoints, pk: Number, payload: Object) {
-      const response = await API.patch(objectName, pk, payload);
-      const index = this[objectName]?.objects?.findIndex((m: Member) => {
-        return m.id === response.data.id;
-      });
-      if (index !== null && index !== undefined) {
-        this[objectName]!.objects![index] = response.data;
-      }
-      return response;
+    async getSchema(objectName: membersObject) {
+      // Get schema and save in store
+      const schema = await API.getSchema(objectName);
+      this[objectName].schema = schema.data;
+      this[objectName].schemaLoaded = true;
     },
-    async delete(objectName: MembersEndpoints, pk: Number) {
-      const response = await API.delete(objectName, pk);
-      const index = this[objectName]?.objects?.findIndex((m: Member) => {
-        return m.id === response.data.id;
-      });
-      if (index !== null && index !== undefined) {
-        this[objectName]!.objects!.splice(index, 1);
-      }
-      return response;
-    },
-    async create(objectName: MembersEndpoints, payload: Object) {
+    async create(objectName: membersObject, payload: Object) {
       const response = await API.post(objectName, payload);
-      this[objectName]!.objects!.push(response.data);
+      const object = this[objectName];
+      if (object.data instanceof Array) {
+        object.data.push(response.data);
+      } else {
+        object.data = response.data;
+      }
+      return response;
+    },
+    async update(objectName: membersObject, payload: Object, pk?: Number) {
+      // Update object and save in store
+      const response = await API.patch(objectName, payload, pk);
+      let object = this[objectName];
+
+      // Special case for membersMembers: Update added to summary list
+      if (objectName == "membersMembers") {
+        object = this["membersSummary"];
+      }
+
+      if (object.data instanceof Array) {
+        const index = object.data.findIndex((m: DataObject) => {
+          return m.id === response.data.id;
+        });
+        if (index !== null && index !== undefined) {
+          object.data[index] = response.data;
+        }
+      } else {
+        object.data = response.data;
+      }
+    },
+    async delete(objectName: membersObject, pk: Number) {
+      // Delete object and remove from store
+      const response = await API.delete(objectName, pk);
+      const object = this[objectName];
+      if (object.data instanceof Array) {
+        const index = object.data.findIndex((m: DataObject) => {
+          return m.id === pk;
+        });
+        if (index == -1) {
+          throw `Object with id ${pk} not found in store`;
+        }
+        if (index !== null && index !== undefined) {
+          object.data.splice(index, 1);
+        }
+      } else {
+        object.data = { id: null };
+      }
       return response;
     },
   },
