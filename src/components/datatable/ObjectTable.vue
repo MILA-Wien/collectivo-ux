@@ -189,10 +189,13 @@ function editObjectFn(event: any) {
               <!-- Multiple choice -->
               <PrimeMultiSelect
                 v-model="filterModel.value"
-                :options="col.choices"
+                :options="col.choice_list"
                 optionLabel="label"
                 optionValue="value"
-                placeholder="Any"
+                :maxSelectedLabels="0"
+                :selectedItemsLabel="`${filterModel.value?.length} selected`"
+                :filter="true"
+                placeholder="Select multiple choices"
                 class="p-column-filter"
               >
                 <template #option="slotProps">
