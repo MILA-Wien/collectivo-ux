@@ -107,6 +107,7 @@ for (const [key, value] of Object.entries(props.schema)) {
 // Set default columns
 // TODO: Load default columns from schema
 const defaultColumns = [
+  "id",
   "first_name",
   "last_name",
   "person_type",
