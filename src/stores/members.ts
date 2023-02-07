@@ -65,7 +65,7 @@ export const useMembersStore = defineStore({
           });
         }
       }
-
+      // Save data in store
       this[objectName].data = objects.data;
       this[objectName].schema = schema.data;
       this[objectName].loaded = true;
