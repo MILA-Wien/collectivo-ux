@@ -1,18 +1,18 @@
 <template>
   <div class="radio-group">
     <div
-      v-for="(o, j) in props.element.properties.options"
-      v-bind:key="props.element.properties.label + String(j)"
+      v-for="o in props.element.properties.options"
+      v-bind:key="props.element.properties.label + String(o.id)"
     >
       <input
         type="checkbox"
         class="mr-2"
-        @change="toggleValue(j)"
-        v-model="values[j]"
-        :value="props.element.properties.values[j]"
-        :name="props.element.id + j"
+        @change="toggleValue(o.id)"
+        :checked="values.includes(o.id)"
+        :value="o.id"
+        :name="props.element.id + o.id"
       />
-      <label class="font-light">{{ o }}</label>
+      <label class="font-light">{{ o.label }}</label>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ const valueFromStore = useFormViewerStore().getValueForId(
   props.element.properties.extId
 );
 const emit = defineEmits(["change"]);
-const values = ref(props.element.properties.values.map(() => false));
+const values = ref([] as any);
 if (!valueFromStore) {
   props.element.properties.options.forEach(
     (o: string) => (values.value[o] = false)
@@ -36,8 +36,9 @@ if (!valueFromStore) {
 }
 
 function toggleValue(v: number) {
-  if (values.value[v] == undefined) values[v] = true;
-  else values[v] != values[v];
+  if (values.value.includes(v)) {
+    values.value.splice(values.value.indexOf(v), 1);
+  } else values.value.push(v);
   emit("change", values);
 }
 </script>

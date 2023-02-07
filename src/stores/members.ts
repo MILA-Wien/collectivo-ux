@@ -66,10 +66,10 @@ export const useMembersStore = defineStore({
         }
       }
 
-      this[objectName] = {
-        schema: schema.data,
-        objects: objects.data,
-      };
+      this[objectName].data = objects.data;
+      this[objectName].schema = schema.data;
+      this[objectName].loaded = true;
+      this[objectName].schemaLoaded = true;
     },
     async getSchema(objectName: membersObject) {
       // Get schema and save in store

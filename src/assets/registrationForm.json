@@ -805,7 +805,7 @@
                                 "validations": [
                                     {
                                         "type": "isValidIBAN",
-                                        "value":true
+                                        "value": true
                                     }
                                 ],
                                 "extId": "bank_account_iban"
@@ -915,29 +915,7 @@
                         "conditions": [],
                         "htmlType": "checkbox",
                         "extId": "groups_interested",
-                        "optionsEndpoint": "/members/groups/",
-                        "options": [
-                            "Infogespräche",
-                            "Sortiment",
-                            "Öffentlichkeitsarbeit",
-                            "Finanzen",
-                            "Genossenschaft",
-                            "IT und Digitales",
-                            "Events",
-                            "Standort",
-                            "Minimarkt"
-                        ],
-                        "values": [
-                            "1",
-                            "2",
-                            "3",
-                            "4",
-                            "5",
-                            "6",
-                            "7",
-                            "8",
-                            "9"
-                        ]
+                        "optionsEndpoint": "/members/groups/"
                     },
                     "id": "UndNuxZaNGg",
                     "children": []
@@ -949,25 +927,7 @@
                         "htmlType": "checkbox",
                         "conditions": [],
                         "extId": "skills",
-                        "optionsEndpoint": "/members/skills/",
-                        "options": [
-                            "Immobilien/Architektur/Planung",
-                            "Einzelhandel",
-                            "Handwerk (Elektrik, Tischlerei, …)",
-                            "Genossenschaft/Partizipation/Organisationsentwicklung",
-                            "Kommunikation (Medien, Grafik, Text,…)",
-                            "IT/Digitales",
-                            "Finanzen (BWL, Buchhaltung,…)"
-                        ],
-                        "values": [
-                            "1",
-                            "2",
-                            "3",
-                            "4",
-                            "5",
-                            "6",
-                            "7"
-                        ]
+                        "optionsEndpoint": "/members/skills/"
                     },
                     "id": "NaUnduxZaNGg",
                     "children": []
@@ -1033,11 +993,11 @@
                         "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
                         "extId": "statutes_approved",
                         "required": true,
-                        "validations":[
-                           {
-                            "type":"sameAs",
-                            "state":true
-                           }
+                        "validations": [
+                            {
+                                "type": "sameAs",
+                                "state": true
+                            }
                         ]
                     },
                     "id": "checkbox_statutes_approved",

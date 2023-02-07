@@ -83,7 +83,15 @@ for (const [key, value] of Object.entries(props.schema)) {
 
 // Set default columns
 // TODO: Load default columns from schema
-const defaultColumns = ["sent", "name", "label", "status", "template", "design", "body"];
+const defaultColumns = [
+  "sent",
+  "name",
+  "label",
+  "status",
+  "template",
+  "design",
+  "body",
+];
 for (const col of defaultColumns) {
   if (!columns.find((c) => c.field === col)) {
     continue;
