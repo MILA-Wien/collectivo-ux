@@ -25,9 +25,10 @@
         </RouterLink>
         <MenuMain />
         <span class="grow"></span>
-        <span class="my-3 text-sm" id="version"
-          >collectivo — <VersionItem
-        /></span>
+        <span class="p-4 text-xs w-full text-gray-800" id="version">
+          collectivo <VersionItem/> <br/>
+          collectivo-ux v{{ version }}
+        </span>
       </div>
     </div>
   </div>
@@ -38,6 +39,7 @@ import MenuMain from "../components/MenuMain.vue";
 import VersionItem from "../components/VersionItem.vue";
 import { useMenuStore } from "../stores/menu";
 import { storeToRefs } from "pinia";
+import { version } from "../../package.json";
 const menuStore = useMenuStore();
 const { getSideBarOpen } = storeToRefs(menuStore);
 function toggleSideBar() {
