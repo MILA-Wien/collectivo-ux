@@ -45,7 +45,12 @@ const toast = useToast();
 const selectedMember = ref({ id: null });
 
 const editMember = ref(false);
-const editMemberCreate = ref(false);
+const editMemberCreate = ref(false); // TODO: Remove this
+const createMember = ref(false);
+
+function createObjectFn() {
+  createMember.value = true;
+}
 
 // Update content of selected members is objects are changed in store
 const selectedMembers = ref<any[]>([]);
@@ -181,6 +186,14 @@ function bulkEdit() {
     <Toolbar class="mb-4">
       <template #start>
         <div class="m-1 text-left">
+          <PrimeButton
+            :label="t('Create')"
+            @click="createObjectFn()"
+            class="p-button-success"
+          >
+          </PrimeButton>
+        </div>
+        <div class="m-1 text-left">
           <MultiSelect
             v-model="selectedColumns"
             :options="columns"
@@ -264,14 +277,22 @@ function bulkEdit() {
   </div> <!-- members-table flex-col -->
 
   <!-- Dialogue for member details -->
-  <!-- TODO: This has to change to membersMembers (incl. schema) -->
   <ObjectDetailLoader
     v-if="editMember"
     :pk="selectedMember.id"
-    :create="editMemberCreate"
+    :create="false"
     :store="props.store"
     :name="'membersMembers'"
     @close="editMember = false"
+  />
+
+  <!-- Dialogue for member creation -->
+  <ObjectDetailLoader
+    v-if="createMember"
+    :create="true"
+    :store="props.store"
+    :name="'membersCreate'"
+    @close="createMember = false"
   />
 
   <!-- Dialogue for email campaign details -->
