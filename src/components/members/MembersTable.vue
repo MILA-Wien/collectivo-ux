@@ -177,7 +177,7 @@ function bulkEdit() {
 </script>
 
 <template>
-  <div class="members-table flex flex-col h-full">
+  <div class="flex flex-col h-full" id="members-table">
     <Toolbar class="mb-4">
       <template #start>
         <div class="m-1 text-left">

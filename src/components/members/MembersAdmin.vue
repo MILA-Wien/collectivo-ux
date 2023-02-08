@@ -40,7 +40,7 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
   >
     <h2>{{ $t("Loading members") }}</h2>
   </div>
-  <div v-else class="members-table h-full">
+  <div v-else class="h-full">
     <MembersTable
       :store="membersStore"
       name="membersSummary"
