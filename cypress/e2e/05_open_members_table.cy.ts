@@ -12,6 +12,6 @@ describe("Login Succesfull", () => {
       .contains("Mitglieder")
       .click();
     cy.get('div[id="collectivo-backdrop"]').click();
-    cy.get('div[class="members-table"').should("exist");
+    cy.get('div[class="members-table"]').should("exist");
   });
 });
