@@ -7,7 +7,7 @@ import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
-menuStore.setTitle("Member Emails");
+menuStore.setTitle("Member Tags");
 </script>
 
 <template>
