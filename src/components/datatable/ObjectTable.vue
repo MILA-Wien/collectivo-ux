@@ -109,7 +109,7 @@ function editObjectFn(event: any) {
 </script>
 
 <template>
-  <div class="datatable" style="height: calc(100vh - 350px); width: 100%">
+  <div class="datatable" style="height: 100%; width: 100%">
     <PrimeDataTable
       :value="objects"
       v-model:selection="selectedObjects"

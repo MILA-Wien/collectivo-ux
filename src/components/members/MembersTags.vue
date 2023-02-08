@@ -11,9 +11,11 @@ menuStore.setTitle("Member Emails");
 </script>
 
 <template>
-  <TabView lazy>
-    <TabPanel header="Tags">
-      <ObjectLoader :store="membersStore" :name="'membersTags'" />
-    </TabPanel>
-  </TabView>
+  <div class="h-full tabview-full">
+    <TabView lazy>
+      <TabPanel header="Tags">
+        <ObjectLoader :store="membersStore" :name="'membersTags'" />
+      </TabPanel>
+    </TabView>
+  </div>
 </template>
