@@ -1,6 +1,9 @@
 import Keycloak from "keycloak-js";
 import { useUserStore } from "@/stores/user";
 import { keycloakURL } from "@/app.config";
+import i18n from "@/locales/i18n";
+
+const { t } = i18n.global;
 
 const initOptions = {
   url: keycloakURL ? keycloakURL : "http://keycloak:8080",
@@ -37,6 +40,8 @@ function initKeycloak() {
   };
   keycloak.onAuthLogout = () => {
     console.log("onAuthLogout");
+    alert(t("Your connection has been lost. Please log in again."))
+    keycloak.logout()
   };
   keycloak.onTokenExpired = () => {
     console.log("onTokenExpired");

@@ -63,9 +63,7 @@ export const useUserStore = defineStore({
       this.keycloak = keycloak;
     },
     logout() {
-      const logOutUrl = this.user!.logoutUrl;
-      this.user = null;
-      location.href = logOutUrl;
+      this.keycloak.logout()
     },
     updateUserInfo() {
       if (!this.keycloak) return;

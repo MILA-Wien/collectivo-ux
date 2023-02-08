@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useSettingsStore } from "@/stores/settings";
 const store = useSettingsStore();
-store.getVersion();
+const error = ref<Object | null>(null);
+store.getVersion().catch((e: any) => {error.value = e;});
 </script>
 
 <template>
-  <span v-if="store.version" id="version-string">
+  <span v-if="error !== null" class="text-red-600 font-bold">
+    no connection
+  </span>
+  <span v-else-if="store.version" id="version-string">
     version {{ store.version.version }}
   </span>
   <span v-else>loading ...</span>

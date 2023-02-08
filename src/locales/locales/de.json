@@ -1,4 +1,9 @@
 {
+    "Your connection has been lost. Please log in again.": "Deine Verbindung wurde unterbrochen. Bitte melde dich erneut an.",
+    "No internet connection.": "Keine Internetverbindung.",
+    "Server not reachable.": "Server nicht erreichbar.",
+    "Request failed.": "Anfrage fehlgeschlagen.",
+
     "menu.About": "Über",
     "menu.Login": "Login",
     "menu.Menu": "Menu",
