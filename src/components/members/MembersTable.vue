@@ -107,6 +107,7 @@ for (const [key, value] of Object.entries(props.schema)) {
 // Set default columns
 // TODO: Load default columns from schema
 const defaultColumns = [
+  "id",
   "first_name",
   "last_name",
   "person_type",
@@ -176,7 +177,7 @@ function bulkEdit() {
 </script>
 
 <template>
-  <div class="members-table">
+  <div class="flex flex-col h-full" id="members-table">
     <Toolbar class="mb-4">
       <template #start>
         <div class="m-1 text-left">
@@ -245,48 +246,51 @@ function bulkEdit() {
     </Toolbar>
 
     <!-- Data Table -->
-    <ObjectTable
-      :store="props.store"
-      :name="name"
-      :objects="objects"
-      :schema="schema"
-      :matchModes="matchModes"
-      :selectedColumns="selectedColumns"
-      v-model:filters="filters"
-      v-model:selectedObjects="selectedMembers"
-      v-model:editObject="selectedMember"
-      v-model:editActive="editMember"
-      v-model:editCreate="editMemberCreate"
-    />
+    <div class="grow bg-white">
+      <ObjectTable
+        :store="props.store"
+        :name="name"
+        :objects="objects"
+        :schema="schema"
+        :matchModes="matchModes"
+        :selectedColumns="selectedColumns"
+        v-model:filters="filters"
+        v-model:selectedObjects="selectedMembers"
+        v-model:editObject="selectedMember"
+        v-model:editActive="editMember"
+        v-model:editCreate="editMemberCreate"
+      />
+    </div>
+  </div> <!-- members-table flex-col -->
 
-    <!-- Dialogue for member details -->
-    <!-- TODO: This has to change to membersMembers (incl. schema) -->
-    <ObjectDetailLoader
-      v-if="editMember"
-      :pk="selectedMember.id"
-      :create="editMemberCreate"
-      :store="props.store"
-      :name="'membersMembers'"
-      @close="editMember = false"
-    />
+  <!-- Dialogue for member details -->
+  <!-- TODO: This has to change to membersMembers (incl. schema) -->
+  <ObjectDetailLoader
+    v-if="editMember"
+    :pk="selectedMember.id"
+    :create="editMemberCreate"
+    :store="props.store"
+    :name="'membersMembers'"
+    @close="editMember = false"
+  />
 
-    <!-- Dialogue for email campaign details -->
-    <ObjectDetail
-      v-if="editActive"
-      :object="editObject"
-      :create="editCreate"
-      :store="props.store"
-      :name="'membersEmailsCampaigns'"
-      :schema="emailCampaignSchema"
-      @close="editActive = false"
-    />
+  <!-- Dialogue for email campaign details -->
+  <ObjectDetail
+    v-if="editActive"
+    :object="editObject"
+    :create="editCreate"
+    :store="props.store"
+    :name="'membersEmailsCampaigns'"
+    :schema="emailCampaignSchema"
+    @close="editActive = false"
+  />
 
-    <!-- Dialogue for member bulk edit -->
-    <MembersBulkEdit
-      v-if="bulkEditIsActive"
-      :members="selectedMembers"
-      :schema="schema"
-      @close="bulkEditIsActive = false"
-    />
-  </div>
+  <!-- Dialogue for member bulk edit -->
+  <MembersBulkEdit
+    v-if="bulkEditIsActive"
+    :members="selectedMembers"
+    :schema="schema"
+    @close="bulkEditIsActive = false"
+  />
+
 </template>

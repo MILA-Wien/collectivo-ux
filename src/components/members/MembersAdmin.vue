@@ -27,29 +27,27 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
 </script>
 
 <template>
-  <div class="members-wrapper">
-    <div v-if="error !== null" class="error">
-      <h2>{{ $t("Error while loading Members") }}</h2>
-      <p class="error-message">{{ error }}</p>
-    </div>
-    <div
-      v-else-if="
-        membersSummary.loaded === false ||
-        membersEmailsCampaigns.schemaLoaded === false
-      "
-      class="loading"
-    >
-      <h2>{{ $t("Loading members") }}</h2>
-    </div>
-    <div v-else class="members-table">
-      <MembersTable
-        :store="membersStore"
-        name="membersSummary"
-        :objects="membersSummary.data"
-        :schema="membersSummary.schema"
-        :emailCampaignSchema="membersEmailsCampaigns.schema"
-      />
-    </div>
+  <div v-if="error !== null" class="error">
+    <h2>{{ $t("Error while loading Members") }}</h2>
+    <p class="error-message">{{ error }}</p>
+  </div>
+  <div
+    v-else-if="
+      membersSummary.loaded === false ||
+      membersEmailsCampaigns.schemaLoaded === false
+    "
+    class="loading"
+  >
+    <h2>{{ $t("Loading members") }}</h2>
+  </div>
+  <div v-else class="h-full">
+    <MembersTable
+      :store="membersStore"
+      name="membersSummary"
+      :objects="membersSummary.data"
+      :schema="membersSummary.schema"
+      :emailCampaignSchema="membersEmailsCampaigns.schema"
+    />
   </div>
 </template>
 

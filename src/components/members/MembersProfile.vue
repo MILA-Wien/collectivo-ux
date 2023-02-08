@@ -175,7 +175,7 @@ function schemaToPrime(choices: any) {
     >
       <h2>{{ $t("Loading members") }}</h2>
     </div>
-    <div v-else class="members-table">
+    <div v-else>
       <div
         v-for="(value, key) in membershipSchema"
         :key="value ? key + value.input_type : key"
