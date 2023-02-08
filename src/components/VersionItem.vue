@@ -3,7 +3,9 @@ import { ref } from "vue";
 import { useSettingsStore } from "@/stores/settings";
 const store = useSettingsStore();
 const error = ref<Object | null>(null);
-store.getVersion().catch((e: any) => {error.value = e;});
+store.getVersion().catch((e: any) => {
+  error.value = e;
+});
 </script>
 
 <template>

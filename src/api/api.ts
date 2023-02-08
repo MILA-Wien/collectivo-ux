@@ -31,18 +31,18 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
-    if(error.code === 'ERR_NETWORK'){
-      if(!window.navigator.onLine) {
-        console.log("Error. No internet connection.")
+    if (error.code === "ERR_NETWORK") {
+      if (!window.navigator.onLine) {
+        console.log("Error. No internet connection.");
       } else {
-        console.log("Error. No server connection.")
+        console.log("Error. No server connection.");
       }
     } else if (error.response?.status === 401) {
       console.log("Error 401", error.response.data.detail);
       if (
         error.response.data.detail === "Incorrect authentication credentials."
       ) {
-        alert(t("Your connection has been lost. Please log in again."))
+        alert(t("Your connection has been lost. Please log in again."));
         const store = useUserStore();
         store.logout();
       }

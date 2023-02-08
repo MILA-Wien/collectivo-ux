@@ -16,7 +16,7 @@ type membersStore = {
 
 type membersObject = keyof membersStore;
 
-function extendSchema(schema:any) {
+function extendSchema(schema: any) {
   // Transform choices dict into an options list
   for (const value of Object.values(schema) as any) {
     if (value.choices == undefined) {
@@ -34,7 +34,7 @@ function extendSchema(schema:any) {
       });
     }
   }
-  return schema
+  return schema;
 }
 
 export const useMembersStore = defineStore({

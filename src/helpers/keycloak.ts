@@ -40,8 +40,8 @@ function initKeycloak() {
   };
   keycloak.onAuthLogout = () => {
     console.log("onAuthLogout");
-    alert(t("Your connection has been lost. Please log in again."))
-    keycloak.logout()
+    alert(t("Your connection has been lost. Please log in again."));
+    keycloak.logout();
   };
   keycloak.onTokenExpired = () => {
     console.log("onTokenExpired");

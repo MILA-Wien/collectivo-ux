@@ -162,102 +162,100 @@ function isFiltered(name: string, field: any) {
       <div class="mt-5">
         <!-- Editable fields based on input type -->
         <div v-for="(field, name, i) in schema" :key="i">
-        <div class="my-4">
-          <div v-if="isFiltered(name, field)">
-            <div class="mb-1">
-              <label for="attr-{{name}}">
-                {{ t(field.label) }}
-                <span v-if="field.required" class="text-red-600">*</span>
-              </label>
-            </div>
+          <div class="my-4">
+            <div v-if="isFiltered(name, field)">
+              <div class="mb-1">
+                <label for="attr-{{name}}">
+                  {{ t(field.label) }}
+                  <span v-if="field.required" class="text-red-600">*</span>
+                </label>
+              </div>
 
-            <div v-if="field.input_type === 'select'">
-              <PrimeDropdown
-                v-model="object_temp[name]"
-                :options="field.options"
-                optionLabel="label"
-                optionValue="value"
-                :filter="true"
-                placeholder="Select a choice"
-                :showClear="true"
-                class="w-full"
-                :disabled="field.read_only"
-              />
-            </div>
+              <div v-if="field.input_type === 'select'">
+                <PrimeDropdown
+                  v-model="object_temp[name]"
+                  :options="field.options"
+                  optionLabel="label"
+                  optionValue="value"
+                  :filter="true"
+                  placeholder="Select a choice"
+                  :showClear="true"
+                  class="w-full"
+                  :disabled="field.read_only"
+                />
+              </div>
 
-            <div v-else-if="field.input_type === 'multiselect'">
-              <PrimeMultiSelect
-                v-model="object_temp[name]"
-                :options="field.options"
-                optionLabel="label"
-                optionValue="value"
-                :maxSelectedLabels="0"
-                :selectedItemsLabel="`${object_temp[name]?.length} selected`"
-                :filter="true"
-                placeholder="Select multiple choices"
-                class="w-full"
-                :disabled="field.read_only"
-              />
-            </div>
+              <div v-else-if="field.input_type === 'multiselect'">
+                <PrimeMultiSelect
+                  v-model="object_temp[name]"
+                  :options="field.options"
+                  optionLabel="label"
+                  optionValue="value"
+                  :maxSelectedLabels="0"
+                  :selectedItemsLabel="`${object_temp[name]?.length} selected`"
+                  :filter="true"
+                  placeholder="Select multiple choices"
+                  class="w-full"
+                  :disabled="field.read_only"
+                />
+              </div>
 
-            <div
-              v-else-if="field.input_type === 'checkbox'"
-              class="flex flex-row"
-            >
-              <PrimeInputSwitch
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-                class="flex-none mr-2"
-              />
+              <div
+                v-else-if="field.input_type === 'checkbox'"
+                class="flex flex-row"
+              >
+                <PrimeInputSwitch
+                  v-model="object_temp[name]"
+                  :disabled="field.read_only"
+                  class="flex-none mr-2"
+                />
+                <small
+                  v-if="field.help_text"
+                  id="user-attr-{{value}}-help"
+                  class="p-info"
+                  >{{ field.help_text }}</small
+                >
+              </div>
+
+              <div v-else-if="field.input_type === 'textarea'">
+                <PrimeTextarea
+                  v-model="object_temp[name]"
+                  :disabled="field.read_only"
+                />
+              </div>
+
+              <div v-else-if="field.input_type === 'html'">
+                <object-editor v-model="object_temp[name]"></object-editor>
+              </div>
+
+              <div v-else>
+                <PrimeInputText
+                  id="attr-{{name}}"
+                  type="text"
+                  aria-describedby="attr-{{value}}-help"
+                  v-model="object_temp[name]"
+                  :disabled="field.read_only"
+                  class="w-full"
+                />
+              </div>
+
               <small
-                v-if="field.help_text"
+                v-if="field.help_text && field.input_type !== 'checkbox'"
                 id="user-attr-{{value}}-help"
                 class="p-info"
                 >{{ field.help_text }}</small
               >
             </div>
-
-            <div v-else-if="field.input_type === 'textarea'">
-              <PrimeTextarea
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-              />
-            </div>
-
-            <div v-else-if="field.input_type === 'html'">
-              <object-editor v-model="object_temp[name]"></object-editor>
-            </div>
-
-            <div v-else>
-              <PrimeInputText
-                id="attr-{{name}}"
-                type="text"
-                aria-describedby="attr-{{value}}-help"
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-                class="w-full"
-              />
-            </div>
-
-            <small
-              v-if="field.help_text && field.input_type !== 'checkbox'"
-              id="user-attr-{{value}}-help"
-              class="p-info"
-              >{{ field.help_text }}</small
-            >
-          </div>
           </div>
         </div>
       </div>
 
       <!-- Footer -->
       <template #footer>
-        <div class="object-detail-filter flex flex-row
-            flex-wrap mt-5 items-center gap-3">
-          <i
-            class="pi pi-filter m-auto"
-            style="font-size: 1.2rem"
-          ></i>
+        <div
+          class="object-detail-filter flex flex-row flex-wrap mt-5 items-center gap-3"
+        >
+          <i class="pi pi-filter m-auto" style="font-size: 1.2rem"></i>
           <PrimeInputText
             id="filter"
             v-model="filterValue"
@@ -298,7 +296,6 @@ function isFiltered(name: string, field: any) {
             />
           </div>
         </div>
-
       </template>
     </PrimeDialog>
   </div>
