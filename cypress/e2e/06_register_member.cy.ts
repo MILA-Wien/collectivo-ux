@@ -1,16 +1,9 @@
 /* 
 README && TODOs:
-1. BUG(?): whenever a new user_not_member registers as member, AND after successfully deleting member id from db (see beforeEach() hook), on new login the UI will display user_as_member StartPage:
-  - StartPage EXPECTED: user_not_member
-  - StartPage ACTUAL: user_as_member
-  Workaround: docker compose restart backend services (@Joel, Keycloak matter)
 
 2. JSON response validation on submit formular, 2 possible approaches:
-  2a: deep.equal comparison between actualResponse and expectedResponse 
-      Manipulation of expectedResponse properties necessary, i.e. they need to be made dynamic: "id" (i), "membership_start" (ii) etc.
   2b: validation of specific actualResponse properties only. Which ones?
 
-3. it("register as legal person", () => {...} //DONE
 4. Use cy.fixture() to load test data -> https://docs.cypress.io/api/commands/fixture
 5. Use generic button validation
 */
@@ -59,7 +52,7 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
       });
     });
   });
-  it("register as natural person", () => {
+  it.skip("register as natural person", () => {
     cy.login("test_user_not_member@example.com");
     cy.get("span[id='welcome-member-span']").should(
       "contain.text",
@@ -118,7 +111,7 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
     );
   });
 
-  it.skip("register as legal person", () => {
+  it("register as legal person", () => {
     cy.login("test_user_not_member@example.com");
     cy.get("span[id ='welcome-member-span']").should(
       "contain.text",
@@ -169,11 +162,18 @@ describe("register user_not_member, compulsory fields only (except checkboxes on
     cy.get('#checkbox_statutes_approved input').check({force: true});
     cy.intercept({ method: "POST", url: "**/register" }).as("new-member");
     cy.get("#submit-button > .button button").click();
-    cy.wait("@new-member").then(({ request, response }) => {
-      console.log("Request sent to server: ", request.body);
-      console.log("Response sent back to client: ", response?.body);
-      expect(response?.statusCode).to.eq(201);
-      /* Here response.body validation */
+    cy.wait("@new-member").then(({response}) => {
+      cy.fixture('expectedResponse.json').then((expectedResponse) => {
+        /* Here response.body validation */
+        expect(response?.statusCode).to.eq(201);
+        expect(response?.body).to.have.property('id');
+        expect(response?.body).to.have.property('person_type');
+        expect(response?.body.person_type).to.deep.eq(expectedResponse.person_type)
+        expect(response?.body).to.have.property('groups_interested');
+        expect(response?.body.groups_interested).to.deep.eq(expectedResponse.groups_interested);
+        expect(response?.body).to.have.property('skills');
+        expect(response?.body.skills).to.deep.eq(expectedResponse.skills);
+      })
     });
     cy.get("#welcome-member-span").should(
       "contain.text",

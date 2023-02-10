@@ -1,0 +1,35 @@
+{
+    "id": 0,
+    "first_name": "Ötz1",
+    "last_name": "CABBAG3",
+    "person_type": "legal",
+    "gender": "male",
+    "birthday": null,
+    "occupation": null,
+    "address_street": "ÄltGasseMitNötFünnyChars",
+    "address_number": "28392",
+    "address_stair": null,
+    "address_door": null,
+    "address_postcode": "1111",
+    "address_city": "WienWeän",
+    "address_country": "ÖsterreichÖsterland",
+    "phone": "+43",
+    "legal_name": "Ötzi CABBAG3",
+    "legal_type": "GG",
+    "legal_id": "000000x",
+    "membership_type": "investing",
+    "shares_number": 9,
+    "shares_payment_type": "sepa",
+    "bank_account_iban": "AT592250039687965121",
+    "bank_account_owner": "Ötz1 CABBAG3",
+    "survey_contact": null,
+    "survey_motivation": null,
+    "groups_interested": [
+        1,
+        9
+    ],
+    "skills": [
+        1,
+        7
+    ]
+}
