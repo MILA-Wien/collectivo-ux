@@ -35,23 +35,23 @@ function extendSchema(schema: any) {
       });
     }
   }
-  return schema
+  return schema;
 }
 
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
-  ({
-    membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsAutomations: JSON.parse(JSON.stringify(DataListTemplate)),
-  } as membersStore),
+    ({
+      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsAutomations: JSON.parse(JSON.stringify(DataListTemplate)),
+    } as membersStore),
 
   actions: {
     async get(objectName: membersObject, pk?: Number) {
