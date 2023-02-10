@@ -22,6 +22,9 @@ menuStore.setTitle("Member Emails");
       <TabPanel header="Designs">
         <ObjectLoader :store="membersStore" :name="'membersEmailsDesigns'" />
       </TabPanel>
+      <TabPanel header="Automations">
+        <ObjectLoader :store="membersStore" :name="'membersEmailsAutomations'" />
+      </TabPanel>
     </TabView>
   </div>
 </template>

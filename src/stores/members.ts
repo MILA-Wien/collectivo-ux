@@ -12,11 +12,12 @@ type membersStore = {
   membersEmailsCampaigns: DataList;
   membersEmailsTemplates: DataList;
   membersEmailsDesigns: DataList;
+  membersEmailsAutomations: DataList;
 };
 
 type membersObject = keyof membersStore;
 
-function extendSchema(schema:any) {
+function extendSchema(schema: any) {
   // Transform choices dict into an options list
   for (const value of Object.values(schema) as any) {
     if (value.choices == undefined) {
@@ -40,16 +41,17 @@ function extendSchema(schema:any) {
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
-    ({
-      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
-    } as membersStore),
+  ({
+    membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsAutomations: JSON.parse(JSON.stringify(DataListTemplate)),
+  } as membersStore),
 
   actions: {
     async get(objectName: membersObject, pk?: Number) {

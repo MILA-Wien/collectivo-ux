@@ -85,6 +85,7 @@ export const endpoints = {
   membersEmailsDesigns: "/members/emails/designs/",
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
+  membersEmailsAutomations: "/members/emails/automations/",
 };
 
 // Generic API functions
