@@ -3,9 +3,9 @@ name: Collectivo-ux build
 on:
   push:
     branches:
-      - '**'
+      - "**"
     tags:
-      - '!**'
+      - "!**"
 jobs:
   build:
     name: Build collectivo-ux
@@ -24,8 +24,8 @@ jobs:
         run: yarn install --frozen-lockfile
 
       #- name: Run tests
-        #run: yarn test:coverage
-        #run: yarn test:e2e:ci
+      #run: yarn test:coverage
+      #run: yarn test:e2e:ci
 
       - name: Lint application
         run: yarn lint
@@ -47,7 +47,7 @@ jobs:
       DB_HOST: collectivo-db
       DB_NAME: collectivo_db
       DB_USER: admin
-      DB_PASS: badpassword  
+      DB_PASS: badpassword
       POSTGRES_PORT: 5432
       DJANGO_SECRET_KEY: test-key-not-good
     steps:
@@ -79,15 +79,15 @@ jobs:
           cat /etc/hosts
           curl -v http://keycloak:8080
       - name: Setup collectivo
-        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=admin" -e "DB_PASS=badpassword" -e "DB_NAME=collectivo_db" -e "DB_HOST=collectivo-db" -e "SECRET_KEY=test-key-not-good" -e "GITHUB_ACTIONS=true" -e "CI=true" -e "KEYCLOAK_SERVER_URL=http://keycloak:8080"  -e "KEYCLOAK_CLIENT_SECRET_KEY=**********" -e "COLLECTIVO_EXTENSIONS=members" -e "DEBUG=True" -e "DEVELOPMENT=True" --entrypoint "/bin/sh" milawien/collectivo:pr-main -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=admin" -e "DB_PASS=badpassword" -e "DB_NAME=collectivo_db" -e "DB_HOST=collectivo-db" -e "SECRET_KEY=test-key-not-good" -e "GITHUB_ACTIONS=true" -e "CI=true" -e "KEYCLOAK_SERVER_URL=http://keycloak:8080"  -e "KEYCLOAK_CLIENT_SECRET_KEY=**********" -e "COLLECTIVO_EXTENSIONS=members" -e "DEBUG=True" -e "DEVELOPMENT=True" --entrypoint "/bin/sh" milawien/collectivo:v0.4.0 -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
           build: yarn build:staging
           start: |
-            cat /etc/hosts 
+            cat /etc/hosts
             yarn preview
-          wait-on: 'http://collectivo.local:4173'
+          wait-on: "http://collectivo.local:4173"
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
@@ -103,7 +103,7 @@ jobs:
         if: failure()
         uses: jwalton/gh-docker-logs@v1
         with:
-          dest: './logs'
+          dest: "./logs"
       - name: Tar logs
         if: failure()
         run: tar cvzf ./logs.tgz ./logs
@@ -129,7 +129,7 @@ jobs:
         id: info
         uses: jaywcjlove/github-action-package@main
         with:
-          rename: '@jaywcjlove/github-action-package-test'
+          rename: "@jaywcjlove/github-action-package-test"
       - name: Build container image
         run: |
           docker build -t milawien/collectivo-ux:latest -t milawien/collectivo-ux:${{ steps.info.outputs.version }} .
@@ -150,7 +150,7 @@ jobs:
         id: info
         uses: jaywcjlove/github-action-package@main
         with:
-          rename: '@jaywcjlove/github-action-package-test'
+          rename: "@jaywcjlove/github-action-package-test"
       - name: Build container image
         run: |
           docker build -t milawien/collectivo-ux:latest -t milawien/collectivo-ux:${{ steps.info.outputs.version }} .
