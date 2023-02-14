@@ -78,6 +78,7 @@ export const dashboardTiles = async () => {
 // Endpoint dictionary (at the moment only for members)
 export const endpoints = {
   membersMembers: "/members/members/",
+  membersCreate: "/members/create/",
   membersProfile: "/members/profile/",
   membersSummary: "/members/summary/",
   membersRegister: "/members/register/",
