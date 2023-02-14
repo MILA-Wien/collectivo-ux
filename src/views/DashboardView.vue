@@ -47,7 +47,7 @@ watch(
 <template>
   <div>
     <!-- <h1>{{ t("Dashboard") }}</h1> -->
-    <span class="w-full">
+    <span class="w-full" id="welcome-member-span">
       {{
         `${t("Hello,")} ${userStore.user?.tokenParsed.given_name}
       ${userStore.user?.tokenParsed.family_name}. ${t(
