@@ -1,7 +1,8 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { initKeycloak } from "./helpers/keycloak";
-import { setupI18n, loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
+import { loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
+import i18n from "@/locales/i18n";
 import App from "./App.vue";
 import router from "./router";
 import "./assets/main.css";
@@ -15,7 +16,6 @@ import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 
 // init vue app
-const i18n = setupI18n();
 const app = createApp(App);
 app.use(createPinia());
 

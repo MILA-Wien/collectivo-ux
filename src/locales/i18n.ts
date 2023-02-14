@@ -16,6 +16,8 @@ export function setupI18n(
   return i18n;
 }
 
+export default setupI18n();
+
 export function setI18nLanguage(i18n: any, locale: any) {
   if (i18n.mode === "legacy") {
     i18n.global.locale = locale;

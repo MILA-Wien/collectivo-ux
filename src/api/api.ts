@@ -1,9 +1,10 @@
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
+import i18n from "@/locales/i18n";
 import type { AxiosResponse } from "axios";
 import { baseURL } from "@/app.config";
 const BASE_URL = baseURL + "/api/";
-
+const { t } = i18n.global;
 const api = axios.create({
   baseURL: BASE_URL,
 });
@@ -30,25 +31,29 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.response.status === 401) {
+    if (error.code === "ERR_NETWORK") {
+      if (!window.navigator.onLine) {
+        console.log("Error. No internet connection.");
+      } else {
+        console.log("Error. No server connection.");
+      }
+    } else if (error.response?.status === 401) {
       console.log("Error 401", error.response.data.detail);
       if (
         error.response.data.detail === "Incorrect authentication credentials."
       ) {
+        alert(t("Your connection has been lost. Please log in again."));
         const store = useUserStore();
         store.logout();
       }
-    } else if (error.response.status === 403) {
-      console.log("Error 403", error.response.data.detail);
-    } else if (error.response.status === 404) {
-      if (
-        error.response.data.detail === "Incorrect authentication credentials."
-      ) {
-        const store = useUserStore();
-        store.logout();
-      }
-    } else if (error.response.status === 500) {
-      console.log("Error 500", error.response.data.detail);
+    } else if (error.response?.status === 403) {
+      console.log("Error 403", error.response?.data.detail);
+    } else if (error.response?.status === 404) {
+      console.log("Error 404", error.response?.data.detail);
+    } else if (error.response?.status === 500) {
+      console.log("Error 500", error.response?.data.detail);
+    } else {
+      console.log("Error", error.response?.data.detail);
     }
     return Promise.reject(error);
   }
