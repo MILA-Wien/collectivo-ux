@@ -22,8 +22,10 @@
 .tabview-full .p-tabview {
   height: 100%;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
-.tabview-full .p-tabview-panels, .tabview-full .p-tabview-panel {
+.tabview-full .p-tabview-panels,
+.tabview-full .p-tabview-panel {
   height: 100%;
+  overflow: auto;
 }
