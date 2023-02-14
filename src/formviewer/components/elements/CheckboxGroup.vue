@@ -17,7 +17,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from "vue";
+import { ref } from "vue";
 import { useFormViewerStore } from "@/stores/formviewer";
 const props = defineProps<{
   element: any;

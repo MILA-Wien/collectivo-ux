@@ -4,7 +4,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmits, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import PrimeNumber from "primevue/inputnumber";
 import { useFormViewerStore } from "@/stores/formviewer";
 const props = defineProps<{
