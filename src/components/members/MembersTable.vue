@@ -259,7 +259,7 @@ function bulkEdit() {
     </Toolbar>
 
     <!-- Data Table -->
-    <div class="grow bg-white">
+    <div class="grow overflow-auto bg-white">
       <ObjectTable
         :store="props.store"
         :name="name"
@@ -274,7 +274,8 @@ function bulkEdit() {
         v-model:editCreate="editMemberCreate"
       />
     </div>
-  </div> <!-- members-table flex-col -->
+  </div>
+  <!-- members-table flex-col -->
 
   <!-- Dialogue for member details -->
   <ObjectDetailLoader
@@ -313,5 +314,4 @@ function bulkEdit() {
     :schema="schema"
     @close="bulkEditIsActive = false"
   />
-
 </template>
