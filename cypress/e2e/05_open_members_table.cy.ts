@@ -11,7 +11,7 @@ describe("Login Succesfull", () => {
     cy.get(".p-menuitem-content > .p-menuitem-link > .p-menuitem-text")
       .contains("Mitglieder")
       .click();
-    cy.get('div[id="collectivo-backdrop"]').click();
-    cy.get('div[class="members-table"').should("exist");
+    cy.get('#collectivo-backdrop').click();
+    cy.get('#members-table').should("exist");
   });
 });

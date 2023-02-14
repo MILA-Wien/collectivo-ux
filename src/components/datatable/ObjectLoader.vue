@@ -30,22 +30,18 @@ if (!data.value.loaded) {
 </script>
 
 <template>
-  <div>
-    <div v-if="error !== null">
-      <p>There was an error loading the data.<br />{{ error }}</p>
-    </div>
-    <div v-else-if="!data.loaded">
-      <PrimeProgressSpinner />
-    </div>
-    <div v-else>
-      <ObjectTableFrame
-        :store="store"
-        :name="name"
-        :objects="data.data"
-        :schema="data.schema"
-      />
-    </div>
+  <div v-if="error !== null">
+    <p>There was an error loading the data.<br />{{ error }}</p>
+  </div>
+  <div v-else-if="!data.loaded">
+    <PrimeProgressSpinner />
+  </div>
+  <div v-else class="h-full">
+    <ObjectTableFrame
+      :store="store"
+      :name="name"
+      :objects="data.data"
+      :schema="data.schema"
+    />
   </div>
 </template>
-
-<style scoped></style>

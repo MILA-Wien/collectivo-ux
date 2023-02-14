@@ -159,14 +159,10 @@ function isFiltered(name: string, field: any) {
       :maximizable="true"
       @hide="closeModal"
     >
-      <div class="object-detail-fields mt-5">
+      <div class="mt-5">
         <!-- Editable fields based on input type -->
-        <div
-          v-for="(field, name, i) in schema"
-          :key="i"
-          class="field"
-          :style="isFiltered(name, field) ? '' : 'position:absolute'"
-        >
+        <div v-for="(field, name, i) in schema" :key="i">
+        <div class="my-4">
           <div v-if="isFiltered(name, field)">
             <div class="mb-1">
               <label for="attr-{{name}}">
@@ -250,14 +246,16 @@ function isFiltered(name: string, field: any) {
               >{{ field.help_text }}</small
             >
           </div>
+          </div>
         </div>
       </div>
 
       <!-- Footer -->
       <template #footer>
-        <div class="object-detail-filter flex flex-row mt-5 items-center">
+        <div class="object-detail-filter flex flex-row
+            flex-wrap mt-5 items-center gap-3">
           <i
-            class="pi pi-filter m-auto pl-1 pr-3"
+            class="pi pi-filter m-auto"
             style="font-size: 1.2rem"
           ></i>
           <PrimeInputText
@@ -265,55 +263,48 @@ function isFiltered(name: string, field: any) {
             v-model="filterValue"
             placeholder="Filter"
             type="text"
-            class="w-96"
+            class="flex-grow h-11"
           />
-          <div class="grow"></div>
-          <PrimeButton
-            v-if="create"
-            :label="t('Create')"
-            :loading="isSaving"
-            icon="pi pi-check"
-            class="p-button-success"
-            @click="createObject()"
-          />
-          <PrimeButton
-            v-else
-            :label="t('Save')"
-            :loading="isSaving"
-            icon="pi pi-check"
-            @click="updateObject()"
-          />
-          <PrimeButton
-            :label="t('Cancel')"
-            icon="pi pi-times"
-            @click="closeModal"
-            class="p-button-secondary"
-          />
-          <PrimeButton
-            :label="t('Delete')"
-            v-if="!create"
-            icon="pi pi-trash"
-            @click="confirmDelete()"
-            style="margin-right: 0px"
-            class="p-button-danger"
-          />
+          <div class="flex flex-row flex-wrap gap-3">
+            <PrimeButton
+              v-if="create"
+              :label="t('Create')"
+              :loading="isSaving"
+              icon="pi pi-check"
+              class="p-button-success flex-none"
+              @click="createObject()"
+            />
+            <PrimeButton
+              v-else
+              :label="t('Save')"
+              :loading="isSaving"
+              icon="pi pi-check"
+              class="flex-none"
+              @click="updateObject()"
+            />
+            <PrimeButton
+              :label="t('Cancel')"
+              icon="pi pi-times"
+              @click="closeModal"
+              class="p-button-secondary flex-none"
+            />
+            <PrimeButton
+              :label="t('Delete')"
+              v-if="!create"
+              icon="pi pi-trash"
+              @click="confirmDelete()"
+              style="margin-right: 0px"
+              class="p-button-danger flex-none"
+            />
+          </div>
         </div>
+
       </template>
     </PrimeDialog>
   </div>
 </template>
 
 <style scoped>
-.object-detail-fields {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 250px);
-  gap: 20px;
-  place-content: left;
-}
-.field {
-  padding: 8px;
-}
 label {
   font-weight: bold;
 }
@@ -323,5 +314,12 @@ label {
 .object-detail.p-dialog .p-dialog-header,
 .object-detail.p-dialog .p-dialog-footer {
   background-color: rgb(236, 236, 236);
+}
+.object-detail.p-dialog .p-inputtextarea {
+  height: 40px;
+  width: 100%;
+}
+.object-detail.p-dialog .p-dialog-footer button {
+  margin-right: 0px;
 }
 </style>

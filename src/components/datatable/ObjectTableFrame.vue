@@ -120,75 +120,81 @@ function createObjectFn() {
 </script>
 
 <template>
-  <!-- Toolbar -->
-  <PrimeToolbar class="mb-4">
-    <template #start>
-      <div class="m-1 text-left">
-        <PrimeButton
-          :label="t('Create')"
-          @click="createObjectFn()"
-          class="p-button-success"
-        >
-        </PrimeButton>
-      </div>
-      <div class="m-1 text-left">
-        <PrimeMultiSelect
-          v-model="selectedColumns"
-          :options="columns"
-          optionLabel="header"
-          :filter="true"
-          :placeholder="t('Columns')"
-          :maxSelectedLabels="0"
-          :selectedItemsLabel="t('Columns')"
-          scrollHeight="400px"
-          class="w-26"
-        />
-      </div>
-    </template>
-    <template #end>
-      <div class="m-1">
-        <PrimeButton
-          type="button"
-          icon="pi pi-filter-slash"
-          label="Clear"
-          class="p-button-outlined"
-          @click="clearFilters()"
-        >
-        </PrimeButton>
-      </div>
-      <div class="m-1">
-        <PrimeButton
-          :label="t('Download')"
-          :disabled="!(selectedObjects?.length > 0)"
-        >
-          <JsonCSV
-            v-if="selectedObjects?.length > 0"
-            :data="selectedObjects"
-            name="export.csv"
+  <div class="flex flex-col h-full bg-white">
+
+    <!-- Toolbar -->
+    <PrimeToolbar class="mb-4">
+      <template #start>
+        <div class="m-1 text-left">
+          <PrimeButton
+            :label="t('Create')"
+            @click="createObjectFn()"
+            class="p-button-success"
           >
-            {{ t("Download") }}
-          </JsonCSV>
-        </PrimeButton>
-      </div>
-    </template>
-  </PrimeToolbar>
+          </PrimeButton>
+        </div>
+        <div class="m-1 text-left">
+          <PrimeMultiSelect
+            v-model="selectedColumns"
+            :options="columns"
+            optionLabel="header"
+            :filter="true"
+            :placeholder="t('Columns')"
+            :maxSelectedLabels="0"
+            :selectedItemsLabel="t('Columns')"
+            scrollHeight="400px"
+            class="w-26"
+          />
+        </div>
+      </template>
+      <template #end>
+        <div class="m-1">
+          <PrimeButton
+            type="button"
+            icon="pi pi-filter-slash"
+            label="Clear"
+            class="p-button-outlined"
+            @click="clearFilters()"
+          >
+          </PrimeButton>
+        </div>
+        <div class="m-1">
+          <PrimeButton
+            :label="t('Download')"
+            :disabled="!(selectedObjects?.length > 0)"
+          >
+            <JsonCSV
+              v-if="selectedObjects?.length > 0"
+              :data="selectedObjects"
+              name="export.csv"
+            >
+              {{ t("Download") }}
+            </JsonCSV>
+          </PrimeButton>
+        </div>
+      </template>
+    </PrimeToolbar>
 
-  <!-- Table -->
-  <ObjectTable
-    :store="store"
-    :name="name"
-    :objects="objects"
-    :schema="schema"
-    :matchModes="matchModes"
-    :selectedColumns="selectedColumns"
-    v-model:filters="filters"
-    v-model:selectedObjects="selectedObjects"
-    v-model:editObject="editObject"
-    v-model:editActive="editActive"
-    v-model:editCreate="editCreate"
-  />
+    <div class="grow">
+      <!-- Table will fill out full remaining height -->
+      <ObjectTable
+        :store="store"
+        :name="name"
+        :objects="objects"
+        :schema="schema"
+        :matchModes="matchModes"
+        :selectedColumns="selectedColumns"
+        v-model:filters="filters"
+        v-model:selectedObjects="selectedObjects"
+        v-model:editObject="editObject"
+        v-model:editActive="editActive"
+        v-model:editCreate="editCreate"
+      />
+    </div>
 
-  <!-- Detail -->
+  </div>
+
+  <!-- Detail dialog -->
   <ObjectDetail
     v-if="editActive"
     :object="editObject"
@@ -198,4 +204,5 @@ function createObjectFn() {
     :schema="schema"
     @close="editActive = false"
   />
+
 </template>
