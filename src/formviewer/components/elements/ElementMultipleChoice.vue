@@ -1,6 +1,10 @@
 <template>
   <div class="multiple-choice">
-    <checkbox-group :element="preparedElement" @change="change" />
+    <checkbox-group
+      :element="preparedElement"
+      @change="change"
+      v-if="preparedElement?.properties?.options"
+    />
   </div>
 </template>
 <script setup lang="ts">

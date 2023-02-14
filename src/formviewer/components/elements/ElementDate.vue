@@ -26,9 +26,10 @@ if (typeof valueFromStore === "string") {
 watch(
   () => value.value,
   (newValue: any) => {
-    // const date = new Date(newValue.getTime() - (offset * 60 * 1000))
-    const dateFormated = newValue.toISOString().split("T")[0];
-    emit("update", dateFormated);
+    if (newValue && newValue !== null) {
+      const dateFormated = newValue.toISOString().split("T")[0];
+      emit("update", dateFormated);
+    }
   }
 );
 </script>

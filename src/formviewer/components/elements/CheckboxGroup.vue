@@ -1,5 +1,5 @@
 <template>
-  <div class="radio-group">
+  <div class="radio-group" v-if="props.element.properties?.options">
     <div
       v-for="o in props.element.properties.options"
       v-bind:key="props.element.properties.label + String(o.id)"
