@@ -23,5 +23,5 @@ jobs:
           rename: '@jaywcjlove/github-action-package-test'
       - name: Build container image
         run: |
-          docker build -t milawien/collectivo-ux:latest
+          docker build -t milawien/collectivo-ux:latest .
           docker push milawien/collectivo-ux:latest
