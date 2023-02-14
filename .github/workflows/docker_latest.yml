@@ -1,4 +1,4 @@
-name: Release tag
+name: Push latest to docker hub
 on:
   workflow_dispatch:
   push:
