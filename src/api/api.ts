@@ -79,6 +79,7 @@ export const dashboardTiles = async () => {
 export const endpoints = {
   //members
   membersMembers: "/members/members/",
+  membersCreate: "/members/create/",
   membersProfile: "/members/profile/",
   membersSummary: "/members/summary/",
   membersRegister: "/members/register/",
