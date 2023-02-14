@@ -18,8 +18,8 @@ const props = defineProps({
     required: true,
   },
   pk: {
-    type: Number as PropType<number | null>,
-    required: true,
+    validator: prop => typeof prop === 'number' || prop === null,
+    required: false,
   },
   create: {
     type: Boolean,
@@ -31,15 +31,21 @@ const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name];
 
 // Load data
-data.value.loaded = false;
-props.store.get(props.name, props.pk).catch((e: any) => {
-  error.value = e;
-});
+if (!props.create) {
+  data.value.loaded = false;
+  props.store.get(props.name, props.pk).catch((e: any) => {
+    error.value = e;
+  });
+} else {
+  props.store.getSchema(props.name).catch((e: any) => {
+    error.value = e;
+  });
+}
 </script>
 
 <template>
   <ObjectDetail
-    v-if="data.loaded"
+    v-if="data.loaded || data.schemaLoaded"
     :object="data.data"
     :create="create"
     :store="store"

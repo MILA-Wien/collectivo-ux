@@ -15,6 +15,7 @@ import PrimeInputSwitch from "primevue/inputswitch";
 import PrimeDropdown from "primevue/dropdown";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeTextarea from "primevue/textarea";
+import PrimeCalendar from "primevue/calendar";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -73,8 +74,16 @@ const isSaving = ref(false);
 function closeModal() {
   emit("close");
 }
+function formatDates() {
+  for (const [key, value] of Object.entries(object_temp.value)) {
+    if (value instanceof Date) {
+      object_temp.value[key] = value.toISOString().split("T")[0];
+    }
+  }
+}
 async function createObject() {
   isSaving.value = true;
+  formatDates();
   try {
     await props.store.create(props.name, object_temp.value);
     successToast("Object has been created.");
@@ -87,6 +96,7 @@ async function createObject() {
 }
 async function updateObject() {
   isSaving.value = true;
+  formatDates();
   try {
     await props.store.update(
       props.name,
@@ -133,7 +143,7 @@ function getHeader() {
 }
 
 const filterValue = ref("");
-function isFiltered(name: string, field: any) {
+function _isFiltered(name: string, field: any) {
   if (props.create && field.read_only) {
     return false;
   }
@@ -143,6 +153,17 @@ function isFiltered(name: string, field: any) {
   return t(props.schema[name].label)
     .toLowerCase()
     .includes(filterValue.value.toLowerCase());
+}
+// Check if a schema condition is true
+function checkCondition(condition: any) {
+  if (condition == null) {
+    return true;
+  }
+  let cond = object_temp.value[condition.field] == condition.value;
+  return cond;
+}
+function isFiltered(name: string, field: any) {
+  return _isFiltered(name, field) && checkCondition(field.condition);
 }
 </script>
 
@@ -215,6 +236,14 @@ function isFiltered(name: string, field: any) {
                   class="p-info"
                   >{{ field.help_text }}</small
                 >
+              </div>
+
+              <div v-else-if="field.input_type === 'date'">
+                <PrimeCalendar
+                  v-model="object_temp[name]"
+                  dateFormat="dd.mm.yy"
+                  :disabled="field.read_only"
+                />
               </div>
 
               <div v-else-if="field.input_type === 'textarea'">
@@ -314,6 +343,9 @@ label {
 }
 .object-detail.p-dialog .p-inputtextarea {
   height: 40px;
+  width: 100%;
+}
+.object-detail.p-dialog .p-calendar {
   width: 100%;
 }
 .object-detail.p-dialog .p-dialog-footer button {

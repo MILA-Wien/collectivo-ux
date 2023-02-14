@@ -174,7 +174,7 @@ function createObjectFn() {
       </template>
     </PrimeToolbar>
 
-    <div class="grow">
+    <div class="grow overflow-auto">
       <!-- Table will fill out full remaining height -->
       <ObjectTable
         :store="store"

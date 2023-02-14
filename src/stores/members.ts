@@ -5,6 +5,7 @@ import { API } from "@/api/api";
 
 type membersStore = {
   membersMembers: DataDetail;
+  membersCreate: DataDetail;
   membersSummary: DataList;
   membersProfile: DataDetail;
   membersRegister: DataDetail;
@@ -42,6 +43,7 @@ export const useMembersStore = defineStore({
   state: () =>
     ({
       membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
       membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
@@ -82,7 +84,12 @@ export const useMembersStore = defineStore({
     },
     async create(objectName: membersObject, payload: Object) {
       const response = await API.post(objectName, payload);
-      const object = this[objectName];
+      let object = this[objectName];
+
+      if (objectName == "membersCreate") {
+        object = this["membersSummary"];
+      }
+
       if (object.data instanceof Array) {
         object.data.push(response.data);
       } else {
