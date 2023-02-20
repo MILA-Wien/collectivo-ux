@@ -47,7 +47,10 @@
         <radio-group :element="element" @change="valueChange($event.value)" />
       </div>
       <div class="multiple-choice" v-else-if="element.type == 'multipleChoice'">
-        <checkbox-group :element="element" @change="valueChange($event)" />
+        <ElementMultipleChoice
+          :element="element"
+          @change="valueChange($event)"
+        />
       </div>
       <div v-else-if="element.properties.htmlType == 'p'">
         <p class="font-light text-sm">{{ t(element.properties.content) }}</p>
@@ -155,12 +158,14 @@ const Calculation = defineAsyncComponent(
   () => import("./ElementCalculation.vue")
 );
 const RadioGroup = defineAsyncComponent(() => import("./RadioGroup.vue"));
-const CheckboxGroup = defineAsyncComponent(() => import("./CheckboxGroup.vue"));
 const Number = defineAsyncComponent(() => import("./ElementNumber.vue"));
 const Date = defineAsyncComponent(() => import("./ElementDate.vue"));
 const PrimeButton = defineAsyncComponent(() => import("primevue/button"));
 const PrimeText = defineAsyncComponent(() => import("primevue/inputtext"));
 const PrimeTextarea = defineAsyncComponent(() => import("primevue/textarea"));
+const ElementMultipleChoice = defineAsyncComponent(
+  () => import("./ElementMultipleChoice.vue")
+);
 const PrimeCheckbox = defineAsyncComponent(
   () => import("primevue/inputswitch")
 );
