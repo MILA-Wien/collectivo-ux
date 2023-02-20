@@ -27,6 +27,15 @@ if (!data.value.loaded) {
     error.value = e;
   });
 }
+const pagesSettings = ref({
+  rows: 10,
+  page: 0,
+  totalRecords: 0,
+});
+function page($event: any) {
+  pagesSettings.value = $event;
+  props.store.page(props.name, $event);
+}
 </script>
 
 <template>
@@ -42,6 +51,7 @@ if (!data.value.loaded) {
       :name="name"
       :objects="data.data"
       :schema="data.schema"
+      @page="page"
     />
   </div>
 </template>

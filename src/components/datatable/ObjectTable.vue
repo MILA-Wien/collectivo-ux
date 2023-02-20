@@ -66,6 +66,7 @@ const emit = defineEmits([
   "update:selectedObjects",
   "update:selectedColumns",
   "update:filters",
+  "page",
 ]);
 
 // Formatting functions for data view in table ----------------------------- //
@@ -135,6 +136,7 @@ function editObjectFn(event: any) {
       columnResizeMode="fit"
       :scrollable="true"
       scrollHeight="flex"
+      @page="$emit('page', $event)"
     >
       <!-- Selection column -->
       <PrimeColumn

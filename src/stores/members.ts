@@ -137,5 +137,27 @@ export const useMembersStore = defineStore({
       }
       return response;
     },
+    async page(objectName: membersObject, page: any) {
+      // Get schema and object(s) and save in store
+      const [schema, objects] = await Promise.all([
+        API.getSchema(objectName),
+        API.get(objectName, undefined, page.page, page.rows),
+      ]);
+
+      // Throw error if response does not match store data type
+      if (
+        (this[objectName].data instanceof Array &&
+          !(objects.data instanceof Array)) ||
+        (!(this[objectName].data instanceof Array) &&
+          objects.data instanceof Array)
+      ) {
+        throw new Error("API response does not match store data type.");
+      }
+      // Save data in store
+      this[objectName].data = objects.data;
+      this[objectName].schema = extendSchema(schema.data);
+      this[objectName].loaded = true;
+      this[objectName].schemaLoaded = true;
+    },
   },
 });

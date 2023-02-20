@@ -117,6 +117,9 @@ function createObjectFn() {
   editCreate.value = true;
   editActive.value = true;
 }
+
+// Events ----------------------------------------------------------------- //
+const emit = defineEmits(["page"]);
 </script>
 
 <template>
@@ -188,6 +191,7 @@ function createObjectFn() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
+        @page=" emit('page', $event)"
       />
     </div>
   </div>

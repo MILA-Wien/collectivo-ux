@@ -100,10 +100,27 @@ export const endpoints = {
 export const API = {
   get: async function (
     endpoint: keyof typeof endpoints,
-    id?: Number
+    id?: Number,
+    page?: Number,
+    rowsPerPage?: Number,
+    filter?: String
   ): Promise<AxiosResponse<any, any>> {
-    if (id === undefined) {
-      return await api.get(endpoints[endpoint]);
+    console.log("API.get", endpoint, id, page, rowsPerPage, filter);
+    if (id === undefined || id === null) {
+      let api_endpoint = endpoints[endpoint];
+      let offset = 0;
+      let limit = 50;
+      if (page !== undefined && rowsPerPage !== undefined) {
+        // @ts-ignore - page and rowsPerPage are numbers
+        offset = page * rowsPerPage;
+        // @ts-ignore - page and rowsPerPage are numbers
+        limit = rowsPerPage;
+      }
+      api_endpoint = `${api_endpoint}?offset=${offset}&limit=${limit}`;
+      if (filter !== undefined) {
+        api_endpoint = `${api_endpoint}&search=${filter}`;
+      }
+      return await api.get(api_endpoint);
     }
     return await api.get(`${endpoints[endpoint]}${id}/`);
   },
