@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { useFormViewerStore } from "@/stores/formviewer";
 import { create, all } from "mathjs";
-import { defineProps, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 const props = defineProps<{
   element: any;

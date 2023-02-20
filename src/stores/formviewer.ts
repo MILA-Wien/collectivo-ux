@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import type { RootElement } from "@/formviewer/types/elements";
+import { API, endpoints } from "@/api/api";
+
 interface Values {
   [key: string]: string;
 }
@@ -61,6 +63,17 @@ export const useFormViewerStore = defineStore({
     },
     validatePage() {
       this.validateCurrentPage = true;
+    },
+    async loadOptions(id: string, endpoint: string) {
+      const endpointKey = (
+        Object.keys(endpoints) as (keyof typeof endpoints)[]
+      ).find((key) => {
+        return endpoints[key] === endpoint;
+      });
+      if (endpointKey) {
+        const result = API.get(endpointKey);
+        return result;
+      }
     },
   },
   getters: {

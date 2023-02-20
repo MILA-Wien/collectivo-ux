@@ -74,21 +74,7 @@ async function submit() {
     if (k == "bank_account_iban") {
       registerData[k] = electronicFormatIBAN(v) || "";
     }
-    // fix multiselect fields
-    if (typeof v === "object") {
-      const preparedValue: any = [];
-      const parsed = JSON.parse(JSON.stringify(v));
-      if (parsed !== null) {
-        parsed.forEach((e: any, i: number) => {
-          if (e) {
-            preparedValue.push(i + 1);
-          }
-        });
-      }
-      registerData[k] = preparedValue;
-    }
   }
-
   try {
     await membersStore.create("membersRegister", registerData);
     userStore.finishRegistration();
