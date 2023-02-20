@@ -23,7 +23,7 @@ const { membersProfile } = storeToRefs(membersStore);
   <div v-else-if="!membersProfile.loaded">
     <PrimeProgressSpinner />
   </div>
-  <div v-else class="members-table">
+  <div v-else>
     <MembersProfile
       :membership="membersProfile.data"
       :membershipSchema="membersProfile.schema"

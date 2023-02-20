@@ -17,3 +17,15 @@
 
 @tailwind components;
 @tailwind utilities;
+
+/* Global styles for primevue components */
+.tabview-full .p-tabview {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.tabview-full .p-tabview-panels,
+.tabview-full .p-tabview-panel {
+  height: 100%;
+  overflow: auto;
+}

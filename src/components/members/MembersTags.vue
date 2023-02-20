@@ -7,13 +7,15 @@ import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
-menuStore.setTitle("Member Emails");
+menuStore.setTitle("Member Tags");
 </script>
 
 <template>
-  <TabView lazy>
-    <TabPanel header="Tags">
-      <ObjectLoader :store="membersStore" :name="'membersTags'" />
-    </TabPanel>
-  </TabView>
+  <div class="h-full tabview-full">
+    <TabView lazy>
+      <TabPanel header="Tags">
+        <ObjectLoader :store="membersStore" :name="'membersTags'" />
+      </TabPanel>
+    </TabView>
+  </div>
 </template>

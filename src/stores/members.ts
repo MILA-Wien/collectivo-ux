@@ -5,6 +5,7 @@ import { API } from "@/api/api";
 
 type membersStore = {
   membersMembers: DataDetail;
+  membersCreate: DataDetail;
   membersSummary: DataList;
   membersProfile: DataDetail;
   membersRegister: DataDetail;
@@ -16,11 +17,33 @@ type membersStore = {
 
 type membersObject = keyof membersStore;
 
+function extendSchema(schema: any) {
+  // Transform choices dict into an options list
+  for (const value of Object.values(schema) as any) {
+    if (value.choices == undefined) {
+      continue;
+    }
+    value.options = [];
+    let i = 0;
+    for (const [key2, value2] of Object.entries(value.choices) as any) {
+      const parsed = parseInt(key2);
+      const key3 = isNaN(parsed) ? key2 : parsed;
+      value.options.push({
+        label: value2,
+        value: key3,
+        key: ++i,
+      });
+    }
+  }
+  return schema;
+}
+
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
       membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
       membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
@@ -47,40 +70,26 @@ export const useMembersStore = defineStore({
       ) {
         throw new Error("API response does not match store data type.");
       }
-
-      // Extend schema
-      for (const value of Object.values(schema.data) as any) {
-        if (value.choices == undefined) {
-          continue;
-        }
-        value.options = [];
-        let i = 0;
-        for (const [key2, value2] of Object.entries(value.choices) as any) {
-          const parsed = parseInt(key2);
-          const key3 = isNaN(parsed) ? key2 : parsed;
-          value.options.push({
-            label: value2,
-            value: key3,
-            key: ++i,
-          });
-        }
-      }
-
       // Save data in store
       this[objectName].data = objects.data;
-      this[objectName].schema = schema.data;
+      this[objectName].schema = extendSchema(schema.data);
       this[objectName].loaded = true;
       this[objectName].schemaLoaded = true;
     },
     async getSchema(objectName: membersObject) {
       // Get schema and save in store
       const schema = await API.getSchema(objectName);
-      this[objectName].schema = schema.data;
+      this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
     },
     async create(objectName: membersObject, payload: Object) {
       const response = await API.post(objectName, payload);
-      const object = this[objectName];
+      let object = this[objectName];
+
+      if (objectName == "membersCreate") {
+        object = this["membersSummary"];
+      }
+
       if (object.data instanceof Array) {
         object.data.push(response.data);
       } else {

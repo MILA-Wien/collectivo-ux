@@ -109,7 +109,7 @@ function editObjectFn(event: any) {
 </script>
 
 <template>
-  <div class="datatable" style="height: calc(100vh - 350px); width: 100%">
+  <div class="datatable" style="height: 100%; width: 100%">
     <PrimeDataTable
       :value="objects"
       v-model:selection="selectedObjects"
@@ -189,10 +189,13 @@ function editObjectFn(event: any) {
               <!-- Multiple choice -->
               <PrimeMultiSelect
                 v-model="filterModel.value"
-                :options="col.choices"
+                :options="col.choice_list"
                 optionLabel="label"
                 optionValue="value"
-                placeholder="Any"
+                :maxSelectedLabels="0"
+                :selectedItemsLabel="`${filterModel.value?.length} selected`"
+                :filter="true"
+                placeholder="Select multiple choices"
                 class="p-column-filter"
               >
                 <template #option="slotProps">

@@ -15,6 +15,7 @@ import PrimeInputSwitch from "primevue/inputswitch";
 import PrimeDropdown from "primevue/dropdown";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeTextarea from "primevue/textarea";
+import PrimeCalendar from "primevue/calendar";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -73,8 +74,16 @@ const isSaving = ref(false);
 function closeModal() {
   emit("close");
 }
+function formatDates() {
+  for (const [key, value] of Object.entries(object_temp.value)) {
+    if (value instanceof Date) {
+      object_temp.value[key] = value.toISOString().split("T")[0];
+    }
+  }
+}
 async function createObject() {
   isSaving.value = true;
+  formatDates();
   try {
     await props.store.create(props.name, object_temp.value);
     successToast("Object has been created.");
@@ -87,6 +96,7 @@ async function createObject() {
 }
 async function updateObject() {
   isSaving.value = true;
+  formatDates();
   try {
     await props.store.update(
       props.name,
@@ -133,7 +143,7 @@ function getHeader() {
 }
 
 const filterValue = ref("");
-function isFiltered(name: string, field: any) {
+function _isFiltered(name: string, field: any) {
   if (props.create && field.read_only) {
     return false;
   }
@@ -143,6 +153,17 @@ function isFiltered(name: string, field: any) {
   return t(props.schema[name].label)
     .toLowerCase()
     .includes(filterValue.value.toLowerCase());
+}
+// Check if a schema condition is true
+function checkCondition(condition: any) {
+  if (condition == null) {
+    return true;
+  }
+  let cond = object_temp.value[condition.field] == condition.value;
+  return cond;
+}
+function isFiltered(name: string, field: any) {
+  return _isFiltered(name, field) && checkCondition(field.condition);
 }
 </script>
 
@@ -159,144 +180,150 @@ function isFiltered(name: string, field: any) {
       :maximizable="true"
       @hide="closeModal"
     >
-      <div class="object-detail-fields mt-5">
+      <div class="mt-5">
         <!-- Editable fields based on input type -->
-        <div
-          v-for="(field, name, i) in schema"
-          :key="i"
-          class="field"
-          :style="isFiltered(name, field) ? '' : 'position:absolute'"
-        >
-          <div v-if="isFiltered(name, field)">
-            <div class="mb-1">
-              <label for="attr-{{name}}">
-                {{ t(field.label) }}
-                <span v-if="field.required" class="text-red-600">*</span>
-              </label>
-            </div>
+        <div v-for="(field, name, i) in schema" :key="i">
+          <div class="my-4">
+            <div v-if="isFiltered(name, field)">
+              <div class="mb-1">
+                <label for="attr-{{name}}">
+                  {{ t(field.label) }}
+                  <span v-if="field.required" class="text-red-600">*</span>
+                </label>
+              </div>
 
-            <div v-if="field.input_type === 'select'">
-              <PrimeDropdown
-                v-model="object_temp[name]"
-                :options="field.options"
-                optionLabel="label"
-                optionValue="value"
-                :filter="true"
-                placeholder="Select a choice"
-                :showClear="true"
-                class="w-full"
-                :disabled="field.read_only"
-              />
-            </div>
+              <div v-if="field.input_type === 'select'">
+                <PrimeDropdown
+                  v-model="object_temp[name]"
+                  :options="field.options"
+                  optionLabel="label"
+                  optionValue="value"
+                  :filter="true"
+                  placeholder="Select a choice"
+                  :showClear="true"
+                  class="w-full"
+                  :disabled="field.read_only"
+                />
+              </div>
 
-            <div v-else-if="field.input_type === 'multiselect'">
-              <PrimeMultiSelect
-                v-model="object_temp[name]"
-                :options="field.options"
-                optionLabel="label"
-                optionValue="value"
-                :maxSelectedLabels="0"
-                :selectedItemsLabel="`${object_temp[name]?.length} selected`"
-                :filter="true"
-                placeholder="Select multiple choices"
-                class="w-full"
-                :disabled="field.read_only"
-              />
-            </div>
+              <div v-else-if="field.input_type === 'multiselect'">
+                <PrimeMultiSelect
+                  v-model="object_temp[name]"
+                  :options="field.options"
+                  optionLabel="label"
+                  optionValue="value"
+                  :maxSelectedLabels="0"
+                  :selectedItemsLabel="`${object_temp[name]?.length} selected`"
+                  :filter="true"
+                  placeholder="Select multiple choices"
+                  class="w-full"
+                  :disabled="field.read_only"
+                />
+              </div>
 
-            <div
-              v-else-if="field.input_type === 'checkbox'"
-              class="flex flex-row"
-            >
-              <PrimeInputSwitch
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-                class="flex-none mr-2"
-              />
+              <div
+                v-else-if="field.input_type === 'checkbox'"
+                class="flex flex-row"
+              >
+                <PrimeInputSwitch
+                  v-model="object_temp[name]"
+                  :disabled="field.read_only"
+                  class="flex-none mr-2"
+                />
+                <small
+                  v-if="field.help_text"
+                  id="user-attr-{{value}}-help"
+                  class="p-info"
+                  >{{ field.help_text }}</small
+                >
+              </div>
+
+              <div v-else-if="field.input_type === 'date'">
+                <PrimeCalendar
+                  v-model="object_temp[name]"
+                  dateFormat="dd.mm.yy"
+                  :disabled="field.read_only"
+                />
+              </div>
+
+              <div v-else-if="field.input_type === 'textarea'">
+                <PrimeTextarea
+                  v-model="object_temp[name]"
+                  :disabled="field.read_only"
+                />
+              </div>
+
+              <div v-else-if="field.input_type === 'html'">
+                <object-editor v-model="object_temp[name]"></object-editor>
+              </div>
+
+              <div v-else>
+                <PrimeInputText
+                  id="attr-{{name}}"
+                  type="text"
+                  aria-describedby="attr-{{value}}-help"
+                  v-model="object_temp[name]"
+                  :disabled="field.read_only"
+                  class="w-full"
+                />
+              </div>
+
               <small
-                v-if="field.help_text"
+                v-if="field.help_text && field.input_type !== 'checkbox'"
                 id="user-attr-{{value}}-help"
                 class="p-info"
                 >{{ field.help_text }}</small
               >
             </div>
-
-            <div v-else-if="field.input_type === 'textarea'">
-              <PrimeTextarea
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-              />
-            </div>
-
-            <div v-else-if="field.input_type === 'html'">
-              <object-editor v-model="object_temp[name]"></object-editor>
-            </div>
-
-            <div v-else>
-              <PrimeInputText
-                id="attr-{{name}}"
-                type="text"
-                aria-describedby="attr-{{value}}-help"
-                v-model="object_temp[name]"
-                :disabled="field.read_only"
-                class="w-full"
-              />
-            </div>
-
-            <small
-              v-if="field.help_text && field.input_type !== 'checkbox'"
-              id="user-attr-{{value}}-help"
-              class="p-info"
-              >{{ field.help_text }}</small
-            >
           </div>
         </div>
       </div>
 
       <!-- Footer -->
       <template #footer>
-        <div class="object-detail-filter flex flex-row mt-5 items-center">
-          <i
-            class="pi pi-filter m-auto pl-1 pr-3"
-            style="font-size: 1.2rem"
-          ></i>
+        <div
+          class="object-detail-filter flex flex-row flex-wrap mt-5 items-center gap-3"
+        >
+          <i class="pi pi-filter m-auto" style="font-size: 1.2rem"></i>
           <PrimeInputText
             id="filter"
             v-model="filterValue"
             placeholder="Filter"
             type="text"
-            class="w-96"
+            class="flex-grow h-11"
           />
-          <div class="grow"></div>
-          <PrimeButton
-            v-if="create"
-            :label="t('Create')"
-            :loading="isSaving"
-            icon="pi pi-check"
-            class="p-button-success"
-            @click="createObject()"
-          />
-          <PrimeButton
-            v-else
-            :label="t('Save')"
-            :loading="isSaving"
-            icon="pi pi-check"
-            @click="updateObject()"
-          />
-          <PrimeButton
-            :label="t('Cancel')"
-            icon="pi pi-times"
-            @click="closeModal"
-            class="p-button-secondary"
-          />
-          <PrimeButton
-            :label="t('Delete')"
-            v-if="!create"
-            icon="pi pi-trash"
-            @click="confirmDelete()"
-            style="margin-right: 0px"
-            class="p-button-danger"
-          />
+          <div class="flex flex-row flex-wrap gap-3">
+            <PrimeButton
+              v-if="create"
+              :label="t('Create')"
+              :loading="isSaving"
+              icon="pi pi-check"
+              class="p-button-success flex-none"
+              @click="createObject()"
+            />
+            <PrimeButton
+              v-else
+              :label="t('Save')"
+              :loading="isSaving"
+              icon="pi pi-check"
+              class="flex-none"
+              @click="updateObject()"
+            />
+            <PrimeButton
+              :label="t('Cancel')"
+              icon="pi pi-times"
+              @click="closeModal"
+              class="p-button-secondary flex-none"
+            />
+            <PrimeButton
+              :label="t('Delete')"
+              v-if="!create"
+              icon="pi pi-trash"
+              @click="confirmDelete()"
+              style="margin-right: 0px"
+              class="p-button-danger flex-none"
+            />
+          </div>
         </div>
       </template>
     </PrimeDialog>
@@ -304,16 +331,6 @@ function isFiltered(name: string, field: any) {
 </template>
 
 <style scoped>
-.object-detail-fields {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 250px);
-  gap: 20px;
-  place-content: left;
-}
-.field {
-  padding: 8px;
-}
 label {
   font-weight: bold;
 }
@@ -323,5 +340,15 @@ label {
 .object-detail.p-dialog .p-dialog-header,
 .object-detail.p-dialog .p-dialog-footer {
   background-color: rgb(236, 236, 236);
+}
+.object-detail.p-dialog .p-inputtextarea {
+  height: 40px;
+  width: 100%;
+}
+.object-detail.p-dialog .p-calendar {
+  width: 100%;
+}
+.object-detail.p-dialog .p-dialog-footer button {
+  margin-right: 0px;
 }
 </style>
