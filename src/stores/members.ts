@@ -54,11 +54,11 @@ export const useMembersStore = defineStore({
     } as membersStore),
 
   actions: {
-    async get(objectName: membersObject, pk?: Number) {
+    async get(objectName: membersObject, id?: Number) {
       // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
-        API.get(objectName, pk),
+        API.get(objectName, id),
       ]);
 
       // Throw error if response does not match store data type
@@ -97,9 +97,9 @@ export const useMembersStore = defineStore({
       }
       return response;
     },
-    async update(objectName: membersObject, payload: Object, pk?: Number) {
+    async update(objectName: membersObject, payload: Object, id?: Number) {
       // Update object and save in store
-      const response = await API.patch(objectName, payload, pk);
+      const response = await API.patch(objectName, payload, id);
       let object = this[objectName];
 
       // Special case for membersMembers: Update added to summary list
@@ -118,16 +118,16 @@ export const useMembersStore = defineStore({
         object.data = response.data;
       }
     },
-    async delete(objectName: membersObject, pk: Number) {
+    async delete(objectName: membersObject, id: Number) {
       // Delete object and remove from store
-      const response = await API.delete(objectName, pk);
+      const response = await API.delete(objectName, id);
       const object = this[objectName];
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {
-          return m.id === pk;
+          return m.id === id;
         });
         if (index == -1) {
-          throw `Object with id ${pk} not found in store`;
+          throw `Object with id ${id} not found in store`;
         }
         if (index !== null && index !== undefined) {
           object.data.splice(index, 1);

@@ -280,7 +280,7 @@ function bulkEdit() {
   <!-- Dialogue for member details -->
   <ObjectDetailLoader
     v-if="editMember"
-    :pk="selectedMember.id"
+    :id="selectedMember.id"
     :create="false"
     :store="props.store"
     :name="'membersMembers'"

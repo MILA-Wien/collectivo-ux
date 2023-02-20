@@ -100,12 +100,12 @@ export const endpoints = {
 export const API = {
   get: async function (
     endpoint: keyof typeof endpoints,
-    pk?: Number
+    id?: Number
   ): Promise<AxiosResponse<any, any>> {
-    if (pk === undefined) {
+    if (id === undefined) {
       return await api.get(endpoints[endpoint]);
     }
-    return await api.get(`${endpoints[endpoint]}${pk}/`);
+    return await api.get(`${endpoints[endpoint]}${id}/`);
   },
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
@@ -116,17 +116,17 @@ export const API = {
   patch: async function (
     endpoint: keyof typeof endpoints,
     payload: Object,
-    pk?: Number
+    id?: Number
   ) {
-    if (pk === undefined) {
+    if (id === undefined) {
       return await api.patch(endpoints[endpoint], payload);
     }
-    return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
+    return await api.patch(`${endpoints[endpoint]}${id}/`, payload);
   },
-  delete: async function (endpoint: keyof typeof endpoints, pk?: Number) {
-    if (pk === undefined) {
+  delete: async function (endpoint: keyof typeof endpoints, id?: Number) {
+    if (id === undefined) {
       return await api.delete(endpoints[endpoint]);
     }
-    return await api.delete(`${endpoints[endpoint]}${pk}/`);
+    return await api.delete(`${endpoints[endpoint]}${id}/`);
   },
 };
