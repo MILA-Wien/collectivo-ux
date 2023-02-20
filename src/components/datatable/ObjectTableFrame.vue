@@ -191,7 +191,7 @@ const emit = defineEmits(["page"]);
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
-        @page=" emit('page', $event)"
+        @page="emit('page', $event)"
       />
     </div>
   </div>

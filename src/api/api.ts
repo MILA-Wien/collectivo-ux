@@ -105,7 +105,6 @@ export const API = {
     rowsPerPage?: Number,
     filter?: String
   ): Promise<AxiosResponse<any, any>> {
-    console.log("API.get", endpoint, id, page, rowsPerPage, filter);
     if (id === undefined || id === null) {
       let api_endpoint = endpoints[endpoint];
       let offset = 0;

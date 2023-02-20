@@ -55,6 +55,7 @@ export const useMembersStore = defineStore({
 
   actions: {
     async get(objectName: membersObject, id?: Number) {
+      this[objectName].loaded = false;
       // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
@@ -64,17 +65,19 @@ export const useMembersStore = defineStore({
       // Throw error if response does not match store data type
       if (
         (this[objectName].data instanceof Array &&
-          !(objects.data instanceof Array)) ||
+          !(objects.data.results instanceof Array)) ||
         (!(this[objectName].data instanceof Array) &&
-          objects.data instanceof Array)
+          objects.data.results instanceof Array)
       ) {
         throw new Error("API response does not match store data type.");
       }
       // Save data in store
-      this[objectName].data = objects.data;
+      this[objectName].data = objects.data.results;
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].loaded = true;
       this[objectName].schemaLoaded = true;
+      //@ts-ignore
+      this[objectName].totalRecords = parseInt(objects.data.count);
     },
     async getSchema(objectName: membersObject) {
       // Get schema and save in store
@@ -147,17 +150,19 @@ export const useMembersStore = defineStore({
       // Throw error if response does not match store data type
       if (
         (this[objectName].data instanceof Array &&
-          !(objects.data instanceof Array)) ||
+          !(objects.data.results instanceof Array)) ||
         (!(this[objectName].data instanceof Array) &&
           objects.data instanceof Array)
       ) {
         throw new Error("API response does not match store data type.");
       }
       // Save data in store
-      this[objectName].data = objects.data;
+      this[objectName].data = objects.data.results;
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].loaded = true;
       this[objectName].schemaLoaded = true;
+      //@ts-ignore totalRecords exists on DataList
+      this[objectName].totalRecords = parseInt(objects.data.count);
     },
   },
 });

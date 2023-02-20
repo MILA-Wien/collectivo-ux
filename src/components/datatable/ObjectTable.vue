@@ -107,6 +107,14 @@ function editObjectFn(event: any) {
   emit("update:editCreate", false);
   emit("update:editActive", true);
 }
+const totalRecords = ref(0);
+watch(
+  () => props.store[props.name].totalRecords,
+  (val) => {
+    totalRecords.value = val;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -116,8 +124,10 @@ function editObjectFn(event: any) {
       v-model:selection="selectedObjects"
       dataKey="id"
       ref="datatable"
+      :lazy="true"
       :paginator="true"
       :rows="50"
+      :totalRecords="totalRecords"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       :rowsPerPageOptions="[10, 20, 50, 100]"
       :currentPageReportTemplate="
