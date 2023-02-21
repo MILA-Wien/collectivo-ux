@@ -141,13 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  defineProps,
-  defineEmits,
-  defineAsyncComponent,
-  ref,
-  watch,
-} from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 import { useFormViewerStore } from "../../../stores/formviewer";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";

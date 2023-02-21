@@ -41,17 +41,17 @@ function extendSchema(schema: any) {
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
-  ({
-    membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-    membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
-    membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
-  } as membersStore),
+    ({
+      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+    } as membersStore),
 
   actions: {
     async get(objectName: membersObject, id?: Number) {

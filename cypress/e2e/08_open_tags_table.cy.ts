@@ -12,6 +12,6 @@ describe("Login Succesfull", () => {
       .contains("Tags")
       .click();
     cy.get("#collectivo-backdrop").click();
-    cy.get("#members-table").should("exist");
+    cy.get("#tags-table").should("exist");
   });
 });
