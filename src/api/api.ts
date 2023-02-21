@@ -92,6 +92,7 @@ export const endpoints = {
   membersEmailsDesigns: "/members/emails/designs/",
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
+  membersEmailsAutomations: "/members/emails/automations/",
   membersSkills: "/members/skills/",
   membersGroups: "/members/groups/",
 };
