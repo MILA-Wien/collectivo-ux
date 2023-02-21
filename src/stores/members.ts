@@ -41,17 +41,17 @@ function extendSchema(schema: any) {
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
-    ({
-      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
-    } as membersStore),
+  ({
+    membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+    membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+    membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+  } as membersStore),
 
   actions: {
     async get(objectName: membersObject, id?: Number) {
@@ -67,12 +67,16 @@ export const useMembersStore = defineStore({
         (this[objectName].data instanceof Array &&
           !(objects.data.results instanceof Array)) ||
         (!(this[objectName].data instanceof Array) &&
-          objects.data.results instanceof Array)
+          objects.data instanceof Array)
       ) {
         throw new Error("API response does not match store data type.");
       }
       // Save data in store
-      this[objectName].data = objects.data.results;
+      if (objects.data.results instanceof Array) {
+        this[objectName].data = objects.data.results;
+      } else {
+        this[objectName].data = objects.data;
+      }
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].loaded = true;
       this[objectName].schemaLoaded = true;

@@ -28,10 +28,13 @@ const { user } = storeToRefs(userStore);
 }
 </style>
 <style lang="scss">
-.p-button {
-  background-color: #2db3a5;
-  border-color: #2db3a5;
+main {
+  .p-button {
+    background-color: #2db3a5;
+    border-color: #2db3a5;
+  }
 }
+
 .p-checkbox.p-component {
   display: flex;
 }

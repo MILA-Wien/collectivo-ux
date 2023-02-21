@@ -26,7 +26,7 @@ if (props.element.properties.optionsEndpoint) {
     .loadOptions(props.element.id, props.element.properties.optionsEndpoint)
     .then((res) => {
       if (res) {
-        preparedElement.value.properties.options = res.data;
+        preparedElement.value.properties.options = res.data.results;
       }
     });
 }
