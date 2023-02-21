@@ -82,6 +82,7 @@ export const dashboardTiles = async () => {
 
 // Endpoint dictionary (at the moment only for members)
 export const endpoints = {
+  //members
   membersMembers: "/members/members/",
   membersCreate: "/members/create/",
   membersProfile: "/members/profile/",
@@ -92,6 +93,8 @@ export const endpoints = {
   membersEmailsTemplates: "/members/emails/templates/",
   membersEmailsCampaigns: "/members/emails/campaigns/",
   membersEmailsAutomations: "/members/emails/automations/",
+  membersSkills: "/members/skills/",
+  membersGroups: "/members/groups/",
 };
 
 // Generic API functions
