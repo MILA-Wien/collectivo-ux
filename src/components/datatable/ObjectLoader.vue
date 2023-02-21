@@ -27,11 +27,6 @@ if (!data.value.loaded) {
     error.value = e;
   });
 }
-
-function filter($event: any) {
-  const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
-  props.store.filter(props.name, $event, sort);
-}
 </script>
 
 <template>
@@ -47,9 +42,6 @@ function filter($event: any) {
       :name="name"
       :objects="data.data"
       :schema="data.schema"
-      @page="filter"
-      @filter="filter"
-      @sort="filter"
     />
   </div>
 </template>

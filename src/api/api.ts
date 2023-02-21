@@ -124,7 +124,7 @@ export const API = {
     if (filter !== undefined) {
       api_endpoint = `${api_endpoint}&search=${filter}`;
     }
-    if (order !== undefined && order !== null) {
+    if (order !== undefined && order !== null && order !== "null") {
       api_endpoint = `${api_endpoint}&ordering=${order}`;
     }
     return await api.get(api_endpoint);

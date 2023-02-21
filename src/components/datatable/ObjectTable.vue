@@ -66,9 +66,6 @@ const emit = defineEmits([
   "update:selectedObjects",
   "update:selectedColumns",
   "update:filters",
-  "page",
-  "sort",
-  "filter",
 ]);
 
 // Formatting functions for data view in table ----------------------------- //
@@ -117,6 +114,22 @@ watch(
   },
   { immediate: true }
 );
+
+// Filter --------------------------------------------------------------- //
+function filter($event: any) {
+  const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
+  let filter = "";
+  Object.keys($event.filters).forEach((key: any) => {
+    if ($event.filters[key].constraints[0].value !== null) {
+      filter = `${filter}&${key}__${$event.filters[
+        key
+      ].constraints[0].matchMode.toLowerCase()}=${
+        $event.filters[key].constraints[0].value
+      }`;
+    }
+  });
+  props.store.filter(props.name, $event, sort, filter);
+}
 </script>
 
 <template>
@@ -148,9 +161,9 @@ watch(
       columnResizeMode="fit"
       :scrollable="true"
       scrollHeight="flex"
-      @page="emit('page', $event)"
-      @filter="emit('filter', $event)"
-      @sort="emit('sort', $event)"
+      @page="filter"
+      @filter="filter"
+      @sort="filter"
     >
       <!-- Selection column -->
       <PrimeColumn
@@ -280,9 +293,11 @@ watch(
 .object-table.p-component {
   font-size: 14px;
 }
+
 .p-datatable.p-datatable-gridlines .p-paginator-bottom {
   border-width: 1px 1px 1px 1px;
 }
+
 .object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
 .object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
   padding: 5px 10px 5px 10px;
@@ -290,6 +305,7 @@ watch(
   // vertical-align: middle;
   // white-space: normal;
 }
+
 .tag {
   font-size: 13px;
   padding-top: 3px;
