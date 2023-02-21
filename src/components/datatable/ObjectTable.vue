@@ -67,6 +67,8 @@ const emit = defineEmits([
   "update:selectedColumns",
   "update:filters",
   "page",
+  "sort",
+  "filter",
 ]);
 
 // Formatting functions for data view in table ----------------------------- //
@@ -146,7 +148,9 @@ watch(
       columnResizeMode="fit"
       :scrollable="true"
       scrollHeight="flex"
-      @page="$emit('page', $event)"
+      @page="emit('page', $event)"
+      @filter="emit('filter', $event)"
+      @sort="emit('sort', $event)"
     >
       <!-- Selection column -->
       <PrimeColumn

@@ -27,14 +27,10 @@ if (!data.value.loaded) {
     error.value = e;
   });
 }
-const pagesSettings = ref({
-  rows: 10,
-  page: 0,
-  totalRecords: 0,
-});
-function page($event: any) {
-  pagesSettings.value = $event;
-  props.store.page(props.name, $event);
+
+function filter($event: any) {
+  const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
+  props.store.filter(props.name, $event, sort);
 }
 </script>
 
@@ -51,7 +47,9 @@ function page($event: any) {
       :name="name"
       :objects="data.data"
       :schema="data.schema"
-      @page="page"
+      @page="filter"
+      @filter="filter"
+      @sort="filter"
     />
   </div>
 </template>

@@ -179,6 +179,10 @@ const bulkEditIsActive = ref(false);
 function bulkEdit() {
   bulkEditIsActive.value = true;
 }
+function filter($event: any) {
+  const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
+  props.store.filter(props.name, $event, sort);
+}
 </script>
 
 <template>
@@ -272,6 +276,9 @@ function bulkEdit() {
         v-model:editObject="selectedMember"
         v-model:editActive="editMember"
         v-model:editCreate="editMemberCreate"
+        @page="filter"
+        @filter="filter"
+        @sort="filter"
       />
     </div>
   </div>

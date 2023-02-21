@@ -144,11 +144,16 @@ export const useMembersStore = defineStore({
       }
       return response;
     },
-    async page(objectName: membersObject, page: any) {
+    async filter(
+      objectName: membersObject,
+      page?: any,
+      order?: any,
+      filters?: any
+    ) {
       // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
-        API.get(objectName, undefined, page.page, page.rows),
+        API.get(objectName, undefined, page.page, page.rows, order, filters),
       ]);
 
       // Throw error if response does not match store data type

@@ -119,7 +119,7 @@ function createObjectFn() {
 }
 
 // Events ----------------------------------------------------------------- //
-const emit = defineEmits(["page"]);
+const emit = defineEmits(["page", "filter", "sort"]);
 </script>
 
 <template>
@@ -191,6 +191,8 @@ const emit = defineEmits(["page"]);
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
+        @sort="emit('sort', $event)"
+        @filter="emit('filter', $event)"
         @page="emit('page', $event)"
       />
     </div>

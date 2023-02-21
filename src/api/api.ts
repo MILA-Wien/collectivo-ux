@@ -103,6 +103,7 @@ export const API = {
     id?: Number,
     page?: Number,
     rowsPerPage?: Number,
+    order?: String,
     filter?: String
   ): Promise<AxiosResponse<any, any>> {
     if (id !== undefined && id !== null) {
@@ -122,6 +123,9 @@ export const API = {
     api_endpoint = `${api_endpoint}?offset=${offset}&limit=${limit}`;
     if (filter !== undefined) {
       api_endpoint = `${api_endpoint}&search=${filter}`;
+    }
+    if (order !== undefined && order !== null) {
+      api_endpoint = `${api_endpoint}&ordering=${order}`;
     }
     return await api.get(api_endpoint);
   },
