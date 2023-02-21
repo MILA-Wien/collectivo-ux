@@ -188,6 +188,7 @@ function bulkEdit() {
         <div class="m-1 text-left">
           <PrimeButton
             :label="t('Create')"
+            icon="pi pi-user"
             @click="createObjectFn()"
             class="p-button-success"
           >
@@ -212,7 +213,7 @@ function bulkEdit() {
           <PrimeButton
             type="button"
             icon="pi pi-filter-slash"
-            label="Clear"
+            :label="t('Clear')"
             class="p-button-outlined"
             @click="clearFilters()"
           >
@@ -221,6 +222,7 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Bulk edit')"
+            icon="pi pi-file-edit"
             :disabled="!(selectedMembers.length > 0)"
             @click="bulkEdit"
           >
@@ -229,6 +231,7 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Send emails')"
+            icon="pi pi-send"
             :disabled="!(selectedMembers.length > 0)"
             @click="sendEmails"
           >
@@ -237,6 +240,7 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Copy emails')"
+            icon="pi pi-copy"
             :disabled="!(selectedMembers.length > 0)"
             @click="copyEmails"
           >
@@ -245,6 +249,7 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Export CSV')"
+            icon="pi pi-file-export"
             :disabled="!(selectedMembers?.length > 0)"
           >
             <JsonCSV

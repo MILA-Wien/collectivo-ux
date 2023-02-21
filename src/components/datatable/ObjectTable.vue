@@ -74,7 +74,7 @@ function formatDateTime(date: string) {
 }
 function formatMultiSelect(data: any) {
   const len = Array.isArray(data) ? data.length : 0;
-  const str = len !== 1 ? "objects" : "object";
+  const str = len !== 1 ? "tags" : "tag";
   return `${len} ${t(str)}`;
 }
 function formatGeneric(data: string | null) {
@@ -121,17 +121,15 @@ function filter($event: any) {
   let filter = "";
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
-      filter = `${filter}&${key}__${dataTableFilterModesToDjangoFilter($event.filters[
-        key
-      ].constraints[0].matchMode)}=${
-        $event.filters[key].constraints[0].value
-      }`;
+      filter = `${filter}&${key}__${dataTableFilterModesToDjangoFilter(
+        $event.filters[key].constraints[0].matchMode
+      )}=${$event.filters[key].constraints[0].value}`;
     }
   });
   props.store.filter(props.name, $event, sort, filter);
 }
 
-function dataTableFilterModesToDjangoFilter(filterMode:string) {
+function dataTableFilterModesToDjangoFilter(filterMode: string) {
   switch (filterMode) {
     case "startsWith":
       return "istartswith";
@@ -257,7 +255,7 @@ function dataTableFilterModesToDjangoFilter(filterMode:string) {
                 :maxSelectedLabels="0"
                 :selectedItemsLabel="`${filterModel.value?.length} selected`"
                 :filter="true"
-                placeholder="Select multiple choices"
+                :placeholder="t('Select multiple choices')"
                 class="p-column-filter"
               >
                 <template #option="slotProps">
@@ -292,12 +290,12 @@ function dataTableFilterModesToDjangoFilter(filterMode:string) {
               </PrimeDropdown>
             </div>
             <div v-else-if="col.input_type == 'date'">
-              Date filter not implemented yet
+              {{t('Date filter not implemented yet')}}
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" /> -->
             </div>
             <div v-else-if="col.input_type == 'datetime'">
-              Datetime filter not implemented yet
+              {{t('Datetime filter not implemented yet')}}
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" :showTime="true" /> -->
             </div>

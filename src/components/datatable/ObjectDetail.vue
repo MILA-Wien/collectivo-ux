@@ -199,7 +199,7 @@ function isFiltered(name: string, field: any) {
                   optionLabel="label"
                   optionValue="value"
                   :filter="true"
-                  placeholder="Select a choice"
+                  :placeholder="t('Select a choice')"
                   :showClear="true"
                   class="w-full"
                   :disabled="field.read_only"
@@ -215,7 +215,7 @@ function isFiltered(name: string, field: any) {
                   :maxSelectedLabels="0"
                   :selectedItemsLabel="`${object_temp[name]?.length} selected`"
                   :filter="true"
-                  placeholder="Select multiple choices"
+                  :placeholder="t('Select multiple choices')"
                   class="w-full"
                   :disabled="field.read_only"
                 />
@@ -272,7 +272,7 @@ function isFiltered(name: string, field: any) {
                 v-if="field.help_text && field.input_type !== 'checkbox'"
                 id="user-attr-{{value}}-help"
                 class="p-info"
-                >{{ field.help_text }}</small
+                >{{ t(field.help_text) }}</small
               >
             </div>
           </div>

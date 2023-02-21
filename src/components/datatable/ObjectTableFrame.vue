@@ -153,7 +153,7 @@ function createObjectFn() {
           <PrimeButton
             type="button"
             icon="pi pi-filter-slash"
-            label="Clear"
+            :label="t('Clear')"
             class="p-button-outlined"
             @click="clearFilters()"
           >
@@ -161,15 +161,17 @@ function createObjectFn() {
         </div>
         <div class="m-1">
           <PrimeButton
-            :label="t('Download')"
+            icon="pi pi-file-export"
+            :label="t('Export')"
             :disabled="!(selectedObjects?.length > 0)"
           >
             <JsonCSV
               v-if="selectedObjects?.length > 0"
+              icon="pi pi-file-export"
               :data="selectedObjects"
               name="export.csv"
             >
-              {{ t("Download") }}
+              {{ t("Export") }}
             </JsonCSV>
           </PrimeButton>
         </div>
