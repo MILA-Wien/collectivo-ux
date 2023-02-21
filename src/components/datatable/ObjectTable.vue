@@ -121,14 +121,47 @@ function filter($event: any) {
   let filter = "";
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
-      filter = `${filter}&${key}__${$event.filters[
+      filter = `${filter}&${key}__${dataTableFilterModesToDjangoFilter($event.filters[
         key
-      ].constraints[0].matchMode.toLowerCase()}=${
+      ].constraints[0].matchMode)}=${
         $event.filters[key].constraints[0].value
       }`;
     }
   });
   props.store.filter(props.name, $event, sort, filter);
+}
+
+function dataTableFilterModesToDjangoFilter(filterMode:string) {
+  switch (filterMode) {
+    case "startsWith":
+      return "istartswith";
+    case "contains":
+      return "icontains";
+    case "endsWith":
+      return "iendswith";
+    case "exact":
+      return "icontains";
+    case "notEquals":
+      return "exact";
+    case "in":
+      return "in";
+    case "lt":
+      return "lt";
+    case "lte":
+      return "lte";
+    case "gt":
+      return "gt";
+    case "gte":
+      return "gte";
+    case "between":
+      return "range";
+    case "is":
+      return "isnull";
+    case "isNot":
+      return "isnull";
+    default:
+      return "icontains";
+  }
 }
 </script>
 
@@ -199,16 +232,16 @@ function filter($event: any) {
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'select'">
           <div v-if="data[col.field]" class="tag">
-            {{ col.choices[data[col.field]] }}
+            {{ t(col.choices[data[col.field]]) }}
           </div>
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
-          {{ formatMultiSelect(data[col.field]) }}
+          {{ t(formatMultiSelect(data[col.field])) }}
         </template>
         <template #body="{ data }" v-else>
           <!-- TODO: Inspect function to show objects -->
-          {{ formatGeneric(data[col.field]) }}
+          {{ t(formatGeneric(data[col.field])) }}
         </template>
 
         <!-- Custom filters for different input types -->
@@ -229,7 +262,7 @@ function filter($event: any) {
               >
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">
-                    <span>{{ slotProps.option.label }}</span>
+                    <span>{{ t(slotProps.option.label) }}</span>
                   </div>
                 </template>
               </PrimeMultiSelect>
@@ -247,9 +280,9 @@ function filter($event: any) {
               >
                 <template #value="slotProps">
                   <span class="tag" v-if="slotProps.value">
-                    {{ col.choices[slotProps.value] }}
+                    {{ t(col.choices[slotProps.value]) }}
                   </span>
-                  <span v-else>{{ slotProps.placeholder }}</span>
+                  <span v-else>{{ t(slotProps.placeholder) }}</span>
                 </template>
                 <template #option="slotProps">
                   <span class="tag">
