@@ -95,6 +95,9 @@ export const endpoints = {
   membersEmailsAutomations: "/members/emails/automations/",
   membersSkills: "/members/skills/",
   membersGroups: "/members/groups/",
+  shiftsShifts: "/shifts/shifts/",
+  shiftsAssignments: "shifts/assignments/",
+  shiftsShiftsUser: "/shifts/shifts-user/",
 };
 
 // Generic API functions
@@ -129,5 +132,11 @@ export const API = {
       return await api.delete(endpoints[endpoint]);
     }
     return await api.delete(`${endpoints[endpoint]}${pk}/`);
+  },
+  getWithParams: async function (
+    endpoint: keyof typeof endpoints,
+    params: Object
+  ) {
+    return await api.get(endpoints[endpoint], { params });
   },
 };

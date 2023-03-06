@@ -151,3 +151,40 @@ export const DataDetailTemplate = {
   loaded: false,
   schemaLoaded: false,
 };
+
+
+// shifts
+export enum ShiftType {
+  REGULAR = "regular",
+  EXTRA = "extra",
+  HOLIDAY = "holiday",
+  OTHER = "other",
+}
+export enum ShiftWeek {
+  A = "A",
+  B = "B",
+  C = "C",
+  D = "D",
+}
+export enum ShiftDay {
+  MONDAY = "Monday",
+  TUESDAY = "Tuesday",
+  WEDNESDAY = "Wednesday",
+  THURSDAY = "Thursday",
+  FRIDAY = "Friday",
+  SATURDAY = "Saturday",
+  SUNDAY = "Sunday",
+}
+
+export interface Shift {
+  shift_title: string;
+  shift_starting_date: string | Date;
+  shift_ending_date: string | Date;
+  shift_type: ShiftType;
+  shift_week: ShiftWeek;
+  shift_starting_time: string | Date;
+  shift_ending_time: string | Date;
+  required_users: Number;
+  shift_day: ShiftDay;
+  additional_info_general: string;
+}

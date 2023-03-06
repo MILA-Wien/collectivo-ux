@@ -18,7 +18,7 @@ const props = defineProps({
     required: true,
   },
   pk: {
-    validator: prop => typeof prop === 'number' || prop === null,
+    validator: (prop) => typeof prop === "number" || prop === null,
     required: false,
   },
   create: {
