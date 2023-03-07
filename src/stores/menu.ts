@@ -24,7 +24,8 @@ export const useMenuStore = defineStore({
       if (this.menu === null) {
         this.menu = {} as ExtensionMenu;
       }
-      this.menu.menu = await coreMenuItemsFn();
+      const data = await coreMenuItemsFn();
+      this.menu.menu = data.items;
       this.menuLoaded = true;
     },
     setSideBarOpen(open: boolean) {

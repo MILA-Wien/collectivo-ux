@@ -1,8 +1,8 @@
-import { useUserStore } from "@/stores/user";
-import axios from "axios";
-import i18n from "@/locales/i18n";
-import type { AxiosResponse } from "axios";
 import { baseURL } from "@/app.config";
+import i18n from "@/locales/i18n";
+import { useUserStore } from "@/stores/user";
+import type { AxiosResponse } from "axios";
+import axios from "axios";
 const BASE_URL = baseURL + "/api/";
 const { t } = i18n.global;
 const api = axios.create({
@@ -66,13 +66,8 @@ export const coreVersionFn = async () => {
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/menus/menus/main_menu/items");
-  return response.data;
-};
-
-export const coreMicroFrontendsFn = async (name: string) => {
-  const response = await api.get("/ux/microfrontends/" + { name });
-  return response.data;
+  const response = await api.get("/menus/menus/?extension=core&menu=main");
+  return response.data[0];
 };
 
 export const dashboardTiles = async () => {
