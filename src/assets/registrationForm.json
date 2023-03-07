@@ -1,1078 +1,1042 @@
 {
-    "type": "root",
-    "children": [
+  "type": "root",
+  "children": [
+    {
+      "type": "page",
+      "name": "Page 1/5: Type of person",
+      "id": "FINTaFRUUKNk",
+      "children": [
         {
-            "type": "page",
-            "name": "Page 1/5: Type of person",
-            "id": "FINTaFRUUKNk",
-            "children": [
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Willkommen bei MILA!",
-                        "description": "Um der Genossenschaft beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
-                        "content": "",
-                        "extId": "gEVwcJiztoBGsss"
-                    },
-                    "id": "welcome-paragraph",
-                    "children": []
-                },
-                {
-                    "type": "singleChoice",
-                    "properties": {
-                        "label": "What type of membership do you want?",
-                        "htmlType": "radio",
-                        "conditions": [],
-                        "required": true,
-                        "options": [
-                            "As a person",
-                            "As an organisation"
-                        ],
-                        "values": [
-                            "natural",
-                            "legal"
-                        ],
-                        "extId": "person_type",
-                        "description": ""
-                    },
-                    "id": "person-type",
-                    "children": []
-                },
-                {
-                    "type": "button",
-                    "properties": {
-                        "label": "Next",
-                        "conditions": [],
-                        "extId": "woSqVbVIKwHd",
-                        "buttonType": "next"
-                    },
-                    "id": "next-page1-button",
-                    "children": []
-                }
-            ]
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [],
+            "label": "Willkommen bei MILA!",
+            "description": "Um der Genossenschaft beitreten zu können, brauchen wir noch einige Informationen von dir. Bitte fülle die folgenden Fragen aus. Wenn etwas unklar ist, wende dich bitte an mitmachen@mila.wien.",
+            "content": "",
+            "extId": "gEVwcJiztoBGsss"
+          },
+          "id": "welcome-paragraph",
+          "children": []
         },
         {
-            "type": "page",
-            "name": "Page 2/5: Personal data",
-            "id": "FINTRFRUUKNk",
-            "children": [
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "natural"
-                            }
-                        ],
-                        "hideLabel": false,
-                        "extId": "eufnsig7fh",
-                        "label": "Details of the person"
-                    },
-                    "id": "eufnsig7fh",
-                    "children": [
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "eufnsig7fhss"
-                            },
-                            "id": "eufnsig7fhss",
-                            "children": [
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "First name",
-                                        "extId": "first_name",
-                                        "required": true
-                                    },
-                                    "id": "first-name-input", 
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Last name",
-                                        "extId": "last_name",
-                                        "required": true
-                                    },
-                                    "id": "last-name-input",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "type": "singleChoice",
-                            "properties": {
-                                "label": "Gender",
-                                "htmlType": "radio",
-                                "conditions": [],
-                                "options": [
-                                    "Diverse",
-                                    "Female",
-                                    "Male"
-                                ],
-                                "values": [
-                                    "diverse",
-                                    "female",
-                                    "male"
-                                ],
-                                "required": true,
-                                "extId": "gender"
-                            },
-                            "id": "gender-radio",
-                            "children": []
-                        },
-                        {
-                            "type": "date",
-                            "properties": {
-                                "label": "Birthday",
-                                "conditions": [
-                                    {
-                                        "target": "person_type",
-                                        "value": "natural"
-                                    }
-                                ],
-                                "content": "",
-                                "required": true,
-                                "extId": "birthday"
-                            },
-                            "id": "birthdate-input",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "label": "Occupation",
-                                "conditions": [
-                                    {
-                                        "target": "person_type",
-                                        "value": "natural"
-                                    }
-                                ],
-                                "content": "",
-                                "required": true,
-                                "extId": "occupation"
-                            },
-                            "id": "occupation-input",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [],
-                                "label": "Phone number",
-                                "extId": "phone"
-                            },
-                            "id": "sJsmSmZUQhtG",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "legal"
-                            }
-                        ],
-                        "hideLabel": false,
-                        "extId": "oLSvbRsAfmSl",
-                        "label": "Details of the organisation"
-                    },
-                    "id": "oLSvbRsAfmSl",
-                    "children": [
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [
-                                    {
-                                        "target": "person_type",
-                                        "value": "legal"
-                                    }
-                                ],
-                                "label": "Name of the organisation",
-                                "extId": "legal_name",
-                                "required": true
-                            },
-                            "id": "lp-name-input",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [
-                                    {
-                                        "target": "person_type",
-                                        "value": "legal"
-                                    }
-                                ],
-                                "label": "Legal type",
-                                "required": true,
-                                "extId": "legal_type"
-                            },
-                            "id": "lp-legal-type-input",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [
-                                    {
-                                        "target": "person_type",
-                                        "value": "legal"
-                                    }
-                                ],
-                                "label": "Identification number",
-                                "required": true,
-                                "extId": "legal_id"
-                            },
-                            "id": "lp-identification-number-input",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "natural"
-                            }
-                        ],
-                        "hideLabel": false,
-                        "extId": "uNmhrILdTZge",
-                        "label": "Address"
-                    },
-                    "id": "uNmhrILdTZge",
-                    "children": [
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "TqfJLpaUCpsv"
-                            },
-                            "id": "noTTTvxeKWvN",
-                            "children": [
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Street",
-                                        "extId": "address_street",
-                                        "required": true
-                                    },
-                                    "id": "address-street-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "number",
-                                    "properties": {
-                                        "label": "Number",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_number",
-                                        "required": true
-                                    },
-                                    "id": "address-street-number-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "label": "Stair",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_stair"
-                                    },
-                                    "id": "zkzcBrFPCdGx",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "label": "Door",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_door"
-                                    },
-                                    "id": "AkzcBrFPCdGx",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "BqQUbdltwSrD"
-                            },
-                            "id": "BqQUbdltwSrD",
-                            "children": [
-                                {
-                                    "type": "number",
-                                    "properties": {
-                                        "label": "Postcode",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_postcode",
-                                        "required": true
-                                    },
-                                    "id": "address-postcode-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "City",
-                                        "required": true,
-                                        "extId": "address_city"
-                                    },
-                                    "id": "address-city-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Country",
-                                        "default": "Austria",
-                                        "required": true,
-                                        "extId": "address_country"
-                                    },
-                                    "id": "address-country-input",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "legal"
-                            }
-                        ],
-                        "hideLabel": false,
-                        "extId": "uNmhrILdTZge",
-                        "label": "Address/Headquarters"
-                    },
-                    "id": "uNmhrILdTZge",
-                    "children": [
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "TqfJLpaUCpsv"
-                            },
-                            "id": "noTTTvxeKWvN",
-                            "children": [
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Street",
-                                        "extId": "address_street",
-                                        "required": true
-                                    },
-                                    "id": "lp-address-street-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "number",
-                                    "properties": {
-                                        "label": "Number",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_number",
-                                        "required": true
-                                    },
-                                    "id": "lp-address-street-number-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "label": "Stair",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_stair"
-                                    },
-                                    "id": "zkzcBrFPCdGx",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "label": "Door",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_door"
-                                    },
-                                    "id": "AkzcBrFPCdGx",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "BqQUbdltwSrD"
-                            },
-                            "id": "BqQUbdltwSrD",
-                            "children": [
-                                {
-                                    "type": "number",
-                                    "properties": {
-                                        "label": "Postcode",
-                                        "conditions": [],
-                                        "content": "",
-                                        "extId": "address_postcode",
-                                        "required": true
-                                    },
-                                    "id": "lp-address-postcode-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "City",
-                                        "required": true,
-                                        "extId": "address_city"
-                                    },
-                                    "id": "lp-address-city-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Country",
-                                        "default": "Austria",
-                                        "required": true,
-                                        "extId": "address_country"
-                                    },
-                                    "id": "lp-address-country-input",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "legal"
-                            }
-                        ],
-                        "hideLabel": false,
-                        "extId": "eufnsig7fh",
-                        "label": "Details of the contact person"
-                    },
-                    "id": "eufnsig7fh",
-                    "children": [
-                        {
-                            "type": "formset",
-                            "properties": {
-                                "conditions": [],
-                                "hideLabel": true,
-                                "extId": "eufnsig7fhaa"
-                            },
-                            "id": "eufnsig7fhaa",
-                            "children": [
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "First name",
-                                        "extId": "first_name",
-                                        "required": true
-                                    },
-                                    "id": "lp-first-name-input",
-                                    "children": []
-                                },
-                                {
-                                    "type": "textfield",
-                                    "properties": {
-                                        "htmlType": "text",
-                                        "conditions": [],
-                                        "label": "Last name",
-                                        "extId": "last_name",
-                                        "required": true
-                                    },
-                                    "id": "lp-last-name-input",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "type": "singleChoice",
-                            "properties": {
-                                "label": "Gender",
-                                "htmlType": "radio",
-                                "conditions": [],
-                                "options": [
-                                    "Diverse",
-                                    "Female",
-                                    "Male"
-                                ],
-                                "values": [
-                                    "diverse",
-                                    "female",
-                                    "male"
-                                ],
-                                "required": true,
-                                "extId": "gender"
-                            },
-                            "id": "lp-gender-radio",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [],
-                                "label": "Phone number",
-                                "extId": "phone"
-                            },
-                            "id": "sJsmSmZUQhtG",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [],
-                        "hideLabel": true,
-                        "extId": "ALSvbRsAfmSl",
-                        "label": "legal"
-                    },
-                    "id": "ALSvbRsAfmSl",
-                    "children": [
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Back",
-                                "conditions": [],
-                                "extId": "ATcyDpIIfqdX",
-                                "buttonType": "back"
-                            },
-                            "id": "ATcyDpIIfqdX",
-                            "children": []
-                        },
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Next",
-                                "conditions": [],
-                                "extId": "ETcyDpIIfqdX",
-                                "buttonType": "next"
-                            },
-                            "id": "next-page2-button",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
+          "type": "singleChoice",
+          "properties": {
+            "label": "What type of membership do you want?",
+            "htmlType": "radio",
+            "conditions": [],
+            "required": true,
+            "options": ["As a person", "As an organisation"],
+            "values": ["natural", "legal"],
+            "extId": "person_type",
+            "description": ""
+          },
+          "id": "person-type",
+          "children": []
         },
         {
-            "type": "page",
-            "name": "Page 3/5: Membership",
-            "id": "wIEVWuPGslMX",
-            "children": [
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "legal"
-                            }
-                        ],
-                        "label": "As an organisation, you will be an investing member. As an investing member, you support us financially, but you cannot shop.",
-                        "content": "",
-                        "extId": "gEVwcJiztoBGsss"
-                    },
-                    "id": "SOZialVwcJiztoBGsss",
-                    "children": []
-                },
-                {
-                    "type": "singleChoice",
-                    "properties": {
-                        "label": "Which type of membership do you choose?",
-                        "conditions": [
-                            {
-                                "target": "person_type",
-                                "value": "natural"
-                            }
-                        ],
-                        "content": "",
-                        "htmlType": "radio",
-                        "description": "Only as an active member do you have the opportunity to shop after the opening of the supermarket. As an investing member, you support us financially, but you cannot shop.",
-                        "required": true,
-                        "extId": "membership_type",
-                        "options": [
-                            "Active",
-                            "Investing"
-                        ],
-                        "values": [
-                            "active",
-                            "investing"
-                        ]
-                    },
-                    "id": "12aasef3mPWTOqEeE",
-                    "children": []
-                },
-                {
-                    "type": "singleChoice",
-                    "properties": {
-                        "label": "How many shares do you want?",
-                        "conditions": [],
-                        "content": "",
-                        "description": "Mit den Genossenschaftsanteilen bauen wir Eigenkapital auf, das wir für die Eröffnung unseres Supermarkts benötigen. Der Genossenschaftsanteil bei MILA ist sozial gestaffelt: Der Regelanteil ist € 180, der Sozialanteil € 20. Wir empfehlen mehr als den Regelanteil zu zeichnen, gemäß deiner finanziellen Möglichkeiten.",
-                        "htmlType": "radio",
-                        "required": true,
-                        "options": [
-                            "Regelanteil 180 €",
-                            "Sozialanteil 20 €",
-                            "Mehr Anteile"
-                        ],
-                        "values": [
-                            "normal",
-                            "social",
-                            "more"
-                        ],
-                        "extId": "shares_tarif"
-                    },
-                    "id": "huipuif3mPWTOqEeE",
-                    "children": []
-                },
-                {
-                    "type": "number",
-                    "properties": {
-                        "label": "Number of shares",
-                        "conditions": [
-                            {
-                                "target": "shares_tarif",
-                                "value": "more"
-                            }
-                        ],
-                        "content": "",
-                        "extId": "shares_number",
-                        "required": true,
-                        "validations": [
-                            {
-                                "type": "minValue",
-                                "value": 1
-                            },
-                            {
-                                "type": "maxValue",
-                                "value": 100
-                            }
-                        ]
-                    },
-                    "id": "kDFmPWTOqEeEddsg44",
-                    "children": []
-                },
-                {
-                    "type": "calculation",
-                    "properties": {
-                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
-                        "description": "€",
-                        "conditions": [
-                            {
-                                "target": "shares_tarif",
-                                "value": "more"
-                            }
-                        ],
-                        "content": "shares_number*20",
-                        "extId": "shares_number"
-                    },
-                    "id": "warucmPWTOqEeE",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [
-                            {
-                                "target": "shares_tarif",
-                                "value": "social"
-                            }
-                        ],
-                        "content": "",
-                        "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
-                        "extId": "gEVwcJiztoBG"
-                    },
-                    "id": "SOZialVwcJiztoBG",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [
-                            {
-                                "target": "shares_tarif",
-                                "value": "normal"
-                            }
-                        ],
-                        "content": "",
-                        "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
-                        "extId": "gEasdVwcJiztoBG"
-                    },
-                    "id": "regelcJiztoBG",
-                    "children": []
-                },
-                {
-                    "type": "singleChoice",
-                    "properties": {
-                        "label": "Payment type",
-                        "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. Erst wenn der Firmenbucheintrag von MILA Mitmach-Supermarkt e.G. erfolgt ist, können wir das Genossenschaftskonto eröffnen und Zahlung per Überweisung ermöglichen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
-                        "conditions": [],
-                        "content": "",
-                        "extId": "shares_payment_type",
-                        "required": true,
-                        "options": [
-                            "Jetzt SEPA Bankeinzug genehmigen!"
-                        ],
-                        "values": [
-                            "sepa"
-                        ]
-                    },
-                    "id": "kDFmPWTOqEeE",
-                    "children": []
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [],
-                        "hideLabel": true,
-                        "extId": "ALSvbRsAfmSl",
-                        "label": "legal"
-                    },
-                    "id": "ALSvbRsAfmSl",
-                    "children": [
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [
-                                    {
-                                        "target": "shares_payment_type",
-                                        "value": "sepa"
-                                    }
-                                ],
-                                "label": "Bank account number (IBAN)",
-                                "required": true,
-                                "validations": [
-                                    {
-                                        "type": "isValidIBAN",
-                                        "value": true
-                                    }
-                                ],
-                                "extId": "bank_account_iban"
-                            },
-                            "id": "bank-account-input",
-                            "children": []
-                        },
-                        {
-                            "type": "textfield",
-                            "properties": {
-                                "htmlType": "text",
-                                "conditions": [
-                                    {
-                                        "target": "shares_payment_type",
-                                        "value": "sepa"
-                                    }
-                                ],
-                                "label": "Bank account owner",
-                                "required": true,
-                                "extId": "bank_account_owner"
-                            },
-                            "id": "bank-account-owner-input",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [],
-                        "hideLabel": true,
-                        "extId": "cdSvbRsAfmSl"
-                    },
-                    "id": "cdSvbRsAfmSl",
-                    "children": [
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Back",
-                                "conditions": [],
-                                "extId": "cdcyDpIIfqdX",
-                                "buttonType": "back"
-                            },
-                            "id": "cdcyDpIIfqdX",
-                            "children": []
-                        },
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Next",
-                                "conditions": [],
-                                "extId": "PuuykphDkxDQ",
-                                "buttonType": "next"
-                            },
-                            "id": "next-page3-button",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "page",
-            "name": "Page 4/5: Survey",
-            "id": "IcLLQoeLXybn",
-            "children": [
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Nearly done! Do you want to provide some aditional information?",
-                        "content": "",
-                        "extId": "JqklVcreWnWV"
-                    },
-                    "id": "JqklVcreWnWV",
-                    "children": []
-                },
-                {
-                    "type": "textarea",
-                    "properties": {
-                        "label": "How did you hear about us?",
-                        "htmlType": "text",
-                        "conditions": [],
-                        "extId": "survey_contact"
-                    },
-                    "children": [],
-                    "id": "123mPWTOqEeE"
-                },
-                {
-                    "type": "textarea",
-                    "properties": {
-                        "label": "What convinced you to join MILA?",
-                        "conditions": [],
-                        "content": "",
-                        "htmlType": "text",
-                        "extId": "survey_motivation"
-                    },
-                    "children": [],
-                    "id": "AmERADxZaNGg"
-                },
-                {
-                    "type": "multipleChoice",
-                    "properties": {
-                        "label": "Would you be interested to join a working group?",
-                        "description": "You can find more information about the working groups here: https://www.mila.wien/de/mitmachen/arbeitsgruppen/",
-                        "conditions": [],
-                        "htmlType": "checkbox",
-                        "extId": "groups_interested",
-                        "optionsEndpoint": "/members/groups/"
-                    },
-                    "id": "groups-interested-input",
-                    "children": []
-                },
-                {
-                    "type": "multipleChoice",
-                    "properties": {
-                        "label": "What are your occupations/skills/interests?",
-                        "htmlType": "checkbox",
-                        "conditions": [],
-                        "extId": "skills",
-                        "optionsEndpoint": "/members/skills/"
-                    },
-                    "id": "skills-input",
-                    "children": []
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [],
-                        "hideLabel": true,
-                        "extId": "cdSvbRsAfmSl"
-                    },
-                    "id": "cdSvbRsAfmSl",
-                    "children": [
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Back",
-                                "conditions": [],
-                                "extId": "EGwyLArCyWKu",
-                                "buttonType": "back"
-                            },
-                            "id": "EGwyLArCyWKu",
-                            "children": []
-                        },
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Next",
-                                "conditions": [],
-                                "extId": "FGwyLArCyWKu",
-                                "buttonType": "next"
-                            },
-                            "id": "next-page4-button",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "page",
-            "name": "Page 5/5: Final questions",
-            "id": "pzwtvhVtTtKX",
-            "children": [
-                {
-                    "type": "boolean",
-                    "properties": {
-                        "htmlType": "checkbox",
-                        "conditions": [],
-                        "label": "Öffentlichkeitsarbeit",
-                        "description": "Ich unterstütze die Öffentlichkeitsarbeit und erlaube MILA Bildmaterial auf dem ich zu sehen bin zu verwenden. Nähere Informationen zur Datenverarbeitung des Bildmaterials unter https://www.mila.wien/de/datenschutzerklaerung/",
-                        "extId": "public_use_approved"
-                    },
-                    "id": "public-use-approved-checkbox",
-                    "children": []
-                },
-                {
-                    "type": "boolean",
-                    "properties": {
-                        "htmlType": "checkbox",
-                        "conditions": [],
-                        "label": "Satzung",
-                        "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
-                        "extId": "statutes_approved",
-                        "required": true,
-                        "validations": [
-                            {
-                                "type": "sameAs",
-                                "state": true
-                            }
-                        ]
-                    },
-                    "id": "checkbox_statutes_approved",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Haftung",
-                        "content": "Im Fall der Insolvenz der Genossenschaft haften die Mitglieder der Genossenschaft deren Gläubigern mit ihren Geschäftsanteilen und zusätzlich mit einem Betrag in der Höhe ihrer Geschäftsanteile (Nachschusspflicht in der einfachen Höhe der Geschäftsanteile). ",
-                        "extId": "g45gtrg"
-                    },
-                    "id": "g45gtrg",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Auszahlung bei Kündigung",
-                        "content": "Werden Geschäftsanteile gekündigt, erfolgt die Auszahlung nach Ablauf eines Jahres ab Wirksamwerden der Kündigung (Sperrjahr). Dadurch darf ein Betrag von 15 % des Höchstbestandes des Gesamtnennbetrages der Genossenschaftsanteile zum Ende des vorangegangenen Geschäftsjahres nicht überschritten werden. Die Auszahlung weiterer Genossenschaftsanteile verschiebt sich ins oder in die darauffolgenden Jahre. Das Austrittsdatum bestimmt die Reihenfolge. Ist das Geschäftsanteilskapital zu diesem Zeitpunkt durch Bilanzverlust teilweise aufgebraucht, so erfolgt die Auszahlung nur im Verhältnis des noch vorhandenen nicht aufgebrauchten Geschäftsanteilskapitals. Ist zu diesem Zeitpunkt das Eigenkapital der Genossenschaft negativ (§ 225 Abs. 1 UGB), erfolgt die Auszahlung erst dann, wenn das Eigenkapital der Genossenschaft wieder positiv ist.",
-                        "extId": "g45gtrg"
-                    },
-                    "id": "g45gtrg",
-                    "children": []
-                },
-                {
-                    "type": "paragraph",
-                    "properties": {
-                        "htmlType": "p",
-                        "conditions": [],
-                        "label": "Widerruf",
-                        "content": "Du hast das Recht binnen 14 Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Frist beträgt 14 Tage ab der Zustellung der Annahme der Zeichnung durch den Vorstand der Genossenschaft.",
-                        "extId": "g45gtrg"
-                    },
-                    "id": "g45gtrg",
-                    "children": []
-                },
-                {
-                    "type": "formset",
-                    "properties": {
-                        "conditions": [],
-                        "hideLabel": true,
-                        "extId": "xyZvbRsAfmSl"
-                    },
-                    "id": "xyZvbRsAfmSl",
-                    "children": [
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Back",
-                                "conditions": [],
-                                "extId": "OpsALArCyWKu",
-                                "buttonType": "back"
-                            },
-                            "id": "OpsALArCyWKu",
-                            "children": []
-                        },
-                        {
-                            "type": "button",
-                            "properties": {
-                                "label": "Submit application",
-                                "conditions": [],
-                                "extId": "NanuLArCyWKu",
-                                "buttonType": "submit"
-                            },
-                            "id": "submit-button",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
+          "type": "button",
+          "properties": {
+            "label": "Next",
+            "conditions": [],
+            "extId": "woSqVbVIKwHd",
+            "buttonType": "next"
+          },
+          "id": "next-page1-button",
+          "children": []
         }
-    ]
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page 2/5: Personal data",
+      "id": "FINTRFRUUKNk",
+      "children": [
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "natural"
+              }
+            ],
+            "hideLabel": false,
+            "extId": "eufnsig7fh",
+            "label": "Details of the person"
+          },
+          "id": "eufnsig7fh",
+          "children": [
+            {
+              "type": "formset",
+              "properties": {
+                "conditions": [],
+                "hideLabel": true,
+                "extId": "eufnsig7fhss"
+              },
+              "id": "eufnsig7fhss",
+              "children": [
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "First name",
+                    "extId": "first_name",
+                    "required": true
+                  },
+                  "id": "first-name-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "Last name",
+                    "extId": "last_name",
+                    "required": true
+                  },
+                  "id": "last-name-input",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "singleChoice",
+              "properties": {
+                "label": "Gender",
+                "htmlType": "radio",
+                "conditions": [],
+                "options": ["Diverse", "Female", "Male"],
+                "values": ["diverse", "female", "male"],
+                "required": true,
+                "extId": "gender"
+              },
+              "id": "gender-radio",
+              "children": []
+            },
+            {
+              "type": "date",
+              "properties": {
+                "label": "Birthday",
+                "conditions": [
+                  {
+                    "target": "person_type",
+                    "value": "natural"
+                  }
+                ],
+                "content": "",
+                "required": true,
+                "extId": "birthday"
+              },
+              "id": "birthdate-input",
+              "children": []
+            },
+            {
+              "type": "textfield",
+              "properties": {
+                "label": "Occupation",
+                "conditions": [
+                  {
+                    "target": "person_type",
+                    "value": "natural"
+                  }
+                ],
+                "content": "",
+                "required": true,
+                "extId": "occupation"
+              },
+              "id": "occupation-input",
+              "children": []
+            },
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [],
+                "label": "Phone number",
+                "extId": "phone"
+              },
+              "id": "sJsmSmZUQhtG",
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "legal"
+              }
+            ],
+            "hideLabel": false,
+            "extId": "oLSvbRsAfmSl",
+            "label": "Details of the organisation"
+          },
+          "id": "oLSvbRsAfmSl",
+          "children": [
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [
+                  {
+                    "target": "person_type",
+                    "value": "legal"
+                  }
+                ],
+                "label": "Name of the organisation",
+                "extId": "legal_name",
+                "required": true
+              },
+              "id": "lp-name-input",
+              "children": []
+            },
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [
+                  {
+                    "target": "person_type",
+                    "value": "legal"
+                  }
+                ],
+                "label": "Legal type",
+                "required": true,
+                "extId": "legal_type"
+              },
+              "id": "lp-legal-type-input",
+              "children": []
+            },
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [
+                  {
+                    "target": "person_type",
+                    "value": "legal"
+                  }
+                ],
+                "label": "Identification number",
+                "required": true,
+                "extId": "legal_id"
+              },
+              "id": "lp-identification-number-input",
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "natural"
+              }
+            ],
+            "hideLabel": false,
+            "extId": "uNmhrILdTZge",
+            "label": "Address"
+          },
+          "id": "uNmhrILdTZge",
+          "children": [
+            {
+              "type": "formset",
+              "properties": {
+                "conditions": [],
+                "hideLabel": true,
+                "extId": "TqfJLpaUCpsv"
+              },
+              "id": "noTTTvxeKWvN",
+              "children": [
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "Street",
+                    "extId": "address_street",
+                    "required": true
+                  },
+                  "id": "address-street-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "label": "Number",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_number",
+                    "required": true
+                  },
+                  "id": "address-street-number-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "label": "Stair",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_stair"
+                  },
+                  "id": "zkzcBrFPCdGx",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "label": "Door",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_door"
+                  },
+                  "id": "AkzcBrFPCdGx",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "formset",
+              "properties": {
+                "conditions": [],
+                "hideLabel": true,
+                "extId": "BqQUbdltwSrD"
+              },
+              "id": "BqQUbdltwSrD",
+              "children": [
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "label": "Postcode",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_postcode",
+                    "required": true
+                  },
+                  "id": "address-postcode-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "City",
+                    "required": true,
+                    "extId": "address_city"
+                  },
+                  "id": "address-city-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "Country",
+                    "default": "Austria",
+                    "required": true,
+                    "extId": "address_country"
+                  },
+                  "id": "address-country-input",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "legal"
+              }
+            ],
+            "hideLabel": false,
+            "extId": "uNmhrILdTZge",
+            "label": "Address/Headquarters"
+          },
+          "id": "uNmhrILdTZge",
+          "children": [
+            {
+              "type": "formset",
+              "properties": {
+                "conditions": [],
+                "hideLabel": true,
+                "extId": "TqfJLpaUCpsv"
+              },
+              "id": "noTTTvxeKWvN",
+              "children": [
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "Street",
+                    "extId": "address_street",
+                    "required": true
+                  },
+                  "id": "lp-address-street-input",
+                  "children": []
+                },
+                {
+                  "type": "number",
+                  "properties": {
+                    "label": "Number",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_number",
+                    "required": true
+                  },
+                  "id": "lp-address-street-number-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "label": "Stair",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_stair"
+                  },
+                  "id": "zkzcBrFPCdGx",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "label": "Door",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_door"
+                  },
+                  "id": "AkzcBrFPCdGx",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "formset",
+              "properties": {
+                "conditions": [],
+                "hideLabel": true,
+                "extId": "BqQUbdltwSrD"
+              },
+              "id": "BqQUbdltwSrD",
+              "children": [
+                {
+                  "type": "number",
+                  "properties": {
+                    "label": "Postcode",
+                    "conditions": [],
+                    "content": "",
+                    "extId": "address_postcode",
+                    "required": true
+                  },
+                  "id": "lp-address-postcode-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "City",
+                    "required": true,
+                    "extId": "address_city"
+                  },
+                  "id": "lp-address-city-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "Country",
+                    "default": "Austria",
+                    "required": true,
+                    "extId": "address_country"
+                  },
+                  "id": "lp-address-country-input",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "legal"
+              }
+            ],
+            "hideLabel": false,
+            "extId": "eufnsig7fh",
+            "label": "Details of the contact person"
+          },
+          "id": "eufnsig7fh",
+          "children": [
+            {
+              "type": "formset",
+              "properties": {
+                "conditions": [],
+                "hideLabel": true,
+                "extId": "eufnsig7fhaa"
+              },
+              "id": "eufnsig7fhaa",
+              "children": [
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "First name",
+                    "extId": "first_name",
+                    "required": true
+                  },
+                  "id": "lp-first-name-input",
+                  "children": []
+                },
+                {
+                  "type": "textfield",
+                  "properties": {
+                    "htmlType": "text",
+                    "conditions": [],
+                    "label": "Last name",
+                    "extId": "last_name",
+                    "required": true
+                  },
+                  "id": "lp-last-name-input",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "singleChoice",
+              "properties": {
+                "label": "Gender",
+                "htmlType": "radio",
+                "conditions": [],
+                "options": ["Diverse", "Female", "Male"],
+                "values": ["diverse", "female", "male"],
+                "required": true,
+                "extId": "gender"
+              },
+              "id": "lp-gender-radio",
+              "children": []
+            },
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [],
+                "label": "Phone number",
+                "extId": "phone"
+              },
+              "id": "sJsmSmZUQhtG",
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [],
+            "hideLabel": true,
+            "extId": "ALSvbRsAfmSl",
+            "label": "legal"
+          },
+          "id": "ALSvbRsAfmSl",
+          "children": [
+            {
+              "type": "button",
+              "properties": {
+                "label": "Back",
+                "conditions": [],
+                "extId": "ATcyDpIIfqdX",
+                "buttonType": "back"
+              },
+              "id": "ATcyDpIIfqdX",
+              "children": []
+            },
+            {
+              "type": "button",
+              "properties": {
+                "label": "Next",
+                "conditions": [],
+                "extId": "ETcyDpIIfqdX",
+                "buttonType": "next"
+              },
+              "id": "next-page2-button",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page 3/5: Membership",
+      "id": "wIEVWuPGslMX",
+      "children": [
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "legal"
+              }
+            ],
+            "label": "As an organisation, you will be an investing member. As an investing member, you support us financially, but you cannot shop.",
+            "content": "",
+            "extId": "gEVwcJiztoBGsss"
+          },
+          "id": "SOZialVwcJiztoBGsss",
+          "children": []
+        },
+        {
+          "type": "singleChoice",
+          "properties": {
+            "label": "Which type of membership do you choose?",
+            "conditions": [
+              {
+                "target": "person_type",
+                "value": "natural"
+              }
+            ],
+            "content": "",
+            "htmlType": "radio",
+            "description": "Only as an active member do you have the opportunity to shop after the opening of the supermarket. As an investing member, you support us financially, but you cannot shop.",
+            "required": true,
+            "extId": "membership_type",
+            "options": ["Active", "Investing"],
+            "values": ["active", "investing"]
+          },
+          "id": "12aasef3mPWTOqEeE",
+          "children": []
+        },
+        {
+          "type": "singleChoice",
+          "properties": {
+            "label": "How many shares do you want?",
+            "conditions": [],
+            "content": "",
+            "description": "Mit den Genossenschaftsanteilen bauen wir Eigenkapital auf, das wir für die Eröffnung unseres Supermarkts benötigen. Der Genossenschaftsanteil bei MILA ist sozial gestaffelt: Der Regelanteil ist € 180, der Sozialanteil € 20. Wir empfehlen mehr als den Regelanteil zu zeichnen, gemäß deiner finanziellen Möglichkeiten.",
+            "htmlType": "radio",
+            "required": true,
+            "options": [
+              "Regelanteil 180 €",
+              "Sozialanteil 20 €",
+              "Mehr Anteile"
+            ],
+            "values": ["normal", "social", "more"],
+            "extId": "shares_tarif"
+          },
+          "id": "huipuif3mPWTOqEeE",
+          "children": []
+        },
+        {
+          "type": "number",
+          "properties": {
+            "label": "Number of shares",
+            "conditions": [
+              {
+                "target": "shares_tarif",
+                "value": "more"
+              }
+            ],
+            "content": "",
+            "extId": "shares_number",
+            "required": true,
+            "validations": [
+              {
+                "type": "minValue",
+                "value": 9
+              },
+              {
+                "type": "maxValue",
+                "value": 1000
+              }
+            ]
+          },
+          "id": "kDFmPWTOqEeEddsg44",
+          "children": []
+        },
+        {
+          "type": "calculation",
+          "properties": {
+            "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich möchte mich mit der oben ausgewählten Anzahl an Anteilen an der MILA Mitmach-Supermarkt G. beteiligen. Ich verpflichte mich einmalig zu Zahlungen in Höhe von € 20 je Genossenschaftsanteil. Insgesamt verpflichte ich mich daher, folgenden Betrag zu zahlen:",
+            "description": "€",
+            "conditions": [
+              {
+                "target": "shares_tarif",
+                "value": "more"
+              }
+            ],
+            "content": "shares_number*20",
+            "extId": "shares_number"
+          },
+          "id": "warucmPWTOqEeE",
+          "children": []
+        },
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [
+              {
+                "target": "shares_tarif",
+                "value": "social"
+              }
+            ],
+            "content": "",
+            "label": "Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich wähle den Sozialanteil in der Höhe von € 20 aus. Ich erkläre mit dieser Selbsteinschätzung, dass ich den Sozialanteil brauche, um mir eine Genossenschaftsmitgliedschaft bei MILA leisten zu können (z.B: bei einem geringen Einkommen). Die Gründe und Definition von „geringem Einkommen„ oder „einkommensschwach“ können unterschiedlich sein, zur generellen Orientierung kann die Armutsgefährdungsschwelle (60% des Median-Einkommens) in Österreich herangezogen werden.",
+            "extId": "gEVwcJiztoBG"
+          },
+          "id": "SOZialVwcJiztoBG",
+          "children": []
+        },
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [
+              {
+                "target": "shares_tarif",
+                "value": "normal"
+              }
+            ],
+            "content": "",
+            "label": " Ich beantrage hiermit die Aufnahme in die MILA Mitmach-Supermarkt Genossenschaft. Ich verpflichte mich einmalig den Regelanteil mit € 180 zu zahlen (dieser setzt sich zusammen aus 9 Genossenschaftsanteilen von je € 20).",
+            "extId": "gEasdVwcJiztoBG"
+          },
+          "id": "regelcJiztoBG",
+          "children": []
+        },
+        {
+          "type": "singleChoice",
+          "properties": {
+            "label": "Payment type",
+            "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. Erst wenn der Firmenbucheintrag von MILA Mitmach-Supermarkt e.G. erfolgt ist, können wir das Genossenschaftskonto eröffnen und Zahlung per Überweisung ermöglichen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
+            "conditions": [],
+            "content": "",
+            "extId": "shares_payment_type",
+            "required": true,
+            "options": ["Jetzt SEPA Bankeinzug genehmigen!"],
+            "values": ["sepa"]
+          },
+          "id": "kDFmPWTOqEeE",
+          "children": []
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [],
+            "hideLabel": true,
+            "extId": "ALSvbRsAfmSl",
+            "label": "legal"
+          },
+          "id": "ALSvbRsAfmSl",
+          "children": [
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [
+                  {
+                    "target": "shares_payment_type",
+                    "value": "sepa"
+                  }
+                ],
+                "label": "Bank account number (IBAN)",
+                "required": true,
+                "validations": [
+                  {
+                    "type": "isValidIBAN",
+                    "value": true
+                  }
+                ],
+                "extId": "bank_account_iban"
+              },
+              "id": "bank-account-input",
+              "children": []
+            },
+            {
+              "type": "textfield",
+              "properties": {
+                "htmlType": "text",
+                "conditions": [
+                  {
+                    "target": "shares_payment_type",
+                    "value": "sepa"
+                  }
+                ],
+                "label": "Bank account owner",
+                "required": true,
+                "extId": "bank_account_owner"
+              },
+              "id": "bank-account-owner-input",
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [],
+            "hideLabel": true,
+            "extId": "cdSvbRsAfmSl"
+          },
+          "id": "cdSvbRsAfmSl",
+          "children": [
+            {
+              "type": "button",
+              "properties": {
+                "label": "Back",
+                "conditions": [],
+                "extId": "cdcyDpIIfqdX",
+                "buttonType": "back"
+              },
+              "id": "cdcyDpIIfqdX",
+              "children": []
+            },
+            {
+              "type": "button",
+              "properties": {
+                "label": "Next",
+                "conditions": [],
+                "extId": "PuuykphDkxDQ",
+                "buttonType": "next"
+              },
+              "id": "next-page3-button",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page 4/5: Survey",
+      "id": "IcLLQoeLXybn",
+      "children": [
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [],
+            "label": "Nearly done! Do you want to provide some aditional information?",
+            "content": "",
+            "extId": "JqklVcreWnWV"
+          },
+          "id": "JqklVcreWnWV",
+          "children": []
+        },
+        {
+          "type": "textarea",
+          "properties": {
+            "label": "How did you hear about us?",
+            "htmlType": "text",
+            "conditions": [],
+            "extId": "survey_contact"
+          },
+          "children": [],
+          "id": "123mPWTOqEeE"
+        },
+        {
+          "type": "textarea",
+          "properties": {
+            "label": "What convinced you to join MILA?",
+            "conditions": [],
+            "content": "",
+            "htmlType": "text",
+            "extId": "survey_motivation"
+          },
+          "children": [],
+          "id": "AmERADxZaNGg"
+        },
+        {
+          "type": "multipleChoice",
+          "properties": {
+            "label": "Would you be interested to join a working group?",
+            "description": "You can find more information about the working groups here: https://www.mila.wien/de/mitmachen/arbeitsgruppen/",
+            "conditions": [],
+            "htmlType": "checkbox",
+            "extId": "groups_interested",
+            "optionsEndpoint": "/members/groups/"
+          },
+          "id": "groups-interested-input",
+          "children": []
+        },
+        {
+          "type": "multipleChoice",
+          "properties": {
+            "label": "What are your occupations/skills/interests?",
+            "htmlType": "checkbox",
+            "conditions": [],
+            "extId": "skills",
+            "optionsEndpoint": "/members/skills/"
+          },
+          "id": "skills-input",
+          "children": []
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [],
+            "hideLabel": true,
+            "extId": "cdSvbRsAfmSl"
+          },
+          "id": "cdSvbRsAfmSl",
+          "children": [
+            {
+              "type": "button",
+              "properties": {
+                "label": "Back",
+                "conditions": [],
+                "extId": "EGwyLArCyWKu",
+                "buttonType": "back"
+              },
+              "id": "EGwyLArCyWKu",
+              "children": []
+            },
+            {
+              "type": "button",
+              "properties": {
+                "label": "Next",
+                "conditions": [],
+                "extId": "FGwyLArCyWKu",
+                "buttonType": "next"
+              },
+              "id": "next-page4-button",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page 5/5: Final questions",
+      "id": "pzwtvhVtTtKX",
+      "children": [
+        {
+          "type": "boolean",
+          "properties": {
+            "htmlType": "checkbox",
+            "conditions": [],
+            "label": "Öffentlichkeitsarbeit",
+            "description": "Ich unterstütze die Öffentlichkeitsarbeit und erlaube MILA Bildmaterial auf dem ich zu sehen bin zu verwenden. Nähere Informationen zur Datenverarbeitung des Bildmaterials unter https://www.mila.wien/de/datenschutzerklaerung/",
+            "extId": "public_use_approved"
+          },
+          "id": "public-use-approved-checkbox",
+          "children": []
+        },
+        {
+          "type": "boolean",
+          "properties": {
+            "htmlType": "checkbox",
+            "conditions": [],
+            "label": "Satzung",
+            "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
+            "extId": "statutes_approved",
+            "required": true,
+            "validations": [
+              {
+                "type": "sameAs",
+                "state": true
+              }
+            ]
+          },
+          "id": "checkbox_statutes_approved",
+          "children": []
+        },
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [],
+            "label": "Haftung",
+            "content": "Im Fall der Insolvenz der Genossenschaft haften die Mitglieder der Genossenschaft deren Gläubigern mit ihren Geschäftsanteilen und zusätzlich mit einem Betrag in der Höhe ihrer Geschäftsanteile (Nachschusspflicht in der einfachen Höhe der Geschäftsanteile). ",
+            "extId": "g45gtrg"
+          },
+          "id": "g45gtrg",
+          "children": []
+        },
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [],
+            "label": "Auszahlung bei Kündigung",
+            "content": "Werden Geschäftsanteile gekündigt, erfolgt die Auszahlung nach Ablauf eines Jahres ab Wirksamwerden der Kündigung (Sperrjahr). Dadurch darf ein Betrag von 15 % des Höchstbestandes des Gesamtnennbetrages der Genossenschaftsanteile zum Ende des vorangegangenen Geschäftsjahres nicht überschritten werden. Die Auszahlung weiterer Genossenschaftsanteile verschiebt sich ins oder in die darauffolgenden Jahre. Das Austrittsdatum bestimmt die Reihenfolge. Ist das Geschäftsanteilskapital zu diesem Zeitpunkt durch Bilanzverlust teilweise aufgebraucht, so erfolgt die Auszahlung nur im Verhältnis des noch vorhandenen nicht aufgebrauchten Geschäftsanteilskapitals. Ist zu diesem Zeitpunkt das Eigenkapital der Genossenschaft negativ (§ 225 Abs. 1 UGB), erfolgt die Auszahlung erst dann, wenn das Eigenkapital der Genossenschaft wieder positiv ist.",
+            "extId": "g45gtrg"
+          },
+          "id": "g45gtrg",
+          "children": []
+        },
+        {
+          "type": "paragraph",
+          "properties": {
+            "htmlType": "p",
+            "conditions": [],
+            "label": "Widerruf",
+            "content": "Du hast das Recht binnen 14 Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Frist beträgt 14 Tage ab der Zustellung der Annahme der Zeichnung durch den Vorstand der Genossenschaft.",
+            "extId": "g45gtrg"
+          },
+          "id": "g45gtrg",
+          "children": []
+        },
+        {
+          "type": "formset",
+          "properties": {
+            "conditions": [],
+            "hideLabel": true,
+            "extId": "xyZvbRsAfmSl"
+          },
+          "id": "xyZvbRsAfmSl",
+          "children": [
+            {
+              "type": "button",
+              "properties": {
+                "label": "Back",
+                "conditions": [],
+                "extId": "OpsALArCyWKu",
+                "buttonType": "back"
+              },
+              "id": "OpsALArCyWKu",
+              "children": []
+            },
+            {
+              "type": "button",
+              "properties": {
+                "label": "Submit application",
+                "conditions": [],
+                "extId": "NanuLArCyWKu",
+                "buttonType": "submit"
+              },
+              "id": "submit-button",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
