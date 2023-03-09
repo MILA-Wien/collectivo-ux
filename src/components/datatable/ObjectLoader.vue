@@ -41,7 +41,12 @@ if (!data.value.loaded) {
     <PrimeProgressSpinner />
   </div>
   <div v-else class="h-full">
-    <ObjectTableFrame :store="store" :name="name" :objects="data.data"
-      :schema="data.schema" :default-columns="defaultColumns" />
+    <ObjectTableFrame
+      :store="store"
+      :name="name"
+      :objects="data.data"
+      :schema="data.schema"
+      :default-columns="defaultColumns"
+    />
   </div>
 </template>
