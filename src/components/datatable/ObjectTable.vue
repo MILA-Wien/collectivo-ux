@@ -175,7 +175,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       :rows="50"
       :totalRecords="totalRecords"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50, 100]"
+      :rowsPerPageOptions="[10, 20, 50, 100, 10000]"
       :currentPageReportTemplate="
         t('Showing') +
         ' {first} ' +
@@ -290,12 +290,12 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
               </PrimeDropdown>
             </div>
             <div v-else-if="col.input_type == 'date'">
-              {{t('Date filter not implemented yet')}}
+              {{ t("Date filter not implemented yet") }}
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" /> -->
             </div>
             <div v-else-if="col.input_type == 'datetime'">
-              {{t('Datetime filter not implemented yet')}}
+              {{ t("Datetime filter not implemented yet") }}
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" :showTime="true" /> -->
             </div>
