@@ -111,19 +111,23 @@ describe("register user_not_member", () => {
     });
     cy.intercept({ method: "POST", url: "**/register" }).as("new-member");
     cy.get("#submit-button > .button button").click();
-    cy.wait("@new-member").then(({response: actualResponse}) => {
+    cy.wait("@new-member").then(({ response: actualResponse }) => {
       expect(actualResponse?.statusCode).to.eq(201);
-      cy.fixture('expectedResponseNP.json').then((expectedResponse) => {
+      cy.fixture("expectedResponseNP.json").then((expectedResponse) => {
         /* Here response.body validation */
         expect(actualResponse?.statusCode).to.eq(201);
-        expect(actualResponse?.body).to.have.property('id');
-        expect(actualResponse?.body).to.have.property('person_type');
-        expect(actualResponse?.body.person_type).to.deep.eq(expectedResponse.person_type)
-        expect(actualResponse?.body).to.have.property('groups_interested');
-        expect(actualResponse?.body.groups_interested).to.deep.eq(expectedResponse.groups_interested);
-        expect(actualResponse?.body).to.have.property('skills');
+        expect(actualResponse?.body).to.have.property("id");
+        expect(actualResponse?.body).to.have.property("person_type");
+        expect(actualResponse?.body.person_type).to.deep.eq(
+          expectedResponse.person_type
+        );
+        expect(actualResponse?.body).to.have.property("groups_interested");
+        expect(actualResponse?.body.groups_interested).to.deep.eq(
+          expectedResponse.groups_interested
+        );
+        expect(actualResponse?.body).to.have.property("skills");
         expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
-      })
+      });
     });
     cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
@@ -179,18 +183,22 @@ describe("register user_not_member", () => {
     cy.get("#checkbox_statutes_approved input").check({ force: true });
     cy.intercept({ method: "POST", url: "**/register" }).as("new-member");
     cy.get("#submit-button > .button button").click();
-    cy.wait("@new-member").then(({response: actualResponse}) => {
-      cy.fixture('expectedResponseLP.json').then((expectedResponse) => {
+    cy.wait("@new-member").then(({ response: actualResponse }) => {
+      cy.fixture("expectedResponseLP.json").then((expectedResponse) => {
         /* Here response.body validation */
         expect(actualResponse?.statusCode).to.eq(201);
-        expect(actualResponse?.body).to.have.property('id');
-        expect(actualResponse?.body).to.have.property('person_type');
-        expect(actualResponse?.body.person_type).to.deep.eq(expectedResponse.person_type)
-        expect(actualResponse?.body).to.have.property('groups_interested');
-        expect(actualResponse?.body.groups_interested).to.deep.eq(expectedResponse.groups_interested);
-        expect(actualResponse?.body).to.have.property('skills');
+        expect(actualResponse?.body).to.have.property("id");
+        expect(actualResponse?.body).to.have.property("person_type");
+        expect(actualResponse?.body.person_type).to.deep.eq(
+          expectedResponse.person_type
+        );
+        expect(actualResponse?.body).to.have.property("groups_interested");
+        expect(actualResponse?.body.groups_interested).to.deep.eq(
+          expectedResponse.groups_interested
+        );
+        expect(actualResponse?.body).to.have.property("skills");
         expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
-      })
+      });
     });
     cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
