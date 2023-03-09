@@ -11,18 +11,36 @@ const membersStore = useMembersStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Member Emails");
 </script>
-
 <template>
   <div class="h-full tabview-full">
     <TabView lazy>
       <TabPanel :header="t('Campaigns')">
-        <ObjectLoader :store="membersStore" :name="'membersEmailsCampaigns'" />
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membersEmailsCampaigns'"
+          :defaultColumns="['status', 'template', 'recipients', 'automation']"
+        />
       </TabPanel>
       <TabPanel :header="t('Templates')">
-        <ObjectLoader :store="membersStore" :name="'membersEmailsTemplates'" />
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membersEmailsTemplates'"
+          :defaultColumns="['name', 'subject', 'design']"
+        />
       </TabPanel>
       <TabPanel :header="t('Designs')">
-        <ObjectLoader :store="membersStore" :name="'membersEmailsDesigns'" />
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membersEmailsDesigns'"
+          :defaultColumns="['name', 'body']"
+        />
+      </TabPanel>
+      <TabPanel :header="t('Automations')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membersEmailsAutomations'"
+          :defaultColumns="['trigger', 'template']"
+        />
       </TabPanel>
     </TabView>
   </div>

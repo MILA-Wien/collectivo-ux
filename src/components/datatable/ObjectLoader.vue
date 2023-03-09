@@ -16,6 +16,10 @@ const props = defineProps({
     type: String as PropType<keyof typeof endpoints>,
     required: true,
   },
+  defaultColumns: {
+    type: Array as PropType<string[]>,
+    required: false,
+  },
 });
 
 const error = ref<Object | null>(null);
@@ -37,11 +41,7 @@ if (!data.value.loaded) {
     <PrimeProgressSpinner />
   </div>
   <div v-else class="h-full">
-    <ObjectTableFrame
-      :store="store"
-      :name="name"
-      :objects="data.data"
-      :schema="data.schema"
-    />
+    <ObjectTableFrame :store="store" :name="name" :objects="data.data"
+      :schema="data.schema" :default-columns="defaultColumns" />
   </div>
 </template>

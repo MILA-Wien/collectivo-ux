@@ -34,6 +34,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  defaultColumns: {
+    type: Array as PropType<string[]>,
+    required: false,
+  },
 });
 
 // Filter functions (match modes) ------------------------------------------ //
@@ -82,16 +86,9 @@ for (const [key, value] of Object.entries(props.schema)) {
 }
 
 // Set default columns
-// TODO: Load default columns from schema
-const defaultColumns = [
-  "sent",
-  "name",
-  "label",
-  "status",
-  "template",
-  "design",
-  "body",
-];
+const defaultColumns = props.defaultColumns
+  ? props.defaultColumns
+  : ["id", "name", "label", "status"];
 for (const col of defaultColumns) {
   if (!columns.find((c) => c.field === col)) {
     continue;
