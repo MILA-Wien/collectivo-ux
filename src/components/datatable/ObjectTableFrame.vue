@@ -43,8 +43,9 @@ const props = defineProps({
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
 function clearFilters() {
+  // Todo: Clear filters
   for (const value of Object.values(filters.value)) {
-    value.constraints[0].value = null;
+    value.constraints = [{ value: null, matchMode: undefined }];
   }
 }
 
@@ -124,50 +125,25 @@ function createObjectFn() {
     <PrimeToolbar class="mb-4">
       <template #start>
         <div class="m-1 text-left">
-          <PrimeButton
-            :label="t('Create')"
-            @click="createObjectFn()"
-            class="p-button-success"
-          >
+          <PrimeButton :label="t('Create')" @click="createObjectFn()" class="p-button-success">
           </PrimeButton>
         </div>
         <div class="m-1 text-left">
-          <PrimeMultiSelect
-            v-model="selectedColumns"
-            :options="columns"
-            optionLabel="header"
-            :filter="true"
-            :placeholder="t('Columns')"
-            :maxSelectedLabels="0"
-            :selectedItemsLabel="t('Columns')"
-            scrollHeight="400px"
-            class="w-26"
-          />
+          <PrimeMultiSelect v-model="selectedColumns" :options="columns" optionLabel="header" :filter="true"
+            :placeholder="t('Columns')" :maxSelectedLabels="0" :selectedItemsLabel="t('Columns')" scrollHeight="400px"
+            class="w-26" />
         </div>
       </template>
       <template #end>
+        <!-- <div class="m-1">
+            <PrimeButton type="button" icon="pi pi-filter-slash" :label="t('Clear')" class="p-button-outlined"
+              @click="clearFilters()">
+            </PrimeButton>
+          </div> -->
         <div class="m-1">
-          <PrimeButton
-            type="button"
-            icon="pi pi-filter-slash"
-            :label="t('Clear')"
-            class="p-button-outlined"
-            @click="clearFilters()"
-          >
-          </PrimeButton>
-        </div>
-        <div class="m-1">
-          <PrimeButton
-            icon="pi pi-file-export"
-            :label="t('Export')"
-            :disabled="!(selectedObjects?.length > 0)"
-          >
-            <JsonCSV
-              v-if="selectedObjects?.length > 0"
-              icon="pi pi-file-export"
-              :data="selectedObjects"
-              name="export.csv"
-            >
+          <PrimeButton icon="pi pi-file-export" :label="t('Export')" :disabled="!(selectedObjects?.length > 0)">
+            <JsonCSV v-if="selectedObjects?.length > 0" icon="pi pi-file-export" :data="selectedObjects"
+              name="export.csv">
               {{ t("Export") }}
             </JsonCSV>
           </PrimeButton>
@@ -177,30 +153,13 @@ function createObjectFn() {
 
     <div class="grow overflow-auto">
       <!-- Table will fill out full remaining height -->
-      <ObjectTable
-        :store="store"
-        :name="name"
-        :objects="objects"
-        :schema="schema"
-        :matchModes="matchModes"
-        :selectedColumns="selectedColumns"
-        v-model:filters="filters"
-        v-model:selectedObjects="selectedObjects"
-        v-model:editObject="editObject"
-        v-model:editActive="editActive"
-        v-model:editCreate="editCreate"
-      />
+      <ObjectTable :store="store" :name="name" :objects="objects" :schema="schema" :matchModes="matchModes"
+        :selectedColumns="selectedColumns" v-model:filters="filters" v-model:selectedObjects="selectedObjects"
+        v-model:editObject="editObject" v-model:editActive="editActive" v-model:editCreate="editCreate" />
     </div>
   </div>
 
   <!-- Detail dialog -->
-  <ObjectDetail
-    v-if="editActive"
-    :object="editObject"
-    :create="editCreate"
-    :store="store"
-    :name="name"
-    :schema="schema"
-    @close="editActive = false"
-  />
+  <ObjectDetail v-if="editActive" :object="editObject" :create="editCreate" :store="store" :name="name" :schema="schema"
+    @close="editActive = false" />
 </template>
