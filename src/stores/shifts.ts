@@ -9,10 +9,10 @@ export type ShiftsStoreState = {
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
-    ({
-      assignments: {},
-      shifts: {},
-    } as ShiftsStoreState),
+  ({
+    assignments: {},
+    shifts: {},
+  } as ShiftsStoreState),
 
   actions: {
     async getShifts() {
@@ -21,11 +21,16 @@ export const useShiftsStore = defineStore({
       const endOfMonth = formatDate(
         new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0)
       );
-
-      this.shifts = API.getWithParams("shiftsShifts", {
-        shift_starting_date: today,
-        shift_ending_date: endOfMonth,
-      }).then();
+      const startOfMonth = formatDate(
+        new Date(todayDate.getFullYear(), todayDate.getMonth(), 0)
+      );
+      API.getWithParams("shiftsShifts", {
+        shift_starting_date__gte: startOfMonth,
+        shift_starting_date__lte: endOfMonth,
+      }).then((response) => {
+        this.shifts = response.data;
+        return response.data;
+      });
     },
     async addShift(shift: any) {
       return API.post("shiftsShifts", shift);

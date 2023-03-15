@@ -179,11 +179,11 @@ export enum ShiftDay {
 export interface Shift {
   shift_title: string;
   shift_starting_date: string | Date;
-  shift_ending_date: string | Date;
+  shift_ending_date?: string | Date | null;
   shift_type: ShiftType;
   shift_week: ShiftWeek;
-  shift_starting_time: string | Date;
-  shift_ending_time: string | Date;
+  shift_starting_time?: string | Date | null;
+  shift_ending_time?: string | Date | null;
   required_users: Number;
   shift_day: ShiftDay;
   additional_info_general: string;
