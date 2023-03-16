@@ -123,8 +123,8 @@ function filter($event: any) {
     if ($event.filters[key].constraints[0].value !== null) {
       if (
         !(
-          $event.filters[key].constraints[0].matchMode == "equals" &&
-          $event.filters[key].constraints[0].value.length > 0
+          $event.filters[key].constraints[0].matchMode === "equals" &&
+          typeof $event.filters[key].constraints[0].value !== "string"
         )
       ) {
         filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
@@ -278,7 +278,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
                 :selectedItemsLabel="`${filterModel.value?.length} selected`"
                 :filter="true"
                 :placeholder="t('Select multiple choices')"
-                class="p-column-filter fitler-1"
+                class="p-column-filter"
               >
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">

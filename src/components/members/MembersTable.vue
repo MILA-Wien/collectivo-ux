@@ -65,11 +65,6 @@ watch(membersSummary.value, () => {
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
-function clearFilters() {
-  for (const value of Object.values(filters.value)) {
-    value.constraints[0].value = null;
-  }
-}
 
 // Data columns ------------------------------------------------------------ //
 const columns: any[] = [];
@@ -209,16 +204,6 @@ function bulkEdit() {
         </div>
       </template>
       <template #end>
-        <div class="m-1">
-          <PrimeButton
-            type="button"
-            icon="pi pi-filter-slash"
-            :label="t('Clear')"
-            class="p-button-outlined"
-            @click="clearFilters()"
-          >
-          </PrimeButton>
-        </div>
         <div class="m-1">
           <PrimeButton
             :label="t('Bulk edit')"
