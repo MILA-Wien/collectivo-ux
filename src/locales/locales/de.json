@@ -151,6 +151,25 @@
     "Columns": "Spalten",
     "Export CSV": "CSV exportieren",
     "Copy emails": "E-Mails kopieren",
+    "Send emails": "E-Mails versenden",
+    "Clear": "Zurücksetzen",
+    "Bulk edit": "Massenbearbeitung",
+    "failure": "Fehler",
+    "Sent": "Gesendet",
+    "Export": "Exportieren",
+
+    "Campaigns": "Kampagnen",
+    "Templates": "Vorlagen",
+    "Template": "Vorlage",
+    "Recipients": "Empfänger:innen",
+
+    "Should the campaign be sent now? Otherwise it will be saved as a draft.": "Soll die Kampagne jetzt versendet werden? Andernfalls wird sie als Entwurf gespeichert.",
+    "Select a choice": "Wähle eine Option",
+    "Select multiple choices": "Wähle eine oder mehrere Optionen",
+
+    "membersEmailsCampaigns": "E-Mail Kampagne",
+    "membersEmailsTemplates": "E-Mail Vorlage",
+    "membersEmailsDesigns": "E-Mail Design",
 
     "Html editor": "HTML Editor",
     "Visual editor": "Visueller Editor"

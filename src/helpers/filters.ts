@@ -22,13 +22,14 @@ FilterService.register("isNull", (a, b) => {
 FilterService.register("inList", (a, b) => inListFilter(a, b));
 FilterService.register("notInList", (a, b) => !inListFilter(a, b));
 
+// TODO: Implement not filters in backend first
 export const matchModes: any = {
   text: [
     { label: "Contains", value: FilterMatchMode.CONTAINS },
-    { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
+    // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
     { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
     { label: "In List", value: "inList" },
-    { label: "Not In List", value: "notInList" },
+    // { label: "Not In List", value: "notInList" },
     { label: "Is Empty", value: "isNull" },
   ],
   date: [
@@ -43,8 +44,8 @@ export const matchModes: any = {
     { label: "Is Empty", value: "isNull" },
   ],
   multiselect: [
-    { label: "Contains", value: FilterMatchMode.CONTAINS },
-    { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
+    // { label: "Contains", value: FilterMatchMode.CONTAINS },
+    // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
     { label: "Equals", value: FilterMatchMode.EQUALS },
     { label: "Is Empty", value: "isNull" },
   ],
@@ -54,7 +55,7 @@ export const matchModes: any = {
   ],
   number: [
     { label: "In List", value: "inList" },
-    { label: "Not In List", value: "notInList" },
+    // { label: "Not In List", value: "notInList" },
     { label: "Equals", value: FilterMatchMode.EQUALS },
     { label: "Less Than", value: FilterMatchMode.LESS_THAN },
     { label: "Greater Than", value: FilterMatchMode.GREATER_THAN },

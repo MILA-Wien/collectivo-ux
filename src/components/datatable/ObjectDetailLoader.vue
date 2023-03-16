@@ -17,8 +17,8 @@ const props = defineProps({
     type: String as PropType<keyof typeof endpoints>,
     required: true,
   },
-  pk: {
-    validator: prop => typeof prop === 'number' || prop === null,
+  id: {
+    validator: (prop) => typeof prop === "number" || prop === null,
     required: false,
   },
   create: {
@@ -33,7 +33,7 @@ const data = storeToRefs(props.store)[props.name];
 // Load data
 if (!props.create) {
   data.value.loaded = false;
-  props.store.get(props.name, props.pk).catch((e: any) => {
+  props.store.get(props.name, props.id).catch((e: any) => {
     error.value = e;
   });
 } else {
