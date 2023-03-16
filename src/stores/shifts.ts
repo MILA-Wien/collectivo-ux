@@ -9,10 +9,10 @@ export type ShiftsStoreState = {
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
-  ({
-    assignments: {},
-    shifts: {},
-  } as ShiftsStoreState),
+    ({
+      assignments: {},
+      shifts: {},
+    } as ShiftsStoreState),
 
   actions: {
     async getShifts() {
@@ -34,7 +34,7 @@ export const useShiftsStore = defineStore({
     },
     async addShift(shift: any) {
       return API.post("shiftsShifts", shift);
-    }
+    },
   },
   getters: {},
 });

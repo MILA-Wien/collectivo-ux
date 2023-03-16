@@ -152,7 +152,6 @@ export const DataDetailTemplate = {
   schemaLoaded: false,
 };
 
-
 // shifts
 export enum ShiftType {
   REGULAR = "regular",
