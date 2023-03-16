@@ -64,7 +64,7 @@ for (const [key, value] of Object.entries(props.schema)) {
 
   // Set default filters
   filters.value[key] = {
-    operator: FilterOperator.AND,
+    // operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },
     ],

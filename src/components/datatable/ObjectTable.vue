@@ -121,9 +121,18 @@ function filter($event: any) {
   let filter = "";
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
-      filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
-        $event.filters[key].constraints[0].matchMode
-      )}=${$event.filters[key].constraints[0].value}`;
+      if (!($event.filters[key].constraints[0].matchMode == "equals" && $event.filters[key].constraints[0].value.length > 0)){
+        filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
+          $event.filters[key].constraints[0].matchMode
+        )}=${$event.filters[key].constraints[0].value}`;
+      } else {
+        console.log($event.filters[key].constraints[0].value);
+        $event.filters[key].constraints[0].value.forEach((value: any) => {
+          filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
+            $event.filters[key].constraints[0].matchMode
+          )}=${value}`;
+        });
+      }
     }
   });
   props.store.filter(props.name, $event, sort, filter);
@@ -139,7 +148,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       return "__iendswith";
     case "equals":
     case "exact":
-      return "__in";
+      return "";
     case "notEquals":
       console.log("Unknown filter mode: " + filterMode);
       return "__exact";
@@ -264,7 +273,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
                 :selectedItemsLabel="`${filterModel.value?.length} selected`"
                 :filter="true"
                 :placeholder="t('Select multiple choices')"
-                class="p-column-filter"
+                class="p-column-filter fitler-1"
               >
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">
