@@ -20,7 +20,9 @@ describe("Login Succesfull", () => {
       "Statutes approved"
     );
 
-    cy.get('.p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button > .pi').click();
+    cy.get(
+      ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button > .pi"
+    ).click();
     cy.get(
       ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button"
     ).click();

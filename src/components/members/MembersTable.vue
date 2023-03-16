@@ -256,7 +256,8 @@ function bulkEdit() {
               v-if="selectedMembers?.length > 0"
               :data="selectedMembers"
               :name="t('members') + '.csv'"
-              >{{ t("Export CSV") }}</JsonCSV
+            >
+              {{ t("Export CSV") }}</JsonCSV
             >
           </PrimeButton>
         </div>

@@ -137,8 +137,9 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       return "__icontains";
     case "endsWith":
       return "__iendswith";
+    case "equals":
     case "exact":
-      return "";
+      return "__in";
     case "notEquals":
       console.log("Unknown filter mode: " + filterMode);
       return "__exact";
@@ -172,32 +173,67 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 
 <template>
   <div class="datatable" style="height: 100%; width: 100%">
-    <PrimeDataTable :value="objects" v-model:selection="selectedObjects" dataKey="id" ref="datatable" :lazy="true"
-      :paginator="true" :rows="50" :totalRecords="totalRecords"
+    <PrimeDataTable
+      :value="objects"
+      v-model:selection="selectedObjects"
+      dataKey="id"
+      ref="datatable"
+      :lazy="true"
+      :paginator="true"
+      :rows="50"
+      :totalRecords="totalRecords"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50, 100, 10000]" :currentPageReportTemplate="
+      :rowsPerPageOptions="[10, 20, 50, 100, 10000]"
+      :currentPageReportTemplate="
         t('Showing') +
         ' {first} ' +
         t('to') +
         ' {last} ' +
         t('of') +
         ' {totalRecords}'
-      " showGridlines class="p-datatable-sm object-table" filterDisplay="menu" v-model:filters="filters"
-      :resizableColumns="true" columnResizeMode="fit" :scrollable="true" scrollHeight="flex" @page="filter"
-      @filter="filter" @sort="filter">
+      "
+      showGridlines
+      class="p-datatable-sm object-table"
+      filterDisplay="menu"
+      v-model:filters="filters"
+      :resizableColumns="true"
+      columnResizeMode="fit"
+      :scrollable="true"
+      scrollHeight="flex"
+      @page="filter"
+      @filter="filter"
+      @sort="filter"
+    >
       <!-- Selection column -->
-      <PrimeColumn selectionMode="multiple" style="width: 50px; max-width: 50px" :frozen="true"></PrimeColumn>
+      <PrimeColumn
+        selectionMode="multiple"
+        style="width: 50px; max-width: 50px"
+        :frozen="true"
+      ></PrimeColumn>
       <!-- Edit column -->
       <PrimeColumn style="width: 50px; max-width: 50px" :frozen="true">
         <template #body="slotProps">
-          <PrimeButton icon="pi pi-pencil" class="p-button-text p-button-sm" @click="editObjectFn(slotProps.data)" />
+          <PrimeButton
+            icon="pi pi-pencil"
+            class="p-button-text p-button-sm"
+            @click="editObjectFn(slotProps.data)"
+          />
         </template>
       </PrimeColumn>
       <!-- Content columns -->
-      <PrimeColumn v-for="col of selectedColumns" :header="col.header" :key="col.field" :field="col.field"
-        :sortable="true" :filterMatchModeOptions="matchModes[col.input_type]">
+      <PrimeColumn
+        v-for="col of selectedColumns"
+        :header="col.header"
+        :key="col.field"
+        :field="col.field"
+        :sortable="true"
+        :filterMatchModeOptions="matchModes[col.input_type]"
+      >
         <!-- Custom bodies for different input types -->
-        <template #body="{ data }" v-if="col.input_type == 'date' || col.input_type == 'datetime'">
+        <template
+          #body="{ data }"
+          v-if="col.input_type == 'date' || col.input_type == 'datetime'"
+        >
           {{ formatDateTime(data[col.field]) }}
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'select'">
@@ -219,9 +255,17 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
           <div>
             <div v-if="col.input_type == 'multiselect'">
               <!-- Multiple choice -->
-              <PrimeMultiSelect v-model="filterModel.value" :options="col.choice_list" optionLabel="label"
-                optionValue="value" :maxSelectedLabels="0" :selectedItemsLabel="`${filterModel.value?.length} selected`"
-                :filter="true" :placeholder="t('Select multiple choices')" class="p-column-filter">
+              <PrimeMultiSelect
+                v-model="filterModel.value"
+                :options="col.choice_list"
+                optionLabel="label"
+                optionValue="value"
+                :maxSelectedLabels="0"
+                :selectedItemsLabel="`${filterModel.value?.length} selected`"
+                :filter="true"
+                :placeholder="t('Select multiple choices')"
+                class="p-column-filter"
+              >
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">
                     <span>{{ t(slotProps.option.label) }}</span>
@@ -231,8 +275,15 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
             </div>
             <div v-else-if="col.input_type == 'select'">
               <!-- Single choice -->
-              <PrimeDropdown v-model="filterModel.value" :options="col.choice_list" optionLabel="label"
-                optionValue="value" placeholder="Any" class="p-column-filter" :showClear="true">
+              <PrimeDropdown
+                v-model="filterModel.value"
+                :options="col.choice_list"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Any"
+                class="p-column-filter"
+                :showClear="true"
+              >
                 <template #value="slotProps">
                   <span class="tag" v-if="slotProps.value">
                     {{ t(col.choices[slotProps.value]) }}
@@ -257,10 +308,18 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
               <!-- <PrimeCalendar v-model="filterModel.value" :showTime="true" /> -->
             </div>
             <div v-else-if="filterModel.matchMode == 'isNull'">
-              <PrimeInputSwitch v-model="filterModel.value" class="p-column-filter" />
+              <PrimeInputSwitch
+                v-model="filterModel.value"
+                class="p-column-filter"
+              />
             </div>
             <div v-else>
-              <PrimeInputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Type filter" />
+              <PrimeInputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Type filter"
+              />
             </div>
           </div>
         </template>
@@ -278,8 +337,8 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   border-width: 1px 1px 1px 1px;
 }
 
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody>tr>td,
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody>tr>th {
+.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
+.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
   padding: 5px 10px 5px 10px;
   word-break: break-all;
   // vertical-align: middle;
@@ -297,5 +356,10 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   border-color: black;
   border-radius: 3px;
   width: fit-content;
+}
+
+.object-table.p-datatable .p-column-title {
+  max-width: 14ch;
+  overflow: hidden;
 }
 </style>

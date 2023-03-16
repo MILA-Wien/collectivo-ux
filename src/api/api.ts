@@ -123,7 +123,7 @@ export const API = {
     }
     api_endpoint = `${api_endpoint}?offset=${offset}&limit=${limit}`;
     if (filter !== undefined) {
-      api_endpoint = `${api_endpoint}&search=${filter}`;
+      api_endpoint = `${api_endpoint}${filter}`;
     }
     if (order !== undefined && order !== null && order !== "null") {
       api_endpoint = `${api_endpoint}&ordering=${order}`;
