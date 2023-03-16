@@ -8,13 +8,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {
-  defineProps,
-  defineEmits,
-  ref,
-  watch,
-  defineAsyncComponent,
-} from "vue";
+import { ref, watch, defineAsyncComponent } from "vue";
 import { useFormViewerStore } from "@/stores/formviewer";
 const CheckboxGroup = defineAsyncComponent(() => import("./CheckboxGroup.vue"));
 const props = defineProps<{
@@ -26,7 +20,7 @@ if (props.element.properties.optionsEndpoint) {
     .loadOptions(props.element.id, props.element.properties.optionsEndpoint)
     .then((res) => {
       if (res) {
-        preparedElement.value.properties.options = res.data;
+        preparedElement.value.properties.options = res.data.results;
       }
     });
 }

@@ -27,6 +27,7 @@ const { membersProfile } = storeToRefs(membersStore);
     <MembersProfile
       :membership="membersProfile.data"
       :membershipSchema="membersProfile.schema"
+      id="members-profile"
     />
   </div>
 </template>

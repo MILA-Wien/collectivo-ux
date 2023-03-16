@@ -1,4 +1,4 @@
-/* 
+/*
 README && TODOs:
 
 2. JSON response validation on submit formular: @Joel, see below validated properties
@@ -9,8 +9,8 @@ README && TODOs:
 Cypress.Cookies.debug(true);
 describe("register user_not_member", () => {
   /*
-  beforeEach(): better practice than afterEach(). 
-  WHY: https://docs.cypress.io/guides/references/best-practices#Using-after-or-afterEach-hooks 
+  beforeEach(): better practice than afterEach().
+  WHY: https://docs.cypress.io/guides/references/best-practices#Using-after-or-afterEach-hooks
   */
   beforeEach(() => {
     // authenticate as superuser
@@ -77,10 +77,10 @@ describe("register user_not_member", () => {
     cy.get("#address-street-input > .textfield input")
       .click({ force: true })
       .type("ÄltGasseMitNötFünnyChars");
-    cy.get("#address-street-number-input > .number input")
+    cy.get("#address-street-number-input > .textfield input")
       .click({ force: true })
       .type("28392");
-    cy.get("#address-postcode-input > .number input")
+    cy.get("#address-postcode-input > .textfield input")
       .click({ force: true })
       .type("1111");
     cy.get("#address-city-input > .textfield input")

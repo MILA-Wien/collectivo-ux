@@ -72,6 +72,21 @@ const emit = defineEmits([
 function formatDateTime(date: string) {
   return new Date(date).toLocaleString("de-AT");
 }
+function formatMultiSelect(data: any) {
+  const len = Array.isArray(data) ? data.length : 0;
+  const str = len !== 1 ? "tags" : "tag";
+  return `${len} ${t(str)}`;
+}
+function formatGeneric(data: string | null) {
+  // Shorten strings that are longer than 30 characters
+  if (data == undefined) {
+    return "";
+  }
+  if (data.length > 30) {
+    return data.substring(0, 30) + "...";
+  }
+  return data;
+}
 
 // Datatable --------------------------------------------------------------- //
 const datatable = ref();
@@ -91,6 +106,83 @@ function editObjectFn(event: any) {
   emit("update:editCreate", false);
   emit("update:editActive", true);
 }
+const totalRecords = ref(0);
+watch(
+  () => props.store[props.name].totalRecords,
+  (val) => {
+    totalRecords.value = val;
+  },
+  { immediate: true }
+);
+
+// Filter --------------------------------------------------------------- //
+function filter($event: any) {
+  const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
+  let filter = "";
+  Object.keys($event.filters).forEach((key: any) => {
+    if ($event.filters[key].constraints[0].value !== null) {
+      if (
+        !(
+          $event.filters[key].constraints[0].matchMode == "equals" &&
+          $event.filters[key].constraints[0].value.length > 0
+        )
+      ) {
+        filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
+          $event.filters[key].constraints[0].matchMode
+        )}=${$event.filters[key].constraints[0].value}`;
+      } else {
+        console.log($event.filters[key].constraints[0].value);
+        $event.filters[key].constraints[0].value.forEach((value: any) => {
+          filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
+            $event.filters[key].constraints[0].matchMode
+          )}=${value}`;
+        });
+      }
+    }
+  });
+  props.store.filter(props.name, $event, sort, filter);
+}
+
+function dataTableFilterModesToDjangoFilter(filterMode: string) {
+  switch (filterMode) {
+    case "startsWith":
+      return "__istartswith";
+    case "contains":
+      return "__icontains";
+    case "endsWith":
+      return "__iendswith";
+    case "equals":
+    case "exact":
+      return "";
+    case "notEquals":
+      console.log("Unknown filter mode: " + filterMode);
+      return "__exact";
+    case "in":
+      return "__in";
+    case "lt":
+      return "__lt";
+    case "lte":
+      return "__lte";
+    case "gt":
+      return "__gt";
+    case "gte":
+      return "__gte";
+    case "between":
+      return "__range";
+    case "is":
+      return "__isnull";
+    case "isNot":
+      console.log("Unknown filter mode: " + filterMode);
+      return "__isnull";
+    case "isNull":
+      return "__isnull";
+    case "inList":
+      return "__in";
+    default:
+      console.log("Unknown filter mode: " + filterMode);
+      return "__icontains";
+  }
+}
 </script>
 
 <template>
@@ -100,10 +192,12 @@ function editObjectFn(event: any) {
       v-model:selection="selectedObjects"
       dataKey="id"
       ref="datatable"
+      :lazy="true"
       :paginator="true"
       :rows="50"
+      :totalRecords="totalRecords"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50, 100]"
+      :rowsPerPageOptions="[10, 20, 50, 100, 10000]"
       :currentPageReportTemplate="
         t('Showing') +
         ' {first} ' +
@@ -120,6 +214,9 @@ function editObjectFn(event: any) {
       columnResizeMode="fit"
       :scrollable="true"
       scrollHeight="flex"
+      @page="filter"
+      @filter="filter"
+      @sort="filter"
     >
       <!-- Selection column -->
       <PrimeColumn
@@ -155,16 +252,16 @@ function editObjectFn(event: any) {
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'select'">
           <div v-if="data[col.field]" class="tag">
-            {{ col.choices[data[col.field]] }}
+            {{ t(col.choices[data[col.field]]) }}
           </div>
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
-          {{ formatMultiSelect(data[col.field]) }}
+          {{ t(formatMultiSelect(data[col.field])) }}
         </template>
         <template #body="{ data }" v-else>
           <!-- TODO: Inspect function to show objects -->
-          {{ formatGeneric(data[col.field]) }}
+          {{ t(formatGeneric(data[col.field])) }}
         </template>
 
         <!-- Custom filters for different input types -->
@@ -180,12 +277,12 @@ function editObjectFn(event: any) {
                 :maxSelectedLabels="0"
                 :selectedItemsLabel="`${filterModel.value?.length} selected`"
                 :filter="true"
-                placeholder="Select multiple choices"
-                class="p-column-filter"
+                :placeholder="t('Select multiple choices')"
+                class="p-column-filter fitler-1"
               >
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">
-                    <span>{{ slotProps.option.label }}</span>
+                    <span>{{ t(slotProps.option.label) }}</span>
                   </div>
                 </template>
               </PrimeMultiSelect>
@@ -203,9 +300,9 @@ function editObjectFn(event: any) {
               >
                 <template #value="slotProps">
                   <span class="tag" v-if="slotProps.value">
-                    {{ col.choices[slotProps.value] }}
+                    {{ t(col.choices[slotProps.value]) }}
                   </span>
-                  <span v-else>{{ slotProps.placeholder }}</span>
+                  <span v-else>{{ t(slotProps.placeholder) }}</span>
                 </template>
                 <template #option="slotProps">
                   <span class="tag">
@@ -215,12 +312,12 @@ function editObjectFn(event: any) {
               </PrimeDropdown>
             </div>
             <div v-else-if="col.input_type == 'date'">
-              Date filter not implemented yet
+              {{ t("Date filter not implemented yet") }}
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" /> -->
             </div>
             <div v-else-if="col.input_type == 'datetime'">
-              Datetime filter not implemented yet
+              {{ t("Datetime filter not implemented yet") }}
               <!-- TODO Filter doesn't work yet -->
               <!-- <PrimeCalendar v-model="filterModel.value" :showTime="true" /> -->
             </div>
@@ -273,5 +370,10 @@ function editObjectFn(event: any) {
   border-color: black;
   border-radius: 3px;
   width: fit-content;
+}
+
+.object-table.p-datatable .p-column-title {
+  max-width: 14ch;
+  overflow: hidden;
 }
 </style>

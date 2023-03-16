@@ -104,12 +104,34 @@ export const endpoints = {
 export const API = {
   get: async function (
     endpoint: keyof typeof endpoints,
-    pk?: Number
+    id?: Number,
+    page?: Number,
+    rowsPerPage?: Number,
+    order?: String,
+    filter?: String
   ): Promise<AxiosResponse<any, any>> {
-    if (pk === undefined) {
-      return await api.get(endpoints[endpoint]);
+    if (id !== undefined && id !== null) {
+      // return a detail single object
+      return await api.get(`${endpoints[endpoint]}${id}/`);
     }
-    return await api.get(`${endpoints[endpoint]}${pk}/`);
+    // return a paginated endpoint
+    let api_endpoint = endpoints[endpoint];
+    let offset = 0;
+    let limit = 50;
+    if (page !== undefined && rowsPerPage !== undefined) {
+      // @ts-ignore - page and rowsPerPage are numbers
+      offset = page * rowsPerPage;
+      // @ts-ignore - page and rowsPerPage are numbers
+      limit = rowsPerPage;
+    }
+    api_endpoint = `${api_endpoint}?offset=${offset}&limit=${limit}`;
+    if (filter !== undefined) {
+      api_endpoint = `${api_endpoint}${filter}`;
+    }
+    if (order !== undefined && order !== null && order !== "null") {
+      api_endpoint = `${api_endpoint}&ordering=${order}`;
+    }
+    return await api.get(api_endpoint);
   },
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
@@ -120,18 +142,18 @@ export const API = {
   patch: async function (
     endpoint: keyof typeof endpoints,
     payload: Object,
-    pk?: Number
+    id?: Number
   ) {
-    if (pk === undefined) {
+    if (id === undefined) {
       return await api.patch(endpoints[endpoint], payload);
     }
-    return await api.patch(`${endpoints[endpoint]}${pk}/`, payload);
+    return await api.patch(`${endpoints[endpoint]}${id}/`, payload);
   },
-  delete: async function (endpoint: keyof typeof endpoints, pk?: Number) {
-    if (pk === undefined) {
+  delete: async function (endpoint: keyof typeof endpoints, id?: Number) {
+    if (id === undefined) {
       return await api.delete(endpoints[endpoint]);
     }
-    return await api.delete(`${endpoints[endpoint]}${pk}/`);
+    return await api.delete(`${endpoints[endpoint]}${id}/`);
   },
   getWithParams: async function (
     endpoint: keyof typeof endpoints,
