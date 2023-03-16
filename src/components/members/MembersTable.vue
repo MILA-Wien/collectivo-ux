@@ -7,7 +7,6 @@ import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import MembersBulkEdit from "./MembersBulkEdit.vue";
 import Toolbar from "primevue/toolbar";
 import PrimeButton from "primevue/button";
-import { FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
@@ -87,6 +86,7 @@ for (const [key, value] of Object.entries(props.schema)) {
 
   // Set default filters
   filters.value[key] = {
+    // Todo: Add support for OR operator in the backend
     // operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },

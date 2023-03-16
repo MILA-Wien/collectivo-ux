@@ -121,7 +121,12 @@ function filter($event: any) {
   let filter = "";
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
-      if (!($event.filters[key].constraints[0].matchMode == "equals" && $event.filters[key].constraints[0].value.length > 0)){
+      if (
+        !(
+          $event.filters[key].constraints[0].matchMode == "equals" &&
+          $event.filters[key].constraints[0].value.length > 0
+        )
+      ) {
         filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
           $event.filters[key].constraints[0].matchMode
         )}=${$event.filters[key].constraints[0].value}`;

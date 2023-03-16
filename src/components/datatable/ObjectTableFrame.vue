@@ -3,7 +3,6 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
-import { FilterOperator } from "primevue/api";
 import PrimeToolbar from "primevue/toolbar";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
@@ -64,6 +63,7 @@ for (const [key, value] of Object.entries(props.schema)) {
 
   // Set default filters
   filters.value[key] = {
+    // Todo: Add support for OR operator in the backend
     // operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },
