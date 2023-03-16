@@ -4,15 +4,16 @@ import { API } from "@/api/api";
 export type ShiftsStoreState = {
   assignments: any;
   shifts: any;
+  sortedShifts: any;
 };
 
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
-    ({
-      assignments: {},
-      shifts: {},
-    } as ShiftsStoreState),
+  ({
+    assignments: {},
+    shifts: {},
+  } as ShiftsStoreState),
 
   actions: {
     async getShifts() {
@@ -29,8 +30,33 @@ export const useShiftsStore = defineStore({
         shift_starting_date__lte: endOfMonth,
       }).then((response) => {
         this.shifts = response.data;
+        this.sortShiftsByDate();
         return response.data;
       });
+    },
+    async sortShiftsByDate() {
+      console.log("now")
+      const shiftsByDate = this.shifts.sort((a: any, b: any) => {
+        return new Date(a.shift_starting_date) > new Date(b.shift_starting_date)
+          ? 1
+          : -1;
+      });
+      const shiftsGroupedByDate: Array<any> = [];
+      shiftsByDate.forEach((element: any) => {
+        const date = element.shift_starting_date;
+        const index = shiftsGroupedByDate.findIndex((e: any) => e.date === date);
+        if (index === -1) {
+          shiftsGroupedByDate.push({
+            date: date,
+            shifts: [element],
+          });
+        } else {
+          shiftsGroupedByDate[index].shifts.push(element);
+        }
+      });
+
+      this.sortedShifts = shiftsGroupedByDate;
+      console.log(shiftsGroupedByDate);
     },
     async addShift(shift: any) {
       return API.post("shiftsShifts", shift);
