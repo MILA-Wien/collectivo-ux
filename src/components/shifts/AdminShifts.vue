@@ -2,9 +2,8 @@
 import { useShiftsStore } from "@/stores/shifts";
 import { ref, onMounted } from "vue";
 import "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import Splitter from 'primevue/splitter';
+import SplitterPanel from 'primevue/splitterpanel';
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import PrimeInputText from "primevue/inputtext";
@@ -24,23 +23,11 @@ import PrimeDropdown from "primevue/dropdown";
 import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
 import Timeline from "primevue/timeline";
 import "primeflex/primeflex.css";
+import PrimeScrollTop from 'primevue/scrolltop';
+
+import PrimeVirtualScroller from 'primevue/virtualscroller';
 
 const { t } = useI18n();
-
-let options = ref({
-  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-  initialDate: new Date(),
-  headerToolbar: {
-    left: "prev,next today",
-    center: "title",
-    right: "dayGridMonth,timeGridWeek,timeGridDay",
-  },
-  events: [],
-  editable: true,
-  selectable: true,
-  selectMirror: true,
-  dayMaxEvents: true,
-});
 
 const shiftsStore = useShiftsStore();
 onMounted(() => {
@@ -131,51 +118,86 @@ const sortOptions = ref(1);
 const sortKey = ref("");
 const sortOrder = ref(1);
 const activeTab = ref(0);
+let lastKnownScrollPosition = 0;
+
+document.getElementsByTagName("main")[0].addEventListener("scroll", (event: any) => {
+  console.log("scrolling", event.target);
+  lastKnownScrollPosition = event.target.scrollTop;
+  if (lastKnownScrollPosition > 100) {
+    document.getElementById("date-menu")?.classList.add("fixed");
+  } else {
+    document.getElementById("date-menu")?.classList.remove("fixed");
+  }
+});
+
 </script>
 
 <template>
-  <div>
+  <div class="admin-shifts" id="admin-shifts">
     <PrimeButton label="Add Shift" icon="pi pi-plus" class="p-button-raised p-button-rounded p-button-success"
       @click="showAddShiftDialog = true" />
     <TabView>
       <TabPanel header="Timeline" lazy="true">
-        <Timeline :value="shiftsStore.sortedShifts" align="left" class="shifts-timeline">
-          <template #marker="slotProps">
-            <span
-              class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1"
-              :style="{ backgroundColor: slotProps.item.color }">
-              <i :class="slotProps.item.icon"></i>
-            </span>
-          </template>
-          <template #opposite="slotProps">
-            <div>{{ slotProps.item.date }}</div>
-          </template>
-          <template #content="slotProps">
-            <div class="grid">
-              <div  v-for="shift in slotProps.item.shifts" :key="shift.id" class="col-4 p-2">
-                <PrimeCard>
-                  <template #title>
-                    <PrimeTag>{{ shift.shift_week }}</PrimeTag>
-                    {{ shift.shift_title }} - {{ shift.shift_starting_time }} - {{ shift.shift_ending_time }}
-                  </template>
-                  <template #subtitle>
-                    <PrimeRating v-model="shift.assigned_users.length" :cancel="false" :stars="shift.assignments.length"
-                      readonly>
-                      <template #onicon>
-                        <img src="/images/shifts/custom-onicon.png" height="24" width="24" />
+        <div class="grid">
+          <div class="col-9">
+            <Timeline :value="shiftsStore.sortedShifts" align="left" class="shifts-timeline">
+              <template #marker="slotProps">
+                <span
+                  class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1"
+                  :style="{ backgroundColor: slotProps.item.color }">
+                  <i :class="slotProps.item.icon"></i>
+                </span>
+              </template>
+              <template #opposite="slotProps">
+                <div :id="slotProps.item.date">{{ slotProps.item.date }}</div>
+              </template>
+              <template #content="slotProps">
+                <div class="grid">
+                  <div v-for="shift in slotProps.item.shifts" :key="shift.id" class="col-4 p-2">
+                    <PrimeCard>
+                      <template #title>
+                        <PrimeTag>{{ shift.shift_week }}</PrimeTag>
+                        {{ shift.shift_title }} - {{ shift.shift_starting_time }} - {{ shift.shift_ending_time }}
                       </template>
-                    </PrimeRating>
-                  </template>
-                  <template #content>
-                    {{ shift.additional_info_general }}
+                      <template #subtitle>
+                        <PrimeRating v-model="shift.assigned_users.length" :cancel="false"
+                          :stars="shift.assignments.length" readonly>
+                          <template #onicon>
+                            <img src="/images/shifts/custom-onicon.png" height="24" width="24" />
+                          </template>
+                        </PrimeRating>
+                      </template>
+                      <template #content>
+                        {{ shift.additional_info_general }}
 
-                    <!-- {{ slotProps }} -->
-                  </template>
-                </PrimeCard>
-              </div>
+                        <!-- {{ slotProps }} -->
+                      </template>
+                    </PrimeCard>
+                  </div>
+                </div>
+              </template>
+            </Timeline>
+          </div>
+          <div class="col-3 flex justify-content-end" :size="25">
+            <div id="date-menu">
+              <PrimeVirtualScroller :items="shiftsStore.sortedShifts" :itemSize="50"
+                class="border-1 surface-border border-round" style="width: 200px; height: 200px">
+                <template v-slot:item="{ item, options }">
+                  <div :class="['flex align-items-center p-2', { 'surface-hover': options.odd }]" style="height: 50px" >
+                  <a :href="`#${item.date}`">{{
+                    item.date
+                  }}
+                  </a></div>
+                </template>
+              </PrimeVirtualScroller>
             </div>
-          </template>
-        </Timeline>
+          </div>
+        </div>
+
+
+
+
+        <PrimeScrollTop />
       </TabPanel>
       <TabPanel header="Data View">
         <DataView :value="shiftsStore.shifts" paginator :rows="5" :sortOrder="sortOrder" :sortField="sortField"
@@ -363,5 +385,15 @@ const activeTab = ref(0);
 .shifts-timeline .p-timeline-event-opposite {
   max-width: 100px;
   padding-right: 20px;
+}
+
+.admin-shifts {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+  top: 10;
+  right: 40;
 }
 </style>
