@@ -72,21 +72,6 @@ const emit = defineEmits([
 function formatDateTime(date: string) {
   return new Date(date).toLocaleString("de-AT");
 }
-function formatMultiSelect(data: any) {
-  const len = Array.isArray(data) ? data.length : 0;
-  const str = len !== 1 ? "objects" : "object";
-  return `${len} ${t(str)}`;
-}
-function formatGeneric(data: string | null) {
-  // Shorten strings that are longer than 30 characters
-  if (data == undefined) {
-    return "";
-  }
-  if (data.length > 30) {
-    return data.substring(0, 30) + "...";
-  }
-  return data;
-}
 
 // Datatable --------------------------------------------------------------- //
 const datatable = ref();
@@ -110,62 +95,31 @@ function editObjectFn(event: any) {
 
 <template>
   <div class="datatable" style="height: 100%; width: 100%">
-    <PrimeDataTable
-      :value="objects"
-      v-model:selection="selectedObjects"
-      dataKey="id"
-      ref="datatable"
-      :paginator="true"
+    <PrimeDataTable :value="objects" v-model:selection="selectedObjects" dataKey="id" ref="datatable" :paginator="true"
       :rows="50"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 20, 50, 100]"
-      :currentPageReportTemplate="
+      :rowsPerPageOptions="[10, 20, 50, 100]" :currentPageReportTemplate="
         t('Showing') +
         ' {first} ' +
         t('to') +
         ' {last} ' +
         t('of') +
         ' {totalRecords}'
-      "
-      showGridlines
-      class="p-datatable-sm object-table"
-      filterDisplay="menu"
-      v-model:filters="filters"
-      :resizableColumns="true"
-      columnResizeMode="fit"
-      :scrollable="true"
-      scrollHeight="flex"
-    >
+      " showGridlines class="p-datatable-sm object-table" filterDisplay="menu" v-model:filters="filters"
+      :resizableColumns="true" columnResizeMode="fit" :scrollable="true" scrollHeight="flex">
       <!-- Selection column -->
-      <PrimeColumn
-        selectionMode="multiple"
-        style="width: 50px; max-width: 50px"
-        :frozen="true"
-      ></PrimeColumn>
+      <PrimeColumn selectionMode="multiple" style="width: 50px; max-width: 50px" :frozen="true"></PrimeColumn>
       <!-- Edit column -->
       <PrimeColumn style="width: 50px; max-width: 50px" :frozen="true">
         <template #body="slotProps">
-          <PrimeButton
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm"
-            @click="editObjectFn(slotProps.data)"
-          />
+          <PrimeButton icon="pi pi-pencil" class="p-button-text p-button-sm" @click="editObjectFn(slotProps.data)" />
         </template>
       </PrimeColumn>
       <!-- Content columns -->
-      <PrimeColumn
-        v-for="col of selectedColumns"
-        :header="col.header"
-        :key="col.field"
-        :field="col.field"
-        :sortable="true"
-        :filterMatchModeOptions="matchModes[col.input_type]"
-      >
+      <PrimeColumn v-for="col of selectedColumns" :header="col.header" :key="col.field" :field="col.field"
+        :sortable="true" :filterMatchModeOptions="matchModes[col.input_type]">
         <!-- Custom bodies for different input types -->
-        <template
-          #body="{ data }"
-          v-if="col.input_type == 'date' || col.input_type == 'datetime'"
-        >
+        <template #body="{ data }" v-if="col.input_type == 'date' || col.input_type == 'datetime'">
           {{ formatDateTime(data[col.field]) }}
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'select'">
@@ -187,17 +141,9 @@ function editObjectFn(event: any) {
           <div>
             <div v-if="col.input_type == 'multiselect'">
               <!-- Multiple choice -->
-              <PrimeMultiSelect
-                v-model="filterModel.value"
-                :options="col.choice_list"
-                optionLabel="label"
-                optionValue="value"
-                :maxSelectedLabels="0"
-                :selectedItemsLabel="`${filterModel.value?.length} selected`"
-                :filter="true"
-                placeholder="Select multiple choices"
-                class="p-column-filter"
-              >
+              <PrimeMultiSelect v-model="filterModel.value" :options="col.choice_list" optionLabel="label"
+                optionValue="value" :maxSelectedLabels="0" :selectedItemsLabel="`${filterModel.value?.length} selected`"
+                :filter="true" placeholder="Select multiple choices" class="p-column-filter">
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">
                     <span>{{ slotProps.option.label }}</span>
@@ -207,15 +153,8 @@ function editObjectFn(event: any) {
             </div>
             <div v-else-if="col.input_type == 'select'">
               <!-- Single choice -->
-              <PrimeDropdown
-                v-model="filterModel.value"
-                :options="col.choice_list"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Any"
-                class="p-column-filter"
-                :showClear="true"
-              >
+              <PrimeDropdown v-model="filterModel.value" :options="col.choice_list" optionLabel="label"
+                optionValue="value" placeholder="Any" class="p-column-filter" :showClear="true">
                 <template #value="slotProps">
                   <span class="tag" v-if="slotProps.value">
                     {{ col.choices[slotProps.value] }}
@@ -240,18 +179,10 @@ function editObjectFn(event: any) {
               <!-- <PrimeCalendar v-model="filterModel.value" :showTime="true" /> -->
             </div>
             <div v-else-if="filterModel.matchMode == 'isNull'">
-              <PrimeInputSwitch
-                v-model="filterModel.value"
-                class="p-column-filter"
-              />
+              <PrimeInputSwitch v-model="filterModel.value" class="p-column-filter" />
             </div>
             <div v-else>
-              <PrimeInputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Type filter"
-              />
+              <PrimeInputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Type filter" />
             </div>
           </div>
         </template>
@@ -264,16 +195,19 @@ function editObjectFn(event: any) {
 .object-table.p-component {
   font-size: 14px;
 }
+
 .p-datatable.p-datatable-gridlines .p-paginator-bottom {
   border-width: 1px 1px 1px 1px;
 }
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
+
+.object-table.p-datatable.p-datatable-sm .p-datatable-tbody>tr>td,
+.object-table.p-datatable.p-datatable-sm .p-datatable-tbody>tr>th {
   padding: 5px 10px 5px 10px;
   word-break: break-all;
   // vertical-align: middle;
   // white-space: normal;
 }
+
 .tag {
   font-size: 13px;
   padding-top: 3px;

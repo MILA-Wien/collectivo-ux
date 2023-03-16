@@ -15,17 +15,17 @@ import PrimeTextarea from "primevue/textarea";
 import { useI18n } from "vue-i18n";
 import { ShiftDay, ShiftType, ShiftWeek, type Shift } from "@/api/types";
 import DataView from 'primevue/dataview';
+import TabView from 'primevue/tabview';
+import PrimeTag from 'primevue/tag';
+import TabPanel from 'primevue/tabpanel';
+import PrimeCard from 'primevue/card';
+import PrimeRating from 'primevue/rating';
+import PrimeDropdown from 'primevue/dropdown';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
+import Timeline from 'primevue/timeline';
 import 'primeflex/primeflex.css';
 
 const { t } = useI18n();
-const events = ref([
-    {
-        id: 'a',
-        title: 'my event',
-        start: new Date()
-    }
-]);
 
 let options = ref({
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -53,7 +53,7 @@ todayLater.setHours(today.getHours() + 1);
 const newShift = ref<Shift>({
     shift_title: "",
     shift_starting_date: today,
-    shift_ending_date: "",
+    shift_ending_date: undefined,
     shift_type: ShiftType.REGULAR,
     shift_week: ShiftWeek.A,
     shift_starting_time: today,
@@ -65,7 +65,7 @@ const newShift = ref<Shift>({
 
 const newShiftDates = ref({
     shift_starting_date: today,
-    shift_ending_date: "",
+    shift_ending_date: undefined,
     shift_starting_time: today,
     shift_ending_time: todayLater,
 });
@@ -74,7 +74,7 @@ function resetNewShift() {
     newShift.value = {
         shift_title: "",
         shift_starting_date: new Date(),
-        shift_ending_date: "",
+        shift_ending_date: undefined,
         shift_type: ShiftType.REGULAR,
         shift_week: ShiftWeek.A,
         shift_starting_time: "",
@@ -108,29 +108,27 @@ const shiftDayOptions = [
 function addShift() {
     const shift = formatTimesInShift();
     // console.log(shift);
-    newShift.value.shift_starting_time = null;
-    newShift.value.shift_ending_time = null;
-    newShift.value.shift_ending_date = null;
     shiftsStore.addShift(newShift.value);
-    // showAddShiftDialog.value = false;
+    showAddShiftDialog.value = false;
+    shiftsStore.getShifts();
+
 }
 function formatTimesInShift() {
-    console.log(newShift);
     const shift = newShift.value;
     shift.shift_starting_date = `${newShiftDates.value.shift_starting_date.getFullYear()}-${newShiftDates.value.shift_starting_date.getMonth() + 1}-${newShiftDates.value.shift_starting_date.getDate()}`;
     shift.shift_starting_time = `${newShiftDates.value.shift_starting_time.getHours()}:${newShiftDates.value.shift_starting_time.getMinutes()}`;
-    shift.shift_ending_date = newShiftDates.value.shift_ending_date ? `${newShiftDates.value.shift_ending_date?.getFullYear()}-${newShiftDates.value.shift_ending_date?.getMonth() + 1}-${newShiftDates.value.shift_ending_date?.getDate()}` : "";
+    shift.shift_ending_date = newShiftDates.value.shift_ending_date ? `${newShiftDates.value.shift_ending_date?.getFullYear()}-${newShiftDates.value.shift_ending_date?.getMonth() + 1}-${newShiftDates.value.shift_ending_date?.getDate()}` : undefined;
     shift.shift_ending_time = `${newShiftDates.value.shift_ending_time.getHours()}:${newShiftDates.value.shift_ending_time.getMinutes()}`;
     return shift;
 }
-function addEvent() {
-    options.value.events.push({
-        id: 'b',
-        title: 'my event',
-        start: new Date()
-    })
-}
+
 const layout = ref('grid');
+const sortField = ref('');
+const sortOptions = ref(1);
+const sortKey = ref('');
+const sortOrder = ref(1);
+const activeTab = ref(0);
+
 </script>
 
 <template>
@@ -139,132 +137,176 @@ const layout = ref('grid');
             @click="addEvent" />
         <PrimeButton label="Add Shift" icon="pi pi-plus" class="p-button-raised p-button-rounded p-button-success"
             @click="showAddShiftDialog = true" />
+        <TabView>
 
-        <DataView :value="shiftsStore.shifts" paginator :rows="5" :sortOrder="sortOrder" :sortField="sortField"
-            :layout="layout">
-            <template #header>
-                <Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price"
-                    @change="onSortChange($event)" />
-                <div class="flex justify-content-end">
-                    <DataViewLayoutOptions v-model="layout" />
-                </div>
-            </template>
-            <template #list="slotProps">
-                {{ slotProps.data }}
-                <div class="col-12">
-                    <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                        <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                            :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
-                            :alt="slotProps.data.shift_title" />
-                        <div
-                            class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                            <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-                                <div class="text-2xl font-bold text-900">{{ slotProps.data.name }}</div>
-                                <Rating :modelValue="slotProps.data.rating" readonly :cancel="false"></Rating>
-                                <div class="flex align-items-center gap-3">
-                                    <span class="flex align-items-center gap-2">
-                                        <i class="pi pi-tag"></i>
-                                        <span class="font-semibold">{{ slotProps.data.category }}</span>
-                                    </span>
-                                    <Tag :value="slotProps.data.inventoryStatus">
-                                        <!-- :severity="getSeverity(slotProps.data)"> -->
-                                    </Tag>
+            <TabPanel header="Timeline" lazy="true">
+                <Timeline :value="shiftsStore.shifts" align="left" class="shifts-timeline">
+                    <template #marker="slotProps">
+                        <span
+                            class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1"
+                            :style="{ backgroundColor: slotProps.item.color }">
+                            <i :class="slotProps.item.icon"></i>
+                        </span>
+                    </template>
+                    <template #opposite="slotProps">
+                        <div>{{ slotProps.item.shift_starting_date }}</div>
+                    </template>
+                    <template #content="slotProps">
+                        <PrimeCard>
+                            <template #title>
+                                <PrimeTag>{{ slotProps.item.shift_week }}</PrimeTag>
+                                {{ slotProps.item.shift_title }}
+                            </template>
+                            <template #subtitle>
+                                <PrimeRating v-model="slotProps.item.assigned_users.length" :cancel="false"
+                                    :stars="slotProps.item.assignments.length" readonly>
+                                    <template #onicon>
+                                        <img src="/images/shifts/custom-onicon.png" height="24" width="24" />
+                                    </template>
+                                </PrimeRating>
+                            </template>
+                            <template #content>
+                                {{ slotProps }}
+                                <PrimeButton label="Read more" text></PrimeButton>
+                            </template>
+                        </PrimeCard>
+                    </template>
+                </Timeline>
+            </TabPanel>
+            <TabPanel header="Data View">
+                <DataView :value="shiftsStore.shifts" paginator :rows="5" :sortOrder="sortOrder" :sortField="sortField"
+                    :layout="layout">
+                    <template #header>
+                        <PrimeDropdown v-model="sortKey" :options="sortOptions" optionLabel="label"
+                            placeholder="Sort By Price" @change="onSortChange($event)" />
+                        <div class="flex justify-content-end">
+                            <DataViewLayoutOptions v-model="layout" />
+                        </div>
+                    </template>
+                    <template #timeline="slotProps">
+                        {{ slotProps.data }}
+                    </template>
+                    <template #list="slotProps">
+                        {{ slotProps.data }}
+                        <div class="col-12">
+                            <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+                                <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                    :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
+                                    :alt="slotProps.data.shift_title" />
+                                <div
+                                    class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                                    <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                                        <div class="text-2xl font-bold text-900">{{ slotProps.data.name }}</div>
+                                        <PrimeRating :modelValue="slotProps.data.rating" readonly :cancel="false">
+                                        </PrimeRating>
+                                        <div class="flex align-items-center gap-3">
+                                            <span class="flex align-items-center gap-2">
+                                                <i class="pi pi-tag"></i>
+                                                <span class="font-semibold">{{ slotProps.data.category }}</span>
+                                            </span>
+                                            <PrimeTag :value="slotProps.data.inventoryStatus">
+                                                <!-- :severity="getSeverity(slotProps.data)"> -->
+                                            </PrimeTag>
+                                        </div>
+                                    </div>
+                                    <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                                        <span class="text-2xl font-semibold">${{ slotProps.data.price }}</span>
+                                        <PrimeButton icon="pi pi-shopping-cart" rounded
+                                            :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"></PrimeButton>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                                <span class="text-2xl font-semibold">${{ slotProps.data.price }}</span>
-                                <Button icon="pi pi-shopping-cart" rounded
-                                    :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"></Button>
+                        </div>
+                    </template>
+                    <template #grid="slotProps">
+                        <div class="col-12 sm:col-6 lg:col-12 xl:col-2 p-2">
+                            <div class="p-4 border-1 surface-border surface-card border-round">
+                                <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="flex align-items-center gap-2">
+                                        <i class="pi pi-tag"></i>
+                                        <span class="font-semibold">{{ slotProps.data.category }}</span>
+                                    </div>
+                                    <PrimeTag :value="slotProps.data.inventoryStatus"></PrimeTag>
+                                </div>
+                                <div class="flex flex-column align-items-center gap-3 py-5">
+                                    <img class="w-9 shadow-2 border-round"
+                                        :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
+                                        :alt="slotProps.data.name" />
+                                    <div class="text-2xl font-bold">{{ slotProps.data.name }}</div>
+                                    <PrimeRating value="{product.rating}" readonly :cancel="false"></PrimeRating>
+                                </div>
+                                <div class="flex align-items-center justify-content-between">
+                                    <span class="text-2xl font-semibold">${{ slotProps.data.price }}</span>
+                                    <PrimeButton icon="pi pi-shopping-cart" rounded
+                                        :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"></PrimeButton>
+                                </div>
                             </div>
                         </div>
+                    </template>
+                </DataView>
+                <PrimeDialog v-model:visible="showAddShiftDialog" :header="t('Add shift')" id="add-shift-dialog"
+                    :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '50vw' }">
+                    <div class="dialog-content row">
+                        <div class="field p-float-label">
+                            <PrimeInputText id="title" type="text" v-model="newShift.shift_title" />
+                            <label for="title">{{ t("title") }}</label>
+                        </div>
+                        <div class="field col-12">
+                            <label for=" single">Shift type</label>
+                            <PrimeSelectButton v-model="newShift.shift_type" :options="shiftTypeOptions" optionLabel="name"
+                                optionValue="value" dataKey="value" aria-labelledby="single" />
+                        </div>
+                        <div class="field col-12">
+                            <label for=" dateformat">Starting date</label>
+                            <PrimeCalendar inputId="dateformat" v-model="newShiftDates.shift_starting_date"
+                                dateFormat="yy-mm-dd" :showIcon="true" />
+                        </div>
+                        <div class="field col-12">
+                            <label for=" dateformat">Ending date</label>
+                            <PrimeCalendar inputId="dateformat" v-model="newShiftDates.shift_ending_date"
+                                dateFormat="yy-mm-dd" :showIcon="true" />
+                        </div>
+                        <div v-if="newShift.shift_type === 'regular'" class="field col-12">
+                            <label for=" single">Shift week</label>
+                            <PrimeSelectButton v-model="newShift.shift_week" :options="shiftWeekOptions" optionLabel="name"
+                                optionValue="value" dataKey="value" aria-labelledby="single" />
+                        </div>
+                        <div v-if="newShift.shift_type === 'regular'" class="field col-12">
+                            <label for=" single">Shift day</label>
+                            <PrimeSelectButton v-model="newShift.shift_day" :options="shiftDayOptions" optionLabel="name"
+                                optionValue="value" dataKey="value" aria-labelledby="single" />
+                        </div>
+                        <div class="field col-12">
+                            <label for=" time12">Starting Time</label>
+                            <PrimeCalendar inputId="starting_time" v-model="newShiftDates.shift_starting_time"
+                                :timeOnly="true" hourFormat="24" />
+                        </div>
+                        <div class="field col-12">
+                            <label for=" time12">Ending Time</label>
+                            <PrimeCalendar inputId="ending_time" v-model="newShiftDates.shift_ending_time" :timeOnly="true"
+                                hourFormat="24" />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label for="time12">Required Members</label>
+                            <PrimeInputNumber inputId="minmax" v-model="newShift.required_users" showButtons mode="decimal"
+                                :min="1" :max="100" />
+                        </div>
+                        <div class="field p-float-label">
+                            <PrimeTextarea id="additional_info" type="text" v-model="newShift.additional_info_general" />
+                            <label for="additional_info">{{ t("Additional informations") }}</label>
+                        </div>
                     </div>
-                </div>
-            </template>
-            <template #grid="slotProps">
-                <div class="col-12 sm:col-6 lg:col-12 xl:col-2 p-2">
-                    <div class="p-4 border-1 surface-border surface-card border-round">
-                        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="flex align-items-center gap-2">
-                                <i class="pi pi-tag"></i>
-                                <span class="font-semibold">{{ slotProps.data.category }}</span>
-                            </div>
-                            <Tag :value="slotProps.data.inventoryStatus"></Tag>
-                        </div>
-                        <div class="flex flex-column align-items-center gap-3 py-5">
-                            <img class="w-9 shadow-2 border-round"
-                                :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
-                                :alt="slotProps.data.name" />
-                            <div class="text-2xl font-bold">{{ slotProps.data.name }}</div>
-                            <Rating value="{product.rating}" readonly :cancel="false"></Rating>
-                        </div>
-                        <div class="flex align-items-center justify-content-between">
-                            <span class="text-2xl font-semibold">${{ slotProps.data.price }}</span>
-                            <Button icon="pi pi-shopping-cart" rounded
-                                :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"></Button>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </DataView>
-        <PrimeDialog v-model:visible="showAddShiftDialog" :header="t('Add shift')" id="add-shift-dialog"
-            :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '50vw' }">
-            <div class="dialog-content row">
-                <div class="field p-float-label">
-                    <PrimeInputText id="title" type="text" v-model="newShift.shift_title" />
-                    <label for="title">{{ t("title") }}</label>
-                </div>
-                <div class="field col-12 md:col-4">
-                    <label for="single">Shift type</label>
-                    <PrimeSelectButton v-model="newShift.shift_type" :options="shiftTypeOptions" optionLabel="name"
-                        optionValue="value" dataKey="value" aria-labelledby="single" />
-                </div>
-                <div class="field col-12 md:col-4">
-                    <label for="dateformat">Starting date</label>
-                    <PrimeCalendar inputId="dateformat" v-model="newShiftDates.shift_starting_date" dateFormat="yy-mm-dd"
-                        :showIcon="true" />
-                </div>
-                <div class="field col-12 md:col-4">
-                    <label for="dateformat">Ending date</label>
-                    <PrimeCalendar inputId="dateformat" v-model="newShiftDates.shift_ending_date" dateFormat="yy-mm-dd"
-                        :showIcon="true" />
-                </div>
-                <div v-if="newShift.shift_type === 'regular'" class="field col-12 md:col-4">
-                    <label for="single">Shift week</label>
-                    <PrimeSelectButton v-model="newShift.shift_week" :options="shiftWeekOptions" optionLabel="name"
-                        optionValue="value" dataKey="value" aria-labelledby="single" />
-                </div>
-                <div v-if="newShift.shift_type === 'regular'" class="field col-12 md:col-4">
-                    <label for="single">Shift day</label>
-                    <PrimeSelectButton v-model="newShift.shift_day" :options="shiftDayOptions" optionLabel="name"
-                        optionValue="value" dataKey="value" aria-labelledby="single" />
-                </div>
-                <div class="field col-12 md:col-4">
-                    <label for="time12">Starting Time</label>
-                    <PrimeCalendar inputId="starting_time" v-model="newShiftDates.shift_starting_time" :timeOnly="true"
-                        hourFormat="24" />
-                </div>
-                <div class="field col-12 md:col-4">
-                    <label for="time12">Ending Time</label>
-                    <PrimeCalendar inputId="ending_time" v-model="newShiftDates.shift_ending_time" :timeOnly="true"
-                        hourFormat="24" />
-                </div>
-                <div class="field col-12 md:col-4">
-                    <label for="time12">Required Members</label>
-                    <PrimeInputNumber inputId="minmax" v-model="newShift.required_users" showButtons mode="decimal" :min="1"
-                        :max="100" />
-                </div>
-                <div class="field p-float-label">
-                    <PrimeTextarea id="additional_info" type="text" v-model="newShift.additional_info_general" />
-                    <label for="additional_info">{{ t("Additional informations") }}</label>
-                </div>
-            </div>
-            <template #footer>
-                <PrimeButton :label="t('Reset')" icon="pi pi-times" @click="resetNewShift" class="p-button-danger" />
-                <PrimeButton :label="t('Cancel')" icon="pi pi-times" @click="showAddShiftDialog = false"
-                    class="p-button-warning" />
-                <PrimeButton :label="t('Add')" icon="pi pi-check" @click="addShift" autofocus class="p-button-success" />
-            </template>
-        </PrimeDialog>
+                    <template #footer>
+                        <PrimeButton :label="t('Reset')" icon="pi pi-times" @click="resetNewShift"
+                            class="p-button-danger" />
+                        <PrimeButton :label="t('Cancel')" icon="pi pi-times" @click="showAddShiftDialog = false"
+                            class="p-button-warning" />
+                        <PrimeButton :label="t('Add')" icon="pi pi-check" @click="addShift" autofocus
+                            class="p-button-success" />
+                    </template>
+                </PrimeDialog>
+            </TabPanel>
+        </TabView>
     </div>
 </template>
 
@@ -303,5 +345,10 @@ const layout = ref('grid');
     margin-top: 10px;
     margin-right: 10px;
     font-weight: bold;
+}
+
+.shifts-timeline .p-timeline-event-opposite {
+    max-width: 100px;
+    padding-right: 20px;
 }
 </style>
