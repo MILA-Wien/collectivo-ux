@@ -78,18 +78,17 @@ export const dashboardTiles = async () => {
 // Endpoint dictionary (at the moment only for members)
 export const endpoints = {
   //members
+  menusMain: "/menus/menus/core/main/",
+  menusAdmin: "/menus/menus/core/admin/",
   membersMembers: "/members/members/",
-  membersCreate: "/members/create/",
   membersProfile: "/members/profile/",
-  membersSummary: "/members/summary/",
   membersRegister: "/members/register/",
-  membersTags: "/members/tags/",
-  membersEmailsDesigns: "/members/emails/designs/",
-  membersEmailsTemplates: "/members/emails/templates/",
-  membersEmailsCampaigns: "/members/emails/campaigns/",
-  membersEmailsAutomations: "/members/emails/automations/",
-  membersSkills: "/members/skills/",
-  membersGroups: "/members/groups/",
+  tagsTags: "/tags/tags/",
+  emailsDesigns: "/emails/designs/",
+  emailsTemplates: "/emails/templates/",
+  emailsCampaigns: "/emails/campaigns/",
+  registrationSurveySkills: "/registration_survey/skills/",
+  registrationSurveyGroups: "/registration_survey/groups/",
 };
 
 // Generic API functions

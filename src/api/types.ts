@@ -4,6 +4,7 @@ export interface Version {
 
 export interface ExtensionMenu {
   menu: Array<ExtensionMenuItem>;
+  loaded: boolean;
 }
 
 export interface ExtensionMenuItem {

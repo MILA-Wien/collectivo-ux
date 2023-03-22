@@ -1,19 +1,16 @@
-import type { DataObject, DataDetail, DataList } from "./../api/types";
-import { DataDetailTemplate, DataListTemplate } from "./../api/types";
-import { defineStore } from "pinia";
 import { API } from "@/api/api";
+import { defineStore } from "pinia";
+import type { DataDetail, DataList, DataObject } from "./../api/types";
+import { DataDetailTemplate, DataListTemplate } from "./../api/types";
 
 type membersStore = {
-  membersMembers: DataDetail;
-  membersCreate: DataDetail;
-  membersSummary: DataList;
+  membersMembers: DataList;
   membersProfile: DataDetail;
   membersRegister: DataDetail;
-  membersTags: DataList;
-  membersEmailsCampaigns: DataList;
-  membersEmailsTemplates: DataList;
-  membersEmailsDesigns: DataList;
-  membersEmailsAutomations: DataList;
+  tagsTags: DataList;
+  emailsCampaigns: DataList;
+  emailsTemplates: DataList;
+  emailsDesigns: DataList;
 };
 
 type membersObject = keyof membersStore;
@@ -43,16 +40,13 @@ export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
-      membersMembers: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersCreate: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersSummary: JSON.parse(JSON.stringify(DataListTemplate)),
+      membersMembers: JSON.parse(JSON.stringify(DataListTemplate)),
       membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersTags: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersEmailsAutomations: JSON.parse(JSON.stringify(DataListTemplate)),
+      tagsTags: JSON.parse(JSON.stringify(DataListTemplate)),
+      emailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      emailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
+      emailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
     } as membersStore),
 
   actions: {
@@ -95,10 +89,6 @@ export const useMembersStore = defineStore({
       const response = await API.post(objectName, payload);
       let object = this[objectName];
 
-      if (objectName == "membersCreate") {
-        object = this["membersSummary"];
-      }
-
       if (object.data instanceof Array) {
         object.data.push(response.data);
       } else {
@@ -110,11 +100,6 @@ export const useMembersStore = defineStore({
       // Update object and save in store
       const response = await API.patch(objectName, payload, id);
       let object = this[objectName];
-
-      // Special case for membersMembers: Update added to summary list
-      if (objectName == "membersMembers") {
-        object = this["membersSummary"];
-      }
 
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {

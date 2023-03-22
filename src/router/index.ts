@@ -1,4 +1,3 @@
-import { useUserStore } from "@/stores/user";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -14,44 +13,20 @@ const router = createRouter({
       redirect: "/", // redirect to dashboard
     },
     {
-      path: "/members/registration",
-      name: "registration",
+      path: "/core/settings",
+      name: "coreSettings",
       meta: {
-        requiresAuth: true,
+        isMembersAdmin: true,
       },
-      component: () => import("../components/members/MembersRegistration.vue"),
+      component: () => import("../components/core/CoreSettings.vue"),
     },
     {
-      path: "/:extension/:component",
-      name: "extension",
-      meta: {
-        requiresAuth: true,
-      },
-      component: () => import("../views/ExtensionView.vue"),
-    },
-    {
-      path: "/members/members",
-      name: "members",
+      path: "/members/admin",
+      name: "membersAdmin",
       meta: {
         isMembersAdmin: true,
       },
       component: () => import("../components/members/MembersAdmin.vue"),
-    },
-    {
-      path: "/members/emails",
-      name: "emails",
-      meta: {
-        isMembersAdmin: true,
-      },
-      component: () => import("../components/members/MembersEmails.vue"),
-    },
-    {
-      path: "/members/tags",
-      name: "tags",
-      meta: {
-        isMembersAdmin: true,
-      },
-      component: () => import("../components/members/MembersTags.vue"),
     },
     {
       path: "/members/profile",
@@ -62,29 +37,71 @@ const router = createRouter({
       },
       component: () => import("../components/members/MembersProfileLoader.vue"),
     },
+    {
+      path: "/members/registration",
+      name: "registration",
+      meta: {
+        requiresAuth: true,
+      },
+      component: () => import("../components/members/MembersRegistration.vue"),
+    },
+    {
+      path: "/emails/admin",
+      name: "emailsAdmin",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/emails/EmailsAdmin.vue"),
+    },
+    {
+      path: "/tags/admin",
+      name: "tagsAdmin",
+      component: () => import("../components/tags/TagsAdmin.vue"),
+    },
+    {
+      path: "/payments/admin",
+      name: "paymentsAdmin",
+      component: () => import("../components/payments/PaymentsAdmin.vue"),
+    },
+    {
+      path: "/extensions/admin",
+      name: "extensionsAdmin",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/extensions/ExtensionsAdmin.vue"),
+    },
+    {
+      path: "/shifts/admin",
+      name: "shiftsAdmin",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/NotImplemented.vue"),
+    },
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.isMember) {
-    // check if user is a member
-    // if not, redirect to Dashboard
-    // else, continue
-    useUserStore().user?.tokenParsed?.realm_access.roles.includes(
-      "members_user"
-    )
-      ? next()
-      : next("/");
-  }
-  if (to.meta.isMembersAdmin) {
-    useUserStore().user?.tokenParsed?.realm_access.roles.includes(
-      "members_admin"
-    )
-      ? next()
-      : next("/");
-  }
+// router.beforeEach((to, from, next) => {
+//   // if (to.meta.isMember) {
+//   //   // check if user is a member
+//   //   // if not, redirect to Dashboard
+//   //   // else, continue
+//   //   useUserStore().user?.tokenParsed?.realm_access.roles.includes(
+//   //     "members_user"
+//   //   )
+//   //     ? next()
+//   //     : next("/");
+//   // }
+//   // if (to.meta.isMembersAdmin) {
+//   //   useUserStore().user?.tokenParsed?.realm_access.roles.includes(
+//   //     "members_admin"
+//   //   )
+//   //     ? next()
+//   //     : next("/");
+//   // }
 
-  return next();
-});
+//   return next();
+// });
 
 export default router;

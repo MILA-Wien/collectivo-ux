@@ -1,8 +1,8 @@
 <template>
   <PrimeToast />
   <PrimePanelMenu
-    :model="items[0].items"
-    v-if="items.length > 0"
+    :model="itemsMain[0].items"
+    v-if="itemsMain.length > 0"
     id="main_menu"
   >
     <template #item="{ item }">
@@ -46,6 +46,61 @@
       </a>
     </template>
   </PrimePanelMenu>
+
+  <div
+    class="ml-5 mt-5 mb-1 text-sm text-left font-bold w-full"
+    v-if="itemsAdmin[0]?.items.length > 0"
+  >
+    {{ t("Admin Area") }}
+  </div>
+  <PrimePanelMenu
+    :model="itemsAdmin[0].items"
+    v-if="itemsAdmin[0]?.items"
+    id="admin_menu"
+  >
+    <template #item="{ item }">
+      <router-link
+        v-if="item.to"
+        :to="item.to"
+        :class="{ 'p-disabled': item.disabled }"
+      >
+        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+        </div>
+      </router-link>
+      <a
+        v-else
+        :href="item.url"
+        class=""
+        :class="{ 'p-disabled': item.disabled }"
+        target="_blank"
+      >
+        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+          <span v-if="item.target === 'blank'" class="flex content-center mr-1">
+            <i class="pi pi-fw pi-external-link" style="font-size: 12px"></i>
+          </span>
+        </div>
+      </a>
+    </template>
+  </PrimePanelMenu>
 </template>
 
 <script lang="ts" setup>
@@ -60,16 +115,17 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const menuStore = useMenuStore();
 const userStore = useUserStore();
-const { menu } = storeToRefs(menuStore);
-const items = ref<any[]>([]);
+const { mainMenu, adminMenu } = storeToRefs(menuStore);
+const itemsMain = ref<any[]>([]);
+const itemsAdmin = ref<any[]>([]);
 
 function buildItem(data: any): any {
   if (data !== null) {
     const item: any = {
       label: t(data.label),
-      icon: "pi pi-fw " + (data.icon_name ? data.icon_name : ""), // pi pi-fw pi-plus
+      icon: "pi pi-fw " + (data.icon_name ? data.icon_name : ""),
     };
-    console.log(item.icon);
+
     // set link for logout
     if (data.extension.name === "core" && data.component === "logout") {
       item.url = userStore.user?.logoutUrl || "/";
@@ -80,14 +136,15 @@ function buildItem(data: any): any {
     }
     // set link for external links
     else if (data.link && data.target === "blank") {
-      item.url = data.link_source;
+      item.url = data.link;
+      item.target = data.target;
     }
     // return item
     return item;
   }
 }
 
-function buildMenu(menu: any) {
+function buildMenu(menu: any, items: any) {
   items.value = [
     {
       label: t("Main Menu"),
@@ -97,10 +154,10 @@ function buildMenu(menu: any) {
   if (menu !== null && menu !== null && menu.menu) {
     for (let i = 0; i < menu.menu.length; i++) {
       const item = buildItem(menu.menu[i]);
-      if (menu.menu[i].sub_items && menu.menu[i].sub_items.length > 0) {
+      if (menu.menu[i].items && menu.menu[i].items.length > 0) {
         item.items = [];
-        for (let j = 0; j < menu.menu[i].sub_items.length; j++) {
-          const sub_item = buildItem(menu.menu[i].sub_items[j]);
+        for (let j = 0; j < menu.menu[i].items.length; j++) {
+          const sub_item = buildItem(menu.menu[i].items[j]);
           item.items.push(sub_item);
         }
       }
@@ -109,14 +166,16 @@ function buildMenu(menu: any) {
   }
 }
 
-menuStore.getMenu().then(() => {
-  if (menu !== null && menu.value !== null && menu.value.menu) {
-    buildMenu(menu.value);
+menuStore.getMenus().then(() => {
+  if (mainMenu !== null && mainMenu.value !== null && mainMenu.value.menu) {
+    buildMenu(mainMenu.value, itemsMain);
+    buildMenu(adminMenu.value, itemsAdmin);
   }
 }); //Promise
-watch(menu, () => {
-  if (menu !== null && menu.value !== null && menu.value.menu) {
-    buildMenu(menu.value);
+watch(mainMenu, () => {
+  if (mainMenu !== null && mainMenu.value !== null && mainMenu.value.menu) {
+    buildMenu(mainMenu.value, itemsMain);
+    buildMenu(adminMenu.value, itemsAdmin);
   }
 });
 </script>
@@ -124,6 +183,10 @@ watch(menu, () => {
 <style>
 /* can't be scoped because we are overwriting prime styles */
 #main_menu {
+  border: none;
+  width: 100%;
+}
+#admin_menu {
   border: none;
   width: 100%;
 }
