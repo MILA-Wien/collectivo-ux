@@ -1,4 +1,4 @@
-/* 
+/*
 README && TODOs:
 
 2. JSON response validation on submit formular: @Joel, see below validated properties
@@ -9,8 +9,8 @@ README && TODOs:
 Cypress.Cookies.debug(true);
 describe("register user_not_member", () => {
   /*
-  beforeEach(): better practice than afterEach(). 
-  WHY: https://docs.cypress.io/guides/references/best-practices#Using-after-or-afterEach-hooks 
+  beforeEach(): better practice than afterEach().
+  WHY: https://docs.cypress.io/guides/references/best-practices#Using-after-or-afterEach-hooks
   */
   beforeEach(() => {
     // authenticate as superuser
@@ -56,10 +56,12 @@ describe("register user_not_member", () => {
       "contain.text",
       "Willkommen auf der MILA Mitgliederplattform!"
     );
-    cy.get('.p-card-body button').then(($btn) => {
-      const txt = $btn.text()
-      expect(txt).to.eq("Weiter");
-    }).click();
+    cy.get(".p-card-body button")
+      .then(($btn) => {
+        const txt = $btn.text();
+        expect(txt).to.eq("Weiter");
+      })
+      .click();
     /* Page 1/5 */
     cy.get("div[id='welcome-paragraph']").should("exist");
     cy.get('[type="radio"]').check("natural");
@@ -69,14 +71,24 @@ describe("register user_not_member", () => {
     cy.get("#last-name-input > .textfield input").clear().type("CABBAG3");
     cy.get('[type="radio"]').check("male");
     cy.get("#birthdate-input > .date input").clear().type("01.01.1990").blur();
-    cy.get("#occupation-input > .textfield input").click({force: true}).type("lazy cat");
-    cy.get("#address-street-input > .textfield input").click({force: true}).type(
-      "ÄltGasseMitNötFünnyChars"
-    );
-    cy.get("#address-street-number-input > .number input").click({force:true}).type("28392");
-    cy.get("#address-postcode-input > .number input").click({force:true}).type("1111");
-    cy.get("#address-city-input > .textfield input").click({force:true}).type("Weän");
-    cy.get("#address-country-input > .textfield input").click({force:true}).type("Österland");
+    cy.get("#occupation-input > .textfield input")
+      .click({ force: true })
+      .type("lazy cat");
+    cy.get("#address-street-input > .textfield input")
+      .click({ force: true })
+      .type("ÄltGasseMitNötFünnyChars");
+    cy.get("#address-street-number-input > .textfield input")
+      .click({ force: true })
+      .type("28392");
+    cy.get("#address-postcode-input > .textfield input")
+      .click({ force: true })
+      .type("1111");
+    cy.get("#address-city-input > .textfield input")
+      .click({ force: true })
+      .type("Weän");
+    cy.get("#address-country-input > .textfield input")
+      .click({ force: true })
+      .type("Österland");
     cy.get("#next-page2-button > .button button").click();
     /* Page 3/5 */
     cy.get('[type="radio"]').check("active");
@@ -94,27 +106,30 @@ describe("register user_not_member", () => {
     cy.get("#skills-input > .multipleChoice input").check("7");
     cy.get("#next-page4-button > .button button").click();
     /* Page 5/5 */
-    cy.get('#checkbox_statutes_approved > .boolean input').check({force: true});
+    cy.get("#checkbox_statutes_approved > .boolean input").check({
+      force: true,
+    });
     cy.intercept({ method: "POST", url: "**/register" }).as("new-member");
     cy.get("#submit-button > .button button").click();
-    cy.wait("@new-member").then(({response: actualResponse}) => {
+    cy.wait("@new-member").then(({ response: actualResponse }) => {
       expect(actualResponse?.statusCode).to.eq(201);
-      cy.fixture('expectedResponseNP.json').then((expectedResponse) => {
+      cy.fixture("expectedResponseNP.json").then((expectedResponse) => {
         /* Here response.body validation */
         expect(actualResponse?.statusCode).to.eq(201);
-        expect(actualResponse?.body).to.have.property('id');
-        expect(actualResponse?.body).to.have.property('person_type');
-        expect(actualResponse?.body.person_type).to.deep.eq(expectedResponse.person_type)
-        expect(actualResponse?.body).to.have.property('groups_interested');
-        expect(actualResponse?.body.groups_interested).to.deep.eq(expectedResponse.groups_interested);
-        expect(actualResponse?.body).to.have.property('skills');
+        expect(actualResponse?.body).to.have.property("id");
+        expect(actualResponse?.body).to.have.property("person_type");
+        expect(actualResponse?.body.person_type).to.deep.eq(
+          expectedResponse.person_type
+        );
+        expect(actualResponse?.body).to.have.property("groups_interested");
+        expect(actualResponse?.body.groups_interested).to.deep.eq(
+          expectedResponse.groups_interested
+        );
+        expect(actualResponse?.body).to.have.property("skills");
         expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
-      })
+      });
     });
-    cy.get("#welcome-member-span").should(
-      "contain.text",
-      "CABBAG3"
-    );
+    cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
 
   it("register as legal person", () => {
@@ -123,10 +138,12 @@ describe("register user_not_member", () => {
       "contain.text",
       "Willkommen auf der MILA Mitgliederplattform!"
     );
-    cy.get('.p-card-body button').then(($btn) => {
-      const txt = $btn.text()
-      expect(txt).to.eq("Weiter");
-    }).click();
+    cy.get(".p-card-body button")
+      .then(($btn) => {
+        const txt = $btn.text();
+        expect(txt).to.eq("Weiter");
+      })
+      .click();
     /* Page 1/5 */
     cy.get("div[id='welcome-paragraph']").should("exist");
     cy.get('[type="radio"]').check("legal");
@@ -136,26 +153,24 @@ describe("register user_not_member", () => {
     cy.get("#lp-name-input input").type("Ötzi CABBAG3");
     cy.get("#lp-legal-type-input input").type("GG");
     cy.get("#lp-identification-number-input input").type("000000x");
-    
-    cy.get("#lp-address-street-input input").click().type(
-      "ÄltGasseMitNötFünnyChars"
-    );
+
+    cy.get("#lp-address-street-input input")
+      .click()
+      .type("ÄltGasseMitNötFünnyChars");
     cy.get("#lp-address-street-number-input input").click().type("28392");
     cy.get("#lp-address-postcode-input input").click().type("1111");
     cy.get("#lp-address-city-input input").click().type("Weän");
     cy.get("#lp-address-country-input input").click().type("Österland");
-    
+
     cy.get("#lp-first-name-input input").clear().type("Ötz1");
     cy.get("#lp-last-name-input input").clear().type("CABBAG3");
     cy.get('[type="radio"]').check("male");
-    
+
     cy.get("#next-page2-button > .button button").click();
     /* Page 3/5 */
     cy.get('[type="radio"]').check("normal");
     cy.get('[type="radio"]').check("sepa");
-    cy.get("#bank-account-input input").type(
-      "AT592250039687965121"
-    );
+    cy.get("#bank-account-input input").type("AT592250039687965121");
     cy.get("#bank-account-owner-input input").type("Ötz1 CABBAG3");
     cy.get("#next-page3-button button").click();
     /* Page 4/5 */
@@ -165,25 +180,26 @@ describe("register user_not_member", () => {
     cy.get("#skills-input input").check("7");
     cy.get("#next-page4-button button").click();
     /* Page 5/5 */
-    cy.get('#checkbox_statutes_approved input').check({force: true});
+    cy.get("#checkbox_statutes_approved input").check({ force: true });
     cy.intercept({ method: "POST", url: "**/register" }).as("new-member");
     cy.get("#submit-button > .button button").click();
-    cy.wait("@new-member").then(({response: actualResponse}) => {
-      cy.fixture('expectedResponseLP.json').then((expectedResponse) => {
+    cy.wait("@new-member").then(({ response: actualResponse }) => {
+      cy.fixture("expectedResponseLP.json").then((expectedResponse) => {
         /* Here response.body validation */
         expect(actualResponse?.statusCode).to.eq(201);
-        expect(actualResponse?.body).to.have.property('id');
-        expect(actualResponse?.body).to.have.property('person_type');
-        expect(actualResponse?.body.person_type).to.deep.eq(expectedResponse.person_type)
-        expect(actualResponse?.body).to.have.property('groups_interested');
-        expect(actualResponse?.body.groups_interested).to.deep.eq(expectedResponse.groups_interested);
-        expect(actualResponse?.body).to.have.property('skills');
+        expect(actualResponse?.body).to.have.property("id");
+        expect(actualResponse?.body).to.have.property("person_type");
+        expect(actualResponse?.body.person_type).to.deep.eq(
+          expectedResponse.person_type
+        );
+        expect(actualResponse?.body).to.have.property("groups_interested");
+        expect(actualResponse?.body.groups_interested).to.deep.eq(
+          expectedResponse.groups_interested
+        );
+        expect(actualResponse?.body).to.have.property("skills");
         expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
-      })
+      });
     });
-    cy.get("#welcome-member-span").should(
-      "contain.text",
-      "CABBAG3"
-    );
+    cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
 });

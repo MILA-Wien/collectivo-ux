@@ -72,11 +72,11 @@ export interface Member {
   shares_number?: string;
   person_type?: string;
 }
-export interface Members {
+export interface DataListResponse {
   count?: number;
   next?: string;
   previous?: string;
-  results: Array<Member>;
+  results: Array<any>;
 }
 export interface DashboardTiles {
   count?: number;
@@ -134,6 +134,7 @@ export interface DataDetail extends DataSchema {
 }
 export interface DataList extends DataSchema {
   loaded: boolean;
+  totalRecords: number;
   data: Array<DataObject>;
 }
 
@@ -143,6 +144,7 @@ export const DataListTemplate = {
   data: [],
   loaded: false,
   schemaLoaded: false,
+  totalRecords: 0,
 };
 
 export const DataDetailTemplate = {

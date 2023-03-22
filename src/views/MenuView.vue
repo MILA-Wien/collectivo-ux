@@ -26,7 +26,7 @@
         <MenuMain />
         <span class="grow"></span>
         <span class="p-4 text-xs w-full text-gray-800" id="version">
-          collectivo <VersionItem/> <br/>
+          collectivo <VersionItem /> <br />
           collectivo-ux v{{ version }}
         </span>
       </div>

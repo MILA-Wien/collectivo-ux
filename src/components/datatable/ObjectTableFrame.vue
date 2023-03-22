@@ -3,7 +3,6 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
-import { FilterOperator } from "primevue/api";
 import PrimeToolbar from "primevue/toolbar";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
@@ -42,11 +41,12 @@ const props = defineProps({
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
-function clearFilters() {
-  for (const value of Object.values(filters.value)) {
-    value.constraints[0].value = null;
-  }
-}
+//   // Todo: Clear filters
+// function clearFilters() {
+//   for (const value of Object.values(filters.value)) {
+//     value.constraints = [{ value: null, matchMode: undefined }];
+//   }
+// }
 
 // Data columns ------------------------------------------------------------ //
 const columns: any[] = [];
@@ -63,7 +63,8 @@ for (const [key, value] of Object.entries(props.schema)) {
 
   // Set default filters
   filters.value[key] = {
-    operator: FilterOperator.AND,
+    // Todo: Add support for OR operator in the backend
+    // operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },
     ],
@@ -114,6 +115,8 @@ function createObjectFn() {
   editCreate.value = true;
   editActive.value = true;
 }
+
+// Events ----------------------------------------------------------------- //
 </script>
 
 <template>
@@ -144,27 +147,24 @@ function createObjectFn() {
         </div>
       </template>
       <template #end>
+        <!-- <div class="m-1">
+              <PrimeButton type="button" icon="pi pi-filter-slash" :label="t('Clear')" class="p-button-outlined"
+                @click="clearFilters()">
+              </PrimeButton>
+            </div> -->
         <div class="m-1">
           <PrimeButton
-            type="button"
-            icon="pi pi-filter-slash"
-            label="Clear"
-            class="p-button-outlined"
-            @click="clearFilters()"
-          >
-          </PrimeButton>
-        </div>
-        <div class="m-1">
-          <PrimeButton
-            :label="t('Download')"
+            icon="pi pi-file-export"
+            :label="t('Export')"
             :disabled="!(selectedObjects?.length > 0)"
           >
             <JsonCSV
               v-if="selectedObjects?.length > 0"
+              icon="pi pi-file-export"
               :data="selectedObjects"
               name="export.csv"
             >
-              {{ t("Download") }}
+              {{ t("Export") }}
             </JsonCSV>
           </PrimeButton>
         </div>

@@ -7,7 +7,6 @@ import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import MembersBulkEdit from "./MembersBulkEdit.vue";
 import Toolbar from "primevue/toolbar";
 import PrimeButton from "primevue/button";
-import { FilterOperator } from "primevue/api";
 import JsonCSV from "vue-json-csv";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
@@ -66,11 +65,6 @@ watch(membersSummary.value, () => {
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
-function clearFilters() {
-  for (const value of Object.values(filters.value)) {
-    value.constraints[0].value = null;
-  }
-}
 
 // Data columns ------------------------------------------------------------ //
 const columns: any[] = [];
@@ -87,7 +81,8 @@ for (const [key, value] of Object.entries(props.schema)) {
 
   // Set default filters
   filters.value[key] = {
-    operator: FilterOperator.AND,
+    // Todo: Add support for OR operator in the backend
+    // operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },
     ],
@@ -188,6 +183,7 @@ function bulkEdit() {
         <div class="m-1 text-left">
           <PrimeButton
             :label="t('Create')"
+            icon="pi pi-user"
             @click="createObjectFn()"
             class="p-button-success"
           >
@@ -210,17 +206,8 @@ function bulkEdit() {
       <template #end>
         <div class="m-1">
           <PrimeButton
-            type="button"
-            icon="pi pi-filter-slash"
-            label="Clear"
-            class="p-button-outlined"
-            @click="clearFilters()"
-          >
-          </PrimeButton>
-        </div>
-        <div class="m-1">
-          <PrimeButton
             :label="t('Bulk edit')"
+            icon="pi pi-file-edit"
             :disabled="!(selectedMembers.length > 0)"
             @click="bulkEdit"
           >
@@ -229,6 +216,7 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Send emails')"
+            icon="pi pi-send"
             :disabled="!(selectedMembers.length > 0)"
             @click="sendEmails"
           >
@@ -237,6 +225,7 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Copy emails')"
+            icon="pi pi-copy"
             :disabled="!(selectedMembers.length > 0)"
             @click="copyEmails"
           >
@@ -245,13 +234,15 @@ function bulkEdit() {
         <div class="m-1">
           <PrimeButton
             :label="t('Export CSV')"
+            icon="pi pi-file-export"
             :disabled="!(selectedMembers?.length > 0)"
           >
             <JsonCSV
               v-if="selectedMembers?.length > 0"
               :data="selectedMembers"
               :name="t('members') + '.csv'"
-              >{{ t("Export CSV") }}</JsonCSV
+            >
+              {{ t("Export CSV") }}</JsonCSV
             >
           </PrimeButton>
         </div>
@@ -280,7 +271,7 @@ function bulkEdit() {
   <!-- Dialogue for member details -->
   <ObjectDetailLoader
     v-if="editMember"
-    :pk="selectedMember.id"
+    :id="selectedMember.id"
     :create="false"
     :store="props.store"
     :name="'membersMembers'"

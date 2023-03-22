@@ -11,7 +11,7 @@ menuStore.setTitle("Member Tags");
 </script>
 
 <template>
-  <div class="h-full tabview-full">
+  <div class="h-full tabview-full" id="tags-table">
     <TabView lazy>
       <TabPanel header="Tags">
         <ObjectLoader :store="membersStore" :name="'membersTags'" />
