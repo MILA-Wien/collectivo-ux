@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useDashboardStore } from "@/stores/dashboard";
-import { storeToRefs } from "pinia";
 import type { DashboardTile } from "@/api/types";
-import { useI18n } from "vue-i18n";
-import { defineAsyncComponent, watch } from "vue";
 import LoadingItem from "@/components/LoadingItem.vue";
-import PrimeCard from "primevue/card";
-import { useUserStore } from "@/stores/user";
+import { useDashboardStore } from "@/stores/dashboard";
 import { useMenuStore } from "@/stores/menu";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+import PrimeCard from "primevue/card";
+import { defineAsyncComponent, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const menuStore = useMenuStore();
 menuStore.setTitle("Dashboard");
@@ -26,7 +26,7 @@ function getComponentForTile(tile: DashboardTile) {
   } else {
     tileComponents[tile.tile_id] = LoadingItem;
     const component = defineAsyncComponent(
-      () => import(`../extensions/${tile.extension}_${tile.component_name}.ts`)
+      () => import(`../extensions/${tile.extension_name}_${tile.component}.ts`)
     );
     tileComponents[tile.tile_id] = component;
     return component;

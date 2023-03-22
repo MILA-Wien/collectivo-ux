@@ -86,12 +86,12 @@ export interface DashboardTiles {
 }
 export interface DashboardTile {
   tile_id: string;
-  component_name: string;
+  component: string;
   order: number;
-  required_role?: string;
-  blocked_role?: string;
+  required_group?: string;
   label?: string;
   extension: string;
+  extension_name: string;
 }
 
 export interface SchemaField {
