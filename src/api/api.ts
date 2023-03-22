@@ -61,7 +61,7 @@ api.interceptors.response.use(
 
 // Core API
 export const coreVersionFn = async () => {
-  const response = await api.get("/collectivo/about/");
+  const response = await api.get("/core/about/");
   return response.data;
 };
 
