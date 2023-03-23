@@ -54,6 +54,15 @@ const router = createRouter({
       component: () => import("../components/members/MembersRegistration.vue"),
     },
     {
+      path: "/registration_survey/admin",
+      name: "registration",
+      meta: {
+        requiresAuth: true,
+      },
+      component: () =>
+        import("../components/registration_survey/SurveyAdmin.vue"),
+    },
+    {
       path: "/emails/admin",
       name: "emailsAdmin",
       meta: {

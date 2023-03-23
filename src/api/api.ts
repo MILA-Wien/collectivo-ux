@@ -91,8 +91,12 @@ export const endpoints = {
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
+  registrationSurvey: "/registration_survey/profiles/",
   registrationSurveySkills: "/registration_survey/skills/",
   registrationSurveyGroups: "/registration_survey/groups/",
+  paymentsPayments: "/payments/payments/",
+  paymentsSubscriptions: "/payments/subscriptions/",
+  extensionsExtensions: "/extensions/extensions/",
 };
 
 // Generic API functions

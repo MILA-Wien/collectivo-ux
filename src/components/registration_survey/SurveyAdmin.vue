@@ -8,23 +8,30 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
-menuStore.setTitle("Payments");
+menuStore.setTitle("Survey");
 </script>
 
 <template>
   <div class="h-full tabview-full">
     <TabView lazy>
-      <TabPanel :header="t('Payments')">
+      <TabPanel :header="t('Survey')">
         <ObjectLoader
           :store="membersStore"
-          :name="'paymentsPayments'"
+          :name="'registrationSurvey'"
           :default-columns="['name']"
         />
       </TabPanel>
-      <TabPanel :header="t('Susbcriptions')">
+      <TabPanel :header="t('Groups')">
         <ObjectLoader
           :store="membersStore"
-          :name="'paymentsSubscriptions'"
+          :name="'registrationSurveyGroups'"
+          :default-columns="['name']"
+        />
+      </TabPanel>
+      <TabPanel :header="t('Skills')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'registrationSurveySkills'"
           :default-columns="['name']"
         />
       </TabPanel>

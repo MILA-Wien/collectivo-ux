@@ -15,6 +15,12 @@ type membersStore = {
   emailsCampaigns: DataList;
   emailsTemplates: DataList;
   emailsDesigns: DataList;
+  paymentsPayments: DataList;
+  paymentsSubscriptions: DataList;
+  registrationSurvey: DataList;
+  registrationSurveySkills: DataList;
+  registrationSurveyGroups: DataList;
+  extensionsExtensions: DataList;
 };
 
 type membersObject = keyof membersStore;
@@ -55,6 +61,12 @@ export const useMembersStore = defineStore({
       emailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      paymentsPayments: JSON.parse(JSON.stringify(DataListTemplate)),
+      paymentsSubscriptions: JSON.parse(JSON.stringify(DataListTemplate)),
+      registrationSurvey: JSON.parse(JSON.stringify(DataListTemplate)),
+      registrationSurveySkills: JSON.parse(JSON.stringify(DataListTemplate)),
+      registrationSurveyGroups: JSON.parse(JSON.stringify(DataListTemplate)),
+      extensionsExtensions: JSON.parse(JSON.stringify(DataListTemplate)),
     } as membersStore),
 
   actions: {

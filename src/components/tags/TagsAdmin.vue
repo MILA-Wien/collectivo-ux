@@ -12,7 +12,7 @@ menuStore.setTitle("Tags");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="tags-table">
+  <div class="h-full tabview-full" id="tags-admin">
     <TabView lazy>
       <TabPanel :header="t('Tags')">
         <ObjectLoader

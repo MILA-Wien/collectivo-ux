@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useSettingsStore } from "@/stores/settings";
+import { ref } from "vue";
 const store = useSettingsStore();
 const error = ref<Object | null>(null);
 store.getVersion().catch((e: any) => {
@@ -13,7 +13,7 @@ store.getVersion().catch((e: any) => {
     no connection
   </span>
   <span v-else-if="store.version" id="version-string">
-    version {{ store.version.version }}
+    v{{ store.version.version }}
   </span>
   <span v-else>loading ...</span>
 </template>
