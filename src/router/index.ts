@@ -13,6 +13,14 @@ const router = createRouter({
       redirect: "/", // redirect to dashboard
     },
     {
+      path: "/core/users",
+      name: "coreUsers",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/core/CoreUsers.vue"),
+    },
+    {
       path: "/core/settings",
       name: "coreSettings",
       meta: {

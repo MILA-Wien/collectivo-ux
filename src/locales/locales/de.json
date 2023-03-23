@@ -22,6 +22,10 @@
   "Shifts": "Schichten",
   "Shifts management": "Schichtenverwaltung",
   "Shift management": "Schichtenverwaltung",
+  "Memberships": "Mitgliedschaften",
+  "Legal name": "Organisation Name",
+  "Legal id": "Organisation ID",
+  "Legal type": "Organisation Form",
 
   "menu.About": "Über",
   "menu.Login": "Login",
@@ -92,7 +96,7 @@
   "Details of the contact person": "Details zur Ansprechperson",
   "Details of the organisation": "Details zur Organisation",
   "Name of the organisation": "Name der Organisation",
-  "Legal type": "Rechtsform",
+
   "Identification number": "Firmenbuchnummer/Vereinsregisternummer",
   "Address": "Adresse",
   "Address/Headquarters": "Adresse/Sitz",

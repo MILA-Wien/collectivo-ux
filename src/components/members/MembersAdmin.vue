@@ -20,6 +20,8 @@ if (membersMembers.value.loaded === false) {
   });
 }
 
+console.log(membersMembers.value);
+
 if (emailsCampaigns.value.schemaLoaded === false) {
   membersStore.getSchema("emailsCampaigns").catch((e: any) => {
     error.value = e;

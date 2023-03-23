@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import MultiSelect from "primevue/multiselect";
+import type { endpoints } from "@/api/api";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectDetailLoader from "@/components/datatable/ObjectDetailLoader.vue";
 import ObjectTable from "@/components/datatable/ObjectTable.vue";
-import MembersBulkEdit from "./MembersBulkEdit.vue";
-import Toolbar from "primevue/toolbar";
-import PrimeButton from "primevue/button";
-import JsonCSV from "vue-json-csv";
-import { useToast } from "primevue/usetoast";
-import { useI18n } from "vue-i18n";
-import type { PropType } from "vue";
+import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
 import { storeToRefs, type StoreGeneric } from "pinia";
-import type { endpoints } from "@/api/api";
-import { matchModes, getDefaultMatchMode } from "@/helpers/filters";
+import PrimeButton from "primevue/button";
+import MultiSelect from "primevue/multiselect";
+import Toolbar from "primevue/toolbar";
+import { useToast } from "primevue/usetoast";
+import type { PropType } from "vue";
+import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import JsonCSV from "vue-json-csv";
+import MembersBulkEdit from "./MembersBulkEdit.vue";
 
 const { t } = useI18n();
 
@@ -53,8 +53,8 @@ function createObjectFn() {
 
 // Update content of selected members is objects are changed in store
 const selectedMembers = ref<any[]>([]);
-const { membersSummary } = storeToRefs(props.store);
-watch(membersSummary.value, () => {
+const { membersMembers } = storeToRefs(props.store);
+watch(membersMembers.value, () => {
   const temp_selected = JSON.parse(JSON.stringify(selectedMembers.value));
   selectedMembers.value = [];
   for (const oldData of temp_selected) {
@@ -105,16 +105,14 @@ for (const [key, value] of Object.entries(props.schema)) {
 }
 
 // Set default columns
-// TODO: Load default columns from schema
 const defaultColumns = [
-  "id",
-  "first_name",
-  "last_name",
+  "user__first_name",
+  "user__last_name",
+  "user__tags",
   "person_type",
-  "membership_type",
-  "shares_number",
-  "tags",
+  "memberships",
 ];
+
 for (const col of defaultColumns) {
   if (!columns.find((c) => c.field === col)) {
     continue;
@@ -269,12 +267,21 @@ function bulkEdit() {
   <!-- members-table flex-col -->
 
   <!-- Dialogue for member details -->
-  <ObjectDetailLoader
+  <!-- <ObjectDetailLoader
     v-if="editMember"
     :id="selectedMember.id"
     :create="false"
     :store="props.store"
     :name="'membersMembers'"
+    @close="editMember = false"
+  /> -->
+  <ObjectDetail
+    v-if="editMember"
+    :object="selectedMember"
+    :create="false"
+    :store="props.store"
+    :name="'membersMembers'"
+    :schema="props.schema"
     @close="editMember = false"
   />
 
@@ -283,7 +290,7 @@ function bulkEdit() {
     v-if="createMember"
     :create="true"
     :store="props.store"
-    :name="'membersCreate'"
+    :name="'membersMembers'"
     @close="createMember = false"
   />
 
@@ -293,7 +300,7 @@ function bulkEdit() {
     :object="editObject"
     :create="editCreate"
     :store="props.store"
-    :name="'membersEmailsCampaigns'"
+    :name="'emailsCampaigns'"
     :schema="emailCampaignSchema"
     @close="editActive = false"
   />
