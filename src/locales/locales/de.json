@@ -4,11 +4,24 @@
   "Server not reachable.": "Server nicht erreichbar.",
   "Request failed.": "Anfrage fehlgeschlagen.",
 
-  "User": "Benutzer*in",
-  "Users": "Benutzer*innen",
+  "User": "Account",
+  "Users": "Accounts",
+  "Permission": "Berechtigung",
+  "Permissions": "Berechtigungen",
+  "Groups": "Gruppen",
+  "Group": "Gruppe",
+
+  "entry": "Eintrag",
+  "entries": "Einträge",
+
+  "You are a member of": "Du bist Mitglied bei",
+  "Your membership number is": "Deine Mitgliedsnummer ist",
+  "Show my data": "Zu meinen Daten",
+
   "Category": "Kategorie",
   "Categories": "Kategorien",
-
+  "Could not find any membership data.": "Konnte keine Mitgliedschaftsdaten finden.",
+  "Back to homepage": "Zurück zur Startseite",
   "Undefined": "Undefiniert",
   "Coming soon.": "In Entwicklung.",
   "In development.": "In Entwicklung.",
@@ -22,10 +35,20 @@
   "Shifts": "Schichten",
   "Shifts management": "Schichtenverwaltung",
   "Shift management": "Schichtenverwaltung",
-  "Memberships": "Mitgliedschaften",
+
+  "Phone": "Telefon",
+  "Notes": "Notizen",
+
   "Legal name": "Organisation Name",
   "Legal id": "Organisation ID",
   "Legal type": "Organisation Form",
+
+  "Memberships": "Mitgliedschaften",
+  "Membership number": "Nummer",
+  "Shares signed": "Anteile",
+  "Shares paid": "Anteile (bezahlt)",
+  "Member": "Mitglied",
+  "Type": "Typ",
 
   "menu.About": "Über",
   "menu.Login": "Login",
@@ -144,7 +167,6 @@
   "Update failed": "Aktualisierung abgebrochen",
 
   "Main menu": "Hauptmenü",
-  "Membership number": "Mitgliedsnummer",
 
   "Person type": "Typ",
   "Address postcode": "PLZ",

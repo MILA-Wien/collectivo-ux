@@ -4,10 +4,14 @@ import type { DataDetail, DataList, DataObject } from "./../api/types";
 import { DataDetailTemplate, DataListTemplate } from "./../api/types";
 
 type membersStore = {
+  coreUsers: DataList;
+  coreGroups: DataList;
   membersMembers: DataList;
   membersProfile: DataDetail;
   membersRegister: DataDetail;
+  membersMemberships: DataList;
   tagsTags: DataList;
+  tagsCategories: DataList;
   emailsCampaigns: DataList;
   emailsTemplates: DataList;
   emailsDesigns: DataList;
@@ -40,10 +44,14 @@ export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
+      coreUsers: JSON.parse(JSON.stringify(DataListTemplate)),
+      coreGroups: JSON.parse(JSON.stringify(DataListTemplate)),
       membersMembers: JSON.parse(JSON.stringify(DataListTemplate)),
       membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
       membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      membersMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
       tagsTags: JSON.parse(JSON.stringify(DataListTemplate)),
+      tagsCategories: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
@@ -130,6 +138,16 @@ export const useMembersStore = defineStore({
         object.data = { id: null };
       }
       return response;
+    },
+    async getMilaMembershipNumber() {
+      await this.get("membersProfile");
+      const m = this.membersProfile.data.memberships?.filter(
+        (e: any) => e.type.name == "MILA Genossenschaft"
+      );
+      if (m.length > 0) {
+        return m[0].number;
+      }
+      return false;
     },
     async filter(
       objectName: membersObject,

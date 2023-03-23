@@ -22,8 +22,11 @@ menuStore.setTitle("Tags");
         />
       </TabPanel>
       <TabPanel :header="t('Categories')">
-        <!-- <ObjectLoader :store="membersStore" :name="'tagsCategories'" /> -->
-        {{ t("Coming soon.") }}
+        <ObjectLoader
+          :store="membersStore"
+          :name="'tagsCategories'"
+          :default-columns="['name']"
+        />
       </TabPanel>
     </TabView>
   </div>

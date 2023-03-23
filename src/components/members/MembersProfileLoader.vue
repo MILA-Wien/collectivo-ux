@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
-import MembersProfile from "./MembersProfile.vue";
+import PrimeButton from "primevue/button";
 import PrimeProgressSpinner from "primevue/progressspinner";
-
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import MembersProfile from "./MembersProfile.vue";
+const { t } = useI18n();
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
@@ -18,7 +20,12 @@ const { membersProfile } = storeToRefs(membersStore);
 
 <template>
   <div v-if="error !== null">
-    <p>There was an error loading the data.</p>
+    <p class="pb-2">
+      {{ t("Could not find any membership data.") }}
+    </p>
+    <RouterLink to="/">
+      <PrimeButton> {{ t("Back to homepage") }} </PrimeButton>
+    </RouterLink>
   </div>
   <div v-else-if="!membersProfile.loaded">
     <PrimeProgressSpinner />

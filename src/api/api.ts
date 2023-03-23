@@ -77,13 +77,17 @@ export const dashboardTiles = async () => {
 
 // Endpoint dictionary (at the moment only for members)
 export const endpoints = {
-  //members
+  coreAbout: "/core/about/",
+  coreUsers: "/core/users/",
+  coreGroups: "/core/groups/",
   menusMain: "/menus/menus/core/main/",
   menusAdmin: "/menus/menus/core/admin/",
   membersMembers: "/members/members/",
   membersProfile: "/members/profile/",
   membersRegister: "/members/register/",
+  membersMemberships: "/members/memberships/",
   tagsTags: "/tags/tags/",
+  tagsCategories: "/tags/categories/",
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
