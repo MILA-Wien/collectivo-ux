@@ -22,7 +22,7 @@ const membersStore = useMembersStore();
 
 // Set page title
 const menuStore = useMenuStore();
-menuStore.setTitle("Membership");
+menuStore.setTitle("Profile");
 
 // Get membership data and schema from store
 const props = defineProps({
@@ -139,7 +139,7 @@ async function save() {
     return;
   } else if (membership.value) {
     try {
-      await membersStore.update("membersProfile", membership.value);
+      await membersStore.update("profilesProfilesSelf", membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),
@@ -206,10 +206,10 @@ function schemaToPrime(choices: any) {
 
             <!-- Disabled choice fields (translated) -->
             <div v-else-if="value?.choices != null">
-              <InputText
+              <!-- <InputText
                 disabled
                 :value="t(membership[key] ? membership[key] : '')"
-              />
+              /> -->
             </div>
 
             <!-- Other disabled fields -->

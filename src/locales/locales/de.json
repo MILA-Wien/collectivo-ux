@@ -19,6 +19,9 @@
   "You are a member of": "Du bist Mitglied bei",
   "Your membership number is": "Deine Mitgliedsnummer ist",
   "Show my data": "Zu meinen Daten",
+  "Profile data": "Stammdaten",
+  "Payment data": "Zahlungsdaten",
+  "Survey data": "Umfrage",
 
   "Category": "Kategorie",
   "Categories": "Kategorien",
@@ -47,6 +50,7 @@
   "Legal type": "Organisation Form",
 
   "Memberships": "Mitgliedschaften",
+  "My memberships": "Meine Mitgliedschaften",
   "Membership number": "Nummer",
   "Shares signed": "Anteile",
   "Shares paid": "Anteile (bezahlt)",

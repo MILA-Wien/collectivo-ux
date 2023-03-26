@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { PropType } from "vue";
-import { storeToRefs } from "pinia";
-import type { StoreGeneric } from "pinia";
-import ObjectTableFrame from "./ObjectTableFrame.vue";
-import PrimeProgressSpinner from "primevue/progressspinner";
 import type { endpoints } from "@/api/api";
+import type { StoreGeneric } from "pinia";
+import { storeToRefs } from "pinia";
+import PrimeProgressSpinner from "primevue/progressspinner";
+import type { PropType } from "vue";
+import { ref } from "vue";
+import ObjectList from "./ObjectList.vue";
+import ObjectTableFrame from "./ObjectTableFrame.vue";
 
 const props = defineProps({
   store: {
@@ -19,6 +20,11 @@ const props = defineProps({
   defaultColumns: {
     type: Array as PropType<string[]>,
     required: false,
+  },
+  displayType: {
+    type: String as PropType<"table" | "list">,
+    required: false,
+    default: "table",
   },
 });
 
@@ -40,7 +46,7 @@ if (!data.value.loaded) {
   <div v-else-if="!data.loaded">
     <PrimeProgressSpinner />
   </div>
-  <div v-else class="h-full">
+  <div v-else-if="displayType == 'table'" class="h-full">
     <ObjectTableFrame
       :store="store"
       :name="name"
@@ -48,5 +54,21 @@ if (!data.value.loaded) {
       :schema="data.schema"
       :default-columns="defaultColumns"
     />
+  </div>
+  <div v-else-if="displayType == 'list'" class="h-full">
+    <ObjectList
+      :store="store"
+      :name="name"
+      :objects="data.data"
+      :schema="data.schema"
+      :default-columns="defaultColumns"
+    >
+      <template #item="slotProps">
+        <slot name="item" v-bind="slotProps"></slot>
+      </template>
+    </ObjectList>
+  </div>
+  <div v-else>
+    <p>Invalid display type.</p>
   </div>
 </template>

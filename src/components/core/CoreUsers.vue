@@ -8,7 +8,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
-menuStore.setTitle("Accounts");
+menuStore.setTitle("Users");
 </script>
 
 <template>
@@ -18,14 +18,28 @@ menuStore.setTitle("Accounts");
         <ObjectLoader
           :store="membersStore"
           :name="'coreUsers'"
-          :default-columns="['first_name', 'last_name', 'email', 'groups']"
+          :default-columns="['first_name', 'last_name', 'email']"
         />
       </TabPanel>
-      <TabPanel :header="t('Permissions')">
+      <TabPanel :header="t('Profile data')">
         <ObjectLoader
           :store="membersStore"
-          :name="'coreGroups'"
-          :default-columns="['name']"
+          :name="'profilesProfiles'"
+          :default-columns="['first_name', 'last_name']"
+        />
+      </TabPanel>
+      <TabPanel :header="t('Payment data')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'paymentsProfiles'"
+          :default-columns="['first_name', 'last_name']"
+        />
+      </TabPanel>
+      <TabPanel :header="t('Survey data')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'milaProfiles'"
+          :default-columns="['first_name', 'last_name', 'email', 'groups']"
         />
       </TabPanel>
     </TabView>

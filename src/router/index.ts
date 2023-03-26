@@ -21,6 +21,14 @@ const router = createRouter({
       component: () => import("../components/core/CoreUsers.vue"),
     },
     {
+      path: "/core/profile",
+      name: "coreProfile",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/core/CoreProfileLoader.vue"),
+    },
+    {
       path: "/core/settings",
       name: "coreSettings",
       meta: {
@@ -29,38 +37,30 @@ const router = createRouter({
       component: () => import("../components/core/CoreSettings.vue"),
     },
     {
-      path: "/members/admin",
-      name: "membersAdmin",
+      path: "/memberships/admin",
+      name: "membershipsAdmin",
       meta: {
         isMembersAdmin: true,
       },
-      component: () => import("../components/members/MembersAdmin.vue"),
+      component: () => import("../components/memberships/MembershipsAdmin.vue"),
     },
     {
-      path: "/members/profile",
-      name: "profile",
+      path: "/memberships/profile",
+      name: "memberships",
       meta: {
         requiresAuth: true,
         isMember: true,
       },
-      component: () => import("../components/members/MembersProfileLoader.vue"),
-    },
-    {
-      path: "/members/registration",
-      name: "registration",
-      meta: {
-        requiresAuth: true,
-      },
-      component: () => import("../components/members/MembersRegistration.vue"),
-    },
-    {
-      path: "/registration_survey/admin",
-      name: "registration",
-      meta: {
-        requiresAuth: true,
-      },
       component: () =>
-        import("../components/registration_survey/SurveyAdmin.vue"),
+        import("../components/memberships/MembershipsProfile.vue"),
+    },
+    {
+      path: "/mila/registration",
+      name: "registration",
+      meta: {
+        requiresAuth: true,
+      },
+      component: () => import("../components/mila/MilaRegistration.vue"),
     },
     {
       path: "/emails/admin",

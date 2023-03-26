@@ -22,8 +22,8 @@ export const useMenuStore = defineStore({
   actions: {
     async getMenus() {
       const [mainMenu, adminMenu] = await Promise.all([
-        API.get("menusMain"),
-        API.get("menusAdmin"),
+        API.get("menusMenusMain"),
+        API.get("menusMenusAdmin"),
       ]);
       this.mainMenu.menu = mainMenu.data.items;
       this.mainMenu.loaded = true;

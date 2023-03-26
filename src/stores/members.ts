@@ -6,21 +6,31 @@ import { DataDetailTemplate, DataListTemplate } from "./../api/types";
 type membersStore = {
   coreUsers: DataList;
   coreGroups: DataList;
-  membersMembers: DataList;
-  membersProfile: DataDetail;
-  membersRegister: DataDetail;
-  membersMemberships: DataList;
+
+  extensionsExtensions: DataList;
+
+  profilesProfiles: DataList;
+  profilesProfilesSelf: DataDetail;
+
+  membershipsMemberships: DataList;
+  membershipsMembershipsSelf: DataList;
+
+  paymentsProfiles: DataList;
+  paymentsProfilesSelf: DataDetail;
+  paymentsPayments: DataList;
+  paymentsSubscriptions: DataList;
+
   tagsTags: DataList;
   tagsCategories: DataList;
+
   emailsCampaigns: DataList;
   emailsTemplates: DataList;
   emailsDesigns: DataList;
-  paymentsPayments: DataList;
-  paymentsSubscriptions: DataList;
-  registrationSurvey: DataList;
-  registrationSurveySkills: DataList;
-  registrationSurveyGroups: DataList;
-  extensionsExtensions: DataList;
+
+  milaRegister: DataDetail;
+  milaProfiles: DataList;
+  milaSkills: DataList;
+  milaGroups: DataList;
 };
 
 type membersObject = keyof membersStore;
@@ -52,21 +62,31 @@ export const useMembersStore = defineStore({
     ({
       coreUsers: JSON.parse(JSON.stringify(DataListTemplate)),
       coreGroups: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersMembers: JSON.parse(JSON.stringify(DataListTemplate)),
-      membersProfile: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      membersMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
+
+      profilesProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
+      profilesProfilesSelf: JSON.parse(JSON.stringify(DataDetailTemplate)),
+
+      extensionsExtensions: JSON.parse(JSON.stringify(DataListTemplate)),
+
+      membershipsMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
+      membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataListTemplate)),
+
       tagsTags: JSON.parse(JSON.stringify(DataListTemplate)),
       tagsCategories: JSON.parse(JSON.stringify(DataListTemplate)),
+
       emailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
       emailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+
+      paymentsProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
+      paymentsProfilesSelf: JSON.parse(JSON.stringify(DataDetailTemplate)),
       paymentsPayments: JSON.parse(JSON.stringify(DataListTemplate)),
       paymentsSubscriptions: JSON.parse(JSON.stringify(DataListTemplate)),
-      registrationSurvey: JSON.parse(JSON.stringify(DataListTemplate)),
-      registrationSurveySkills: JSON.parse(JSON.stringify(DataListTemplate)),
-      registrationSurveyGroups: JSON.parse(JSON.stringify(DataListTemplate)),
-      extensionsExtensions: JSON.parse(JSON.stringify(DataListTemplate)),
+
+      milaRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      milaProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
+      milaSkills: JSON.parse(JSON.stringify(DataListTemplate)),
+      milaGroups: JSON.parse(JSON.stringify(DataListTemplate)),
     } as membersStore),
 
   actions: {
@@ -77,7 +97,7 @@ export const useMembersStore = defineStore({
         API.getSchema(objectName),
         API.get(objectName, id),
       ]);
-
+      console.log(objects);
       // Throw error if response does not match store data type
       if (
         (this[objectName].data instanceof Array &&
@@ -152,8 +172,8 @@ export const useMembersStore = defineStore({
       return response;
     },
     async getMilaMembershipNumber() {
-      await this.get("membersProfile");
-      const m = this.membersProfile.data.memberships?.filter(
+      await this.get("coreUsers");
+      const m = this.coreUsers.data.memberships?.filter(
         (e: any) => e.type.name == "MILA Genossenschaft"
       );
       if (m.length > 0) {

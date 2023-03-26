@@ -91,10 +91,10 @@ export const endpoints = {
   menusMenuItems: "/menus/menuitems/",
 
   profilesProfiles: "/profiles/profiles/",
-  profilesProfilesSelf: "/profiles/profiles/self",
+  profilesProfilesSelf: "/profiles/profiles/self/",
 
   membershipsMemberships: "/memberships/memberships/",
-  membershipsMembershipsSelf: "/memberships/memberships/self",
+  membershipsMembershipsSelf: "/memberships/memberships/self/",
   membershipsTypes: "/memberships/types/",
   membershipsStatuses: "/memberships/statuses/",
 
@@ -106,12 +106,12 @@ export const endpoints = {
   emailsCampaigns: "/emails/campaigns/",
 
   paymentsProfiles: "/payments/profiles/",
-  paymentsProfilesSelf: "/payments/profiles/self",
+  paymentsProfilesSelf: "/payments/profiles/self/",
   paymentsPayments: "/payments/payments/",
   paymentsSubscriptions: "/payments/subscriptions/",
 
   milaRegister: "/mila/register/",
-  milaSurvey: "/mila/profiles/",
+  milaProfiles: "/mila/profiles/",
   milaSkills: "/mila/skills/",
   milaGroups: "/mila/groups/",
 };

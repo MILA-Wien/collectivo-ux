@@ -6,16 +6,16 @@ import PrimeButton from "primevue/button";
 import PrimeProgressSpinner from "primevue/progressspinner";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import MembersProfile from "./MembersProfile.vue";
+import CoreProfile from "./CoreProfile.vue";
 const { t } = useI18n();
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
 const membersStore = useMembersStore();
-membersStore.get("membersProfile").catch((e: any) => {
+membersStore.get("profilesProfilesSelf").catch((e: any) => {
   error.value = e;
 });
-const { membersProfile } = storeToRefs(membersStore);
+const { profilesProfilesSelf } = storeToRefs(membersStore);
 </script>
 
 <template>
@@ -27,13 +27,13 @@ const { membersProfile } = storeToRefs(membersStore);
       <PrimeButton> {{ t("Back to homepage") }} </PrimeButton>
     </RouterLink>
   </div>
-  <div v-else-if="!membersProfile.loaded">
+  <div v-else-if="!profilesProfilesSelf.loaded">
     <PrimeProgressSpinner />
   </div>
   <div v-else>
-    <MembersProfile
-      :membership="membersProfile.data"
-      :membershipSchema="membersProfile.schema"
+    <CoreProfile
+      :membership="profilesProfilesSelf.data"
+      :membershipSchema="profilesProfilesSelf.schema"
       id="members-profile"
     />
   </div>
