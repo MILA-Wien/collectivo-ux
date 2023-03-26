@@ -4,8 +4,10 @@
   "Server not reachable.": "Server nicht erreichbar.",
   "Request failed.": "Anfrage fehlgeschlagen.",
 
-  "User": "Account",
-  "Users": "Accounts",
+  "User": "Benutzer*in",
+  "Users": "Benutzer*innen",
+  "Profile": "Profil",
+  "Profiles": "Profile",
   "Permission": "Berechtigung",
   "Permissions": "Berechtigungen",
   "Groups": "Gruppen",

@@ -75,28 +75,45 @@ export const dashboardTiles = async () => {
   return response;
 };
 
-// Endpoint dictionary (at the moment only for members)
+// Endpoint dictionary
 export const endpoints = {
   coreAbout: "/core/about/",
   coreUsers: "/core/users/",
   coreGroups: "/core/groups/",
-  menusMain: "/menus/menus/core/main/",
-  menusAdmin: "/menus/menus/core/admin/",
-  membersMembers: "/members/members/",
-  membersProfile: "/members/profile/",
-  membersRegister: "/members/register/",
-  membersMemberships: "/members/memberships/",
+
+  extensionsExtensions: "/extensions/extensions/",
+
+  dashboardTiles: "/dashboard/tiles/",
+
+  menusMenus: "/menus/menus/",
+  menusMenusMain: "/menus/menus/core/main/",
+  menusMenusAdmin: "/menus/menus/core/admin/",
+  menusMenuItems: "/menus/menuitems/",
+
+  profilesProfiles: "/profiles/profiles/",
+  profilesProfilesSelf: "/profiles/profiles/self",
+
+  membershipsMemberships: "/memberships/memberships/",
+  membershipsMembershipsSelf: "/memberships/memberships/self",
+  membershipsTypes: "/memberships/types/",
+  membershipsStatuses: "/memberships/statuses/",
+
   tagsTags: "/tags/tags/",
   tagsCategories: "/tags/categories/",
+
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
-  registrationSurvey: "/registration_survey/profiles/",
-  registrationSurveySkills: "/registration_survey/skills/",
-  registrationSurveyGroups: "/registration_survey/groups/",
+
+  paymentsProfiles: "/payments/profiles/",
+  paymentsProfilesSelf: "/payments/profiles/self",
   paymentsPayments: "/payments/payments/",
   paymentsSubscriptions: "/payments/subscriptions/",
-  extensionsExtensions: "/extensions/extensions/",
+
+  milaRegister: "/mila/register/",
+  milaSurvey: "/mila/profiles/",
+  milaSkills: "/mila/skills/",
+  milaGroups: "/mila/groups/",
 };
 
 // Generic API functions
