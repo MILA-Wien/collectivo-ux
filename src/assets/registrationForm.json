@@ -624,9 +624,9 @@
             "htmlType": "radio",
             "description": "Only as an active member do you have the opportunity to shop after the opening of the supermarket. As an investing member, you support us financially, but you cannot shop.",
             "required": true,
-            "extId": "membership_type",
-            "options": ["Active", "Investing"],
-            "values": ["active", "investing"]
+            "extId": "membership_status",
+            "options": ["Aktiv", "Investierend"],
+            "values": [1, 2]
           },
           "id": "12aasef3mPWTOqEeE",
           "children": []
@@ -736,10 +736,13 @@
             "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. Erst wenn der Firmenbucheintrag von MILA Mitmach-Supermarkt e.G. erfolgt ist, können wir das Genossenschaftskonto eröffnen und Zahlung per Überweisung ermöglichen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
             "conditions": [],
             "content": "",
-            "extId": "shares_payment_type",
+            "extId": "payment_method",
             "required": true,
-            "options": ["Jetzt SEPA Bankeinzug genehmigen!"],
-            "values": ["sepa"]
+            "options": [
+              "Jetzt SEPA Bankeinzug genehmigen!",
+              "Per Überweisung zahlen."
+            ],
+            "values": ["sepa", "transfer"]
           },
           "id": "kDFmPWTOqEeE",
           "children": []
@@ -760,7 +763,7 @@
                 "htmlType": "text",
                 "conditions": [
                   {
-                    "target": "shares_payment_type",
+                    "target": "payment_method",
                     "value": "sepa"
                   }
                 ],
@@ -783,7 +786,7 @@
                 "htmlType": "text",
                 "conditions": [
                   {
-                    "target": "shares_payment_type",
+                    "target": "payment_method",
                     "value": "sepa"
                   }
                 ],
@@ -879,7 +882,7 @@
             "conditions": [],
             "htmlType": "checkbox",
             "extId": "groups_interested",
-            "optionsEndpoint": "/members/groups/"
+            "optionsEndpoint": "/mila/groups/"
           },
           "id": "groups-interested-input",
           "children": []
@@ -891,7 +894,7 @@
             "htmlType": "checkbox",
             "conditions": [],
             "extId": "skills",
-            "optionsEndpoint": "/members/skills/"
+            "optionsEndpoint": "/mila/skills/"
           },
           "id": "skills-input",
           "children": []

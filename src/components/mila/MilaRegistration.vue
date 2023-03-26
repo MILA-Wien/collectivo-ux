@@ -56,9 +56,9 @@ const { tree } = storeToRefs(formViewerStore);
 tree.value = treeData;
 
 const membersStore = useMembersStore();
-membersStore.getSchema("membersRegister");
-const { membersRegister } = storeToRefs(membersStore);
-const registrationSchema = membersRegister.value.schema;
+membersStore.getSchema("milaRegister");
+const { milaRegister } = storeToRefs(membersStore);
+const registrationSchema = milaRegister.value.schema;
 const registrationFinished = ref(false);
 const userStore = useUserStore();
 // check if user is already registered
@@ -82,7 +82,7 @@ async function submit() {
     }
   }
   try {
-    await membersStore.create("membersRegister", registerData);
+    await membersStore.create("milaRegister", registerData);
     registrationFinished.value = true;
   } catch (e: any) {
     console.log(e);

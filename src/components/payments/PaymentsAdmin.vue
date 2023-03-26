@@ -18,14 +18,20 @@ menuStore.setTitle("Payments");
         <ObjectLoader
           :store="membersStore"
           :name="'paymentsPayments'"
-          :default-columns="['name']"
+          :default-columns="[
+            'name',
+            'status',
+            'payer',
+            'amount',
+            'description',
+          ]"
         />
       </TabPanel>
-      <TabPanel :header="t('Susbcriptions')">
+      <TabPanel :header="t('Subscriptions')">
         <ObjectLoader
           :store="membersStore"
           :name="'paymentsSubscriptions'"
-          :default-columns="['name']"
+          :default-columns="['name', 'payer', 'amount', 'description']"
         />
       </TabPanel>
     </TabView>

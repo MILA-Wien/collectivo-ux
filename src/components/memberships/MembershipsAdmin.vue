@@ -27,6 +27,20 @@ menuStore.setTitle("Memberships");
           ]"
         />
       </TabPanel>
+      <TabPanel :header="t('Types')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membershipsTypes'"
+          :default-columns="['name']"
+        />
+      </TabPanel>
+      <TabPanel :header="t('Statuses')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membershipsStatuses'"
+          :default-columns="['name']"
+        />
+      </TabPanel>
     </TabView>
   </div>
 </template>

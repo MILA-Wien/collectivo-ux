@@ -98,7 +98,6 @@ async function updateObject() {
   isSaving.value = true;
   formatDates();
   try {
-    console.log(object_temp.value);
     await props.store.update(
       props.name,
       object_temp.value,

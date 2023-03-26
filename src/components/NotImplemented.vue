@@ -3,9 +3,9 @@ import { useMenuStore } from "@/stores/menu";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const menuStore = useMenuStore();
-menuStore.setTitle("Undefined");
+menuStore.setTitle(t("Not yet implemented."));
 </script>
 
 <template>
-  {{ t("Not yet implemented.") }}
+  {{ t("This extension is still being developed.") }}
 </template>

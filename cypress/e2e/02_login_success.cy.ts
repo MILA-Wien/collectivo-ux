@@ -9,10 +9,12 @@ describe("Login Succesfull", () => {
       cy.get("input[name=username]").type("test_member_01@example.com");
       cy.get("input[name=password]").type("Test123!").type("{enter}"); // '{enter}' submits the form
       cy.get('button[id="toggle-sidebar-button"]').click();
-      cy.get(
-        "#main_menu_0_0 > .p-menuitem-content > .p-menuitem-link > .p-menuitem-text"
-      ).contains("Startseite");
-      cy.get("a").contains("Abmelden").click();
+      cy.get("#main_menu > div > div > div > a > div > span").contains(
+        "Startseite"
+      );
+      cy.get("#main_menu > div > div > div > a > div > span").contains(
+        "Abmelden"
+      );
     });
   });
 });

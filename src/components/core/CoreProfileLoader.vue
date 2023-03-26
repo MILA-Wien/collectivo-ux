@@ -30,7 +30,7 @@ const { profilesProfilesSelf } = storeToRefs(membersStore);
   <div v-else-if="!profilesProfilesSelf.loaded">
     <PrimeProgressSpinner />
   </div>
-  <div v-else>
+  <div v-else id="core-profile">
     <CoreProfile
       :membership="profilesProfilesSelf.data"
       :membershipSchema="profilesProfilesSelf.schema"

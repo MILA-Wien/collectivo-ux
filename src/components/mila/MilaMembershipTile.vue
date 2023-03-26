@@ -23,7 +23,7 @@ membersStore
       <br />
       {{ t("Your membership number is") + ": " + has_mila_membership }}
     </p>
-    <RouterLink to="/members/profile">
+    <RouterLink to="/core/profile">
       <PrimeButton> {{ t("Show my data") }} </PrimeButton>
     </RouterLink>
   </div>
@@ -35,7 +35,7 @@ membersStore
         )
       }}
     </p>
-    <RouterLink to="/members/registration">
+    <RouterLink to="/mila/registration">
       <PrimeButton> {{ t("Continue") }} </PrimeButton>
     </RouterLink>
   </div>

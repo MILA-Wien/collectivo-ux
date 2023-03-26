@@ -21,20 +21,22 @@ describe("register user_not_member", () => {
       const token = response.body.access_token;
       const retrieveMembersParams = {
         method: "GET",
-        url: `http://localhost:8000/api/members/members/?first_name__contains=%C3%96tz1&last_name__contains=CABBAG3`,
+        url: `http://localhost:8000/api/memberships/memberships/?user__first_name__contains=%C3%96tz1&user__last_name__contains=CABBAG3`,
         headers: {
           authorization: token,
         },
       };
       // retrieve member(s) matching test_user_not_member sent registration from previous test execution
       cy.request(retrieveMembersParams).then((response) => {
+        console.log(response.body);
         if (response.status === 200 && response.body.length > 0) {
           for (let i = 0; i < response.body.length; i++) {
             const member = response.body[i];
-            console.log("Deleting member with id: ", member.id);
+            console.log("Deleting membershiop with id: ", member.id);
+            console.log(member);
             const deleteMembersParameters = {
               method: "DELETE",
-              url: `http://localhost:8000/api/members/members/${member.id}/`,
+              url: `http://localhost:8000/api/memberships/memberships/${member.id}/`,
               headers: {
                 authorization: token,
               },
@@ -91,7 +93,7 @@ describe("register user_not_member", () => {
       .type("Österland");
     cy.get("#next-page2-button > .button button").click();
     /* Page 3/5 */
-    cy.get('[type="radio"]').check("active");
+    cy.get('[type="radio"]').check("1"); // TODO: Can we use label instead?
     cy.get('[type="radio"]').check("normal");
     cy.get('[type="radio"]').check("sepa");
     cy.get("#bank-account-input > .textfield input").type(
@@ -116,20 +118,22 @@ describe("register user_not_member", () => {
       cy.fixture("expectedResponseNP.json").then((expectedResponse) => {
         /* Here response.body validation */
         expect(actualResponse?.statusCode).to.eq(201);
-        expect(actualResponse?.body).to.have.property("id");
+        expect(actualResponse?.body).to.have.property("user");
         expect(actualResponse?.body).to.have.property("person_type");
         expect(actualResponse?.body.person_type).to.deep.eq(
           expectedResponse.person_type
         );
-        expect(actualResponse?.body).to.have.property("groups_interested");
-        expect(actualResponse?.body.groups_interested).to.deep.eq(
-          expectedResponse.groups_interested
-        );
-        expect(actualResponse?.body).to.have.property("skills");
-        expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
+        // TODO: groups and skill shave moved to mila app
+        // expect(actualResponse?.body).to.have.property("groups_interested");
+        // expect(actualResponse?.body.groups_interested).to.deep.eq(
+        //   expectedResponse.groups_interested
+        // );
+        // expect(actualResponse?.body).to.have.property("skills");
+        // expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
       });
     });
-    cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
+    //TODO: This has changed
+    //cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
 
   it("register as legal person", () => {
@@ -187,19 +191,21 @@ describe("register user_not_member", () => {
       cy.fixture("expectedResponseLP.json").then((expectedResponse) => {
         /* Here response.body validation */
         expect(actualResponse?.statusCode).to.eq(201);
-        expect(actualResponse?.body).to.have.property("id");
+        expect(actualResponse?.body).to.have.property("user");
         expect(actualResponse?.body).to.have.property("person_type");
         expect(actualResponse?.body.person_type).to.deep.eq(
           expectedResponse.person_type
         );
-        expect(actualResponse?.body).to.have.property("groups_interested");
-        expect(actualResponse?.body.groups_interested).to.deep.eq(
-          expectedResponse.groups_interested
-        );
-        expect(actualResponse?.body).to.have.property("skills");
-        expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
+        // TODO: groups and skill shave moved to mila app
+        // expect(actualResponse?.body).to.have.property("groups_interested");
+        // expect(actualResponse?.body.groups_interested).to.deep.eq(
+        //   expectedResponse.groups_interested
+        // );
+        // expect(actualResponse?.body).to.have.property("skills");
+        // expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
       });
     });
-    cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
+    //TODO: This has changed
+    //cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
 });

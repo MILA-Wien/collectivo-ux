@@ -14,6 +14,8 @@ type membersStore = {
 
   membershipsMemberships: DataList;
   membershipsMembershipsSelf: DataList;
+  membershipsTypes: DataList;
+  membershipsStatuses: DataList;
 
   paymentsProfiles: DataList;
   paymentsProfilesSelf: DataDetail;
@@ -70,6 +72,8 @@ export const useMembersStore = defineStore({
 
       membershipsMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataListTemplate)),
+      membershipsTypes: JSON.parse(JSON.stringify(DataListTemplate)),
+      membershipsStatuses: JSON.parse(JSON.stringify(DataListTemplate)),
 
       tagsTags: JSON.parse(JSON.stringify(DataListTemplate)),
       tagsCategories: JSON.parse(JSON.stringify(DataListTemplate)),
@@ -97,7 +101,7 @@ export const useMembersStore = defineStore({
         API.getSchema(objectName),
         API.get(objectName, id),
       ]);
-      console.log(objects);
+
       // Throw error if response does not match store data type
       if (
         (this[objectName].data instanceof Array &&
@@ -172,9 +176,14 @@ export const useMembersStore = defineStore({
       return response;
     },
     async getMilaMembershipNumber() {
-      await this.get("coreUsers");
-      const m = this.coreUsers.data.memberships?.filter(
-        (e: any) => e.type.name == "MILA Genossenschaft"
+      await this.get("membershipsMembershipsSelf");
+      console.log(
+        this.membershipsMembershipsSelf.data.filter(
+          (e: any) => e.type.name == "Genossenschaft MILA"
+        )
+      );
+      const m = this.membershipsMembershipsSelf.data.filter(
+        (e: any) => e.type.name == "Genossenschaft MILA"
       );
       if (m.length > 0) {
         return m[0].number;

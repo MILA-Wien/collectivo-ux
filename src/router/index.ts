@@ -34,7 +34,7 @@ const router = createRouter({
       meta: {
         isMembersAdmin: true,
       },
-      component: () => import("../components/core/CoreSettings.vue"),
+      component: () => import("../components/NotImplemented.vue"),
     },
     {
       path: "/memberships/admin",
