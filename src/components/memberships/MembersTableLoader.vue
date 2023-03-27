@@ -10,12 +10,12 @@ const menuStore = useMenuStore();
 menuStore.setTitle("Members");
 
 const membersStore = useMembersStore();
-const { membersMembers, emailsCampaigns } = storeToRefs(membersStore);
+const { profilesProfiles, emailsCampaigns } = storeToRefs(membersStore);
 
 const error = ref<Object | null>(null);
 
-if (membersMembers.value.loaded === false) {
-  membersStore.get("membersMembers").catch((e: any) => {
+if (profilesProfiles.value.loaded === false) {
+  membersStore.get("profilesProfiles").catch((e: any) => {
     error.value = e;
   });
 }
@@ -34,7 +34,8 @@ if (emailsCampaigns.value.schemaLoaded === false) {
   </div>
   <div
     v-else-if="
-      membersMembers.loaded === false || emailsCampaigns.schemaLoaded === false
+      profilesProfiles.loaded === false ||
+      emailsCampaigns.schemaLoaded === false
     "
     class="loading"
   >
@@ -43,9 +44,9 @@ if (emailsCampaigns.value.schemaLoaded === false) {
   <div v-else class="h-full">
     <MembersTable
       :store="membersStore"
-      name="membersMembers"
-      :objects="membersMembers.data"
-      :schema="membersMembers.schema"
+      name="profilesProfiles"
+      :objects="profilesProfiles.data"
+      :schema="profilesProfiles.schema"
       :emailCampaignSchema="emailsCampaigns.schema"
     />
   </div>

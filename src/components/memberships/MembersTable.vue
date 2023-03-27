@@ -53,8 +53,8 @@ function createObjectFn() {
 
 // Update content of selected members is objects are changed in store
 const selectedMembers = ref<any[]>([]);
-const { membersMembers } = storeToRefs(props.store);
-watch(membersMembers.value, () => {
+const { membersMembers: profilesProfiles } = storeToRefs(props.store);
+watch(profilesProfiles.value, () => {
   const temp_selected = JSON.parse(JSON.stringify(selectedMembers.value));
   selectedMembers.value = [];
   for (const oldData of temp_selected) {
@@ -280,7 +280,7 @@ function bulkEdit() {
     :object="selectedMember"
     :create="false"
     :store="props.store"
-    :name="'membersMembers'"
+    :name="'profilesProfiles'"
     :schema="props.schema"
     @close="editMember = false"
   />
@@ -290,7 +290,7 @@ function bulkEdit() {
     v-if="createMember"
     :create="true"
     :store="props.store"
-    :name="'membersMembers'"
+    :name="'profilesProfiles'"
     @close="createMember = false"
   />
 
