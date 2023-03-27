@@ -25,21 +25,38 @@ menuStore.setTitle("Users");
         <ObjectLoader
           :store="membersStore"
           :name="'profilesProfiles'"
-          :default-columns="['first_name', 'last_name']"
+          :default-columns="[
+            'user__first_name',
+            'user__last_name',
+            'user__tags',
+            'person_type',
+          ]"
         />
       </TabPanel>
       <TabPanel :header="t('Payment data')">
         <ObjectLoader
           :store="membersStore"
           :name="'paymentsProfiles'"
-          :default-columns="['first_name', 'last_name']"
+          :default-columns="[
+            'first_name',
+            'last_name',
+            'user',
+            'payment_method',
+          ]"
         />
       </TabPanel>
       <TabPanel :header="t('Survey data')">
         <ObjectLoader
           :store="membersStore"
           :name="'milaProfiles'"
-          :default-columns="['first_name', 'last_name', 'email', 'groups']"
+          :default-columns="[
+            'first_name',
+            'last_name',
+            'email',
+            'user',
+            'groups_interested',
+            'skills',
+          ]"
         />
       </TabPanel>
     </TabView>
