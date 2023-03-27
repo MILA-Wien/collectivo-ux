@@ -4,6 +4,8 @@ README && TODOs:
 2. JSON response validation on submit formular: @Joel, see below validated properties
 4. Use cy.fixture() to load test data -> https://docs.cypress.io/api/commands/fixture //DONE for expectedResponse
 5. Use generic button validation
+6. Test for form checkout page has to be redone
+7. Test for survey results has to be redone (now at api/mila/profiles/)
 */
 
 Cypress.Cookies.debug(true);
@@ -123,17 +125,8 @@ describe("register user_not_member", () => {
         expect(actualResponse?.body.person_type).to.deep.eq(
           expectedResponse.person_type
         );
-        // TODO: groups and skill shave moved to mila app
-        // expect(actualResponse?.body).to.have.property("groups_interested");
-        // expect(actualResponse?.body.groups_interested).to.deep.eq(
-        //   expectedResponse.groups_interested
-        // );
-        // expect(actualResponse?.body).to.have.property("skills");
-        // expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
       });
     });
-    //TODO: This has changed
-    //cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
 
   it("register as legal person", () => {
@@ -196,16 +189,7 @@ describe("register user_not_member", () => {
         expect(actualResponse?.body.person_type).to.deep.eq(
           expectedResponse.person_type
         );
-        // TODO: groups and skill shave moved to mila app
-        // expect(actualResponse?.body).to.have.property("groups_interested");
-        // expect(actualResponse?.body.groups_interested).to.deep.eq(
-        //   expectedResponse.groups_interested
-        // );
-        // expect(actualResponse?.body).to.have.property("skills");
-        // expect(actualResponse?.body.skills).to.deep.eq(expectedResponse.skills);
       });
     });
-    //TODO: This has changed
-    //cy.get("#welcome-member-span").should("contain.text", "CABBAG3");
   });
 });
