@@ -1,19 +1,19 @@
-import { createApp } from "vue";
+import i18n, { loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
 import { createPinia } from "pinia";
-import { initKeycloak } from "./helpers/keycloak";
-import { loadLocaleMessages, setI18nLanguage } from "@/locales/i18n";
-import i18n from "@/locales/i18n";
+import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
 import "./assets/main.css";
+import { initKeycloak } from "./helpers/keycloak";
+import router from "./router";
 
 //PrimeVue imports
-import PrimeVue from "primevue/config";
-import ToastService from "primevue/toastservice";
-import ConfirmationService from "primevue/confirmationservice";
-import "primevue/resources/themes/saga-blue/theme.css"; //theme
-import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
+import PrimeVue from "primevue/config";
+import ConfirmationService from "primevue/confirmationservice";
+import "primevue/resources/primevue.min.css"; //core css
+import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import ToastService from "primevue/toastservice";
+import PrimeTooltip from "primevue/tooltip";
 
 // init vue app
 const app = createApp(App);
@@ -32,6 +32,7 @@ keycloakInstance
     app.use(PrimeVue);
     app.use(ToastService);
     app.use(ConfirmationService);
+    app.directive("tooltip", PrimeTooltip);
 
     // init view router
     app.use(router);

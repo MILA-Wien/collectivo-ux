@@ -3,17 +3,17 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
-import PrimeToolbar from "primevue/toolbar";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
+import PrimeToolbar from "primevue/toolbar";
 
+import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
 import ObjectDetail from "./ObjectDetail.vue";
 import ObjectTable from "./ObjectTable.vue";
-import { matchModes, getDefaultMatchMode } from "@/helpers/filters";
 
-import type { PropType } from "vue";
-import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
+import type { StoreGeneric } from "pinia";
+import type { PropType } from "vue";
 
 const { t } = useI18n();
 const props = defineProps({
@@ -36,6 +36,14 @@ const props = defineProps({
   defaultColumns: {
     type: Array as PropType<string[]>,
     required: false,
+  },
+  emailButton: {
+    type: Boolean,
+    required: false,
+  },
+  emailCampaignSchema: {
+    type: Object,
+    required: true,
   },
 });
 
@@ -116,7 +124,17 @@ function createObjectFn() {
   editActive.value = true;
 }
 
-// Events ----------------------------------------------------------------- //
+// Send emails ------------------------------------------------------------- //
+const editEmailsActive = ref(false);
+const editEmailsObject = ref({});
+const editEmailsCreate = ref(false);
+function sendEmails() {
+  editEmailsObject.value = {
+    recipients: selectedObjects.value.map((m: any) => m.user),
+  };
+  editEmailsCreate.value = true;
+  editEmailsActive.value = true;
+}
 </script>
 
 <template>
@@ -125,8 +143,9 @@ function createObjectFn() {
     <PrimeToolbar class="mb-4">
       <template #start>
         <div class="m-1 text-left">
+          <!-- v-tooltip.top="t('Create new entry')" -->
           <PrimeButton
-            :label="t('Create')"
+            icon="pi pi-plus"
             @click="createObjectFn()"
             class="p-button-success"
           >
@@ -147,15 +166,25 @@ function createObjectFn() {
         </div>
       </template>
       <template #end>
+        <!-- TODO: Fix clear filters button  -->
         <!-- <div class="m-1">
-              <PrimeButton type="button" icon="pi pi-filter-slash" :label="t('Clear')" class="p-button-outlined"
-                @click="clearFilters()">
-              </PrimeButton>
+                  <PrimeButton type="button" icon="pi pi-filter-slash" :label="t('Clear')" class="p-button-outlined"
+                    @click="clearFilters()">
+                  </PrimeButton>
             </div> -->
+        <div class="m-1" v-if="emailButton">
+          <!--  v-tooltip.top="t('Send emails')" -->
+          <PrimeButton
+            icon="pi pi-send"
+            :disabled="!(selectedObjects.length > 0)"
+            @click="sendEmails"
+          >
+          </PrimeButton>
+        </div>
         <div class="m-1">
+          <!-- v-tooltip.top="t('Export')" -->
           <PrimeButton
             icon="pi pi-file-export"
-            :label="t('Export')"
             :disabled="!(selectedObjects?.length > 0)"
           >
             <JsonCSV
@@ -164,7 +193,7 @@ function createObjectFn() {
               :data="selectedObjects"
               name="export.csv"
             >
-              {{ t("Export") }}
+              <i class="pi pi-file-export"></i>
             </JsonCSV>
           </PrimeButton>
         </div>
@@ -197,6 +226,17 @@ function createObjectFn() {
     :store="store"
     :name="name"
     :schema="schema"
+    @close="editActive = false"
+  />
+
+  <!-- Dialogue for email campaign details -->
+  <ObjectDetail
+    v-if="editEmailsActive"
+    :object="editEmailsObject"
+    :create="editEmailsCreate"
+    :store="props.store"
+    :name="'emailsCampaigns'"
+    :schema="emailCampaignSchema"
     @close="editActive = false"
   />
 </template>

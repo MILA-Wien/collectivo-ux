@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { endpoints } from "@/api/api";
+import { useMembersStore } from "@/stores/members";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimeProgressSpinner from "primevue/progressspinner";
@@ -26,6 +27,11 @@ const props = defineProps({
     required: false,
     default: "table",
   },
+  emailButton: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const error = ref<Object | null>(null);
@@ -34,6 +40,15 @@ const data = storeToRefs(props.store)[props.name];
 // Load data
 if (!data.value.loaded) {
   props.store.get(props.name).catch((e: any) => {
+    error.value = e;
+  });
+}
+
+// Optional emails schema
+const membersStore = useMembersStore();
+const { emailsCampaigns } = storeToRefs(membersStore);
+if (emailsCampaigns.value.schemaLoaded === false) {
+  membersStore.getSchema("emailsCampaigns").catch((e: any) => {
     error.value = e;
   });
 }
@@ -53,6 +68,8 @@ if (!data.value.loaded) {
       :objects="data.data"
       :schema="data.schema"
       :default-columns="defaultColumns"
+      :emailButton="emailButton"
+      :emailCampaignSchema="emailsCampaigns.schema"
     />
   </div>
   <div v-else-if="displayType == 'list'" class="h-full">

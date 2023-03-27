@@ -19,6 +19,7 @@ menuStore.setTitle("Users");
           :store="membersStore"
           :name="'coreUsers'"
           :default-columns="['first_name', 'last_name', 'email']"
+          :email-button="true"
         />
       </TabPanel>
       <TabPanel :header="t('Profile data')">
@@ -31,6 +32,7 @@ menuStore.setTitle("Users");
             'user__tags',
             'person_type',
           ]"
+          :email-button="true"
         />
       </TabPanel>
       <TabPanel :header="t('Payment data')">
@@ -43,6 +45,7 @@ menuStore.setTitle("Users");
             'user',
             'payment_method',
           ]"
+          :email-button="true"
         />
       </TabPanel>
       <TabPanel :header="t('Survey data')">
@@ -57,6 +60,7 @@ menuStore.setTitle("Users");
             'groups_interested',
             'skills',
           ]"
+          :email-button="true"
         />
       </TabPanel>
     </TabView>
