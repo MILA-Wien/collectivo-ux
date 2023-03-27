@@ -130,7 +130,7 @@ const editEmailsObject = ref({});
 const editEmailsCreate = ref(false);
 function sendEmails() {
   editEmailsObject.value = {
-    recipients: selectedObjects.value.map((m: any) => m.user),
+    recipients: selectedObjects.value.map((m: any) => m.id),
   };
   editEmailsCreate.value = true;
   editEmailsActive.value = true;
