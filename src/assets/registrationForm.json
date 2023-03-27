@@ -738,11 +738,8 @@
             "content": "",
             "extId": "payment_method",
             "required": true,
-            "options": [
-              "Jetzt SEPA Bankeinzug genehmigen!",
-              "Per Überweisung zahlen."
-            ],
-            "values": ["sepa", "transfer"]
+            "options": ["Jetzt SEPA Bankeinzug genehmigen!"],
+            "values": ["sepa"]
           },
           "id": "kDFmPWTOqEeE",
           "children": []
