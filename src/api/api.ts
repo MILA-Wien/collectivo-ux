@@ -99,7 +99,6 @@ export const endpoints = {
   membershipsStatuses: "/memberships/statuses/",
 
   tagsTags: "/tags/tags/",
-  tagsCategories: "/tags/categories/",
 
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",

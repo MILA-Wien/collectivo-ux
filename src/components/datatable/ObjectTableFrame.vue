@@ -237,6 +237,6 @@ function sendEmails() {
     :store="props.store"
     :name="'emailsCampaigns'"
     :schema="emailCampaignSchema"
-    @close="editActive = false"
+    @close="editEmailsActive = false"
   />
 </template>

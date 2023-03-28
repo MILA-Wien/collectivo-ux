@@ -21,13 +21,6 @@ menuStore.setTitle("Tags");
           :default-columns="['name']"
         />
       </TabPanel>
-      <TabPanel :header="t('Categories')">
-        <ObjectLoader
-          :store="membersStore"
-          :name="'tagsCategories'"
-          :default-columns="['name']"
-        />
-      </TabPanel>
     </TabView>
   </div>
 </template>
