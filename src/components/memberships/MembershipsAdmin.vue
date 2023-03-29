@@ -52,7 +52,10 @@ menuStore.setTitle("Memberships");
         >
           <template #item="slotProps">
             <PrimePanel :header="slotProps.data.name" class="mb-5">
-              <p v-for="(value, name) in slotProps.data.statistics">
+              <p
+                v-for="(value, name, index) in slotProps.data.statistics"
+                :key="index"
+              >
                 <span class="">{{ name }}:</span> {{ value }}
               </p>
             </PrimePanel>

@@ -41,8 +41,6 @@ if (!props.create) {
     error.value = e;
   });
 }
-
-console.log(data.value);
 </script>
 
 <template>

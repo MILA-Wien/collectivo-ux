@@ -129,7 +129,7 @@ export const useMembersStore = defineStore({
     },
     async create(objectName: membersObject, payload: Object) {
       const response = await API.post(objectName, payload);
-      let object = this[objectName];
+      const object = this[objectName];
 
       if (object.data instanceof Array) {
         object.data.push(response.data);
@@ -141,7 +141,7 @@ export const useMembersStore = defineStore({
     async update(objectName: membersObject, payload: Object, id?: Number) {
       // Update object and save in store
       const response = await API.patch(objectName, payload, id);
-      let object = this[objectName];
+      const object = this[objectName];
 
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {

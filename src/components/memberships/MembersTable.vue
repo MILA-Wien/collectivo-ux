@@ -267,14 +267,6 @@ function bulkEdit() {
   <!-- members-table flex-col -->
 
   <!-- Dialogue for member details -->
-  <!-- <ObjectDetailLoader
-    v-if="editMember"
-    :id="selectedMember.id"
-    :create="false"
-    :store="props.store"
-    :name="'membersMembers'"
-    @close="editMember = false"
-  /> -->
   <ObjectDetail
     v-if="editMember"
     :object="selectedMember"

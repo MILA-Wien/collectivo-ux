@@ -27,7 +27,6 @@
       <a
         v-else
         :href="item.url"
-        class=""
         :class="{ 'p-disabled': item.disabled }"
         target="_blank"
       >
@@ -95,6 +94,7 @@
             <i class="pi pi-fw pi-angle-down"></i>
           </span>
           <span v-if="item.target === 'blank'" class="flex content-center mr-1">
+            <!-- TODO: Improve styling rules: use em & class based -->
             <i class="pi pi-fw pi-external-link" style="font-size: 12px"></i>
           </span>
         </div>
@@ -116,6 +116,7 @@ const { t } = useI18n();
 const menuStore = useMenuStore();
 const userStore = useUserStore();
 const { mainMenu, adminMenu } = storeToRefs(menuStore);
+// TODO: Replace with prime menuitem type
 const itemsMain = ref<any[]>([]);
 const itemsAdmin = ref<any[]>([]);
 
@@ -181,6 +182,7 @@ watch(mainMenu, () => {
 </script>
 
 <style>
+/* TODO: Switch to scoped styles */
 /* can't be scoped because we are overwriting prime styles */
 #main_menu {
   border: none;

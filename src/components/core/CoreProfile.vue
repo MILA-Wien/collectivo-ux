@@ -205,6 +205,7 @@ function schemaToPrime(choices: any) {
             </div>
 
             <!-- Disabled choice fields (translated) -->
+            <!-- TODO: Fix this -->
             <div v-else-if="value?.choices != null">
               <!-- <InputText
                 disabled
