@@ -18,12 +18,13 @@ menuStore.setTitle("Extensions");
       :display-type="'list'"
     >
       <template #item="slotProps">
-        <PrimePanel
-          :header="slotProps.data.name + ' v' + slotProps.data.version"
-          class="mb-5"
-        >
-          <p>{{ slotProps.data.description }}</p>
+        <PrimePanel :header="slotProps.data.label" class="mb-5">
+          <p class="pb-3">{{ slotProps.data.description }}</p>
           <p>Active: {{ slotProps.data.active }}</p>
+          <p>Built-in: {{ slotProps.data.built_in }}</p>
+          <p v-if="slotProps.data.version">
+            Version: {{ slotProps.data.version }}
+          </p>
         </PrimePanel>
       </template>
     </ObjectLoader>

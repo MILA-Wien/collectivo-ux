@@ -2,9 +2,11 @@
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
+import PrimePanel from "primevue/panel";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
+
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
@@ -40,6 +42,22 @@ menuStore.setTitle("Memberships");
           :name="'membershipsStatuses'"
           :default-columns="['name']"
         />
+      </TabPanel>
+      <TabPanel :header="t('Statistics')">
+        <ObjectLoader
+          :store="membersStore"
+          :name="'membershipsTypes'"
+          :default-columns="['name']"
+          :display-type="'list'"
+        >
+          <template #item="slotProps">
+            <PrimePanel :header="slotProps.data.name" class="mb-5">
+              <p v-for="(value, name) in slotProps.data.statistics">
+                <span class="">{{ name }}:</span> {{ value }}
+              </p>
+            </PrimePanel>
+          </template>
+        </ObjectLoader>
       </TabPanel>
     </TabView>
   </div>
