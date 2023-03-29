@@ -12,7 +12,7 @@
         :value="o.id"
         :name="props.element.id + o.id"
       />
-      <label class="font-light">{{ o.name }}</label>
+      <label class="font-light">{{ t(o.name) }}</label>
     </div>
   </div>
 </template>
@@ -44,6 +44,9 @@ function toggleValue(v: number) {
 </script>
 
 <script lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 export default {
   name: "ElementCheckboxGroup",
 };

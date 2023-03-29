@@ -51,7 +51,10 @@
 
   "Memberships": "Mitgliedschaften",
   "My memberships": "Meine Mitgliedschaften",
-  "Membership number": "Nummer",
+  "Membership number": "Mitgliedsnummer",
+  "Date joined": "Beitrittsdatum",
+  "Date left": "Austrittsdatum",
+  "Signed shares": "Gezeichnete Anteile",
   "Shares signed": "Anteile",
   "Shares paid": "Anteile (bezahlt)",
   "Member": "Mitglied",

@@ -175,13 +175,8 @@ export const useMembersStore = defineStore({
     },
     async getMilaMembershipNumber() {
       await this.get("membershipsMembershipsSelf");
-      console.log(
-        this.membershipsMembershipsSelf.data.filter(
-          (e: any) => e.type.name == "Genossenschaft MILA"
-        )
-      );
       const m = this.membershipsMembershipsSelf.data.filter(
-        (e: any) => e.type.name == "Genossenschaft MILA"
+        (e: any) => e.type.name == "MILA Mitmach-Supermarkt e. G."
       );
       if (m.length > 0) {
         return m[0].number;

@@ -17,7 +17,7 @@ menuStore.setTitle("Tags");
       <TabPanel :header="t('Tags')">
         <ObjectLoader
           :store="membersStore"
-          :name="'tagsTags'"
+          name="tagsTags"
           :default-columns="['name']"
         />
       </TabPanel>

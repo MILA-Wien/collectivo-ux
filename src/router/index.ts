@@ -99,26 +99,4 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((to, from, next) => {
-//   // if (to.meta.isMember) {
-//   //   // check if user is a member
-//   //   // if not, redirect to Dashboard
-//   //   // else, continue
-//   //   useUserStore().user?.tokenParsed?.realm_access.roles.includes(
-//   //     "members_user"
-//   //   )
-//   //     ? next()
-//   //     : next("/");
-//   // }
-//   // if (to.meta.isMembersAdmin) {
-//   //   useUserStore().user?.tokenParsed?.realm_access.roles.includes(
-//   //     "members_admin"
-//   //   )
-//   //     ? next()
-//   //     : next("/");
-//   // }
-
-//   return next();
-// });
-
 export default router;
