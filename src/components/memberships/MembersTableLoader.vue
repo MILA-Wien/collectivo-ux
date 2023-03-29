@@ -1,26 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
+
 import MembersTable from "./MembersTable.vue";
 
 const menuStore = useMenuStore();
 menuStore.setTitle("Members");
 
 const membersStore = useMembersStore();
-const { membersSummary, membersEmailsCampaigns } = storeToRefs(membersStore);
+const { profilesProfiles, emailsCampaigns } = storeToRefs(membersStore);
 
 const error = ref<Object | null>(null);
 
-if (membersSummary.value.loaded === false) {
-  membersStore.get("membersSummary").catch((e: any) => {
+if (profilesProfiles.value.loaded === false) {
+  membersStore.get("profilesProfiles").catch((e: any) => {
     error.value = e;
   });
 }
 
-if (membersEmailsCampaigns.value.schemaLoaded === false) {
-  membersStore.getSchema("membersEmailsCampaigns").catch((e: any) => {
+if (emailsCampaigns.value.schemaLoaded === false) {
+  membersStore.getSchema("emailsCampaigns").catch((e: any) => {
     error.value = e;
   });
 }
@@ -33,8 +34,8 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
   </div>
   <div
     v-else-if="
-      membersSummary.loaded === false ||
-      membersEmailsCampaigns.schemaLoaded === false
+      profilesProfiles.loaded === false ||
+      emailsCampaigns.schemaLoaded === false
     "
     class="loading"
   >
@@ -43,10 +44,10 @@ if (membersEmailsCampaigns.value.schemaLoaded === false) {
   <div v-else class="h-full">
     <MembersTable
       :store="membersStore"
-      name="membersSummary"
-      :objects="membersSummary.data"
-      :schema="membersSummary.schema"
-      :emailCampaignSchema="membersEmailsCampaigns.schema"
+      name="profilesProfiles"
+      :objects="profilesProfiles.data"
+      :schema="profilesProfiles.schema"
+      :emailCampaignSchema="emailsCampaigns.schema"
     />
   </div>
 </template>

@@ -1,32 +1,39 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
-import MembersProfile from "./MembersProfile.vue";
+import PrimeButton from "primevue/button";
 import PrimeProgressSpinner from "primevue/progressspinner";
-
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import CoreProfile from "./CoreProfile.vue";
+const { t } = useI18n();
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
 const membersStore = useMembersStore();
-membersStore.get("membersProfile").catch((e: any) => {
+membersStore.get("profilesProfilesSelf").catch((e: any) => {
   error.value = e;
 });
-const { membersProfile } = storeToRefs(membersStore);
+const { profilesProfilesSelf } = storeToRefs(membersStore);
 </script>
 
 <template>
   <div v-if="error !== null">
-    <p>There was an error loading the data.</p>
+    <p class="pb-2">
+      {{ t("Could not find any membership data.") }}
+    </p>
+    <RouterLink to="/">
+      <PrimeButton> {{ t("Back to homepage") }} </PrimeButton>
+    </RouterLink>
   </div>
-  <div v-else-if="!membersProfile.loaded">
+  <div v-else-if="!profilesProfilesSelf.loaded">
     <PrimeProgressSpinner />
   </div>
-  <div v-else>
-    <MembersProfile
-      :membership="membersProfile.data"
-      :membershipSchema="membersProfile.schema"
+  <div v-else id="core-profile">
+    <CoreProfile
+      :membership="profilesProfilesSelf.data"
+      :membershipSchema="profilesProfilesSelf.schema"
       id="members-profile"
     />
   </div>

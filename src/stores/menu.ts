@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
-import { coreMenuItemsFn } from "@/api/api";
+import { API } from "@/api/api";
 import type { ExtensionMenu, ExtensionMenuItem } from "@/api/types";
+import { defineStore } from "pinia";
 
 export type MenuStoreState = {
-  menu: ExtensionMenu | null;
-  menuLoaded: boolean;
+  mainMenu: ExtensionMenu;
+  adminMenu: ExtensionMenu;
   sideBarOpen: boolean;
   title: string;
 };
@@ -13,19 +13,22 @@ export const useMenuStore = defineStore({
   id: "menu",
   state: () =>
     ({
-      menu: null,
-      menuLoaded: false,
+      mainMenu: { menu: [], loaded: false } as ExtensionMenu,
+      adminMenu: { menu: [], loaded: false } as ExtensionMenu,
       sideBarOpen: false,
       title: "",
     } as MenuStoreState),
 
   actions: {
-    async getMenu() {
-      if (this.menu === null) {
-        this.menu = {} as ExtensionMenu;
-      }
-      this.menu.menu = await coreMenuItemsFn();
-      this.menuLoaded = true;
+    async getMenus() {
+      const [mainMenu, adminMenu] = await Promise.all([
+        API.get("menusMenusMain"),
+        API.get("menusMenusAdmin"),
+      ]);
+      this.mainMenu.menu = mainMenu.data.items;
+      this.mainMenu.loaded = true;
+      this.adminMenu.menu = adminMenu.data.items;
+      this.adminMenu.loaded = true;
     },
     setSideBarOpen(open: boolean) {
       this.sideBarOpen = open;
@@ -36,7 +39,7 @@ export const useMenuStore = defineStore({
   },
   getters: {
     menugetter: (state) => {
-      state.menu;
+      state.mainMenu;
     },
     getSideBarOpen: (state) => {
       return state.sideBarOpen;
@@ -46,7 +49,7 @@ export const useMenuStore = defineStore({
     },
     getMenuItem: (state) => {
       return (extension: string, component: string) => {
-        return state.menu?.menu?.find(
+        return state.mainMenu?.menu?.find(
           (item: ExtensionMenuItem) =>
             (item.extension === extension &&
               item.component_name === component) ||

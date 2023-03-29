@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useMenuStore } from "@/stores/menu";
 import { shallowRef, watch } from "vue";
-import LoadingItem from "../components/LoadingItem.vue";
+import { useRoute } from "vue-router";
 import ErrorItem from "../components/ErrorItem.vue";
 import IframeItem from "../components/IFrameItem.vue";
-import { useMenuStore } from "@/stores/menu";
+import LoadingItem from "../components/LoadingItem.vue";
 const route = useRoute();
 
 let type = shallowRef(LoadingItem);
@@ -14,7 +14,7 @@ let isIframe = shallowRef(false);
 
 function getComponent(extension: string, component: string) {
   const componentName = "../extensions/" + extension + "_" + component;
-  if (menuStore.menuLoaded) {
+  if (menuStore.mainMenu.loaded) {
     const item = menuStore.getMenuItem(extension, component);
     if (item?.label) {
       menuStore.setTitle(item?.label);
@@ -46,7 +46,7 @@ function getComponent(extension: string, component: string) {
   }
 }
 watch(
-  () => menuStore.menuLoaded,
+  () => menuStore.mainMenu.loaded,
   () => {
     type.value = LoadingItem;
     getComponent(

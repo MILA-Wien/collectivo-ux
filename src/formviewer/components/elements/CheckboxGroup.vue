@@ -12,13 +12,13 @@
         :value="o.id"
         :name="props.element.id + o.id"
       />
-      <label class="font-light">{{ o.label }}</label>
+      <label class="font-light">{{ o.name }}</label>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
 import { useFormViewerStore } from "@/stores/formviewer";
+import { ref } from "vue";
 const props = defineProps<{
   element: any;
 }>();

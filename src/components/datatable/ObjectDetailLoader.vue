@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { storeToRefs } from "pinia";
-import type { PropType } from "vue";
-import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
+import type { StoreGeneric } from "pinia";
+import { storeToRefs } from "pinia";
+import type { PropType } from "vue";
+import { ref } from "vue";
 
 const emit = defineEmits(["close"]);
 

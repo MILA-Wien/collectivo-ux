@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import type { User } from "@/api/types";
+import { defineStore } from "pinia";
 
 export type UserStoreState = {
   user: User | null;
@@ -73,10 +73,6 @@ export const useUserStore = defineStore({
           this.user!.userInfo = this.keycloak.userInfo;
         });
       });
-    },
-    finishRegistration() {
-      if (!this.keycloak) return;
-      this.keycloak.login();
     },
   },
   getters: {},

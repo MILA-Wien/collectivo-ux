@@ -1,8 +1,8 @@
-import { useUserStore } from "@/stores/user";
-import axios from "axios";
-import i18n from "@/locales/i18n";
-import type { AxiosResponse } from "axios";
 import { baseURL } from "@/app.config";
+import i18n from "@/locales/i18n";
+import { useUserStore } from "@/stores/user";
+import type { AxiosResponse } from "axios";
+import axios from "axios";
 const BASE_URL = baseURL + "/api/";
 const { t } = i18n.global;
 const api = axios.create({
@@ -61,18 +61,13 @@ api.interceptors.response.use(
 
 // Core API
 export const coreVersionFn = async () => {
-  const response = await api.get("/collectivo/about/");
+  const response = await api.get("/core/about/");
   return response.data;
 };
 
 export const coreMenuItemsFn = async () => {
-  const response = await api.get("/menus/menus/main_menu/items");
-  return response.data;
-};
-
-export const coreMicroFrontendsFn = async (name: string) => {
-  const response = await api.get("/ux/microfrontends/" + { name });
-  return response.data;
+  const response = await api.get("/menus/menus/?extension=core&menu=main");
+  return response.data[0];
 };
 
 export const dashboardTiles = async () => {
@@ -80,21 +75,44 @@ export const dashboardTiles = async () => {
   return response;
 };
 
-// Endpoint dictionary (at the moment only for members)
+// Endpoint dictionary
 export const endpoints = {
-  //members
-  membersMembers: "/members/members/",
-  membersCreate: "/members/create/",
-  membersProfile: "/members/profile/",
-  membersSummary: "/members/summary/",
-  membersRegister: "/members/register/",
-  membersTags: "/members/tags/",
-  membersEmailsDesigns: "/members/emails/designs/",
-  membersEmailsTemplates: "/members/emails/templates/",
-  membersEmailsCampaigns: "/members/emails/campaigns/",
-  membersEmailsAutomations: "/members/emails/automations/",
-  membersSkills: "/members/skills/",
-  membersGroups: "/members/groups/",
+  coreAbout: "/core/about/",
+  coreUsers: "/core/users/",
+  coreGroups: "/core/groups/",
+
+  extensionsExtensions: "/extensions/extensions/",
+
+  dashboardTiles: "/dashboard/tiles/",
+
+  menusMenus: "/menus/menus/",
+  menusMenusMain: "/menus/menus/core/main/",
+  menusMenusAdmin: "/menus/menus/core/admin/",
+  menusMenuItems: "/menus/menuitems/",
+
+  profilesProfiles: "/profiles/profiles/",
+  profilesProfilesSelf: "/profiles/profiles/self/",
+
+  membershipsMemberships: "/memberships/memberships/",
+  membershipsMembershipsSelf: "/memberships/memberships/self/",
+  membershipsTypes: "/memberships/types/",
+  membershipsStatuses: "/memberships/statuses/",
+
+  tagsTags: "/tags/tags/",
+
+  emailsDesigns: "/emails/designs/",
+  emailsTemplates: "/emails/templates/",
+  emailsCampaigns: "/emails/campaigns/",
+
+  paymentsProfiles: "/payments/profiles/",
+  paymentsProfilesSelf: "/payments/profiles/self/",
+  paymentsPayments: "/payments/payments/",
+  paymentsSubscriptions: "/payments/subscriptions/",
+
+  milaRegister: "/mila/register/",
+  milaProfiles: "/mila/profiles/",
+  milaSkills: "/mila/skills/",
+  milaGroups: "/mila/groups/",
 };
 
 // Generic API functions
