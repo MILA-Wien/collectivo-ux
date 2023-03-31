@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useconfirm";
-import type { PropType } from "vue";
-import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
 import ObjectEditor from "@/components/datatable/ObjectEditor.vue";
-import PrimeDialog from "primevue/dialog";
+import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
-import PrimeInputText from "primevue/inputtext";
+import PrimeCalendar from "primevue/calendar";
 import PrimeConfirmDialog from "primevue/confirmdialog";
-import PrimeInputSwitch from "primevue/inputswitch";
+import PrimeDialog from "primevue/dialog";
 import PrimeDropdown from "primevue/dropdown";
+import PrimeInputSwitch from "primevue/inputswitch";
+import PrimeInputText from "primevue/inputtext";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeTextarea from "primevue/textarea";
-import PrimeCalendar from "primevue/calendar";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import type { PropType } from "vue";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);

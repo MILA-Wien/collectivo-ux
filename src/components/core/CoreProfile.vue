@@ -2,16 +2,16 @@
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
-import { useI18n } from "vue-i18n";
-import InputText from "primevue/inputtext";
-import { ref, watch, toRef } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, requiredIf } from "@vuelidate/validators";
-import { useToast } from "primevue/usetoast";
-import Toast from "primevue/toast";
-import RadioButton from "primevue/radiobutton";
+import { storeToRefs } from "pinia";
 import PrimeButton from "primevue/button";
+import InputText from "primevue/inputtext";
+import RadioButton from "primevue/radiobutton";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import { ref, toRef, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -22,7 +22,7 @@ const membersStore = useMembersStore();
 
 // Set page title
 const menuStore = useMenuStore();
-menuStore.setTitle("Membership");
+menuStore.setTitle("Profile");
 
 // Get membership data and schema from store
 const props = defineProps({
@@ -139,7 +139,7 @@ async function save() {
     return;
   } else if (membership.value) {
     try {
-      await membersStore.update("membersProfile", membership.value);
+      await membersStore.update("profilesProfilesSelf", membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),
@@ -205,11 +205,12 @@ function schemaToPrime(choices: any) {
             </div>
 
             <!-- Disabled choice fields (translated) -->
+            <!-- TODO: Fix this -->
             <div v-else-if="value?.choices != null">
-              <InputText
+              <!-- <InputText
                 disabled
                 :value="t(membership[key] ? membership[key] : '')"
-              />
+              /> -->
             </div>
 
             <!-- Other disabled fields -->

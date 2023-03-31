@@ -30,19 +30,19 @@
 </template>
 
 <script setup lang="ts">
+import treeData from "@/assets/registrationForm.json";
 import FormView from "@/formviewer/components/FormView.vue";
 import { useFormViewerStore } from "@/stores/formviewer";
-import { storeToRefs } from "pinia";
-import { ref } from "vue";
-import PrimeButton from "primevue/button";
-import treeData from "@/assets/registrationForm.json";
 import { useMembersStore } from "@/stores/members";
-import { useUserStore } from "@/stores/user";
 import { useMenuStore } from "@/stores/menu";
-import { useI18n } from "vue-i18n";
+import { useUserStore } from "@/stores/user";
 import { useVuelidate } from "@vuelidate/core";
 import { electronicFormatIBAN } from "ibantools";
+import { storeToRefs } from "pinia";
+import PrimeButton from "primevue/button";
 import PrimeMessage from "primevue/message";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership application");
 
@@ -56,17 +56,23 @@ const { tree } = storeToRefs(formViewerStore);
 tree.value = treeData;
 
 const membersStore = useMembersStore();
-membersStore.getSchema("membersRegister");
-const { membersRegister } = storeToRefs(membersStore);
-const registrationSchema = membersRegister.value.schema;
+membersStore.getSchema("milaRegister");
+const { milaRegister } = storeToRefs(membersStore);
+const registrationSchema = milaRegister.value.schema;
 const registrationFinished = ref(false);
 const userStore = useUserStore();
 // check if user is already registered
-if (
-  userStore.user?.tokenParsed?.realm_access?.roles?.includes("members_user")
-) {
-  registrationFinished.value = true;
-}
+const has_mila_membership = ref<boolean | null>(null);
+membersStore
+  .getMilaMembershipNumber()
+  .catch((e: any) => {})
+  .then((res) => {
+    has_mila_membership.value = res ? res : false;
+    if (has_mila_membership.value == true) {
+      registrationFinished.value = true;
+    }
+  });
+
 async function submit() {
   const registerData = formViewerStore.values;
   for (const k in registerData) {
@@ -76,8 +82,7 @@ async function submit() {
     }
   }
   try {
-    await membersStore.create("membersRegister", registerData);
-    userStore.finishRegistration();
+    await membersStore.create("milaRegister", registerData);
     registrationFinished.value = true;
   } catch (e: any) {
     console.log(e);

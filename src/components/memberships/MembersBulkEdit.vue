@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { useMembersStore } from "@/stores/members";
-import { useI18n } from "vue-i18n";
-import { useToast } from "primevue/usetoast";
+import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import PrimeDropdown from "primevue/dropdown";
-import PrimeButton from "primevue/button";
+import { useToast } from "primevue/usetoast";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -115,7 +115,7 @@ async function save() {
     const actionFn = actions[chosenAction.value!];
     for (const member of members_temp.value) {
       actionFn(member, chosenColumn.value.field, chosenContent.value);
-      promises.push(membersStore.update("membersMembers", member, member.id));
+      promises.push(membersStore.update("profilesProfiles", member, member.id));
     }
     await Promise.all(promises);
     successToast();

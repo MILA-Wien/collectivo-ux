@@ -1,25 +1,151 @@
 <template>
   <PrimeToast />
-  <PrimeMenu :model="items" v-if="items.length > 0" id="main_menu" />
+  <PrimePanelMenu
+    :model="itemsMain[0].items"
+    v-if="itemsMain.length > 0"
+    id="main_menu"
+  >
+    <template #item="{ item }">
+      <router-link
+        v-if="item.to"
+        :to="item.to"
+        :class="{ 'p-disabled': item.disabled }"
+      >
+        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+        </div>
+      </router-link>
+      <a
+        v-else
+        :href="item.url"
+        :class="{ 'p-disabled': item.disabled }"
+        target="_blank"
+      >
+        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+        </div>
+      </a>
+    </template>
+  </PrimePanelMenu>
+
+  <div
+    class="ml-5 mt-5 mb-1 text-sm text-left font-bold w-full"
+    v-if="itemsAdmin[0]?.items.length > 0"
+  >
+    {{ t("Admin Area") }}
+  </div>
+  <PrimePanelMenu
+    :model="itemsAdmin[0].items"
+    v-if="itemsAdmin[0]?.items"
+    id="admin_menu"
+  >
+    <template #item="{ item }">
+      <router-link
+        v-if="item.to"
+        :to="item.to"
+        :class="{ 'p-disabled': item.disabled }"
+      >
+        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+        </div>
+      </router-link>
+      <a
+        v-else
+        :href="item.url"
+        class=""
+        :class="{ 'p-disabled': item.disabled }"
+        target="_blank"
+      >
+        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+          <span v-if="item.target === 'blank'" class="flex content-center mr-1">
+            <!-- TODO: Improve styling rules: use em & class based -->
+            <i class="pi pi-fw pi-external-link" style="font-size: 12px"></i>
+          </span>
+        </div>
+      </a>
+    </template>
+  </PrimePanelMenu>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
 import { useMenuStore } from "@/stores/menu";
-import { storeToRefs } from "pinia";
-import { useI18n } from "vue-i18n";
-import type { ExtensionMenu } from "@/api/types";
 import { useUserStore } from "@/stores/user";
-import PrimeMenu from "primevue/menu";
+import { storeToRefs } from "pinia";
+import PrimePanelMenu from "primevue/panelmenu";
 import PrimeToast from "primevue/toast";
+import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const menuStore = useMenuStore();
 const userStore = useUserStore();
-const { menu } = storeToRefs(menuStore);
-const items = ref<any[]>([]);
+const { mainMenu, adminMenu } = storeToRefs(menuStore);
+// TODO: Replace with prime menuitem type
+const itemsMain = ref<any[]>([]);
+const itemsAdmin = ref<any[]>([]);
 
-function buildMenu(menu: ExtensionMenu) {
+function buildItem(data: any): any {
+  if (data !== null) {
+    const item: any = {
+      label: t(data.label),
+      icon: "pi pi-fw " + (data.icon_name ? data.icon_name : ""),
+    };
+
+    // set link for logout
+    if (data.extension.name === "core" && data.component === "logout") {
+      item.url = userStore.user?.logoutUrl || "/";
+    }
+    // set path for internal links
+    else if (data.component) {
+      item.to = "/" + data.extension.name + "/" + data.component;
+    }
+    // set link for external links
+    else if (data.link && data.target === "blank") {
+      item.url = data.link;
+      item.target = data.target;
+    }
+    // return item
+    return item;
+  }
+}
+
+function buildMenu(menu: any, items: any) {
   items.value = [
     {
       label: t("Main Menu"),
@@ -28,56 +154,70 @@ function buildMenu(menu: ExtensionMenu) {
   ];
   if (menu !== null && menu !== null && menu.menu) {
     for (let i = 0; i < menu.menu.length; i++) {
-      const item = menu.menu[i];
-      if (item !== null) {
-        const targetPath = item.component_name
-          ? item.component_name
-          : item.item_id;
-        const icon = item.icon_name ? item.icon_name : ""; // pi pi-fw pi-plus
-        type toType = string | null;
-        let to: toType = "/" + item.extension + "/" + targetPath;
-        let url = null;
-        // set link for logout
-        if (item.extension === "auth" && item.component_name === "logout") {
-          url = userStore.user?.logoutUrl || "/";
-          to = null;
+      const item = buildItem(menu.menu[i]);
+      if (menu.menu[i].items && menu.menu[i].items.length > 0) {
+        item.items = [];
+        for (let j = 0; j < menu.menu[i].items.length; j++) {
+          const sub_item = buildItem(menu.menu[i].items[j]);
+          item.items.push(sub_item);
         }
-        // set link for external links
-        if (
-          item.action === "link" &&
-          item.action_target === "blank" &&
-          item.link_source
-        ) {
-          url = item.link_source;
-          to = null;
-        }
-        // push item to menu
-        items.value[0].items?.push({
-          label: t(item.label),
-          icon,
-          to,
-          url,
-        });
       }
+      items.value[0].items.push(item);
     }
   }
 }
-menuStore.getMenu().then(() => {
-  if (menu !== null && menu.value !== null && menu.value.menu) {
-    buildMenu(menu.value);
+
+menuStore.getMenus().then(() => {
+  if (mainMenu !== null && mainMenu.value !== null && mainMenu.value.menu) {
+    buildMenu(mainMenu.value, itemsMain);
+    buildMenu(adminMenu.value, itemsAdmin);
   }
 }); //Promise
-watch(menu, () => {
-  if (menu !== null && menu.value !== null && menu.value.menu) {
-    buildMenu(menu.value);
+watch(mainMenu, () => {
+  if (mainMenu !== null && mainMenu.value !== null && mainMenu.value.menu) {
+    buildMenu(mainMenu.value, itemsMain);
+    buildMenu(adminMenu.value, itemsAdmin);
   }
 });
 </script>
 
 <style>
+/* TODO: Switch to scoped styles */
 /* can't be scoped because we are overwriting prime styles */
 #main_menu {
   border: none;
   width: 100%;
+}
+#admin_menu {
+  border: none;
+  width: 100%;
+}
+.p-panelmenu a {
+  color: #000;
+  font-size: 15px;
+  height: 20px;
+  text-decoration: none !important;
+}
+.p-panelmenu {
+  border-radius: 0px;
+}
+.p-panelmenu .p-menuitem-link {
+  padding: 0 !important;
+  align-items: center;
+  justify-content: center;
+}
+.p-panelmenu .p-menuitem-text {
+  font-size: 15px;
+  line-height: normal !important;
+}
+.p-panelmenu
+  .p-panelmenu-panel
+  .p-panelmenu-header
+  .p-panelmenu-header-content {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
+  border-radius: 0px !important;
 }
 </style>

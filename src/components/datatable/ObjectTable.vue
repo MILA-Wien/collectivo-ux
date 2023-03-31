@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import PrimeDataTable from "primevue/datatable";
-import PrimeColumn from "primevue/column";
-import PrimeButton from "primevue/button";
-import PrimeDropdown from "primevue/dropdown";
-import PrimeMultiSelect from "primevue/multiselect";
-import PrimeInputText from "primevue/inputtext";
-import PrimeInputSwitch from "primevue/inputswitch";
-import type { PropType } from "vue";
-import type { StoreGeneric } from "pinia";
 import type { endpoints } from "@/api/api";
+import type { StoreGeneric } from "pinia";
+import PrimeButton from "primevue/button";
+import PrimeColumn from "primevue/column";
+import PrimeDataTable from "primevue/datatable";
+import PrimeDropdown from "primevue/dropdown";
+import PrimeInputSwitch from "primevue/inputswitch";
+import PrimeInputText from "primevue/inputtext";
+import PrimeMultiSelect from "primevue/multiselect";
+import type { PropType } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps({
@@ -74,7 +74,7 @@ function formatDateTime(date: string) {
 }
 function formatMultiSelect(data: any) {
   const len = Array.isArray(data) ? data.length : 0;
-  const str = len !== 1 ? "tags" : "tag";
+  const str = len !== 1 ? t("entries") : t("entry");
   return `${len} ${t(str)}`;
 }
 function formatGeneric(data: string | null) {
@@ -102,7 +102,6 @@ watch(filters, (val) => {
 // Dialogues --------------------------------------------------------------- //
 function editObjectFn(event: any) {
   emit("update:editObject", event);
-  console.log(event);
   emit("update:editCreate", false);
   emit("update:editActive", true);
 }
@@ -123,8 +122,8 @@ function filter($event: any) {
     if ($event.filters[key].constraints[0].value !== null) {
       if (
         !(
-          $event.filters[key].constraints[0].matchMode == "equals" &&
-          $event.filters[key].constraints[0].value.length > 0
+          $event.filters[key].constraints[0].matchMode === "equals" &&
+          typeof $event.filters[key].constraints[0].value !== "string"
         )
       ) {
         filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
@@ -278,7 +277,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
                 :selectedItemsLabel="`${filterModel.value?.length} selected`"
                 :filter="true"
                 :placeholder="t('Select multiple choices')"
-                class="p-column-filter fitler-1"
+                class="p-column-filter"
               >
                 <template #option="slotProps">
                   <div class="p-multiselect-representative-option">

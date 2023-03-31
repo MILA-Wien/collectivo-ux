@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
-import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -17,29 +17,22 @@ menuStore.setTitle("Member Emails");
       <TabPanel :header="t('Campaigns')">
         <ObjectLoader
           :store="membersStore"
-          :name="'membersEmailsCampaigns'"
+          :name="'emailsCampaigns'"
           :defaultColumns="['status', 'template', 'recipients', 'automation']"
         />
       </TabPanel>
       <TabPanel :header="t('Templates')">
         <ObjectLoader
           :store="membersStore"
-          :name="'membersEmailsTemplates'"
+          :name="'emailsTemplates'"
           :defaultColumns="['name', 'subject', 'design']"
         />
       </TabPanel>
       <TabPanel :header="t('Designs')">
         <ObjectLoader
           :store="membersStore"
-          :name="'membersEmailsDesigns'"
+          :name="'emailsDesigns'"
           :defaultColumns="['name', 'body']"
-        />
-      </TabPanel>
-      <TabPanel :header="t('Automations')">
-        <ObjectLoader
-          :store="membersStore"
-          :name="'membersEmailsAutomations'"
-          :defaultColumns="['trigger', 'template']"
         />
       </TabPanel>
     </TabView>
