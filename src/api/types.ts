@@ -86,7 +86,7 @@ export interface DashboardTiles {
   results: Array<DashboardTile>;
 }
 export interface DashboardTile {
-  tile_id: string;
+  id: string;
   component: string;
   order: number;
   required_group?: string;

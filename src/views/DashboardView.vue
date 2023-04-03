@@ -21,21 +21,22 @@ const { tiles } = storeToRefs(dashboardStore);
 let tileComponents: Record<string, any> = {};
 
 function getComponentForTile(tile: DashboardTile) {
-  if (tileComponents[tile.tile_id]) {
-    return tileComponents[tile.tile_id];
+  if (tileComponents[tile.id]) {
+    return tileComponents[tile.id];
   } else {
-    tileComponents[tile.tile_id] = LoadingItem;
+    tileComponents[tile.id] = LoadingItem;
+    if (!tile.extension_name || !tile.component) return LoadingItem;
     const component = defineAsyncComponent(
-      () => import(`../extensions/${tile.extension_name}_${tile.component}.ts`)
+      () => import(`../extensions/${tile.extension_name}/${tile.component}.ts`)
     );
-    tileComponents[tile.tile_id] = component;
+    tileComponents[tile.id] = component;
     return component;
   }
 }
 watch(
   tiles,
   (tiles) => {
-    if (tiles?.results)
+    if (tiles?.results && tiles.results.length>=0)
       tiles?.results.forEach((tile) => {
         getComponentForTile(tile);
       });
@@ -56,10 +57,10 @@ watch(
       }}
       <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
     </span>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8" v-if="tiles?.results?.length>0">
       <div
         v-for="tile in tiles?.results"
-        :key="tile.tile_id"
+        :key="tile.id"
         class="md:col-6 lg:col-4"
       >
         <PrimeCard>
@@ -68,7 +69,7 @@ watch(
           </template>
           <template #content>
             <component
-              :is="tileComponents[tile.tile_id]"
+              :is="tileComponents[tile.id]"
               :tile="tile"
             ></component>
           </template>
