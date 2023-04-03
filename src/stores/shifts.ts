@@ -10,17 +10,17 @@ export type ShiftsStoreState = {
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
-  ({
-    assignments: {},
-    shifts: {},
-  } as ShiftsStoreState),
+    ({
+      assignments: {},
+      shifts: {},
+    } as ShiftsStoreState),
 
   actions: {
     async getShifts() {
       const todayDate = new Date();
       const today = formatDate(todayDate);
       const endOfMonth = formatDate(
-        new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0)
+        new Date(todayDate.getFullYear(), todayDate.getMonth() + 2, 0)
       );
       const startOfMonth = formatDate(
         new Date(todayDate.getFullYear(), todayDate.getMonth(), 0)
@@ -35,7 +35,6 @@ export const useShiftsStore = defineStore({
       });
     },
     async sortShiftsByDate() {
-      console.log("now")
       const shiftsByDate = this.shifts.sort((a: any, b: any) => {
         return new Date(a.shift_starting_date) > new Date(b.shift_starting_date)
           ? 1
@@ -44,7 +43,9 @@ export const useShiftsStore = defineStore({
       const shiftsGroupedByDate: Array<any> = [];
       shiftsByDate.forEach((element: any) => {
         const date = element.shift_starting_date;
-        const index = shiftsGroupedByDate.findIndex((e: any) => e.date === date);
+        const index = shiftsGroupedByDate.findIndex(
+          (e: any) => e.date === date
+        );
         if (index === -1) {
           shiftsGroupedByDate.push({
             date: date,
@@ -56,11 +57,13 @@ export const useShiftsStore = defineStore({
       });
 
       this.sortedShifts = shiftsGroupedByDate;
-      console.log(shiftsGroupedByDate);
     },
     async addShift(shift: any) {
       return API.post("shiftsShifts", shift);
     },
+    async updateShift(shift: any) {
+      return API.patch("shiftsShifts", shift);
+    }
   },
   getters: {},
 });

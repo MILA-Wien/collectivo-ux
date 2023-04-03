@@ -189,4 +189,12 @@ export interface Shift {
   required_users: Number;
   shift_day: ShiftDay;
   additional_info_general: string;
+  assinged_users: Array<ShiftUser> | null;
+}
+
+export interface ShiftUser {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
 }

@@ -14,6 +14,7 @@ import "primevue/resources/primevue.min.css"; //core css
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import ToastService from "primevue/toastservice";
 import PrimeTooltip from "primevue/tooltip";
+import shifts from "./extensions/shifts/shifts";
 
 // init vue app
 const app = createApp(App);
@@ -37,6 +38,9 @@ keycloakInstance
     // init view router
     app.use(router);
 
+    //init the extensions
+    shifts();
+    
     // Render app
     app.mount("#app");
   })
