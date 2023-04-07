@@ -37,6 +37,14 @@ const router = createRouter({
       component: () => import("../components/NotImplemented.vue"),
     },
     {
+      path: "/dashboard/admin",
+      name: "dashboardAdmin",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/dashboard/DashboardAdmin.vue"),
+    },
+    {
       path: "/memberships/admin",
       name: "membershipsAdmin",
       meta: {

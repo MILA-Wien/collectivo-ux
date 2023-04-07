@@ -5,6 +5,7 @@ import { useDashboardStore } from "@/stores/dashboard";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import PrimeButton from "primevue/button";
 import PrimeCard from "primevue/card";
 import { defineAsyncComponent, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -21,23 +22,28 @@ const { tiles } = storeToRefs(dashboardStore);
 let tileComponents: Record<string, any> = {};
 
 function getComponentForTile(tile: DashboardTile) {
-  if (tileComponents[tile.tile_id]) {
-    return tileComponents[tile.tile_id];
+  if (tileComponents[tile.id]) {
+    return tileComponents[tile.id];
   } else {
-    tileComponents[tile.tile_id] = LoadingItem;
+    tileComponents[tile.id] = LoadingItem;
     const component = defineAsyncComponent(
       () => import(`../extensions/${tile.extension_name}_${tile.component}.ts`)
     );
-    tileComponents[tile.tile_id] = component;
+    tileComponents[tile.id] = component;
     return component;
   }
 }
+
 watch(
   tiles,
   (tiles) => {
     if (tiles?.results)
       tiles?.results.forEach((tile) => {
-        getComponentForTile(tile);
+        console.log(tile);
+        if (tile.source === "component") {
+          getComponentForTile(tile);
+        }
+        //
       });
   },
   { immediate: true }
@@ -46,7 +52,6 @@ watch(
 
 <template>
   <div>
-    <!-- <h1>{{ t("Dashboard") }}</h1> -->
     <span class="w-full" id="welcome-member-span">
       {{
         `${t("Hello,")} ${userStore.user?.tokenParsed.given_name}
@@ -56,10 +61,11 @@ watch(
       }}
       <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
     </span>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 pt-8">
       <div
         v-for="tile in tiles?.results"
-        :key="tile.tile_id"
+        :key="tile.id"
         class="md:col-6 lg:col-4"
       >
         <PrimeCard>
@@ -68,9 +74,31 @@ watch(
           </template>
           <template #content>
             <component
-              :is="tileComponents[tile.tile_id]"
+              v-if="tile.component"
+              :is="tileComponents[tile.id]"
               :tile="tile"
             ></component>
+            <div v-else>
+              <div v-html="tile.content" class="pb-4"></div>
+              <div v-for="button in tile.buttons" :key="button.id">
+                <div v-if="button.link_type === 'internal'">
+                  <RouterLink :to="button.link">
+                    <PrimeButton>
+                      {{ t(button.label) }}
+                    </PrimeButton>
+                  </RouterLink>
+                </div>
+                <div v-else>
+                  <a :href="button.link" target="blank">
+                    <PrimeButton>
+                      {{ t(button.label) }}
+                      <span class="pl-3"></span>
+                      <i class="pi pi-external-link"></i>
+                    </PrimeButton>
+                  </a>
+                </div>
+              </div>
+            </div>
           </template>
         </PrimeCard>
       </div>
@@ -78,8 +106,8 @@ watch(
   </div>
 </template>
 
-<style lang="scss">
-.p-card .p-card-content {
+<style scoped>
+:deep(.p-card .p-card-content) {
   padding: 0;
 }
 </style>
