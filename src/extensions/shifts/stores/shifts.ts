@@ -1,18 +1,24 @@
 import { defineStore } from "pinia";
 import { API } from "@/api/api";
+import type { Shift } from "@/api/types";
 
 export type ShiftsStoreState = {
   assignments: any;
-  shifts: any;
-  sortedShifts: any;
+  shifts: Array<Shift>;
+  sortedShifts: Array<Shift>;
+  selfShifts: Array<Shift>;
+  openShifts: Array<Shift>;
 };
 
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
     ({
-      assignments: {},
-      shifts: {},
+      assignments: [],
+      shifts: [],
+      sortedShifts: [],
+      selfShifts: [],
+      openShifts: [],
     } as ShiftsStoreState),
 
   actions: {
@@ -31,6 +37,27 @@ export const useShiftsStore = defineStore({
       }).then((response) => {
         this.shifts = response.data;
         this.sortShiftsByDate();
+        return response.data;
+      });
+    },
+    async getAssignments() {
+      API.get("shiftsAssignments").then((response) => {
+        this.assignments = response.data;
+        return response.data;
+      });
+    },
+    async getShiftsForSelf() {
+      this.shifts = [];
+      API.get("shiftsShiftsSelf").then((response) => {
+        this.shifts = response.data.results;
+        this.sortShiftsByDate();
+        return response.data;
+      });
+    },
+    async getOpenShifts() {
+      this.openShifts = [];
+      API.get("shiftsOpenShifts").then((response) => {
+        this.openShifts = response.data.results;
         return response.data;
       });
     },

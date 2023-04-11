@@ -6,9 +6,13 @@ export default function () {
         component: () => import("@/extensions/shifts/components/AdminShifts.vue")
     })
     router.addRoute({
-        name: 'shiftsAdmin', 
-        path: '/shifts/user',
+        name: 'shiftsUser', 
+        path: '/shifts/shifts_user',
         component: () => import("@/extensions/shifts/components/UserShifts.vue")
     })
-    router.replace(router.currentRoute.value.fullPath)
+    // router.replace(router.currentRoute.value.fullPath)
+    setTimeout(() => {
+        router.replace(router.currentRoute.value.fullPath)
+    }, 1000)
+    // router.replace(router.currentRoute.value.fullPath)
 }

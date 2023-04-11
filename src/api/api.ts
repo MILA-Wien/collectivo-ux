@@ -117,6 +117,8 @@ export const endpoints = {
   shiftsShifts: "/shifts/shifts/",
   shiftsAssignments: "shifts/assignments/",
   shiftsShiftsUser: "/shifts/shifts-user/",
+  shiftsShiftsSelf: "/shifts/shifts/self/",
+  shiftsOpenShifts: "/shifts/shifts/open/",
 };
 
 // Generic API functions

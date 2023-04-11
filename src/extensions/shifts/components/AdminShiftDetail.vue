@@ -7,7 +7,7 @@ import PrimeTextarea from "primevue/textarea";
 import PrimeButton from "primevue/button";
 import PrimeInputNumber from "primevue/inputnumber";
 
-import { useShiftsStore } from "@/stores/shifts";
+import { useShiftsStore } from "../stores/shifts";
 import { ShiftDay, ShiftType, ShiftWeek, type Shift } from "@/api/types";
 
 import { useI18n } from "vue-i18n";

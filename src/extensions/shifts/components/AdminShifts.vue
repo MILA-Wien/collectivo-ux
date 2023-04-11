@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useShiftsStore } from "@/stores/shifts";
+import { useShiftsStore } from "../stores/shifts";
 import { ref, onMounted } from "vue";
 import "@fullcalendar/core";
 import PrimeButton from "primevue/button";
@@ -18,11 +18,14 @@ import "primeflex/primeflex.css";
 import PrimeScrollTop from "primevue/scrolltop";
 
 import PrimeVirtualScroller from "primevue/virtualscroller";
-import AdminShiftDetail from "../AdminShiftDetail.vue";
+import AdminShiftDetail from "./AdminShiftDetail.vue";
 import AdminShiftNew from "./AdminShiftNew.vue";
 
 import { getColorForWeek } from "@/helpers/shifts";
+import { useMenuStore } from "@/stores/menu";
 
+const menuStore = useMenuStore();
+menuStore.setTitle("Admin Shifts");
 const { t } = useI18n();
 
 const shiftsStore = useShiftsStore();
@@ -32,9 +35,15 @@ onMounted(() => {
 const showAddShiftDialog = ref(false);
 const openShfiftDetailsActive = ref(false);
 
-const layout = ref("grid");
+const layout = ref("list");
 const sortField = ref("");
-const sortOptions = ref(1);
+const sortOptions = ref([
+  { label: "A", value: "A" },
+  { label: "B", value: "B" },
+  { label: "C", value: "C" },
+  { label: "D", value: "D" },
+
+]);
 const sortKey = ref("");
 const sortOrder = ref(1);
 const activeTab = ref(0);
@@ -74,6 +83,7 @@ function openShfiftDetail(shift: Shift) {
               :value="shiftsStore.sortedShifts"
               align="left"
               class="shifts-timeline"
+              v-if="shiftsStore.shifts?.length > 0"
             >
               <template #marker="slotProps">
                 <span
@@ -98,7 +108,7 @@ function openShfiftDetail(shift: Shift) {
                     :key="shift.id"
                     class="col-4 p-2"
                   >
-                    <PrimeCard @click="openShfiftDetail(shift)">
+                    <PrimeCard @click="openShfiftDetail(shift)" class="shift-card">
                       <template #title>
                         <div class="text-base">
                           {{ shift.shift_title }} -
@@ -161,7 +171,7 @@ function openShfiftDetail(shift: Shift) {
         <DataView
           :value="shiftsStore.shifts"
           paginator
-          :rows="5"
+          :rows="20"
           :sortOrder="sortOrder"
           :sortField="sortField"
           :data-key="sortKey"
@@ -172,66 +182,57 @@ function openShfiftDetail(shift: Shift) {
               v-model="sortKey"
               :options="sortOptions"
               optionLabel="label"
-              placeholder="Sort By Price"
+              :placeholder="t('Sort By ABCD')"
               @change="onSortChange($event)"
             />
             <div class="flex justify-content-end">
               <DataViewLayoutOptions v-model="layout" />
             </div>
           </template>
-          <template #timeline="slotProps">
-            {{ slotProps.data }}
-          </template>
           <template #list="slotProps">
-            {{ slotProps.data }}
             <div class="col-12">
               <div
                 class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
               >
-                <img
-                  class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                  :src="`${slotProps.data.image}`"
-                  :alt="slotProps.data.shift_title"
-                />
+              <b class="list-week p-button" :style="{
+                    backgroundColor: getColorForWeek(
+                      slotProps.data.shift_week
+                    ),
+                  }">{{slotProps.data.shift_week}}</b>
                 <div
                   class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
                 >
                   <div
-                    class="flex flex-column align-items-center sm:align-items-start gap-3"
+                    class="flex flex-row align-items-center sm:align-items-start gap-3"
                   >
                     <div class="text-2xl font-bold text-900">
-                      {{ slotProps.data.name }}
+                      {{ slotProps.data.shift_title }}
+                    </div>
+                    <div class="font-bold text-900">
+                      {{ `${slotProps.data.shift_starting_date} ${slotProps.data.shift_starting_time} - ${slotProps.data.shift_ending_time}` }}
                     </div>
                     <PrimeRating
-                      :modelValue="slotProps.data.rating"
-                      readonly
-                      :cancel="false"
-                    >
-                    </PrimeRating>
-                    <div class="flex align-items-center gap-3">
-                      <span class="flex align-items-center gap-2">
-                        <i class="pi pi-tag"></i>
-                        <span class="font-semibold">{{
-                          slotProps.data.category
-                        }}</span>
-                      </span>
-                      <PrimeTag :value="slotProps.data.inventoryStatus">
-                        <!-- :severity="getSeverity(slotProps.data)"> -->
-                      </PrimeTag>
-                    </div>
+                          v-model="slotProps.data.assigned_users.length"
+                          :cancel="false"
+                          :stars="slotProps.data.assignments.length"
+                          readonly
+                        >
+                          <template #onicon>
+                            <img
+                              src="/images/shifts/custom-onicon.png"
+                              height="24"
+                              width="24"
+                            />
+                          </template>
+                        </PrimeRating>
                   </div>
                   <div
                     class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2"
                   >
-                    <span class="text-2xl font-semibold"
-                      >${{ slotProps.data.price }}</span
-                    >
                     <PrimeButton
-                      icon="pi pi-shopping-cart"
+                      icon="pi pi-cog"
                       rounded
-                      :disabled="
-                        slotProps.data.inventoryStatus === 'OUTOFSTOCK'
-                      "
+                      @click="openShfiftDetail(slotProps.data)"
                     ></PrimeButton>
                   </div>
                 </div>
@@ -354,5 +355,21 @@ function openShfiftDetail(shift: Shift) {
   position: fixed;
   top: 1;
   right: 40;
+}
+.shift-card{
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover{
+    transform: translateY(-10px);
+  }
 }
 </style>
