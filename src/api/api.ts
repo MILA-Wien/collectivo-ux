@@ -71,7 +71,7 @@ export const coreMenuItemsFn = async () => {
 };
 
 export const dashboardTiles = async () => {
-  const response = api.get(`/dashboard/tiles/?limit=10`);
+  const response = api.get(`/dashboard/tiles/self/?limit=10`);
   return response;
 };
 
@@ -84,6 +84,8 @@ export const endpoints = {
   extensionsExtensions: "/extensions/extensions/",
 
   dashboardTiles: "/dashboard/tiles/",
+  dashboardTilesSelf: "/dashboard/tiles/self/",
+  dashboardTileButtons: "/dashboard/buttons/",
 
   menusMenus: "/menus/menus/",
   menusMenusMain: "/menus/menus/core/main/",

@@ -23,8 +23,8 @@ membersStore
       <br />
       {{ t("Your membership number is") + ": " + has_mila_membership }}
     </p>
-    <RouterLink to="/core/profile">
-      <PrimeButton> {{ t("Show my data") }} </PrimeButton>
+    <RouterLink to="/memberships/profile">
+      <PrimeButton> {{ t("My memberships") }} </PrimeButton>
     </RouterLink>
   </div>
   <div v-else>
