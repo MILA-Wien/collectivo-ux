@@ -24,8 +24,9 @@ const keycloakInstance = initKeycloak();
 keycloakInstance
   .then(() => {
     loadLocaleMessages(i18n, "en");
-    loadLocaleMessages(i18n, "de");
-    setI18nLanguage(i18n, "de");
+    loadLocaleMessages(i18n, "de").then(() => {
+      setI18nLanguage(i18n, "de");
+    });
     app.use(i18n);
 
     // init PrimeVue
