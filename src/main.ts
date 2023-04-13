@@ -23,22 +23,25 @@ app.use(createPinia());
 const keycloakInstance = initKeycloak();
 keycloakInstance
   .then(() => {
-    app.use(i18n);
-    loadLocaleMessages(i18n, "en");
-    loadLocaleMessages(i18n, "de");
-    setI18nLanguage(i18n, "de");
+    // loadLocaleMessages(i18n, "en");
+    /* loadLocaleMessages(i18n, "de").then(()=>{
+      setI18nLanguage(i18n, "de") */
+      loadLocaleMessages(i18n, "en");
+      loadLocaleMessages(i18n, "de");
+      setI18nLanguage(i18n, "de");
+      app.use(i18n);
+      // init PrimeVue
+      app.use(PrimeVue);
+      app.use(ToastService);
+      app.use(ConfirmationService);
+      app.directive("tooltip", PrimeTooltip);
 
-    // init PrimeVue
-    app.use(PrimeVue);
-    app.use(ToastService);
-    app.use(ConfirmationService);
-    app.directive("tooltip", PrimeTooltip);
-
-    // init view router
-    app.use(router);
-
-    // Render app
-    app.mount("#app");
+      // init view router
+      app.use(router);
+      //setTimeout(() => {  app.mount("#app"); }, 3000);
+      // Render app
+      app.mount("#app");
+    //})
   })
   .catch((e) => {
     console.log("error", e);
