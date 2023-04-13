@@ -6,10 +6,10 @@ describe("Login Succesfull", () => {
     cy.login("test_superuser@example.com");
     cy.get('button[id="toggle-sidebar-button"]').click();
     // TODO: Same problem with translations
-    // cy.get("#main_menu > div > div > div > a > div > span")
-    //   .contains("Mitgliedschaft")
-    //   .click();
-    // cy.get("#collectivo-backdrop").click();
-    // cy.get("#memberships-profile").should("exist");
+    cy.get("#main_menu > div > div > div > a > div > span")
+    .contains("Mitgliedschaft")
+    .click();
+    cy.get("#collectivo-backdrop").click();
+    cy.get("#memberships-profile").should("exist");
   });
 });
