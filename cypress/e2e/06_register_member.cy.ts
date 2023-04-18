@@ -74,7 +74,10 @@ describe("register user_not_member", () => {
     cy.get("#first-name-input > .textfield input").clear().type("Ötz1");
     cy.get("#last-name-input > .textfield input").clear().type("CABBAG3");
     cy.get('[type="radio"]').check("male");
-    cy.get("#birthdate-input > .date input").clear().type("01.01.1990");
+    cy.get("#birthdate-input > .date input").click({ force: true });
+    cy.get(
+      "#pv_id_1_panel > div > div > div.p-datepicker-calendar-container > table > tbody > tr:nth-child(4) > td.p-datepicker-today > span"
+    ).click({ force: true });
     cy.get("#occupation-input > .textfield input")
       .click({ force: true })
       .type("lazy cat");
