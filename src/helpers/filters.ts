@@ -1,5 +1,4 @@
-import { FilterMatchMode } from "primevue/api";
-import { FilterService } from "primevue/api";
+import { FilterMatchMode, FilterService } from "primevue/api";
 
 function inListFilter(a: any, b: any) {
   if (a == undefined) {
@@ -28,7 +27,7 @@ export const matchModes: any = {
     { label: "Contains", value: FilterMatchMode.CONTAINS },
     // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
     { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
-    { label: "In List", value: "inList" },
+    // { label: "In List", value: "inList" },
     // { label: "Not In List", value: "notInList" },
     { label: "Is Empty", value: "isNull" },
   ],
