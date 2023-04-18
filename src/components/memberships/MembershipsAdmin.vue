@@ -21,12 +21,15 @@ menuStore.setTitle("Memberships");
           :store="membersStore"
           :name="'membershipsMemberships'"
           :default-columns="[
-            'profile',
+            'user__first_name',
+            'user__last_name',
+            'user__tags',
             'type',
             'number',
             'status',
             'shares_signed',
           ]"
+          :email-button="true"
         />
       </TabPanel>
       <TabPanel :header="t('Types')">
