@@ -96,7 +96,6 @@ watch(selectedObjects, (val) => {
 });
 const filters = ref(props.filters);
 watch(filters, (val) => {
-  // console.log("filters set to", val.first_name.constraints[0].value);
   emit("update:filters", val);
 });
 
@@ -119,7 +118,7 @@ console.log(filters.value);
 function filter($event: any) {
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
   let filter = "";
-  console.log("filter is called", $event.filters);
+
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
       if (
@@ -212,7 +211,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       filterDisplay="menu"
       v-model:filters="filters"
       :resizableColumns="true"
-      columnResizeMode="fit"
+      columnResizeMode="expand"
       :scrollable="true"
       scrollHeight="flex"
       @page="filter"
