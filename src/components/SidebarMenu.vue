@@ -7,6 +7,45 @@
     class="sidebar_menu"
     id="main_menu"
   >
+    <template #item="{ item }">
+      <router-link
+        v-if="item.to"
+        :to="item.to"
+        :class="{ 'p-disabled': item.disabled }"
+      >
+        <div class="flex flex-row py-2 px-3 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+        </div>
+      </router-link>
+      <a
+        v-else
+        :href="item.url"
+        :class="{ 'p-disabled': item.disabled }"
+        target="_blank"
+      >
+        <div class="flex flex-row py-2 px-3 gap-2 items-center">
+          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+            <i :class="item.icon"></i>
+          </span>
+
+          <span class="pt-1 w-full">{{ item.label }}</span>
+
+          <span class="grow"></span>
+          <span v-if="item.items" class="flex content-center">
+            <i class="pi pi-fw pi-angle-down"></i>
+          </span>
+        </div>
+      </a>
+    </template>
   </PanelMenu>
   <div class="mt-3 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
     <span class="m-3 text-sm font-semibold">{{ t("Admin Area") }}</span>
@@ -15,6 +54,45 @@
       class="sidebar_menu"
       id="admin_menu"
     >
+      <template #item="{ item }">
+        <router-link
+          v-if="item.to"
+          :to="item.to"
+          :class="{ 'p-disabled': item.disabled }"
+        >
+          <div class="flex flex-row py-2 px-3 gap-2 items-center">
+            <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+              <i :class="item.icon"></i>
+            </span>
+
+            <span class="pt-1 w-full">{{ item.label }}</span>
+
+            <span class="grow"></span>
+            <span v-if="item.items" class="flex content-center">
+              <i class="pi pi-fw pi-angle-down"></i>
+            </span>
+          </div>
+        </router-link>
+        <a
+          v-else
+          :href="item.url"
+          :class="{ 'p-disabled': item.disabled }"
+          target="_blank"
+        >
+          <div class="flex flex-row py-2 px-3 gap-2 items-center">
+            <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+              <i :class="item.icon"></i>
+            </span>
+
+            <span class="pt-1 w-full">{{ item.label }}</span>
+
+            <span class="grow"></span>
+            <span v-if="item.items" class="flex content-center">
+              <i class="pi pi-fw pi-angle-down"></i>
+            </span>
+          </div>
+        </a>
+      </template>
     </PanelMenu>
   </div>
 </template>
@@ -111,14 +189,14 @@ watch(mainMenu, () => {
   border-radius: 10px !important;
 }
 
-.sidebar_menu.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content a {
-  font-weight: 100;
-  padding: 0.6rem;
-  font-size: 1rem;
-  color: rgb(73, 80, 87);
-}
-
 .sidebar_menu.p-panelmenu .p-menuitem-text {
   padding-top: 4px;
+}
+
+.sidebar_menu a {
+  text-decoration: none;
+  font-weight: 100;
+  font-size: 1rem;
+  color: rgb(73, 80, 87);
 }
 </style>
