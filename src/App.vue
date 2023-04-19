@@ -52,22 +52,24 @@ body {
 }
 
 /* TODO: Tabview full height as a component */
-.tabview-full-height .p-tabview {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+.tabview-full-height {
+  .p-tabview {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
-.tabview-full-height .p-tabview-nav-container {
-  box-shadow: 0 0px 1px -1px rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.14),
-    0 0px 3px 0 rgba(0, 0, 0, 0.12);
-}
+  .p-tabview-nav-container {
+    box-shadow: 0 0px 1px -1px rgba(0, 0, 0, 0.2),
+      0 0px 1px 0 rgba(0, 0, 0, 0.14), 0 0px 3px 0 rgba(0, 0, 0, 0.12);
+  }
 
-.tabview-full-height .p-tabview-panels,
-.tabview-full-height .p-tabview-panel {
-  height: 100%;
-  overflow: auto;
-  background: none !important;
-  padding: 10px 0px 0px 0px !important;
+  .p-tabview-panels,
+  .p-tabview-panel {
+    height: 100%;
+    overflow: auto;
+    background: none !important;
+    padding: 10px 0px 0px 0px !important;
+  }
 }
 </style>

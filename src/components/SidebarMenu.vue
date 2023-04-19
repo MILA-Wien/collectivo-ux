@@ -1,7 +1,7 @@
 <template>
   <PrimeToast />
 
-  <PanelMenu
+  <PrimePanelMenu
     :model="itemsMain[0].items"
     v-if="itemsMain.length > 0"
     class="sidebar_menu"
@@ -46,10 +46,10 @@
         </div>
       </a>
     </template>
-  </PanelMenu>
+  </PrimePanelMenu>
   <div class="mt-5 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
     <span class="ml-5 text-sm font-semibold">{{ t("Admin Area") }}</span>
-    <PanelMenu
+    <PrimePanelMenu
       :model="itemsAdmin[0].items"
       class="sidebar_menu"
       id="admin_menu"
@@ -93,7 +93,7 @@
           </div>
         </a>
       </template>
-    </PanelMenu>
+    </PrimePanelMenu>
   </div>
 </template>
 
@@ -101,7 +101,7 @@
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import PanelMenu from "primevue/panelmenu";
+import PrimePanelMenu from "primevue/panelmenu";
 import PrimeToast from "primevue/toast";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -158,7 +158,6 @@ function buildMenu(menu: any, items: any) {
       items.value[0].items.push(item);
     }
   }
-  console.log(items.value);
 }
 
 menuStore.getMenus().then(() => {
@@ -179,26 +178,28 @@ watch(mainMenu, () => {
 .sidebar_menu {
   border: none;
   width: 100%;
-}
 
-.sidebar_menu.p-panelmenu .p-panelmenu-panel {
-  margin: 5px;
-}
+  &.p-panelmenu {
+    .p-panelmenu-panel {
+      margin: 5px;
+    }
 
-.sidebar_menu.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
-  border-radius: 5px !important;
-  background: none;
-  border: none;
-}
+    .p-panelmenu-header .p-panelmenu-header-content {
+      border-radius: 5px !important;
+      background: none;
+      border: none;
+    }
 
-.sidebar_menu.p-panelmenu .p-menuitem-text {
-  padding-top: 4px;
-}
+    .p-menuitem-text {
+      padding-top: 4px;
+    }
+  }
 
-.sidebar_menu a {
-  text-decoration: none;
-  font-weight: 100;
-  font-size: 1rem;
-  color: rgb(73, 80, 87);
+  a {
+    text-decoration: none;
+    font-weight: 100;
+    font-size: 1rem;
+    color: rgb(73, 80, 87);
+  }
 }
 </style>

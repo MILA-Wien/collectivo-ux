@@ -113,7 +113,7 @@ watch(
   },
   { immediate: true }
 );
-console.log(filters.value);
+
 // Filter --------------------------------------------------------------- //
 function filter($event: any) {
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
@@ -131,7 +131,6 @@ function filter($event: any) {
           $event.filters[key].constraints[0].matchMode
         )}=${$event.filters[key].constraints[0].value}`;
       } else {
-        console.log($event.filters[key].constraints[0].value);
         $event.filters[key].constraints[0].value.forEach((value: any) => {
           filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
             $event.filters[key].constraints[0].matchMode
