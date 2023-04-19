@@ -221,12 +221,12 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       <!-- Selection column -->
       <PrimeColumn
         selectionMode="multiple"
-        class="column-select"
+        style="padding-left: 13px; width: 40px; max-width: 40px"
         :frozen="true"
       ></PrimeColumn>
 
       <!-- Edit column -->
-      <PrimeColumn class="column-edit" :frozen="true">
+      <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
         <template #header
           ><PrimeButton
             icon="pi pi-pencil"
@@ -370,16 +370,6 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   border-color: black;
   border-radius: 3px;
   width: fit-content;
-}
-
-.column-select {
-  padding-left: 13px;
-  width: 40px;
-  max-width: 40px;
-}
-.column-edit {
-  width: 45px;
-  max-width: 45px;
 }
 
 .button-edit {
