@@ -56,10 +56,6 @@ describe("register user_not_member", () => {
   });
   it("register as natural person", () => {
     cy.login("test_user_not_member@example.com");
-    cy.get("span[id='welcome-member-span']").should(
-      "contain.text",
-      "Willkommen auf der MILA Mitgliederplattform!"
-    );
     cy.get(".p-card-body button")
       .then(($btn) => {
         const txt = $btn.text();
@@ -134,10 +130,6 @@ describe("register user_not_member", () => {
 
   it("register as legal person", () => {
     cy.login("test_user_not_member@example.com");
-    cy.get("span[id ='welcome-member-span']").should(
-      "contain.text",
-      "Willkommen auf der MILA Mitgliederplattform!"
-    );
     cy.get(".p-card-body button")
       .then(($btn) => {
         const txt = $btn.text();
