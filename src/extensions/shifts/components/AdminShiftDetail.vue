@@ -45,45 +45,44 @@ const shiftDayOptions = [
   { name: "Saturday", value: ShiftDay.SATURDAY },
   { name: "Sunday", value: ShiftDay.SUNDAY },
 ];
-function formatTimesInShift() {
-  if (editableShift && editableShift.value != null) {
-    const shift = editableShift.value;
-    shift.shift_starting_date = `${editableShift.value.shift_starting_date.getFullYear()}-${
-      editableShift.value.shift_starting_date.getMonth() + 1
-    }-${editableShift.value.shift_starting_date.getDate()}`;
-    shift.shift_starting_time = `${editableShift.value.shift_starting_time?.getHours()}:${editableShift?.value.shift_starting_time?.getMinutes()}`;
-    shift.shift_ending_date = editableShift.value.shift_ending_date
-      ? `${editableShift.value.shift_ending_date?.getFullYear()}-${
-          editableShift.value.shift_ending_date?.getMonth() + 1
-        }-${editableShift.value.shift_ending_date?.getDate()}`
-      : undefined;
-    shift.shift_ending_time = `${editableShift.value.shift_ending_time?.getHours()}:${editableShift.value?.shift_ending_time?.getMinutes()}`;
-    return shift;
-  }
-}
+// function formatTimesInShift() {
+//     if (editableShift && editableShift.value != null) {
+//         const shift = editableShift.value;
+//         shift.shift_starting_date = `${editableShift.value.shift_starting_date.getFullYear()}-${editableShift.value.shift_starting_date.getMonth() + 1
+//             }-${editableShift.value.shift_starting_date.getDate()}`;
+//         shift.shift_starting_time = `${editableShift.value.shift_starting_time?.getHours()}:${editableShift?.value.shift_starting_time?.getMinutes()}`;
+//         shift.shift_ending_date = editableShift.value.shift_ending_date
+//             ? `${editableShift.value.shift_ending_date?.getFullYear()}-${editableShift.value.shift_ending_date?.getMonth() + 1
+//             }-${editableShift.value.shift_ending_date?.getDate()}`
+//             : undefined;
+//         shift.shift_ending_time = `${editableShift.value.shift_ending_time?.getHours()}:${editableShift.value?.shift_ending_time?.getMinutes()}`;
+//         return shift;
+//     }
+// }
 const emit = defineEmits(["update:visible"]);
 function saveShift() {
-  //   const shift = formatTimesInShift();
-  editableShift.value;
-  // console.log(shift);
-  shiftsStore.updateShift(editableShift.value).then(() => {
-    shiftsStore.getShifts();
-    openShfiftDetailsActive.value = false;
-    emit("update:visible", false);
-  });
+  if (editableShift.value) {
+    shiftsStore.updateShift(editableShift.value).then(() => {
+      shiftsStore.getShifts();
+      openShfiftDetailsActive.value = false;
+      emit("update:visible", false);
+    });
+  }
 }
 function deleteShift() {
-  shiftsStore.deleteShift(props.shift).then(() => {
-    shiftsStore.getShifts();
-    openShfiftDetailsActive.value = false;
-    emit("update:visible", false);
-  });
+  if (props.shift) {
+    shiftsStore.deleteShift(props.shift).then(() => {
+      shiftsStore.getShifts();
+      openShfiftDetailsActive.value = false;
+      emit("update:visible", false);
+    });
+  }
 }
 let props = defineProps<{
-  shift: Shift;
+  shift: Shift | undefined;
 }>();
 
-let editableShift = ref<Shift>(props.shift);
+let editableShift = ref<Shift | undefined>(props.shift);
 onMounted(() => {
   openShfiftDetailsActive.value = true;
 });
@@ -99,6 +98,7 @@ function removeUser() {
 
 <template>
   <PrimeDialog
+    v-if="editableShift"
     v-model:visible="openShfiftDetailsActive"
     :header="t('Edit shift')"
     id="add-shift-dialog"
@@ -115,7 +115,13 @@ function removeUser() {
         />
       </div>
       <div class="field col-12">
-        <div class="col" v-if="editableShift.assigned_users > 0">
+        <div
+          class="col"
+          v-if="
+            editableShift.assigned_users &&
+            editableShift.assigned_users?.length > 0
+          "
+        >
           <div v-for="user in editableShift.assigned_users" :key="user.id">
             <label for="title">{{ user.first_name }}</label>
             <PrimeButton label="Remove" @click="removeUser">
@@ -145,7 +151,10 @@ function removeUser() {
         <label for="dateformat">{{ t("Starting date") }}</label>
         <PrimeCalendar
           inputId="dateformat"
-          v-model="editableShift.shift_starting_date"
+          v-model="
+            //@ts-ignore
+            editableShift.shift_starting_date
+          "
           dateFormat="yy-mm-dd"
           :showIcon="true"
         />
@@ -154,7 +163,10 @@ function removeUser() {
         <label for="dateformat">{{ t("Ending date") }}</label>
         <PrimeCalendar
           inputId="dateformat"
-          v-model="editableShift.shift_ending_date"
+          v-model="
+            //@ts-ignore
+            editableShift.shift_ending_date
+          "
           dateFormat="yy-mm-dd"
           :showIcon="true"
         />
@@ -185,7 +197,10 @@ function removeUser() {
         <label for=" time12">{{ t("Starting Time") }}</label>
         <PrimeCalendar
           inputId="starting_time"
-          v-model="editableShift.shift_starting_time"
+          v-model="
+            //@ts-ignore
+            editableShift.shift_starting_time
+          "
           :timeOnly="true"
           hourFormat="24"
         />
@@ -194,7 +209,10 @@ function removeUser() {
         <label for=" time12">{{ t("Ending Time") }}</label>
         <PrimeCalendar
           inputId="ending_time"
-          v-model="editableShift.shift_ending_time"
+          v-model="
+            //@ts-ignore
+            editableShift.shift_ending_time
+          "
           :timeOnly="true"
           hourFormat="24"
         />

@@ -59,13 +59,13 @@ document
       document.getElementById("date-menu")?.classList.remove("fixed");
     }
   });
-const selectedShift = ref<Shift>();
+const selectedShift = ref<Shift | undefined>();
 function openShfiftDetail(shift: Shift) {
   openShfiftDetailsActive.value = true;
   selectedShift.value = shift;
 }
 
-function onSortChange() {
+function onSortChange(_event: any) {
   console.log("sort change todo");
 }
 const shiftTypeSortOptions = ref([]);

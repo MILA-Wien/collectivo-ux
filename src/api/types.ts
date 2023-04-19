@@ -190,6 +190,10 @@ export enum ShiftDay {
   SATURDAY = "Saturday",
   SUNDAY = "Sunday",
 }
+export interface ShiftsList {
+  date: string;
+  shifts: Array<Shift>;
+}
 
 export interface Shift {
   id?: number;
@@ -200,10 +204,11 @@ export interface Shift {
   shift_week: ShiftWeek;
   shift_starting_time?: string | Date | null;
   shift_ending_time?: string | Date | null;
-  required_users: Number;
+  required_users: number;
   shift_day: ShiftDay;
   additional_info_general: string;
-  assinged_users: Array<ShiftUser> | null;
+  assigned_users: Array<ShiftUser> | null;
+  assignments: Array<ShiftAssignment> | null;
 }
 
 export interface ShiftUser {

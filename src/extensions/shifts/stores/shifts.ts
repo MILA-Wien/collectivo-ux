@@ -4,11 +4,16 @@ import type { Shift, ShiftAssignment } from "@/api/types";
 
 export type ShiftsStoreState = {
   assignments: any;
-  shifts: Array<Shift>;
-  sortedShifts: Array<Shift>;
-  selfShifts: Array<Shift>;
-  openShifts: Array<Shift>;
+  shifts: Array<ShiftsList>;
+  sortedShifts: Array<ShiftsList>;
+  selfShifts: Array<ShiftsList>;
+  openShifts: Array<ShiftsList>;
   selfProfile: any;
+};
+
+type ShiftsList = {
+  date: string;
+  shifts: Array<Shift>;
 };
 
 export const useShiftsStore = defineStore({
@@ -82,7 +87,7 @@ export const useShiftsStore = defineStore({
         return response.data;
       });
     },
-    sortShiftsByDate(shifts: Array<Shift>) {
+    sortShiftsByDate(shifts: Array<ShiftsList>) {
       const shiftsByDate = shifts.sort((a: any, b: any) => {
         return new Date(a.shift_starting_date) > new Date(b.shift_starting_date)
           ? 1
@@ -114,8 +119,8 @@ export const useShiftsStore = defineStore({
     async deleteShift(shift: Shift) {
       if (shift.id) return API.delete("shiftsShifts", shift.id);
     },
-    async addAssignment(assignment: ShiftAssignment) {
-      return API.post("shiftsAssignments", assignment);
+    async assignShift(shifts: any) {
+      return API.post("shiftsAssignments", shifts);
     },
   },
   getters: {},
@@ -132,3 +137,5 @@ function formatDate(date: Date) {
 
   return yyyy + "-" + mm_formated + "-" + dd_formated;
 }
+
+export {};

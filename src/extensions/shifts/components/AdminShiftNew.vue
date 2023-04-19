@@ -33,7 +33,8 @@ const newShift = ref<Shift>({
   required_users: 1,
   shift_day: ShiftDay.MONDAY,
   additional_info_general: "",
-  assinged_users: [],
+  assigned_users: [],
+  assignments: null,
 });
 const newShiftDates = ref({
   shift_starting_date: today,
@@ -53,7 +54,8 @@ function resetNewShift() {
     required_users: 1,
     shift_day: ShiftDay.MONDAY,
     additional_info_general: "",
-    assinged_users: [],
+    assigned_users: [],
+    assignments: null,
   };
 }
 
@@ -81,25 +83,28 @@ const shiftDayOptions = [
   { name: "Sunday", value: ShiftDay.SUNDAY },
 ];
 function addShift() {
-  const shift = formatTimesInShift();
   shiftsStore.addShift(newShift.value);
   showAddShiftDialog.value = false;
   shiftsStore.getShifts();
 }
-function formatTimesInShift() {
-  const shift = newShift.value;
-  shift.shift_starting_date = `${newShiftDates.value.shift_starting_date.getFullYear()}-${
-    newShiftDates.value.shift_starting_date.getMonth() + 1
-  }-${newShiftDates.value.shift_starting_date.getDate()}`;
-  shift.shift_starting_time = `${newShiftDates.value.shift_starting_time.getHours()}:${newShiftDates.value.shift_starting_time.getMinutes()}`;
-  shift.shift_ending_date = newShiftDates.value.shift_ending_date
-    ? `${newShiftDates.value.shift_ending_date?.getFullYear()}-${
-        newShiftDates.value.shift_ending_date?.getMonth() + 1
-      }-${newShiftDates.value.shift_ending_date?.getDate()}`
-    : undefined;
-  shift.shift_ending_time = `${newShiftDates.value.shift_ending_time.getHours()}:${newShiftDates.value.shift_ending_time.getMinutes()}`;
-  return shift;
-}
+// function formatTimesInShift() {
+//   const shift = newShift.value;
+//   shift.shift_starting_date = `${newShiftDates.value.shift_starting_date.getFullYear()}-${
+//     newShiftDates.value.shift_starting_date.getMonth() + 1
+//   }-${newShiftDates.value.shift_starting_date.getDate()}`;
+//   shift.shift_starting_time = `${newShiftDates.value.shift_starting_time.getHours()}:${newShiftDates.value.shift_starting_time.getMinutes()}`;
+//   //@ts-ignore
+//   shift.shift_ending_date = newShiftDates.value.shift_ending_date
+//     ? //@ts-ignore
+//       `${newShiftDates.value.shift_ending_date?.getFullYear()}-${
+//         //@ts-ignore
+//         newShiftDates.value.shift_ending_date?.getMonth() + 1
+//         //@ts-ignore
+//       }-${newShiftDates.value.shift_ending_date?.getDate()}`
+//     : undefined;
+//   shift.shift_ending_time = `${newShiftDates.value.shift_ending_time.getHours()}:${newShiftDates.value.shift_ending_time.getMinutes()}`;
+//   return shift;
+// }
 
 onMounted(() => {
   showAddShiftDialog.value = true;

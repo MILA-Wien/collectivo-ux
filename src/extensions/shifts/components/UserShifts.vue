@@ -60,25 +60,26 @@ function openAssignShiftDialog() {
         </div>
         <div class="grid" v-else>
           <div
-            v-for="(shift, i) in shiftsStore.openShifts"
+            v-for="(shifts, i) in shiftsStore.openShifts"
             :key="i"
             class="col-4"
           >
             <PrimeCard>
               <template #title>
                 <div class="text-base">
-                  {{ shift.shifts[0].shift_week }} -
-                  {{ shift.shifts[0].shift_starting_date }} <br />
-                  {{ shift.shifts[0].shift_title }} -
-                  {{ shift.shifts[0].shift_starting_time }} -
-                  {{ shift.shifts[0].shift_ending_time }}
+                  {{ shifts.shifts[0].shift_week }} -
+                  {{ shifts.shifts[0].shift_starting_date }} <br />
+                  {{ shifts.shifts[0].shift_title }} -
+                  {{ shifts.shifts[0].shift_starting_time }} -
+                  {{ shifts.shifts[0].shift_ending_time }}
                 </div>
               </template>
               <template #subtitle>
                 <PrimeRating
-                  v-model="shift.shifts[0].assigned_users.length"
+                  v-if="shifts.shifts[0].assigned_users"
+                  v-model="shifts.shifts[0].assigned_users.length"
                   :cancel="false"
-                  :stars="shift.shifts[0].assignments.length"
+                  :stars="shifts.shifts[0].assignments?.length"
                   readonly
                 >
                   <template #onicon>
@@ -91,23 +92,15 @@ function openAssignShiftDialog() {
                 </PrimeRating>
               </template>
               <template #content>
-                <div v-if="shift.shifts[0].type == 'shift'">
-                  <div class="text-sm">
-                    {{ t("Shift type") }}
-                  </div>
-                  <div class="text-sm">
-                    {{ t("Shift") }}
-                  </div>
-                </div>
-                <div v-if="shift.shifts[0].additional_info_general != null">
+                <div v-if="shifts.shifts[0].additional_info_general != null">
                   <div class="text-sm">
                     {{ t("Additional information") }}
                   </div>
                   <div class="text-sm">
-                    {{ shift.shifts[0].additional_info_general }}
+                    {{ shifts.shifts[0].additional_info_general }}
                   </div>
                 </div>
-                <PrimeButton @click="shiftsStore.assignShift(shift.shifts)">{{
+                <PrimeButton @click="shiftsStore.assignShift(shifts)">{{
                   t("Assign")
                 }}</PrimeButton>
               </template>
