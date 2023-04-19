@@ -118,6 +118,7 @@ watch(
 function filter($event: any) {
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
   let filter = "";
+
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
       if (
@@ -210,7 +211,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       filterDisplay="menu"
       v-model:filters="filters"
       :resizableColumns="true"
-      columnResizeMode="fit"
+      columnResizeMode="expand"
       :scrollable="true"
       scrollHeight="flex"
       @page="filter"
@@ -241,6 +242,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
         :field="col.field"
         :sortable="true"
         :filterMatchModeOptions="matchModes[col.input_type]"
+        :show-filter-operator="false"
       >
         <!-- Custom bodies for different input types -->
         <template
@@ -374,5 +376,10 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 .object-table.p-datatable .p-column-title {
   max-width: 14ch;
   overflow: hidden;
+}
+
+// Hide filter-add-rule button until feature is available
+.p-column-filter-add-rule {
+  display: none;
 }
 </style>
