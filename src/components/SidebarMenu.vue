@@ -47,8 +47,8 @@
       </a>
     </template>
   </PanelMenu>
-  <div class="mt-3 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
-    <span class="m-3 text-sm font-semibold">{{ t("Admin Area") }}</span>
+  <div class="mt-5 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
+    <span class="ml-5 text-sm font-semibold">{{ t("Admin Area") }}</span>
     <PanelMenu
       :model="itemsAdmin[0].items"
       class="sidebar_menu"
@@ -182,11 +182,13 @@ watch(mainMenu, () => {
 }
 
 .sidebar_menu.p-panelmenu .p-panelmenu-panel {
-  margin: 10px;
+  margin: 5px;
 }
 
 .sidebar_menu.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
-  border-radius: 10px !important;
+  border-radius: 5px !important;
+  background: none;
+  border: none;
 }
 
 .sidebar_menu.p-panelmenu .p-menuitem-text {
