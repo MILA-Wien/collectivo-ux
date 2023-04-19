@@ -14,19 +14,22 @@ menuStore.setTitle("Memberships");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="members-admin">
+  <div class="h-full tabview-full-height" id="members-admin">
     <TabView lazy>
       <TabPanel :header="t('Memberships')">
         <ObjectLoader
           :store="membersStore"
           :name="'membershipsMemberships'"
           :default-columns="[
-            'profile',
+            'user__first_name',
+            'user__last_name',
+            'user__tags',
             'type',
             'number',
             'status',
             'shares_signed',
           ]"
+          :email-button="true"
         />
       </TabPanel>
       <TabPanel :header="t('Types')">

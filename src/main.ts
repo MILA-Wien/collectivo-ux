@@ -11,7 +11,7 @@ import "primeicons/primeicons.css"; //icons
 import PrimeVue from "primevue/config";
 import ConfirmationService from "primevue/confirmationservice";
 import "primevue/resources/primevue.min.css"; //core css
-import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/themes/lara-light-indigo/theme.css";
 import ToastService from "primevue/toastservice";
 import PrimeTooltip from "primevue/tooltip";
 import shifts from "./extensions/shifts/shifts";

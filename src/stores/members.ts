@@ -9,6 +9,9 @@ type membersStore = {
 
   extensionsExtensions: DataList;
 
+  dashboardTiles: DataList;
+  dashboardTileButtons: DataList;
+
   profilesProfiles: DataList;
   profilesProfilesSelf: DataDetail;
 
@@ -64,10 +67,13 @@ export const useMembersStore = defineStore({
       coreUsers: JSON.parse(JSON.stringify(DataListTemplate)),
       coreGroups: JSON.parse(JSON.stringify(DataListTemplate)),
 
+      extensionsExtensions: JSON.parse(JSON.stringify(DataListTemplate)),
+
+      dashboardTiles: JSON.parse(JSON.stringify(DataListTemplate)),
+      dashboardTileButtons: JSON.parse(JSON.stringify(DataListTemplate)),
+
       profilesProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
       profilesProfilesSelf: JSON.parse(JSON.stringify(DataDetailTemplate)),
-
-      extensionsExtensions: JSON.parse(JSON.stringify(DataListTemplate)),
 
       membershipsMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataListTemplate)),

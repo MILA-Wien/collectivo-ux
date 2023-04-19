@@ -85,14 +85,25 @@ export interface DashboardTiles {
   previous?: string;
   results: Array<DashboardTile>;
 }
+
+export interface DashboardTileButton {
+  id: number;
+  label: string;
+  link: string;
+  link_type: "internal" | "external";
+}
+
 export interface DashboardTile {
   id: string;
+  content: string;
   component: string;
   order: number;
   required_group?: string;
-  label?: string;
-  extension: string;
-  extension_name: string;
+  label: string;
+  extension?: number;
+  extension_name?: string;
+  source: "component" | "db";
+  buttons: Array<any>;
 }
 
 export interface SchemaField {

@@ -8,30 +8,24 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
-menuStore.setTitle("Payments");
+menuStore.setTitle("Tiles");
 </script>
 
 <template>
-  <div class="h-full tabview-full-height">
+  <div class="h-full tabview-full-height" id="dashboard-admin">
     <TabView lazy>
-      <TabPanel :header="t('Payments')">
+      <TabPanel :header="t('Tiles')">
         <ObjectLoader
           :store="membersStore"
-          :name="'paymentsPayments'"
-          :default-columns="[
-            'name',
-            'status',
-            'payer',
-            'amount',
-            'description',
-          ]"
+          name="dashboardTiles"
+          :default-columns="['name', 'content']"
         />
       </TabPanel>
-      <TabPanel :header="t('Subscriptions')">
+      <TabPanel :header="t('Buttons')">
         <ObjectLoader
           :store="membersStore"
-          :name="'paymentsSubscriptions'"
-          :default-columns="['name', 'payer', 'amount', 'description']"
+          name="dashboardTileButtons"
+          :default-columns="['label']"
         />
       </TabPanel>
     </TabView>
