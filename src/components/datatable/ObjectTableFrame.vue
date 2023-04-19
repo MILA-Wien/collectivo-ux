@@ -3,11 +3,11 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
+import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
+import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-
-import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
 import ObjectDetail from "./ObjectDetail.vue";
 import ObjectTable from "./ObjectTable.vue";
 
@@ -73,6 +73,8 @@ for (const [key, value] of Object.entries(props.schema)) {
   filters.value[key] = {
     // Todo: Add support for OR operator in the backend
     // operator: FilterOperator.AND,
+    // Operator needed for clear filter function
+    operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },
     ],
