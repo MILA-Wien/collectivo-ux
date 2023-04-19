@@ -158,6 +158,8 @@ export const DataDetailTemplate = {
 // shifts
 export enum ShiftType {
   REGULAR = "regular",
+  REPEATING_WEEKLY = "repeating_weekly",
+  REPEATING_MONTHLY = "repeating_monthly",
   EXTRA = "extra",
   HOLIDAY = "holiday",
   OTHER = "other",
@@ -179,6 +181,7 @@ export enum ShiftDay {
 }
 
 export interface Shift {
+  id?: number;
   shift_title: string;
   shift_starting_date: string | Date;
   shift_ending_date?: string | Date | null;
@@ -197,4 +200,11 @@ export interface ShiftUser {
   username: string;
   email: string;
   first_name: string;
+}
+
+export interface ShiftAssignment {
+  assigned_user: number;
+  shift: number;
+  attending: boolean;
+  additional_info: string;
 }

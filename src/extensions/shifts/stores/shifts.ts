@@ -8,23 +8,24 @@ export type ShiftsStoreState = {
   sortedShifts: Array<Shift>;
   selfShifts: Array<Shift>;
   openShifts: Array<Shift>;
+  selfProfile: any;
 };
 
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
-    ({
-      assignments: [],
-      shifts: [],
-      sortedShifts: [],
-      selfShifts: [],
-      openShifts: [],
-    } as ShiftsStoreState),
+  ({
+    assignments: [],
+    shifts: [],
+    sortedShifts: [],
+    selfShifts: [],
+    openShifts: [],
+    selfProfile: {},
+  } as ShiftsStoreState),
 
   actions: {
     async getShifts() {
       const todayDate = new Date();
-      const today = formatDate(todayDate);
       const endOfMonth = formatDate(
         new Date(todayDate.getFullYear(), todayDate.getMonth() + 2, 0)
       );
@@ -36,7 +37,7 @@ export const useShiftsStore = defineStore({
         shift_starting_date__lte: endOfMonth,
       }).then((response) => {
         this.shifts = response.data;
-        this.sortShiftsByDate();
+        this.sortedShifts = this.sortShiftsByDate(this.shifts);
         return response.data;
       });
     },
@@ -50,19 +51,39 @@ export const useShiftsStore = defineStore({
       this.shifts = [];
       API.get("shiftsShiftsSelf").then((response) => {
         this.shifts = response.data.results;
-        this.sortShiftsByDate();
+        this.sortedShifts = this.sortShiftsByDate(this.shifts);
+        return response.data;
+      });
+    },
+    async getSelfProfile() {
+      API.get("shiftsShiftsUserSelf").then((response) => {
+        this.selfProfile = response.data;
         return response.data;
       });
     },
     async getOpenShifts() {
       this.openShifts = [];
-      API.get("shiftsOpenShifts").then((response) => {
-        this.openShifts = response.data.results;
+      const todayDate = new Date();
+      const endOfMonth = formatDate(
+        new Date(todayDate.getFullYear(), todayDate.getMonth() + 2, 0)
+      );
+      const startOfMonth = formatDate(
+        new Date(todayDate.getFullYear(), todayDate.getMonth(), 0)
+      );
+      API.getWithParams("shiftsOpenShifts", {
+        shift_starting_date__gte: startOfMonth,
+        shift_starting_date__lte: endOfMonth,
+      }).then((response) => {
+        let openShifts = response.data;
+        openShifts = openShifts.filter((shift: any) => {
+          return shift.assigned_users.length < shift.required_users;
+        });
+        this.openShifts = this.sortShiftsByDate(openShifts);
         return response.data;
       });
     },
-    async sortShiftsByDate() {
-      const shiftsByDate = this.shifts.sort((a: any, b: any) => {
+    sortShiftsByDate(shifts: Array<Shift>) {
+      const shiftsByDate = shifts.sort((a: any, b: any) => {
         return new Date(a.shift_starting_date) > new Date(b.shift_starting_date)
           ? 1
           : -1;
@@ -82,14 +103,20 @@ export const useShiftsStore = defineStore({
           shiftsGroupedByDate[index].shifts.push(element);
         }
       });
-
-      this.sortedShifts = shiftsGroupedByDate;
+      return shiftsGroupedByDate;
     },
-    async addShift(shift: any) {
+    async addShift(shift: Shift) {
       return API.post("shiftsShifts", shift);
     },
-    async updateShift(shift: any) {
-      return API.patch("shiftsShifts", shift);
+    async updateShift(shift: Shift) {
+      return API.patch("shiftsShifts", shift, shift.id);
+    },
+    async deleteShift(shift: Shift) {
+      if (shift.id)
+        return API.delete("shiftsShifts", shift.id);
+    },
+    async addAssignment(assignment: Ass) {
+      return API.post("shiftsAssignments", assignment);
     }
   },
   getters: {},

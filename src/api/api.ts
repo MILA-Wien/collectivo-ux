@@ -116,7 +116,8 @@ export const endpoints = {
 
   shiftsShifts: "/shifts/shifts/",
   shiftsAssignments: "shifts/assignments/",
-  shiftsShiftsUser: "/shifts/shifts-user/",
+  shiftsShiftsUser: "/shifts/user/",
+  shiftsShiftsUserSelf: "/shifts/user/self/",
   shiftsShiftsSelf: "/shifts/shifts/self/",
   shiftsOpenShifts: "/shifts/shifts/open/",
 };
