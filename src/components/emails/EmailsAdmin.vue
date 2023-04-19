@@ -12,7 +12,7 @@ const menuStore = useMenuStore();
 menuStore.setTitle("Member Emails");
 </script>
 <template>
-  <div class="h-full tabview-full">
+  <div class="h-full tabview-full-height">
     <TabView lazy>
       <TabPanel :header="t('Campaigns')">
         <ObjectLoader

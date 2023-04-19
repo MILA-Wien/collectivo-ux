@@ -12,7 +12,7 @@ menuStore.setTitle("Tiles");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="dashboard-admin">
+  <div class="h-full tabview-full-height" id="dashboard-admin">
     <TabView lazy>
       <TabPanel :header="t('Tiles')">
         <ObjectLoader

@@ -131,7 +131,6 @@ function filter($event: any) {
           $event.filters[key].constraints[0].matchMode
         )}=${$event.filters[key].constraints[0].value}`;
       } else {
-        console.log($event.filters[key].constraints[0].value);
         $event.filters[key].constraints[0].value.forEach((value: any) => {
           filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
             $event.filters[key].constraints[0].matchMode
@@ -186,7 +185,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 </script>
 
 <template>
-  <div class="datatable" style="height: 100%; width: 100%">
+  <div class="datatable">
     <PrimeDataTable
       :value="objects"
       v-model:selection="selectedObjects"
@@ -206,9 +205,9 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
         t('of') +
         ' {totalRecords}'
       "
-      showGridlines
       class="p-datatable-sm object-table"
       filterDisplay="menu"
+      :striped-rows="true"
       v-model:filters="filters"
       :resizableColumns="true"
       columnResizeMode="expand"
@@ -221,19 +220,27 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       <!-- Selection column -->
       <PrimeColumn
         selectionMode="multiple"
-        style="width: 50px; max-width: 50px"
+        style="padding-left: 13px; width: 40px; max-width: 40px"
         :frozen="true"
       ></PrimeColumn>
+
       <!-- Edit column -->
-      <PrimeColumn style="width: 50px; max-width: 50px" :frozen="true">
+      <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
+        <template #header
+          ><PrimeButton
+            icon="pi pi-pencil"
+            class="p-button-text p-button-sm button-edit"
+            disabled="true"
+        /></template>
         <template #body="slotProps">
           <PrimeButton
             icon="pi pi-pencil"
-            class="p-button-text p-button-sm"
+            class="p-button-text p-button-sm button-edit"
             @click="editObjectFn(slotProps.data)"
           />
         </template>
       </PrimeColumn>
+
       <!-- Content columns -->
       <PrimeColumn
         v-for="col of selectedColumns"
@@ -343,21 +350,12 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   </div>
 </template>
 
-<style lang="scss">
-.object-table.p-component {
-  font-size: 14px;
-}
-
-.p-datatable.p-datatable-gridlines .p-paginator-bottom {
-  border-width: 1px 1px 1px 1px;
-}
-
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
-  padding: 5px 10px 5px 10px;
-  word-break: break-all;
-  // vertical-align: middle;
-  // white-space: normal;
+<style scoped lang="scss">
+.datatable {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border: 1px solid #e0e0e0;
 }
 
 .tag {
@@ -373,9 +371,14 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   width: fit-content;
 }
 
-.object-table.p-datatable .p-column-title {
-  max-width: 14ch;
-  overflow: hidden;
+.button-edit {
+  padding: 6px !important;
+  width: 30px !important;
+}
+
+// Hide filter-add-rule button until feature is available
+:global(.p-column-filter-add-rule) {
+  display: none;
 }
 
 // Hide filter-add-rule button until feature is available
