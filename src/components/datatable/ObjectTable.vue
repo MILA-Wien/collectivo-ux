@@ -113,7 +113,7 @@ watch(
   },
   { immediate: true }
 );
-console.log(filters.value);
+
 // Filter --------------------------------------------------------------- //
 function filter($event: any) {
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
