@@ -5,11 +5,17 @@
     :model="itemsMain[0].items"
     v-if="itemsMain.length > 0"
     class="sidebar_menu"
+    id="main_menu"
   >
   </PanelMenu>
   <div class="mt-3 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
     <span class="m-3 text-sm font-semibold">{{ t("Admin Area") }}</span>
-    <PanelMenu :model="itemsAdmin[0].items" class="sidebar_menu"> </PanelMenu>
+    <PanelMenu
+      :model="itemsAdmin[0].items"
+      class="sidebar_menu"
+      id="admin_menu"
+    >
+    </PanelMenu>
   </div>
 </template>
 
