@@ -12,13 +12,13 @@ menuStore.setTitle("Tags");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="tags-admin">
+  <div class="h-full tabview-full-height" id="tags-admin">
     <TabView lazy>
       <TabPanel :header="t('Tags')">
         <ObjectLoader
           :store="membersStore"
           name="tagsTags"
-          :default-columns="['name']"
+          :default-columns="['name', 'description']"
         />
       </TabPanel>
     </TabView>

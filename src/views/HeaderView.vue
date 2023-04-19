@@ -9,16 +9,16 @@
           id="toggle-sidebar-button"
         />
       </div>
-      <h1>{{ t(title) }}</h1>
+      <h1 class="my-0">{{ t(title) }}</h1>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import PrimeButton from "primevue/button";
 import { useMenuStore } from "@/stores/menu";
-import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
+import PrimeButton from "primevue/button";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const menuStore = useMenuStore();

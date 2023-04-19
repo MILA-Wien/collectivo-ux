@@ -11,7 +11,7 @@ menuStore.setTitle("Extensions");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="tags-admin">
+  <div class="h-full tabview-full-height" id="tags-admin">
     <ObjectLoader
       :store="membersStore"
       :name="'extensionsExtensions'"

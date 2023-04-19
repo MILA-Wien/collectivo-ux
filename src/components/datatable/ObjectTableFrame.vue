@@ -140,16 +140,16 @@ function sendEmails() {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-white">
+  <div class="flex flex-col h-full">
     <!-- Toolbar -->
-    <PrimeToolbar class="mb-4">
+    <PrimeToolbar class="c-datatable-toolbar">
       <template #start>
         <div class="m-1 text-left">
           <!-- v-tooltip.top="t('Create new entry')" -->
           <PrimeButton
             icon="pi pi-plus"
+            class="c-icon-button p-button-sm"
             @click="createObjectFn()"
-            class="p-button-success"
           >
           </PrimeButton>
         </div>
@@ -178,6 +178,7 @@ function sendEmails() {
           <!--  v-tooltip.top="t('Send emails')" -->
           <PrimeButton
             icon="pi pi-send"
+            class="c-icon-button p-button-sm"
             :disabled="!(selectedObjects.length > 0)"
             @click="sendEmails"
           >
@@ -187,6 +188,7 @@ function sendEmails() {
           <!-- v-tooltip.top="t('Export')" -->
           <PrimeButton
             icon="pi pi-file-export"
+            class="c-icon-button p-button-sm"
             :disabled="!(selectedObjects?.length > 0)"
           >
             <JsonCSV
@@ -242,3 +244,15 @@ function sendEmails() {
     @close="editEmailsActive = false"
   />
 </template>
+
+<style scoped>
+.c-datatable-toolbar {
+  border-bottom: 0;
+  padding: 0.5rem;
+  border-radius: 0px;
+}
+.c-icon-button {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+</style>

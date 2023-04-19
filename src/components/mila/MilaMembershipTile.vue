@@ -18,7 +18,7 @@ membersStore
 <template>
   <div v-if="has_mila_membership === null">Loading</div>
   <div v-else-if="has_mila_membership != false">
-    <p class="pb-4">
+    <p>
       {{ t("You are a member of") + " MILA Mitmach-Supermarkt e.G." }}
       <br />
       {{ t("Your membership number is") + ": " + has_mila_membership }}
@@ -28,7 +28,7 @@ membersStore
     </RouterLink>
   </div>
   <div v-else>
-    <p class="pb-4">
+    <p>
       {{
         t(
           "Click here to fill out your application to become a member of the MILA cooperative."
