@@ -38,7 +38,6 @@ keycloakInstance
     app.use(ConfirmationService);
     app.directive("tooltip", PrimeTooltip);
 
-
     //init the extensions
     shifts();
 

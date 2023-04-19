@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { API } from "@/api/api";
-import type { Shift } from "@/api/types";
+import type { Shift, ShiftAssignment } from "@/api/types";
 
 export type ShiftsStoreState = {
   assignments: any;
@@ -14,14 +14,14 @@ export type ShiftsStoreState = {
 export const useShiftsStore = defineStore({
   id: "shifts",
   state: () =>
-  ({
-    assignments: [],
-    shifts: [],
-    sortedShifts: [],
-    selfShifts: [],
-    openShifts: [],
-    selfProfile: {},
-  } as ShiftsStoreState),
+    ({
+      assignments: [],
+      shifts: [],
+      sortedShifts: [],
+      selfShifts: [],
+      openShifts: [],
+      selfProfile: {},
+    } as ShiftsStoreState),
 
   actions: {
     async getShifts() {
@@ -112,12 +112,11 @@ export const useShiftsStore = defineStore({
       return API.patch("shiftsShifts", shift, shift.id);
     },
     async deleteShift(shift: Shift) {
-      if (shift.id)
-        return API.delete("shiftsShifts", shift.id);
+      if (shift.id) return API.delete("shiftsShifts", shift.id);
     },
-    async addAssignment(assignment: Ass) {
+    async addAssignment(assignment: ShiftAssignment) {
       return API.post("shiftsAssignments", assignment);
-    }
+    },
   },
   getters: {},
 });

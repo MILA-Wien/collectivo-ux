@@ -4,10 +4,8 @@ import type { StoreGeneric } from "pinia";
 import PrimeDataView from "primevue/dataview";
 
 import type { PropType } from "vue";
-import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
-const props = defineProps({
+defineProps({
   store: {
     type: Object as PropType<StoreGeneric>,
     required: true,

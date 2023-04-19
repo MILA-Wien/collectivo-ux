@@ -36,7 +36,7 @@ function getComponentForTile(tile: DashboardTile) {
 watch(
   tiles,
   (tiles) => {
-    if (tiles?.results && tiles.results.length>=0)
+    if (tiles?.results && tiles.results.length >= 0)
       tiles?.results.forEach((tile) => {
         getComponentForTile(tile);
       });
@@ -57,7 +57,10 @@ watch(
       }}
       <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
     </span>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8" v-if="tiles?.results?.length>0">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 mt-8"
+      v-if="tiles?.results?.length > 0"
+    >
       <div
         v-for="tile in tiles?.results"
         :key="tile.id"
@@ -68,10 +71,7 @@ watch(
             {{ t(tile.label ? tile.label : "") }}
           </template>
           <template #content>
-            <component
-              :is="tileComponents[tile.id]"
-              :tile="tile"
-            ></component>
+            <component :is="tileComponents[tile.id]" :tile="tile"></component>
           </template>
         </PrimeCard>
       </div>
