@@ -130,7 +130,12 @@ const editEmailsObject = ref({});
 const editEmailsCreate = ref(false);
 function sendEmails() {
   editEmailsObject.value = {
-    recipients: selectedObjects.value.map((m: any) => m.id),
+    // Recipients should be a list of user id's
+    // If object has no user, it is assumed that it is the user object itself
+    // Set is used to remove duplicates (e.g. the same user is selected twice)
+    recipients: Array.from(
+      new Set(selectedObjects.value.map((m: any) => (m.user ? m.user : m.id)))
+    ),
   };
   editEmailsCreate.value = true;
   editEmailsActive.value = true;
