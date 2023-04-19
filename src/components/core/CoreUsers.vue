@@ -12,7 +12,7 @@ menuStore.setTitle("Users");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="core-users">
+  <div class="h-full tabview-full-height" id="core-users">
     <TabView lazy>
       <TabPanel :header="t('Accounts')">
         <ObjectLoader

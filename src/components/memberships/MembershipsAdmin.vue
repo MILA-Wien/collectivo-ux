@@ -14,7 +14,7 @@ menuStore.setTitle("Memberships");
 </script>
 
 <template>
-  <div class="h-full tabview-full" id="members-admin">
+  <div class="h-full tabview-full-height" id="members-admin">
     <TabView lazy>
       <TabPanel :header="t('Memberships')">
         <ObjectLoader

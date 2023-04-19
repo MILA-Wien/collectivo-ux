@@ -39,7 +39,6 @@ watch(
   (tiles) => {
     if (tiles?.results)
       tiles?.results.forEach((tile) => {
-        console.log(tile);
         if (tile.source === "component") {
           getComponentForTile(tile);
         }

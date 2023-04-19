@@ -13,7 +13,8 @@
       :class="
         getSideBarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'
       "
-      class="fixed inset-y-0 left-0 z-30 w-60 overflow-y-auto transition duration-300 mr-5 transform bg-white lg:translate-x-0 lg:static lg:inset-0"
+      class="fixed inset-y-0 left-0 z-30 w-60 overflow-y-auto scrollbar-hide transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0"
+      id="collectivo-sidebar"
     >
       <div class="flex flex-col h-full items-center">
         <RouterLink to="/" class="w-100 flex justify-center">
@@ -35,14 +36,29 @@
 </template>
 
 <script setup lang="ts">
-import MenuMain from "../components/MenuMain.vue";
-import VersionItem from "../components/VersionItem.vue";
-import { useMenuStore } from "../stores/menu";
 import { storeToRefs } from "pinia";
 import { version } from "../../package.json";
+import MenuMain from "../components/SidebarMenu.vue";
+import VersionItem from "../components/VersionItem.vue";
+import { useMenuStore } from "../stores/menu";
 const menuStore = useMenuStore();
 const { getSideBarOpen } = storeToRefs(menuStore);
 function toggleSideBar() {
   menuStore.setSideBarOpen(getSideBarOpen.value ? false : true);
 }
 </script>
+
+<style scoped>
+#collectivo-sidebar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Webkit-based browsers (Chrome, Safari and Opera) */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>
