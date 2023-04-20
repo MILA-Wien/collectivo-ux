@@ -50,18 +50,8 @@ watch(
 </script>
 
 <template>
-  <div>
-    <span class="w-full" id="welcome-member-span">
-      {{
-        `${t("Hello,")} ${userStore.user?.tokenParsed.given_name}
-      ${userStore.user?.tokenParsed.family_name}. ${t(
-          "Willkommen auf der MILA Mitgliederplattform! Bei Fragen wende dich bitte an"
-        )}`
-      }}
-      <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
-    </span>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 pt-8">
+  <div id="collectivo-dashboard">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4">
       <div
         v-for="tile in tiles?.results"
         :key="tile.id"
