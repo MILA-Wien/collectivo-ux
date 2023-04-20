@@ -50,7 +50,7 @@ watch(
 </script>
 
 <template>
-  <div>
+  <div id="collectivo-dashboard">
     <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4">
       <div
         v-for="tile in tiles?.results"

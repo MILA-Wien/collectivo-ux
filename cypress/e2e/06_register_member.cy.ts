@@ -56,6 +56,7 @@ describe("register user_not_member", () => {
   });
   it("register as natural person", () => {
     cy.login("test_user_not_member@example.com");
+    cy.get("#collectivo-dashboard").should("exist");
     cy.get(".p-card-body button")
       .then(($btn) => {
         const txt = $btn.text();
@@ -130,6 +131,7 @@ describe("register user_not_member", () => {
 
   it("register as legal person", () => {
     cy.login("test_user_not_member@example.com");
+    cy.get("#collectivo-dashboard").should("exist");
     cy.get(".p-card-body button")
       .then(($btn) => {
         const txt = $btn.text();
