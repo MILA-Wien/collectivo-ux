@@ -199,7 +199,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 <template>
   <PrimeOverlayPanel ref="op">
     <div class="c-datatable-op">
-      <div v-for="obj in op_objects" class="mb-2 tag">
+      <div v-for="obj in op_objects" :key="obj" class="mb-2 tag">
         {{ op_choices[obj] }}
       </div>
     </div>
