@@ -17,17 +17,72 @@ menuStore.setTitle("Your Shifts");
 const shiftsStore = useShiftsStore();
 onMounted(() => {
   shiftsStore.getShiftsForSelf();
+  shiftsStore.getSelfProfile();
 });
 const showAssignShiftDialog = ref(false);
 function openAssignShiftDialog() {
   showAssignShiftDialog.value = true;
   shiftsStore.getOpenShifts();
 }
+function assignShift(shift: any) {
+  shiftsStore.assignShift(shift);
+  showAssignShiftDialog.value = false;
+  shiftsStore.getShiftsForSelf();
+}
 </script>
 
 <template>
   <div class="user-shifts-wrapper">
-    <div v-if="shiftsStore.selfShifts.length > 0"></div>
+    <div v-if="shiftsStore.selfShifts.length > 0">
+      <div class="grid">
+        <div class="col-12">
+          <p>{{ t("Your shifts") }}</p>
+          <PrimeButton class="mt-1" @click="openAssignShiftDialog()">{{
+            t("Assign new shift")
+          }}</PrimeButton>
+        </div>
+        <div
+          v-for="(shift, i) in shiftsStore.selfShifts"
+          :key="i"
+          class="col-4"
+        >
+          <PrimeCard>
+            <template #title>
+              <div class="text-base">
+                {{ shift.date }}
+                {{ shift.shifts[0].shift_week }} -
+                {{ shift.shifts[0].shift_starting_date }} <br />
+                {{ shift.shifts[0].shift_title }} -
+                {{ shift.shifts[0].shift_starting_time }} -
+                {{ shift.shifts[0].shift_ending_time }}
+              </div>
+            </template>
+            <template #subtitle>
+              <PrimeRating
+                v-if="shift.shifts[0].assigned_users"
+                v-model="shift.shifts[0].assigned_users.length"
+                :cancel="false"
+                :stars="shift.shifts[0].required_users"
+                readonly
+              >
+                <template #onicon>
+                  <img src="/images/shifts/custom-onicon.png" height="24" />
+                </template>
+              </PrimeRating>
+              {{ shift.shifts[0].shift_type }}
+            </template>
+            <template #content>
+              <div v-if="shift.shifts[0].additional_info_general != null">
+                <div class="text-sm">{{ t("Additional information") }}</div>
+                <div class="text-sm">
+                  {{ shift.shifts[0].additional_info_general }}
+                </div>
+              </div>
+            </template>
+          </PrimeCard>
+        </div>
+      </div>
+    </div>
     <div v-else>
       <p>
         {{
@@ -36,9 +91,6 @@ function openAssignShiftDialog() {
       </p>
     </div>
     <div>
-      <PrimeButton class="mt-1" @click="openAssignShiftDialog()">{{
-        t("Assign new shift")
-      }}</PrimeButton>
       <PrimeDialog
         v-model:visible="showAssignShiftDialog"
         :modal="true"
@@ -79,7 +131,7 @@ function openAssignShiftDialog() {
                   v-if="shifts.shifts[0].assigned_users"
                   v-model="shifts.shifts[0].assigned_users.length"
                   :cancel="false"
-                  :stars="shifts.shifts[0].assignments?.length"
+                  :stars="shifts.shifts[0].required_users"
                   readonly
                 >
                   <template #onicon>
@@ -90,17 +142,18 @@ function openAssignShiftDialog() {
                     />
                   </template>
                 </PrimeRating>
+                {{ shifts.shifts[0].shift_type }}
               </template>
               <template #content>
                 <div v-if="shifts.shifts[0].additional_info_general != null">
                   <div class="text-sm">
-                    {{ t("Additional information") }}
+                    <b>{{ t("Additional information") }}</b>
                   </div>
                   <div class="text-sm">
                     {{ shifts.shifts[0].additional_info_general }}
                   </div>
                 </div>
-                <PrimeButton @click="shiftsStore.assignShift(shifts)">{{
+                <PrimeButton @click="assignShift(shifts)">{{
                   t("Assign")
                 }}</PrimeButton>
               </template>

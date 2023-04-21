@@ -222,5 +222,5 @@ export interface ShiftAssignment {
   assigned_user: number;
   shift: number;
   attending: boolean;
-  additional_info: string;
+  additional_info_individual: string;
 }

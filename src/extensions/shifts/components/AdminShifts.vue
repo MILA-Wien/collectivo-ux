@@ -128,7 +128,7 @@ const shiftTypeSortOptions = ref([]);
                         <PrimeRating
                           v-model="shift.assigned_users.length"
                           :cancel="false"
-                          :stars="shift.assignments.length"
+                          :stars="shift.required_users"
                           readonly
                         >
                           <template #onicon>
@@ -243,7 +243,7 @@ const shiftTypeSortOptions = ref([]);
                     <PrimeRating
                       v-model="slotProps.data.assigned_users.length"
                       :cancel="false"
-                      :stars="slotProps.data.assignments.length"
+                      :stars="slotProps.data.required_users"
                       readonly
                     >
                       <template #onicon>
@@ -294,7 +294,7 @@ const shiftTypeSortOptions = ref([]);
                     {{ slotProps.data.name }}
                   </div>
                   <PrimeRating
-                    value="{product.rating}"
+                    value="slotProps.data.required_users"
                     readonly
                     :cancel="false"
                   ></PrimeRating>

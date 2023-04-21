@@ -1,2 +1,2 @@
-import Tile from "../../components/NotImplemented.vue";
+import Tile from "./components/DashboardTile.vue";
 export default Tile;
