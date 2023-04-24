@@ -52,8 +52,8 @@ watch(
       v-if="tiles?.results"
       :items="tiles.results"
       :ssr-columns="1"
-      :column-width="300"
-      :gap="16"
+      :column-width="360"
+      :gap="20"
     >
       <template #default="{ item }">
         <PrimeCard>
