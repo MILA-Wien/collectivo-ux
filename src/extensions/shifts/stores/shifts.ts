@@ -1,65 +1,7 @@
 import { defineStore } from "pinia";
 import { API } from "@/api/api";
 import { formatDate } from "@/helpers/shifts";
-// shifts
-export enum ShiftType {
-  REGULAR = "regular",
-  REPEATING_WEEKLY = "repeating_weekly",
-  REPEATING_MONTHLY = "repeating_monthly",
-  EXTRA = "extra",
-  HOLIDAY = "holiday",
-  OTHER = "other",
-}
-export enum ShiftWeek {
-  A = "A",
-  B = "B",
-  C = "C",
-  D = "D",
-}
-export enum ShiftDay {
-  MONDAY = "Monday",
-  TUESDAY = "Tuesday",
-  WEDNESDAY = "Wednesday",
-  THURSDAY = "Thursday",
-  FRIDAY = "Friday",
-  SATURDAY = "Saturday",
-  SUNDAY = "Sunday",
-}
-export interface ShiftsList {
-  date: string;
-  shifts: Array<Shift>;
-}
-
-export interface Shift {
-  id?: number;
-  shift_title: string;
-  shift_starting_date: string | Date;
-  shift_ending_date?: string | Date | null;
-  shift_type: ShiftType;
-  shift_week: ShiftWeek;
-  shift_starting_time?: string | Date | null;
-  shift_ending_time?: string | Date | null;
-  required_users: number;
-  shift_day: ShiftDay;
-  additional_info_general: string;
-  assigned_users: Array<ShiftUser> | null;
-  assignments: Array<ShiftAssignment> | null;
-}
-
-export interface ShiftUser {
-  id: number;
-  username: string;
-  email: string;
-  first_name: string;
-}
-
-export interface ShiftAssignment {
-  assigned_user: number;
-  shift: number;
-  attending: boolean;
-  additional_info_individual: string;
-}
-
+import type { Shift, ShiftAssignment, ShiftsList } from "@/api/types";
 
 export type ShiftsStoreState = {
   assignments: any;
@@ -69,7 +11,6 @@ export type ShiftsStoreState = {
   openShifts: Array<ShiftsList>;
   selfProfile: any;
 };
-
 
 export const useShiftsStore = defineStore({
   id: "shifts",
@@ -195,4 +136,3 @@ export const useShiftsStore = defineStore({
   },
   getters: {},
 });
-

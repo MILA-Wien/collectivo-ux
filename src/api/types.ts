@@ -195,15 +195,18 @@ export interface ShiftsList {
   shifts: Array<Shift>;
 }
 
+// BUG: primevue calendar does not support typed dates
+// (null |string |string |Date |Date) even though it
+// should and the docs say it does
 export interface Shift {
   id?: number;
   shift_title: string;
-  shift_starting_date: string | Date;
-  shift_ending_date?: string | Date | null;
+  shift_starting_date: any; //string | Date;
+  shift_ending_date: any; //string | Date | undefined;
   shift_type: ShiftType;
   shift_week: ShiftWeek;
-  shift_starting_time?: string | Date | null;
-  shift_ending_time?: string | Date | null;
+  shift_starting_time: any; // string | Date | undefined;
+  shift_ending_time: any; //string | Date | undefined;
   required_users: number;
   shift_day: ShiftDay;
   additional_info_general: string;

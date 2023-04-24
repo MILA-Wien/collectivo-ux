@@ -15,7 +15,6 @@ export function getColorForWeek(week: ShiftWeek) {
   }
 }
 
-
 export function formatDate(date: Date) {
   const yyyy = date.getFullYear();
   const mm = date.getMonth() + 1; // Months start at 0!

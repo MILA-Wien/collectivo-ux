@@ -81,8 +81,25 @@ function deleteShift() {
 let props = defineProps<{
   shift: Shift | undefined;
 }>();
+let tmpShift: Shift = props.shift
+  ? props.shift
+  : {
+      id: 0,
+      shift_title: "",
+      shift_type: ShiftType.REGULAR,
+      shift_starting_date: today,
+      shift_starting_time: today,
+      shift_ending_date: todayLater,
+      shift_ending_time: todayLater,
+      shift_week: ShiftWeek.A,
+      shift_day: ShiftDay.MONDAY,
+      assigned_users: [],
+      required_users: 0,
+      additional_info_general: "",
+      assignments: [],
+    };
 
-let editableShift = ref<Shift | undefined>(props.shift);
+let editableShift = ref<Shift>(tmpShift);
 onMounted(() => {
   openShfiftDetailsActive.value = true;
 });
@@ -151,10 +168,7 @@ function removeUser() {
         <label for="dateformat">{{ t("Starting date") }}</label>
         <PrimeCalendar
           inputId="dateformat"
-          v-model="
-            //@ts-ignore
-            editableShift.shift_starting_date
-          "
+          v-model="editableShift.shift_starting_date"
           dateFormat="yy-mm-dd"
           :showIcon="true"
         />
@@ -163,10 +177,7 @@ function removeUser() {
         <label for="dateformat">{{ t("Ending date") }}</label>
         <PrimeCalendar
           inputId="dateformat"
-          v-model="
-            //@ts-ignore
-            editableShift.shift_ending_date
-          "
+          v-model="editableShift.shift_ending_date"
           dateFormat="yy-mm-dd"
           :showIcon="true"
         />
@@ -197,10 +208,7 @@ function removeUser() {
         <label for=" time12">{{ t("Starting Time") }}</label>
         <PrimeCalendar
           inputId="starting_time"
-          v-model="
-            //@ts-ignore
-            editableShift.shift_starting_time
-          "
+          v-model="editableShift.shift_starting_time"
           :timeOnly="true"
           hourFormat="24"
         />
@@ -209,10 +217,7 @@ function removeUser() {
         <label for=" time12">{{ t("Ending Time") }}</label>
         <PrimeCalendar
           inputId="ending_time"
-          v-model="
-            //@ts-ignore
-            editableShift.shift_ending_time
-          "
+          v-model="editableShift.shift_ending_time"
           :timeOnly="true"
           hourFormat="24"
         />
