@@ -3,7 +3,8 @@
   "No internet connection.": "Keine Internetverbindung.",
   "Server not reachable.": "Server nicht erreichbar.",
   "Request failed.": "Anfrage fehlgeschlagen.",
-
+  "Submit": "Absenden",
+  "Sign additional shares": "Weitere Anteile zeichnen",
   "Dashboard tiles": "Kacheln",
   "Tiles": "Kacheln",
   "Description": "Beschreibung",

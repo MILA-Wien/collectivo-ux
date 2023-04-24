@@ -17,6 +17,7 @@ type membersStore = {
 
   membershipsMemberships: DataList;
   membershipsMembershipsSelf: DataList;
+  membershipsMembershipsShares: DataDetail;
   membershipsTypes: DataList;
   membershipsStatuses: DataList;
 
@@ -77,6 +78,9 @@ export const useMembersStore = defineStore({
 
       membershipsMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataListTemplate)),
+      membershipsMembershipsShares: JSON.parse(
+        JSON.stringify(DataDetailTemplate)
+      ),
       membershipsTypes: JSON.parse(JSON.stringify(DataListTemplate)),
       membershipsStatuses: JSON.parse(JSON.stringify(DataListTemplate)),
 
