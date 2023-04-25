@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center justify-between px-6 pt-3 lg:pt-3">
+  <header class="flex items-center justify-between px-10 pt-7 lg:pt-10">
     <div class="flex items-bottom">
       <div class="lg:hidden mr-5">
         <PrimeButton

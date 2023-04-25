@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useShiftsStore } from "../stores/shifts";
 import { ref, onMounted } from "vue";
-import "@fullcalendar/core";
 import PrimeButton from "primevue/button";
 import { useI18n } from "vue-i18n";
 import type { Shift } from "@/api/types";
 import DataView from "primevue/dataview";
 import TabView from "primevue/tabview";
-import PrimeTag from "primevue/tag";
 import TabPanel from "primevue/tabpanel";
 import PrimeCard from "primevue/card";
 import PrimeRating from "primevue/rating";

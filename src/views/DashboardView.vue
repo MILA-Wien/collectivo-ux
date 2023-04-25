@@ -3,7 +3,7 @@ import type { DashboardTile } from "@/api/types";
 import LoadingItem from "@/components/LoadingItem.vue";
 import { useDashboardStore } from "@/stores/dashboard";
 import { useMenuStore } from "@/stores/menu";
-import { useUserStore } from "@/stores/user";
+import MasonryWall from "@yeger/vue-masonry-wall";
 import { storeToRefs } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeCard from "primevue/card";
@@ -12,10 +12,7 @@ import { useI18n } from "vue-i18n";
 
 const menuStore = useMenuStore();
 menuStore.setTitle("Dashboard");
-const userStore = useUserStore();
-// language
 const { t } = useI18n();
-// store
 const dashboardStore = useDashboardStore();
 dashboardStore.getDashboardTiles();
 const { tiles } = storeToRefs(dashboardStore);
@@ -50,36 +47,28 @@ watch(
 </script>
 
 <template>
-  <div>
-    <span class="w-full" id="welcome-member-span">
-      {{
-        `${t("Hello,")} ${userStore.user?.tokenParsed.given_name}
-      ${userStore.user?.tokenParsed.family_name}. ${t(
-          "Willkommen auf der MILA Mitgliederplattform! Bei Fragen wende dich bitte an"
-        )}`
-      }}
-      <a href="mailto:mitmachen@mila.wien">mitmachen@mila.wien</a>.
-    </span>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:md:grid-cols-3 gap-4 pt-8">
-      <div
-        v-for="tile in tiles?.results"
-        :key="tile.id"
-        class="md:col-6 lg:col-4"
-      >
+  <div id="collectivo-dashboard">
+    <MasonryWall
+      v-if="tiles?.results"
+      :items="tiles.results"
+      :ssr-columns="1"
+      :column-width="300"
+      :gap="16"
+    >
+      <template #default="{ item }">
         <PrimeCard>
           <template #title>
-            {{ t(tile.label ? tile.label : "") }}
+            {{ t(item.label ? item.label : "") }}
           </template>
           <template #content>
             <component
-              v-if="tile.component"
-              :is="tileComponents[tile.id]"
-              :tile="tile"
+              v-if="item.component"
+              :is="tileComponents[item.id]"
+              :tile="item"
             ></component>
             <div v-else>
-              <div v-html="tile.content" class="pb-4"></div>
-              <div v-for="button in tile.buttons" :key="button.id">
+              <div v-html="item.content" class="pb-4"></div>
+              <div v-for="button in item.buttons" :key="button.id">
                 <div v-if="button.link_type === 'internal'">
                   <RouterLink :to="button.link">
                     <PrimeButton>
@@ -100,8 +89,8 @@ watch(
             </div>
           </template>
         </PrimeCard>
-      </div>
-    </div>
+      </template>
+    </MasonryWall>
   </div>
 </template>
 
