@@ -183,7 +183,6 @@ const shiftTypeSortOptions = ref([]);
           :sortOrder="sortOrder"
           :sortField="sortField"
           :data-key="sortKey"
-          :layout="layout"
         >
           <template #header>
             <PrimeDropdown
@@ -264,50 +263,6 @@ const shiftTypeSortOptions = ref([]);
                       @click="openShfiftDetail(slotProps.data)"
                     ></PrimeButton>
                   </div>
-                </div>
-              </div>
-            </div>
-          </template>
-          <template #grid="slotProps">
-            <div class="col-12 sm:col-6 lg:col-12 xl:col-2 p-2">
-              <div
-                class="p-4 border-1 surface-border surface-card border-round"
-              >
-                <div
-                  class="flex flex-wrap align-items-center justify-content-between gap-2"
-                >
-                  <div class="flex align-items-center gap-2">
-                    <i class="pi pi-tag"></i>
-                    <span class="font-semibold">{{
-                      slotProps.data.category
-                    }}</span>
-                  </div>
-                  <PrimeTag :value="slotProps.data.inventoryStatus"></PrimeTag>
-                </div>
-                <div class="flex flex-column align-items-center gap-3 py-5">
-                  <img
-                    class="w-9 shadow-2 border-round"
-                    :src="`${slotProps.data.image}`"
-                    :alt="slotProps.data.name"
-                  />
-                  <div class="text-2xl font-bold">
-                    {{ slotProps.data.name }}
-                  </div>
-                  <PrimeRating
-                    value="slotProps.data.required_users"
-                    readonly
-                    :cancel="false"
-                  ></PrimeRating>
-                </div>
-                <div class="flex align-items-center justify-content-between">
-                  <span class="text-2xl font-semibold"
-                    >${{ slotProps.data.price }}</span
-                  >
-                  <PrimeButton
-                    icon="pi pi-shopping-cart"
-                    rounded
-                    :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"
-                  ></PrimeButton>
                 </div>
               </div>
             </div>
