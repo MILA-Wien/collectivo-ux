@@ -106,9 +106,14 @@ export const useMembersStore = defineStore({
         API.get(objectName, id),
       ]);
 
+      // if (id) {
+      //   this[objectName].detail = objects.data;
+      // }
+
       // Throw error if response does not match store data type
       if (
-        (this[objectName].data instanceof Array &&
+        (!id &&
+          this[objectName].data instanceof Array &&
           !(objects.data.results instanceof Array)) ||
         (!(this[objectName].data instanceof Array) &&
           objects.data instanceof Array)

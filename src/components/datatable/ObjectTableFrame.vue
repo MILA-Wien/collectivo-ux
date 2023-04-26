@@ -223,7 +223,9 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
-      />
+      >
+        <template #action-column><slot name="action-column"></slot></template>
+      </ObjectTable>
     </div>
   </div>
 

@@ -184,7 +184,7 @@ function isFiltered(name: string, field: any) {
         <!-- Editable fields based on input type -->
         <div v-for="(field, name, i) in schema" :key="i">
           <div class="my-4">
-            <div v-if="isFiltered(name, field)">
+            <div v-if="isFiltered(name, field) && name != 'id'">
               <div class="mb-1">
                 <label for="attr-{{name}}">
                   {{ t(field.label) }}

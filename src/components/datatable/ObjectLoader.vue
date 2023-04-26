@@ -70,7 +70,9 @@ if (emailsCampaigns.value.schemaLoaded === false) {
       :default-columns="defaultColumns"
       :emailButton="emailButton"
       :emailCampaignSchema="emailsCampaigns.schema"
-    />
+    >
+      <template #action-column><slot name="action-column"></slot></template>
+    </ObjectTableFrame>
   </div>
   <div v-else-if="displayType == 'list'" class="h-full">
     <ObjectList
