@@ -5,7 +5,6 @@ import App from "./App.vue";
 import "./assets/main.css";
 import { initKeycloak } from "./helpers/keycloak";
 import router from "./router";
-
 //PrimeVue imports
 import "primeicons/primeicons.css"; //icons
 import PrimeVue from "primevue/config";

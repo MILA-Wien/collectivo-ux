@@ -35,7 +35,9 @@ menuStore.setTitle("Users");
                 <PrimeButton
                   icon="pi pi-eye"
                   class="p-button-text p-button-sm button-edit"
-                  @click="$router.push(slotProps.data.id + '/')"
+                  @click="
+                    $router.push('/core/users/' + slotProps.data.id + '/')
+                  "
                 />
               </template>
             </PrimeColumn>
@@ -66,7 +68,9 @@ menuStore.setTitle("Users");
                 <PrimeButton
                   icon="pi pi-eye"
                   class="p-button-text p-button-sm button-edit"
-                  @click="$router.push(slotProps.data.id + '/')"
+                  @click="
+                    $router.push('/core/users/' + slotProps.data.id + '/')
+                  "
                 />
               </template>
             </PrimeColumn>
@@ -97,7 +101,9 @@ menuStore.setTitle("Users");
                 <PrimeButton
                   icon="pi pi-eye"
                   class="p-button-text p-button-sm button-edit"
-                  @click="$router.push(slotProps.data.id + '/')"
+                  @click="
+                    $router.push('/core/users/' + slotProps.data.id + '/')
+                  "
                 />
               </template>
             </PrimeColumn>

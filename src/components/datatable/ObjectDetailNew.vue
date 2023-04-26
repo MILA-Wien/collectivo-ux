@@ -34,34 +34,23 @@ const editActive = ref(false);
 </script>
 
 <template>
-  <PrimePanel :header="name">
-    <template #icons>
-      <button
-        class="p-panel-header-icon p-link mr-2"
-        @click="editActive = true"
-      >
-        <i class="pi pi-pencil"></i>
-      </button>
-    </template>
-    <div v-if="error">
-      <p>{{ error }}</p>
-    </div>
-    <div v-if="data.loaded || data.schemaLoaded">
+  <div v-if="data.loaded || data.schemaLoaded">
+    <PrimePanel :header="name">
       <div v-for="(field, name, i) in data.schema" :key="i">
         <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
           {{ field.label }}:
           <span class="bg-slate-200 px-1 pt-1 rounded">{{
-            data.data[name] ? data.data[name] : "undefined"
+            data.detail[name] ? data.detail[name] : "undefined"
           }}</span>
         </div>
       </div>
-    </div>
-  </PrimePanel>
+    </PrimePanel>
+  </div>
 
   <!-- TODO: Remove delete option -->
   <ObjectDetail
     v-if="editActive"
-    :object="data.data"
+    :object="data.detail"
     :create="false"
     :store="store"
     :name="name"

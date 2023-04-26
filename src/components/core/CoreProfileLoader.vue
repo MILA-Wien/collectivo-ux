@@ -21,18 +21,18 @@ const { profilesProfilesSelf } = storeToRefs(membersStore);
 <template>
   <div v-if="error !== null">
     <p class="pb-2">
-      {{ t("Could not find any membership data.") }}
+      {{ t("Could not find any membership data.") }} {{ error }}
     </p>
     <RouterLink to="/">
       <PrimeButton> {{ t("Back to homepage") }} </PrimeButton>
     </RouterLink>
   </div>
-  <div v-else-if="!profilesProfilesSelf.loaded">
+  <div v-else-if="!profilesProfilesSelf.detailLoaded">
     <PrimeProgressSpinner />
   </div>
   <div v-else id="core-profile">
     <CoreProfile
-      :membership="profilesProfilesSelf.data"
+      :membership="profilesProfilesSelf.detail"
       :membershipSchema="profilesProfilesSelf.schema"
       id="members-profile"
     />
