@@ -31,6 +31,16 @@ export const matchModes: any = {
     // { label: "Not In List", value: "notInList" },
     { label: "Is Empty", value: "isNull" },
   ],
+  textarea: [
+    { label: "Contains", value: FilterMatchMode.CONTAINS },
+    { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
+    { label: "Is Empty", value: "isNull" },
+  ],
+  email: [
+    { label: "Contains", value: FilterMatchMode.CONTAINS },
+    { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
+    { label: "Is Empty", value: "isNull" },
+  ],
   date: [
     { label: "Equals", value: FilterMatchMode.EQUALS },
     { label: "Before", value: FilterMatchMode.LESS_THAN },
@@ -45,7 +55,7 @@ export const matchModes: any = {
   multiselect: [
     // { label: "Contains", value: FilterMatchMode.CONTAINS },
     // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
-    { label: "Includes", value: FilterMatchMode.EQUALS },
+    { label: "Contains", value: FilterMatchMode.EQUALS },
     // { label: "Is Empty", value: "isNull" },
   ],
   select: [
