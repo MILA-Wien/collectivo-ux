@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ObjectListNew from "@/components/datatable/ObjectListNew.vue";
+import ObjectList from "@/components/datatable/ObjectList.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
@@ -44,7 +44,7 @@ const sharesDialog = <any>ref({
 
 <template>
   <div class="h-full tabview-full-height" id="memberships-profile">
-    <ObjectListNew :store="membersStore" :name="'membershipsMembershipsSelf'">
+    <ObjectList :store="membersStore" :name="'membershipsMembershipsSelf'">
       <template #item="slotProps">
         <PrimePanel :header="slotProps.data.type.name" class="mb-5">
           <p v-html="slotProps.data.type.description" class="mb-3"></p>
@@ -71,7 +71,7 @@ const sharesDialog = <any>ref({
           ></PrimeButton>
         </PrimePanel>
       </template>
-    </ObjectListNew>
+    </ObjectList>
 
     <PrimeDialog
       v-model:visible="sharesDialog.is_open"

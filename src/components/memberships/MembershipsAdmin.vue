@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ObjectList from "@/components/datatable/ObjectList.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
@@ -47,12 +48,7 @@ menuStore.setTitle("Memberships");
         />
       </TabPanel>
       <TabPanel :header="t('Statistics')">
-        <ObjectLoader
-          :store="membersStore"
-          :name="'membershipsTypes'"
-          :default-columns="['name']"
-          :display-type="'list'"
-        >
+        <ObjectList :store="membersStore" :name="'membershipsTypes'">
           <template #item="slotProps">
             <PrimePanel :header="slotProps.data.name" class="mb-5">
               <p
@@ -63,7 +59,7 @@ menuStore.setTitle("Memberships");
               </p>
             </PrimePanel>
           </template>
-        </ObjectLoader>
+        </ObjectList>
       </TabPanel>
     </TabView>
   </div>
