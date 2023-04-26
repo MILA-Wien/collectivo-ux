@@ -1,7 +1,26 @@
 import { API } from "@/api/api";
 import { defineStore } from "pinia";
+import type { ToastServiceMethods } from "primevue/toastservice";
 import type { DataDetail, DataList, DataObject } from "./../api/types";
 import { DataDetailTemplate, DataListTemplate } from "./../api/types";
+
+const successToast = (toast: any, message: String) => {
+  toast.add({
+    severity: "success",
+    summary: "Success",
+    detail: message,
+    life: 5000,
+  });
+};
+
+const errorToast = (toast: any, e: any) => {
+  toast.add({
+    severity: "error",
+    summary: "Error",
+    detail: `Update failed. Request-id: "${e?.response?.headers["x-request-id"]}
+        " Response: "${JSON.stringify(e?.response?.data)}"`,
+  });
+};
 
 type membersStore = {
   coreUsers: DataList;
@@ -148,11 +167,22 @@ export const useMembersStore = defineStore({
       }
       return response;
     },
-    async update(objectName: membersObject, payload: Object, id?: Number) {
+    async update(
+      objectName: membersObject,
+      payload: Object,
+      id?: Number,
+      toast?: ToastServiceMethods
+    ) {
       // Update object and save in store
-      const response = await API.patch(objectName, payload, id);
+      var response: any = null;
+      try {
+        response = await API.patch(objectName, payload, id);
+        toast ? successToast(toast, "Object updated successfully") : null;
+      } catch (error) {
+        toast ? errorToast(toast, "Object update failed") : null;
+        return;
+      }
       const object = this[objectName];
-
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {
           return m.id === response.data.id;

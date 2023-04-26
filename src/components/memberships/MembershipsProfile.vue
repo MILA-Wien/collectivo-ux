@@ -1,21 +1,45 @@
 <script setup lang="ts">
-import ObjectDetailNew from "@/components/datatable/ObjectDetailNew.vue";
 import ObjectListNew from "@/components/datatable/ObjectListNew.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
+import PrimeDialog from "primevue/dialog";
+import PrimeInputNumber from "primevue/inputnumber";
 import PrimePanel from "primevue/panel";
-import { ref } from "vue";
+import { useToast } from "primevue/usetoast";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
+const toast = useToast();
 const objectName = "membershipsMembershipsSelf";
 menuStore.setTitle("My memberships");
 
-const signSharesLabel = t("Sign additional shares");
-const signSharesData = ref({});
-const signSharesDialog = ref(false);
+const sharesDialog = <any>ref({
+  is_open: false,
+  additional_shares: <number | null>null,
+  computed_value: computed(() => {
+    return (
+      sharesDialog.value.additional_shares *
+      sharesDialog.value.membership.type.shares_amount_per_share
+    );
+  }),
+  membership: <any>null,
+  label: t("Sign additional shares"),
+  open: function (membership: any) {
+    this.additional_shares = 0;
+    this.membership = membership;
+    this.is_open = true;
+  },
+  update: async function () {
+    const data = {
+      shares_signed: this.membership.shares_signed + this.additional_shares,
+    };
+    await membersStore.update(objectName, data, this.membership.id, toast);
+    this.is_open = false;
+  },
+});
 </script>
 
 <template>
@@ -42,30 +66,49 @@ const signSharesDialog = ref(false);
           <PrimeButton
             v-if="slotProps.data.type.has_shares"
             icon="pi pi-pencil"
-            :label="signSharesLabel"
-            @click="
-              signSharesDialog = true;
-              signSharesData = slotProps.data;
-            "
+            :label="sharesDialog.label"
+            @click="sharesDialog.open(slotProps.data)"
           ></PrimeButton>
         </PrimePanel>
       </template>
     </ObjectListNew>
-    <ObjectDetailNew
-      v-if="signSharesDialog"
-      :store="membersStore"
-      :header="signSharesLabel"
-      :name="'membershipsMembershipsShares'"
-      :object="signSharesData"
-      :actions="[
-        {
-          action: 'Submit',
-          label: t('Submit'),
-          icon: 'pi pi-pencil',
-          confirm: true,
-        },
-      ]"
-      @close="signSharesDialog = false"
-    />
+
+    <PrimeDialog
+      v-model:visible="sharesDialog.is_open"
+      :header="sharesDialog.label"
+      :style="{ minwidth: '40vw' }"
+      :modal="true"
+    >
+      <div class="flex flex-col gap-5">
+        <div>
+          <PrimeInputNumber
+            v-model="sharesDialog.additional_shares"
+            :min="0"
+            class="w-full"
+            inputId="integeronly"
+            showButtons
+          ></PrimeInputNumber>
+        </div>
+
+        <div>
+          <PrimeInputNumber
+            v-model="sharesDialog.computed_value"
+            disabled
+            class="w-full"
+            mode="currency"
+            currency="EUR"
+          ></PrimeInputNumber>
+        </div>
+
+        <div>
+          <PrimeButton
+            :label="t('Save')"
+            icon="pi pi-check"
+            class="p-button-success flex-none"
+            @click="sharesDialog.update()"
+          />
+        </div>
+      </div>
+    </PrimeDialog>
   </div>
 </template>
