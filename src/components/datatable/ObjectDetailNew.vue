@@ -36,6 +36,14 @@ const editActive = ref(false);
 <template>
   <div v-if="data.loaded || data.schemaLoaded">
     <PrimePanel :header="name">
+      <template #icons>
+        <button
+          class="p-panel-header-icon p-link mr-2"
+          @click="editActive = true"
+        >
+          <span class="pi pi-pencil"></span>
+        </button>
+      </template>
       <div v-for="(field, name, i) in data.schema" :key="i">
         <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
           {{ field.label }}:
