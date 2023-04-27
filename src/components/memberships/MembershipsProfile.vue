@@ -18,6 +18,7 @@ menuStore.setTitle("My memberships");
 
 const sharesDialog = <any>ref({
   is_open: false,
+  is_submitting: false,
   additional_shares: <number | null>null,
   computed_value: computed(() => {
     return (
@@ -33,10 +34,12 @@ const sharesDialog = <any>ref({
     this.is_open = true;
   },
   update: async function () {
+    this.is_submitting = true;
     const data = {
       shares_signed: this.membership.shares_signed + this.additional_shares,
     };
     await membersStore.update(objectName, data, this.membership.id, toast);
+    this.is_submitting = false;
     this.is_open = false;
   },
 });
@@ -76,10 +79,22 @@ const sharesDialog = <any>ref({
     <PrimeDialog
       v-model:visible="sharesDialog.is_open"
       :header="sharesDialog.label"
-      :style="{ minwidth: '40vw' }"
+      :style="{ 'max-width': '40vw' }"
       :modal="true"
     >
       <div class="flex flex-col gap-5">
+        <div>
+          {{
+            t(
+              "Indicate the amount of additional shares that you want to sign. Each share is worth "
+            ) +
+            sharesDialog.membership.type.shares_amount_per_share +
+            " " +
+            sharesDialog.membership.type.currency +
+            "."
+          }}
+        </div>
+
         <div>
           <PrimeInputNumber
             v-model="sharesDialog.additional_shares"
@@ -105,6 +120,8 @@ const sharesDialog = <any>ref({
             :label="t('Save')"
             icon="pi pi-check"
             class="p-button-success flex-none"
+            :loading="sharesDialog.is_submitting"
+            :disabled="sharesDialog.additional_shares <= 0"
             @click="sharesDialog.update()"
           />
         </div>

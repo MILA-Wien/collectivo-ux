@@ -17,8 +17,8 @@ const errorToast = (toast: any, e: any) => {
   toast.add({
     severity: "error",
     summary: "Error",
-    detail: `Update failed. Request-id: "${e?.response?.headers["x-request-id"]}
-        " Response: "${JSON.stringify(e?.response?.data)}"`,
+    detail: `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
+     (Request ID: ${e?.response?.headers["x-request-id"]})`,
   });
 };
 
@@ -177,9 +177,10 @@ export const useMembersStore = defineStore({
       var response: any = null;
       try {
         response = await API.patch(objectName, payload, id);
-        toast ? successToast(toast, "Object updated successfully") : null;
+        toast ? successToast(toast, "Object has been updated.") : null;
       } catch (error) {
-        toast ? errorToast(toast, "Object update failed") : null;
+        console.log(error);
+        toast ? errorToast(toast, error) : null;
         return;
       }
       const object = this[objectName];
