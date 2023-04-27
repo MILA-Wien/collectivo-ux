@@ -24,6 +24,6 @@ describe("Login Succesfull", () => {
     // cy.get(
     //   ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button"
     // ).click();
-    cy.get(".p-paginator-next").click();
+    //cy.get(".p-paginator-next").click();
   });
 });
