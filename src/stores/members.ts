@@ -5,6 +5,25 @@ import { DataTemplate } from "./../api/types";
 
 type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
+import type { ToastServiceMethods } from "primevue/toastservice";
+
+const successToast = (toast: any, message: String) => {
+  toast.add({
+    severity: "success",
+    summary: "Success",
+    detail: message,
+    life: 5000,
+  });
+};
+
+const errorToast = (toast: any, e: any) => {
+  toast.add({
+    severity: "error",
+    summary: "Error",
+    detail: `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
+     (Request ID: ${e?.response?.headers["x-request-id"]})`,
+  });
+};
 
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
@@ -46,6 +65,7 @@ export const useMembersStore = defineStore({
 
       membershipsMemberships: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsMembershipsShares: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsTypes: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsStatuses: JSON.parse(JSON.stringify(DataTemplate)),
 
@@ -119,9 +139,22 @@ export const useMembersStore = defineStore({
       object.detail = response.data;
       return response;
     },
-    async update(objectName: membersObject, payload: Object, id?: Number) {
+    async update(
+      objectName: membersObject,
+      payload: Object,
+      id?: Number,
+      toast?: ToastServiceMethods
+    ) {
       // Update object and save in store
-      const response = await API.patch(objectName, payload, id);
+      let response: any = null;
+      try {
+        response = await API.patch(objectName, payload, id);
+        toast ? successToast(toast, "Object has been updated.") : null;
+      } catch (error) {
+        console.log(error);
+        toast ? errorToast(toast, error) : null;
+        return;
+      }
       const object = this[objectName];
 
       const index = object.list.findIndex((m: DataObject) => {

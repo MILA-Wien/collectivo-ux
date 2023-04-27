@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import ObjectList from "@/components/datatable/ObjectList.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import PrimePanel from "primevue/panel";
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Extensions");
@@ -12,11 +11,7 @@ menuStore.setTitle("Extensions");
 
 <template>
   <div class="h-full tabview-full-height" id="tags-admin">
-    <ObjectLoader
-      :store="membersStore"
-      :name="'extensionsExtensions'"
-      :display-type="'list'"
-    >
+    <ObjectList :store="membersStore" :name="'extensionsExtensions'">
       <template #item="slotProps">
         <PrimePanel :header="slotProps.data.label" class="mb-5">
           <p class="pb-3">{{ slotProps.data.description }}</p>
@@ -27,6 +22,6 @@ menuStore.setTitle("Extensions");
           </p>
         </PrimePanel>
       </template>
-    </ObjectLoader>
+    </ObjectList>
   </div>
 </template>

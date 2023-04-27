@@ -97,6 +97,7 @@ export const endpoints = {
 
   membershipsMemberships: "/memberships/memberships/",
   membershipsMembershipsSelf: "/memberships/memberships/self/",
+  membershipsMembershipsShares: "/memberships/memberships/self/sign-shares/",
   membershipsTypes: "/memberships/types/",
   membershipsStatuses: "/memberships/statuses/",
 
