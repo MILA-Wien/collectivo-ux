@@ -45,8 +45,8 @@ export const matchModes: any = {
   multiselect: [
     // { label: "Contains", value: FilterMatchMode.CONTAINS },
     // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
-    { label: "Equals", value: FilterMatchMode.EQUALS },
-    { label: "Is Empty", value: "isNull" },
+    { label: "Includes", value: FilterMatchMode.EQUALS },
+    // { label: "Is Empty", value: "isNull" },
   ],
   select: [
     { label: "Equals", value: FilterMatchMode.EQUALS },

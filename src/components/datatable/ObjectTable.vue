@@ -8,6 +8,7 @@ import PrimeDropdown from "primevue/dropdown";
 import PrimeInputSwitch from "primevue/inputswitch";
 import PrimeInputText from "primevue/inputtext";
 import PrimeMultiSelect from "primevue/multiselect";
+import PrimeOverlayPanel from "primevue/overlaypanel";
 import type { PropType } from "vue";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -99,6 +100,17 @@ watch(filters, (val) => {
   emit("update:filters", val);
 });
 
+// Objects view overlay panel ---------------------------------------------- //
+const op = ref();
+const op_objects = ref([]);
+const op_choices = ref({});
+const op_toggle = (col: any, data: any, event: any) => {
+  op_choices.value = col.choices;
+  op_objects.value = data[col.field];
+  op.value.toggle(event);
+};
+// col.choices[slotProps.value]
+
 // Dialogues --------------------------------------------------------------- //
 function editObjectFn(event: any) {
   emit("update:editObject", event);
@@ -185,6 +197,13 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 </script>
 
 <template>
+  <PrimeOverlayPanel ref="op">
+    <div class="c-datatable-op">
+      <div v-for="obj in op_objects" :key="obj" class="mb-2 tag">
+        {{ op_choices[obj] }}
+      </div>
+    </div>
+  </PrimeOverlayPanel>
   <div class="datatable">
     <PrimeDataTable
       :value="objects"
@@ -265,7 +284,13 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
-          {{ t(formatMultiSelect(data[col.field])) }}
+
+          <PrimeButton
+            type="button"
+            :label="t(formatMultiSelect(data[col.field]))"
+            class="p-button-text p-button-sm button-expand"
+            @click="op_toggle(col, data, $event)"
+          />
         </template>
         <template #body="{ data }" v-else>
           <!-- TODO: Inspect function to show objects -->
@@ -374,6 +399,15 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 .button-edit {
   padding: 6px !important;
   width: 30px !important;
+}
+
+.button-expand {
+  padding: 6px !important;
+}
+
+:global(.c-datatable-op) {
+  max-height: 20rem;
+  overflow: scroll;
 }
 
 // Hide filter-add-rule button until feature is available
