@@ -57,7 +57,7 @@ describe("register user_not_member", () => {
   it("register as natural person", () => {
     cy.login("test_user_not_member@example.com");
     cy.get("#collectivo-dashboard").should("exist");
-    cy.get(".p-card-body button")
+    cy.get("#mila-membership-tile button")
       .then(($btn) => {
         const txt = $btn.text();
         expect(txt).to.eq("Weiter");
@@ -72,8 +72,9 @@ describe("register user_not_member", () => {
     cy.get("#last-name-input > .textfield input").clear().type("CABBAG3");
     cy.get('[type="radio"]').check("male");
     cy.get("#birthdate-input > .date input").click({ force: true });
+    // document.querySelector("#pv_id_1_panel > div > div > div.p-datepicker-calendar-container > table > tbody > tr:nth-child(5) > td.p-datepicker-today > span")
     cy.get(
-      "#pv_id_1_panel > div > div > div.p-datepicker-calendar-container > table > tbody > tr:nth-child(4) > td.p-datepicker-today > span"
+      "#pv_id_1_panel > div > div > div.p-datepicker-calendar-container > table > tbody > tr > td.p-datepicker-today > span"
     ).click({ force: true });
     cy.get("#occupation-input > .textfield input")
       .click({ force: true })
@@ -132,7 +133,7 @@ describe("register user_not_member", () => {
   it("register as legal person", () => {
     cy.login("test_user_not_member@example.com");
     cy.get("#collectivo-dashboard").should("exist");
-    cy.get(".p-card-body button")
+    cy.get("#mila-membership-tile button")
       .then(($btn) => {
         const txt = $btn.text();
         expect(txt).to.eq("Weiter");
