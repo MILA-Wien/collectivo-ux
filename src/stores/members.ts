@@ -174,7 +174,7 @@ export const useMembersStore = defineStore({
       toast?: ToastServiceMethods
     ) {
       // Update object and save in store
-      var response: any = null;
+      let response: any = null;
       try {
         response = await API.patch(objectName, payload, id);
         toast ? successToast(toast, "Object has been updated.") : null;

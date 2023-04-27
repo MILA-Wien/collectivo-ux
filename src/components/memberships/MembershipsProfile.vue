@@ -16,17 +16,17 @@ const toast = useToast();
 const objectName = "membershipsMembershipsSelf";
 menuStore.setTitle("My memberships");
 
-const sharesDialog = <any>ref({
+const sharesDialog: any = ref({
   is_open: false,
   is_submitting: false,
-  additional_shares: <number | null>null,
+  additional_shares: null as number | null,
   computed_value: computed(() => {
     return (
       sharesDialog.value.additional_shares *
       sharesDialog.value.membership.type.shares_amount_per_share
     );
   }),
-  membership: <any>null,
+  membership: null as any,
   label: t("Sign additional shares"),
   open: function (membership: any) {
     this.additional_shares = 0;

@@ -2,7 +2,7 @@
 import PrimeProgressSpinner from "primevue/progressspinner";
 import type { PropType } from "vue";
 
-const props = defineProps({
+defineProps({
   error: {
     type: Object as PropType<Object | null>,
   },
