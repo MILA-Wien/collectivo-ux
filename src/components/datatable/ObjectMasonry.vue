@@ -18,7 +18,7 @@ defineProps({
     col-spacing="10px"
     :break-at="{ 1536: 2, 768: 1 }"
   >
-    <div v-for="item in items" class="waterfall-item mb-5">
+    <div v-for="(item, i) in items" :key="i" class="waterfall-item mb-5">
       <slot name="item" v-bind="{ item }"></slot>
     </div>
   </VueFlexWaterfall>

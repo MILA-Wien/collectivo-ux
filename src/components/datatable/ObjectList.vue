@@ -41,7 +41,7 @@ if (!data.value.loaded) {
 </template>
 
 <style scoped>
-.p-dataview::v-deep .p-dataview-content {
+:deep(.p-dataview) .p-dataview-content {
   background: transparent;
 }
 </style>

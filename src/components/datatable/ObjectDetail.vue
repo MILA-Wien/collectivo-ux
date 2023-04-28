@@ -50,7 +50,7 @@ const editActive = ref(false);
 
           <span class="bg-slate-200 px-1 pt-1 rounded">
             <span v-if="field.input_type == 'multiselect'">
-              <span v-for="value in data.detail[name]">
+              <span v-for="(value, i) in data.detail[name]" :key="i">
                 {{ field.choices[value] }},
               </span>
             </span>
