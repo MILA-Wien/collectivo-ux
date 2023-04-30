@@ -36,9 +36,9 @@ if (!valueFromStore) {
 }
 
 function toggleValue(v: number) {
-  if (values.value.includes(v)) {
-    values.value.splice(values.value.indexOf(v), 1);
-  } else values.value.push(v);
+  if (values.value?.includes(v)) {
+    values.value?.splice(values.value?.indexOf(v), 1);
+  } else values.value?.push(v);
   emit("change", values);
 }
 </script>

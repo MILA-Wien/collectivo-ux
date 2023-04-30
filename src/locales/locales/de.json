@@ -238,5 +238,39 @@
 
   "Click here to see your direct loans at MILA.": "Hier kannst du deine Direktkredite bei MILA einsehen.",
   "MILA Direct Loans System": "MILA Direktkredite",
-  "Direct loans": "Direktkredite"
+  "Direct loans": "Direktkredite",
+
+  "Monday": "Montag",
+  "Tuesday": "Dienstag",
+  "Wednesday": "Mittwoch",
+  "Thursday": "Donnerstag",
+  "Friday": "Freitag",
+  "Saturday": "Samstag",
+  "Sunday": "Sonntag",
+
+  "January": "Januar",
+  "February": "Februar",
+  "March": "März",
+  "April": "April",
+  "May": "Mai",
+  "June": "Juni",
+  "July": "Juli",
+  "August": "August",
+  "September": "September",
+  "October": "Oktober",
+  "November": "November",
+  "December": "Dezember",
+
+  "Jan": "Jan",
+  "Feb": "Feb",
+  "Mar": "Mär",
+  "Apr": "Apr",
+  "May": "Mai",
+  "Jun": "Jun",
+  "Jul": "Jul",
+  "Aug": "Aug",
+  "Sep": "Sep",
+  "Oct": "Okt",
+  "Nov": "Nov",
+  "Dec": "Dez"
 }
