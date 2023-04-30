@@ -68,8 +68,10 @@ export const useMembersStore = defineStore({
       membershipsMembershipsShares: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsTypes: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsStatuses: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
 
       tagsTags: JSON.parse(JSON.stringify(DataTemplate)),
+      tagsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
 
       emailsCampaigns: JSON.parse(JSON.stringify(DataTemplate)),
       emailsTemplates: JSON.parse(JSON.stringify(DataTemplate)),

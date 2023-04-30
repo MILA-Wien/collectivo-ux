@@ -669,11 +669,6 @@
   dependencies:
     vue-demi "^0.13.11"
 
-"@yeger/vue-masonry-wall@^3.4.4":
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/@yeger/vue-masonry-wall/-/vue-masonry-wall-3.4.4.tgz#c81a4f13b39cbf2db4df16f54783a5b5125d97cc"
-  integrity sha512-LSQmLVsntTNTdc2N79dpkuUySYGZUnj/hvFTXPEuNG3eLwy1EKgd2otllVmX5eQeXEp3NVV0HKaRf8y+TsglIw==
-
 abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
@@ -1998,11 +1993,6 @@ flatted@^3.1.0:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
-
-flexmasonry@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/flexmasonry/-/flexmasonry-0.2.3.tgz#ff7174e88b5e432fd9d587f36d4788689d645ff9"
-  integrity sha512-1Id/Ssa7+1sZvll2iyqPxamRmnp15omzWpwWVsK/wuC+ATcGHtxHlgI2MJGDF110jG1QWZN1vMHZOngEuzi/HQ==
 
 follow-redirects@^1.14.7, follow-redirects@^1.15.0:
   version "1.15.2"

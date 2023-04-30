@@ -100,8 +100,10 @@ export const endpoints = {
   membershipsMembershipsShares: "/memberships/memberships/self/sign-shares/",
   membershipsTypes: "/memberships/types/",
   membershipsStatuses: "/memberships/statuses/",
+  membershipsProfiles: "/memberships/profiles/",
 
   tagsTags: "/tags/tags/",
+  tagsProfiles: "/tags/profiles/",
 
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",

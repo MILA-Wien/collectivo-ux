@@ -16,6 +16,8 @@ const profile_endpoints: Array<keyof typeof endpoints> = [
   "profilesProfiles",
   "paymentsProfiles",
   "milaProfiles",
+  "tagsProfiles",
+  "membershipsProfiles",
 ];
 </script>
 
