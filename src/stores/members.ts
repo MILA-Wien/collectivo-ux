@@ -222,7 +222,7 @@ export const useMembersStore = defineStore({
       this[objectName].listLoaded = true;
       this[objectName].schemaLoaded = true;
       //@ts-ignore totalRecords exists on DataList
-      this[objectName].totalRecords = parseInt(objects.data.count);
+      this[objectName].listTotalRecords = parseInt(objects.data.results.count);
     },
   },
 });
