@@ -115,6 +115,13 @@ export const endpoints = {
   milaProfiles: "/mila/profiles/",
   milaSkills: "/mila/skills/",
   milaGroups: "/mila/groups/",
+
+  shiftsShifts: "/shifts/shifts/",
+  shiftsAssignments: "shifts/assignments/",
+  shiftsShiftsUser: "/shifts/user/",
+  shiftsShiftsUserSelf: "/shifts/user/self/",
+  shiftsShiftsSelf: "/shifts/shifts/self/",
+  shiftsOpenShifts: "/shifts/shifts/open/",
 };
 
 // Generic API functions
@@ -171,5 +178,11 @@ export const API = {
       return await api.delete(endpoints[endpoint]);
     }
     return await api.delete(`${endpoints[endpoint]}${id}/`);
+  },
+  getWithParams: async function (
+    endpoint: keyof typeof endpoints,
+    params: Object
+  ) {
+    return await api.get(endpoints[endpoint], { params });
   },
 };

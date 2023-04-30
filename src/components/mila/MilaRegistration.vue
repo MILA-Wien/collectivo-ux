@@ -65,7 +65,7 @@ const userStore = useUserStore();
 const has_mila_membership = ref<boolean | null>(null);
 membersStore
   .getMilaMembershipNumber()
-  .catch((e: any) => {})
+  .catch(() => {})
   .then((res) => {
     has_mila_membership.value = res ? res : false;
     if (has_mila_membership.value == true) {
