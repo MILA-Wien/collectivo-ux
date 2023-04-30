@@ -119,7 +119,7 @@ function editObjectFn(event: any) {
 }
 const totalRecords = ref(0);
 watch(
-  () => props.store[props.name].totalRecords,
+  () => props.store[props.name].listTotalRecords,
   (val) => {
     totalRecords.value = val;
   },
