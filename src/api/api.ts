@@ -79,6 +79,7 @@ export const dashboardTiles = async () => {
 export const endpoints = {
   coreAbout: "/core/about/",
   coreUsers: "/core/users/",
+  coreUsersExtended: "/core/users-extended/",
   coreGroups: "/core/groups/",
 
   extensionsExtensions: "/extensions/extensions/",

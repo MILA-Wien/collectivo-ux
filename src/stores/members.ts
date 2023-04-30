@@ -53,6 +53,7 @@ export const useMembersStore = defineStore({
   state: () =>
     ({
       coreUsers: JSON.parse(JSON.stringify(DataTemplate)),
+      coreUsersExtended: JSON.parse(JSON.stringify(DataTemplate)),
       coreGroups: JSON.parse(JSON.stringify(DataTemplate)),
 
       extensionsExtensions: JSON.parse(JSON.stringify(DataTemplate)),
