@@ -13,6 +13,7 @@ import "primevue/resources/primevue.min.css"; //core css
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 import ToastService from "primevue/toastservice";
 import PrimeTooltip from "primevue/tooltip";
+import shifts from "./extensions/shifts/shifts";
 
 // init vue app
 const app = createApp(App);
@@ -22,6 +23,9 @@ app.use(createPinia());
 const keycloakInstance = initKeycloak();
 keycloakInstance
   .then(() => {
+    // init view router
+    app.use(router);
+
     app.use(i18n);
     loadLocaleMessages(i18n, "en");
     loadLocaleMessages(i18n, "de");
@@ -33,8 +37,8 @@ keycloakInstance
     app.use(ConfirmationService);
     app.directive("tooltip", PrimeTooltip);
 
-    // init view router
-    app.use(router);
+    //init the extensions
+    shifts();
 
     // Render app
     app.mount("#app");

@@ -3,7 +3,6 @@ import ObjectList from "@/components/datatable/ObjectList.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import PrimePanel from "primevue/panel";
-
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Extensions");

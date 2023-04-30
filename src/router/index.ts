@@ -104,14 +104,14 @@ const router = createRouter({
       },
       component: () => import("../components/extensions/ExtensionsAdmin.vue"),
     },
-    {
-      path: "/shifts/admin",
-      name: "shiftsAdmin",
-      meta: {
-        isMembersAdmin: true,
-      },
-      component: () => import("../components/NotImplemented.vue"),
-    },
+    // {
+    //   path: "/:extension/:id",
+    //   name: "notImplemented",
+    //   meta: {
+    //     isMembersAdmin: false,
+    //   },
+    //   component: () => import("../components/NotImplemented.vue"),
+    // },
   ],
 });
 
