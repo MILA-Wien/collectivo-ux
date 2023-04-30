@@ -46,6 +46,8 @@ const props = defineProps({
     required: true,
   },
 });
+console.log(props.schema);
+console.log(props.objects);
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});

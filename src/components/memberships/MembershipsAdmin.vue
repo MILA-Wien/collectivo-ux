@@ -4,14 +4,27 @@ import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
 import PrimePanel from "primevue/panel";
+import PrimeButton from "primevue/button";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
-
+import { API, endpoints } from "@/api/api";
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Memberships");
+
+async function generate_invoices() {
+  console.log("generate_invoices");
+  const response = await API.post(
+    "membershipsCreateInvoices",
+    undefined,
+    toast
+  );
+  console.log(response);
+}
 </script>
 
 <template>
@@ -60,6 +73,11 @@ menuStore.setTitle("Memberships");
             </PrimePanel>
           </template>
         </ObjectList>
+      </TabPanel>
+      <TabPanel :header="t('Actions')">
+        <PrimeButton @click="generate_invoices()"
+          >Generate invoices</PrimeButton
+        >
       </TabPanel>
     </TabView>
   </div>

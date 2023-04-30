@@ -80,7 +80,7 @@ export const useMembersStore = defineStore({
 
       paymentsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
       paymentsProfilesSelf: JSON.parse(JSON.stringify(DataTemplate)),
-      paymentsPayments: JSON.parse(JSON.stringify(DataTemplate)),
+      paymentsInvoices: JSON.parse(JSON.stringify(DataTemplate)),
       paymentsSubscriptions: JSON.parse(JSON.stringify(DataTemplate)),
 
       milaRegister: JSON.parse(JSON.stringify(DataTemplate)),

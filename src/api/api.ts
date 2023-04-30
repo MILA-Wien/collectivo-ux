@@ -3,6 +3,8 @@ import i18n from "@/locales/i18n";
 import { useUserStore } from "@/stores/user";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
+import { successToast, errorToast } from "@/helpers/toasts";
+import type { ToastServiceMethods } from "primevue/toastservice";
 const BASE_URL = baseURL + "/api/";
 const { t } = i18n.global;
 const api = axios.create({
@@ -102,6 +104,7 @@ export const endpoints = {
   membershipsTypes: "/memberships/types/",
   membershipsStatuses: "/memberships/statuses/",
   membershipsProfiles: "/memberships/profiles/",
+  membershipsCreateInvoices: "/memberships/memberships/create_invoices/",
 
   tagsTags: "/tags/tags/",
   tagsProfiles: "/tags/profiles/",
@@ -112,7 +115,7 @@ export const endpoints = {
 
   paymentsProfiles: "/payments/profiles/",
   paymentsProfilesSelf: "/payments/profiles/self/",
-  paymentsPayments: "/payments/payments/",
+  paymentsInvoices: "/payments/invoices/",
   paymentsSubscriptions: "/payments/subscriptions/",
 
   milaRegister: "/mila/register/",
@@ -164,8 +167,19 @@ export const API = {
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
   },
-  post: async function (endpoint: keyof typeof endpoints, payload: Object) {
-    return await api.post(endpoints[endpoint], payload);
+  post: async function (
+    endpoint: keyof typeof endpoints,
+    payload?: Object,
+    toast?: ToastServiceMethods
+  ) {
+    try {
+      const response = await api.post(endpoints[endpoint], payload);
+      toast ? successToast(toast, "") : null;
+      return response;
+    } catch (error) {
+      toast ? errorToast(toast, error) : null;
+      throw error;
+    }
   },
   patch: async function (
     endpoint: keyof typeof endpoints,

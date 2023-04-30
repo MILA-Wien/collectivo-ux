@@ -14,17 +14,11 @@ menuStore.setTitle("Payments");
 <template>
   <div class="h-full tabview-full-height">
     <TabView lazy>
-      <TabPanel :header="t('Payments')">
+      <TabPanel :header="t('Invoices')">
         <ObjectLoader
           :store="membersStore"
-          :name="'paymentsPayments'"
-          :default-columns="[
-            'name',
-            'status',
-            'payer',
-            'amount',
-            'description',
-          ]"
+          :name="'paymentsInvoices'"
+          :default-columns="['status', 'amount', 'payment_from', 'items']"
         />
       </TabPanel>
       <TabPanel :header="t('Subscriptions')">
