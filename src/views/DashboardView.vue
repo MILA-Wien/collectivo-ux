@@ -24,7 +24,7 @@ function getComponentForTile(tile: DashboardTile) {
   } else {
     tileComponents[tile.id] = LoadingItem;
     const component = defineAsyncComponent(
-      () => import(`../extensions/${tile.extension_name}_${tile.component}.ts`)
+      () => import(`../extensions/${tile.extension_name}/${tile.component}.ts`)
     );
     tileComponents[tile.id] = component;
     return component;
@@ -34,7 +34,7 @@ function getComponentForTile(tile: DashboardTile) {
 watch(
   tiles,
   (tiles) => {
-    if (tiles?.results)
+    if (tiles?.results && tiles.results.length >= 0)
       tiles?.results.forEach((tile) => {
         if (tile.source === "component") {
           getComponentForTile(tile);
