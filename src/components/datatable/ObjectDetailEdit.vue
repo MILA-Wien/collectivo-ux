@@ -16,6 +16,7 @@ import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { successToast, errorToast } from "@/helpers/toasts";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -40,28 +41,15 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  allow_delete: {
+    type: Boolean,
+    default: true,
+  },
   schema: {
     type: Object,
     required: true,
   },
 });
-
-const successToast = (message: String) => {
-  toast.add({
-    severity: "success",
-    summary: "Success",
-    detail: message,
-    life: 5000,
-  });
-};
-const errorToast = (e: any) => {
-  toast.add({
-    severity: "error",
-    summary: "Error",
-    detail: `Update failed. Request-id: "${e?.response?.headers["x-request-id"]}
-      " Response: "${JSON.stringify(e?.response?.data)}"`,
-  });
-};
 
 // Create temporary copy of the object
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
@@ -86,11 +74,10 @@ async function createObject() {
   formatDates();
   try {
     await props.store.create(props.name, object_temp.value);
-    successToast("Object has been created.");
+    successToast(toast, "Object has been created.");
     emit("close");
   } catch (error) {
-    console.log(error);
-    errorToast(error);
+    errorToast(toast, error);
   }
   isSaving.value = false;
 }
@@ -103,11 +90,10 @@ async function updateObject() {
       object_temp.value,
       object_temp.value["id"]
     );
-    successToast("Object has been updated.");
+    successToast(toast, "Object has been updated.");
     emit("close");
   } catch (error) {
-    console.log(error);
-    errorToast(error);
+    errorToast(toast, error);
   }
   isSaving.value = false;
 }
@@ -115,10 +101,9 @@ async function deleteObject() {
   isSaving.value = true;
   try {
     await props.store.delete(props.name, object_temp.value["id"]);
-    successToast("Object has been deleted.");
+    successToast(toast, "Object has been deleted.");
   } catch (error) {
-    console.log(error);
-    errorToast(error);
+    errorToast(toast, error);
   }
   emit("close");
   isSaving.value = false;
@@ -317,7 +302,7 @@ function isFiltered(name: string, field: any) {
             />
             <PrimeButton
               :label="t('Delete')"
-              v-if="!create"
+              v-if="!create && allow_delete"
               icon="pi pi-trash"
               @click="confirmDelete()"
               style="margin-right: 0px"

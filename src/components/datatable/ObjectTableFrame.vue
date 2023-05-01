@@ -46,8 +46,6 @@ const props = defineProps({
     required: true,
   },
 });
-console.log(props.schema);
-console.log(props.objects);
 
 // Filter functions (match modes) ------------------------------------------ //
 const filters = ref<{ [key: string]: any }>({});
@@ -64,6 +62,11 @@ const selectedColumns = ref<any[]>([]);
 
 var column_index = 0;
 for (const [key, value] of Object.entries(props.schema)) {
+  // Skip ID column
+  if (key == "id") {
+    continue;
+  }
+
   columns.push({
     field: key,
     header: t(value.label),

@@ -63,7 +63,6 @@ const editActive = ref(false);
     </PrimePanel>
   </div>
 
-  <!-- TODO: Remove delete option -->
   <ObjectDetailEdit
     v-if="editActive"
     :object="data.detail"
@@ -71,6 +70,7 @@ const editActive = ref(false);
     :store="store"
     :name="name"
     :schema="data.schema"
+    :allow_delete="false"
     @close="editActive = false"
   />
 </template>

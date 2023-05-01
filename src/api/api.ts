@@ -122,6 +122,9 @@ export const endpoints = {
   milaProfiles: "/mila/profiles/",
   milaSkills: "/mila/skills/",
   milaGroups: "/mila/groups/",
+  lotzappAddressesSync: "/lotzapp/addresses/sync/",
+  lotzappInvoicesSync: "/lotzapp/invoices/sync/",
+  lotzappSettings: "/lotzapp/settings/",
 
   shiftsShifts: "/shifts/shifts/",
   shiftsAssignments: "shifts/assignments/",
@@ -167,19 +170,8 @@ export const API = {
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
   },
-  post: async function (
-    endpoint: keyof typeof endpoints,
-    payload?: Object,
-    toast?: ToastServiceMethods
-  ) {
-    try {
-      const response = await api.post(endpoints[endpoint], payload);
-      toast ? successToast(toast, "") : null;
-      return response;
-    } catch (error) {
-      toast ? errorToast(toast, error) : null;
-      throw error;
-    }
+  post: async function (endpoint: keyof typeof endpoints, payload?: Object) {
+    return await api.post(endpoints[endpoint], payload);
   },
   patch: async function (
     endpoint: keyof typeof endpoints,

@@ -7,24 +7,6 @@ type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
 import type { ToastServiceMethods } from "primevue/toastservice";
 
-const successToast = (toast: any, message: String) => {
-  toast.add({
-    severity: "success",
-    summary: "Success",
-    detail: message,
-    life: 5000,
-  });
-};
-
-const errorToast = (toast: any, e: any) => {
-  toast.add({
-    severity: "error",
-    summary: "Error",
-    detail: `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
-     (Request ID: ${e?.response?.headers["x-request-id"]})`,
-  });
-};
-
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
   for (const value of Object.values(schema) as any) {
@@ -46,7 +28,10 @@ function extendSchema(schema: any) {
   return schema;
 }
 
-const DirectDetailEndpoints = new Set(["profilesProfilesSelf"]);
+const DirectDetailEndpoints = new Set([
+  "profilesProfilesSelf",
+  "lotzappSettings",
+]);
 
 export const useMembersStore = defineStore({
   id: "members",
@@ -87,6 +72,8 @@ export const useMembersStore = defineStore({
       milaProfiles: JSON.parse(JSON.stringify(DataTemplate)),
       milaSkills: JSON.parse(JSON.stringify(DataTemplate)),
       milaGroups: JSON.parse(JSON.stringify(DataTemplate)),
+
+      lotzappSettings: JSON.parse(JSON.stringify(DataTemplate)),
     } as membersStore),
 
   actions: {
@@ -149,15 +136,12 @@ export const useMembersStore = defineStore({
       toast?: ToastServiceMethods
     ) {
       // Update object and save in store
-      let response: any = null;
-      try {
-        response = await API.patch(objectName, payload, id);
-        toast ? successToast(toast, "Object has been updated.") : null;
-      } catch (error) {
-        console.log(error);
-        toast ? errorToast(toast, error) : null;
-        return;
+      if (DirectDetailEndpoints.has(objectName)) {
+        id = undefined;
       }
+      let response: any = null;
+      response = await API.patch(objectName, payload, id);
+
       const object = this[objectName];
 
       const index = object.list.findIndex((m: DataObject) => {

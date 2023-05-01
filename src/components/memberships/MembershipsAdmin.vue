@@ -8,7 +8,7 @@ import PrimeButton from "primevue/button";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
-import { API, endpoints } from "@/api/api";
+import { API } from "@/api/api";
 import { useToast } from "primevue/usetoast";
 const toast = useToast();
 const { t } = useI18n();
