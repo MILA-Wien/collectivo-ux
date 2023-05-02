@@ -10,6 +10,7 @@ import { useToast } from "primevue/usetoast";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import { API } from "@/api/api";
 import { successToast, errorToast } from "@/helpers/toasts";
+import { ref } from "vue";
 
 const { t } = useI18n();
 const membersStore = useMembersStore();
@@ -17,22 +18,28 @@ const menuStore = useMenuStore();
 const toast = useToast();
 menuStore.setTitle("Payments");
 
+const syncing_lotzapp_addresses = ref(false);
 async function sync_lotzapp_addresses() {
+  syncing_lotzapp_addresses.value = true;
   try {
     await API.post("lotzappAddressesSync", undefined);
     successToast(toast, t("Addresses synchronized"));
   } catch (e) {
     errorToast(toast, e);
   }
+  syncing_lotzapp_addresses.value = false;
 }
 
+const syncing_lotzapp_invoices = ref(false);
 async function sync_lotzapp_invoices() {
+  syncing_lotzapp_invoices.value = true;
   try {
     await API.post("lotzappInvoicesSync", undefined);
     successToast(toast, t("Invoices synchronized"));
   } catch (e) {
     errorToast(toast, e);
   }
+  syncing_lotzapp_invoices.value = false;
 }
 </script>
 
@@ -43,24 +50,44 @@ async function sync_lotzapp_invoices() {
         <ObjectLoader
           :store="membersStore"
           :name="'paymentsInvoices'"
-          :default-columns="['status', 'amount', 'payment_from', 'items']"
+          :default-columns="[
+            'status',
+            'date',
+            'amount',
+            'payment_from',
+            'items',
+          ]"
         />
       </TabPanel>
       <TabPanel :header="t('Subscriptions')">
         <ObjectLoader
           :store="membersStore"
           :name="'paymentsSubscriptions'"
-          :default-columns="['name', 'payer', 'amount', 'description']"
+          :default-columns="[
+            'status',
+            'amount',
+            'payment_from',
+            'date_started',
+            'items',
+          ]"
         />
       </TabPanel>
       <!-- TODO: This code is custom for MILA and should be moved -->
       <TabPanel :header="t('Lotzapp')">
-        <PrimeButton @click="sync_lotzapp_addresses()" style="margin: 5px"
-          >Synchronize addresses
-        </PrimeButton>
-        <PrimeButton @click="sync_lotzapp_invoices()" style="margin: 5px"
-          >Synchronize invoices
-        </PrimeButton>
+        <PrimeButton
+          @click="sync_lotzapp_addresses()"
+          style="margin: 5px"
+          icon="pi pi-refresh"
+          :loading="syncing_lotzapp_addresses"
+          :label="'Synchronize addresses'"
+        />
+        <PrimeButton
+          @click="sync_lotzapp_invoices()"
+          style="margin: 5px"
+          icon="pi pi-refresh"
+          :loading="syncing_lotzapp_invoices"
+          :label="'Synchronize invoices'"
+        />
         <ObjectDetail :store="membersStore" :name="'lotzappSettings'">
         </ObjectDetail>
       </TabPanel>

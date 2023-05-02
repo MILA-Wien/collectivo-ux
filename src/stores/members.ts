@@ -32,6 +32,7 @@ const DirectDetailEndpoints = new Set([
   "lotzappSettings",
 ]);
 
+// TODO: Typing so that all properties are DataSchema
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
@@ -158,7 +159,7 @@ export const useMembersStore = defineStore({
         throw `Object with id ${id} not found in store`;
       }
       if (index !== null && index !== undefined) {
-        object.detail.splice(index, 1);
+        object.list.splice(index, 1);
       }
       object.detail = { id: null };
 

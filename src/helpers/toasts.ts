@@ -10,12 +10,21 @@ export function successToast(toast: any, message: String) {
 }
 
 export function errorToast(toast: any, e: any) {
-  toast.add({
-    severity: "error",
-    summary: "Error",
-    detail: `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
-     (Request ID: ${e?.response?.headers["x-request-id"]})`,
-  });
+  try {
+    var detail = `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
+    (Request ID: ${e?.response?.headers["x-request-id"]})`;
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: detail,
+    });
+  } catch {
+    console.log(e);
+    toast.add({
+      severity: "error",
+      summary: "Error",
+    });
+  }
 }
 
 export function toastify(
