@@ -3,8 +3,7 @@ import i18n from "@/locales/i18n";
 import { useUserStore } from "@/stores/user";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import { successToast, errorToast } from "@/helpers/toasts";
-import type { ToastServiceMethods } from "primevue/toastservice";
+
 const BASE_URL = baseURL + "/api/";
 const { t } = i18n.global;
 const api = axios.create({

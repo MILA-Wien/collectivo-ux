@@ -5,7 +5,6 @@ import { DataTemplate } from "./../api/types";
 
 type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
-import type { ToastServiceMethods } from "primevue/toastservice";
 
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
@@ -129,12 +128,7 @@ export const useMembersStore = defineStore({
       object.detail = response.data;
       return response;
     },
-    async update(
-      objectName: membersObject,
-      payload: Object,
-      id?: Number,
-      toast?: ToastServiceMethods
-    ) {
+    async update(objectName: membersObject, payload: Object, id?: Number) {
       // Update object and save in store
       if (DirectDetailEndpoints.has(objectName)) {
         id = undefined;

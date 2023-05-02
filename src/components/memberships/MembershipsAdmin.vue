@@ -10,6 +10,7 @@ import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
 import { API } from "@/api/api";
 import { useToast } from "primevue/usetoast";
+import { successToast, errorToast } from "@/helpers/toasts";
 const toast = useToast();
 const { t } = useI18n();
 const membersStore = useMembersStore();
@@ -17,13 +18,12 @@ const menuStore = useMenuStore();
 menuStore.setTitle("Memberships");
 
 async function generate_invoices() {
-  console.log("generate_invoices");
-  const response = await API.post(
-    "membershipsCreateInvoices",
-    undefined,
-    toast
-  );
-  console.log(response);
+  try {
+    await API.post("membershipsCreateInvoices", undefined);
+    successToast(toast, t("Addresses synchronized"));
+  } catch (e) {
+    errorToast(toast, e);
+  }
 }
 </script>
 

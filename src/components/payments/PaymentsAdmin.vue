@@ -19,7 +19,7 @@ menuStore.setTitle("Payments");
 
 async function sync_lotzapp_addresses() {
   try {
-    const response = await API.post("lotzappAddressesSync", undefined);
+    await API.post("lotzappAddressesSync", undefined);
     successToast(toast, t("Addresses synchronized"));
   } catch (e) {
     errorToast(toast, e);
@@ -28,7 +28,7 @@ async function sync_lotzapp_addresses() {
 
 async function sync_lotzapp_invoices() {
   try {
-    const response = await API.post("lotzappInvoicesSync", undefined);
+    await API.post("lotzappInvoicesSync", undefined);
     successToast(toast, t("Invoices synchronized"));
   } catch (e) {
     errorToast(toast, e);
