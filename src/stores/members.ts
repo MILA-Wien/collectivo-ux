@@ -1,7 +1,26 @@
 import { API } from "@/api/api";
 import { defineStore } from "pinia";
+import type { ToastServiceMethods } from "primevue/toastservice";
 import type { DataDetail, DataList, DataObject } from "./../api/types";
 import { DataDetailTemplate, DataListTemplate } from "./../api/types";
+
+const successToast = (toast: any, message: String) => {
+  toast.add({
+    severity: "success",
+    summary: "Success",
+    detail: message,
+    life: 5000,
+  });
+};
+
+const errorToast = (toast: any, e: any) => {
+  toast.add({
+    severity: "error",
+    summary: "Error",
+    detail: `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
+     (Request ID: ${e?.response?.headers["x-request-id"]})`,
+  });
+};
 
 type membersStore = {
   coreUsers: DataList;
@@ -17,6 +36,7 @@ type membersStore = {
 
   membershipsMemberships: DataList;
   membershipsMembershipsSelf: DataList;
+  membershipsMembershipsShares: DataDetail;
   membershipsTypes: DataList;
   membershipsStatuses: DataList;
 
@@ -77,6 +97,9 @@ export const useMembersStore = defineStore({
 
       membershipsMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataListTemplate)),
+      membershipsMembershipsShares: JSON.parse(
+        JSON.stringify(DataDetailTemplate)
+      ),
       membershipsTypes: JSON.parse(JSON.stringify(DataListTemplate)),
       membershipsStatuses: JSON.parse(JSON.stringify(DataListTemplate)),
 
@@ -144,11 +167,23 @@ export const useMembersStore = defineStore({
       }
       return response;
     },
-    async update(objectName: membersObject, payload: Object, id?: Number) {
+    async update(
+      objectName: membersObject,
+      payload: Object,
+      id?: Number,
+      toast?: ToastServiceMethods
+    ) {
       // Update object and save in store
-      const response = await API.patch(objectName, payload, id);
+      let response: any = null;
+      try {
+        response = await API.patch(objectName, payload, id);
+        toast ? successToast(toast, "Object has been updated.") : null;
+      } catch (error) {
+        console.log(error);
+        toast ? errorToast(toast, error) : null;
+        return;
+      }
       const object = this[objectName];
-
       if (object.data instanceof Array) {
         const index = object.data.findIndex((m: DataObject) => {
           return m.id === response.data.id;

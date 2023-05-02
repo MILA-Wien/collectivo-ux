@@ -6,7 +6,6 @@ import { storeToRefs } from "pinia";
 import PrimeProgressSpinner from "primevue/progressspinner";
 import type { PropType } from "vue";
 import { ref } from "vue";
-import ObjectList from "./ObjectList.vue";
 import ObjectTableFrame from "./ObjectTableFrame.vue";
 
 const props = defineProps({
@@ -23,7 +22,7 @@ const props = defineProps({
     required: false,
   },
   displayType: {
-    type: String as PropType<"table" | "list">,
+    type: String as PropType<"table">,
     required: false,
     default: "table",
   },
@@ -71,19 +70,6 @@ if (emailsCampaigns.value.schemaLoaded === false) {
       :emailButton="emailButton"
       :emailCampaignSchema="emailsCampaigns.schema"
     />
-  </div>
-  <div v-else-if="displayType == 'list'" class="h-full">
-    <ObjectList
-      :store="store"
-      :name="name"
-      :objects="data.data"
-      :schema="data.schema"
-      :default-columns="defaultColumns"
-    >
-      <template #item="slotProps">
-        <slot name="item" v-bind="slotProps"></slot>
-      </template>
-    </ObjectList>
   </div>
   <div v-else>
     <p>Invalid display type.</p>
