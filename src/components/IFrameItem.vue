@@ -19,7 +19,7 @@ defineProps<{
 
 iframe {
   width: 100%;
-  height: 80vh;
+  height: 100%;
   border: 0;
 }
 </style>

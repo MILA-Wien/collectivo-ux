@@ -8,90 +8,18 @@
     id="main_menu"
   >
     <template #item="{ item }">
-      <router-link
-        v-if="item.to"
-        :to="item.to"
-        :class="{ 'p-disabled': item.disabled }"
-      >
-        <div class="flex flex-row py-2 px-3 gap-2 items-center">
-          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
-            <i :class="item.icon"></i>
-          </span>
-
-          <span class="pt-1 w-full">{{ item.label }}</span>
-
-          <span class="grow"></span>
-          <span v-if="item.items" class="flex content-center">
-            <i class="pi pi-fw pi-angle-down"></i>
-          </span>
-        </div>
-      </router-link>
-      <a
-        v-else
-        :href="item.url"
-        :class="{ 'p-disabled': item.disabled }"
-        target="_blank"
-      >
-        <div class="flex flex-row py-2 px-3 gap-2 items-center">
-          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
-            <i :class="item.icon"></i>
-          </span>
-
-          <span class="pt-1 w-full">{{ item.label }}</span>
-
-          <span class="grow"></span>
-          <span v-if="item.items" class="flex content-center">
-            <i class="pi pi-fw pi-angle-down"></i>
-          </span>
-        </div>
-      </a>
+      <SidebarMenuItem :item="item" />
     </template>
   </PrimePanelMenu>
   <div class="mt-5 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
-    <span class="ml-5 text-sm font-semibold">{{ t("Admin Area") }}</span>
+    <span class="ml-5 text-sm font-semibold">{{ t(adminMenu.label) }}</span>
     <PrimePanelMenu
       :model="itemsAdmin[0].items"
       class="sidebar_menu"
       id="admin_menu"
     >
       <template #item="{ item }">
-        <router-link
-          v-if="item.to"
-          :to="item.to"
-          :class="{ 'p-disabled': item.disabled }"
-        >
-          <div class="flex flex-row py-2 px-3 gap-2 items-center">
-            <span class="flex p-menuitem-icon content-center" v-if="item.icon">
-              <i :class="item.icon"></i>
-            </span>
-
-            <span class="pt-1 w-full">{{ item.label }}</span>
-
-            <span class="grow"></span>
-            <span v-if="item.items" class="flex content-center">
-              <i class="pi pi-fw pi-angle-down"></i>
-            </span>
-          </div>
-        </router-link>
-        <a
-          v-else
-          :href="item.url"
-          :class="{ 'p-disabled': item.disabled }"
-          target="_blank"
-        >
-          <div class="flex flex-row py-2 px-3 gap-2 items-center">
-            <span class="flex p-menuitem-icon content-center" v-if="item.icon">
-              <i :class="item.icon"></i>
-            </span>
-
-            <span class="pt-1 w-full">{{ item.label }}</span>
-
-            <span class="grow"></span>
-            <span v-if="item.items" class="flex content-center">
-              <i class="pi pi-fw pi-angle-down"></i>
-            </span>
-          </div>
-        </a>
+        <SidebarMenuItem :item="item" />
       </template>
     </PrimePanelMenu>
   </div>
@@ -103,6 +31,7 @@ import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import PrimePanelMenu from "primevue/panelmenu";
 import PrimeToast from "primevue/toast";
+import SidebarMenuItem from "./SidebarMenuItem.vue";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -128,6 +57,11 @@ function buildItem(data: any): any {
     else if (data.component) {
       item.to = "/" + data.extension.name + "/" + data.component;
     }
+    // set data for iframes
+    else if (data.target === "iframe") {
+      item.url = data.link;
+      item.to = `/iframe/${data.id}`;
+    }
     // set link for external links
     else if (data.link && data.target === "blank") {
       item.url = data.link;
@@ -141,7 +75,6 @@ function buildItem(data: any): any {
 function buildMenu(menu: any, items: any) {
   items.value = [
     {
-      label: t("Main Menu"),
       items: [],
     },
   ];

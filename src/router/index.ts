@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Default from "@/layouts/DefaultLayout.vue";
+import FullScreenLayout from "@/layouts/FullScreen.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -6,6 +8,9 @@ const router = createRouter({
     {
       path: "/",
       name: "dashboard",
+      meta: {
+        layout: Default,
+      },
       component: () => import("../views/DashboardView.vue"),
     },
     {
@@ -16,6 +21,7 @@ const router = createRouter({
       path: "/core/users",
       name: "coreUsers",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/core/CoreUsers.vue"),
@@ -24,6 +30,7 @@ const router = createRouter({
       path: "/core/profile",
       name: "coreProfile",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/core/CoreProfileLoader.vue"),
@@ -32,6 +39,7 @@ const router = createRouter({
       path: "/core/settings",
       name: "coreSettings",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/NotImplemented.vue"),
@@ -40,6 +48,7 @@ const router = createRouter({
       path: "/dashboard/admin",
       name: "dashboardAdmin",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/dashboard/DashboardAdmin.vue"),
@@ -48,6 +57,7 @@ const router = createRouter({
       path: "/memberships/admin",
       name: "membershipsAdmin",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/memberships/MembershipsAdmin.vue"),
@@ -56,6 +66,7 @@ const router = createRouter({
       path: "/memberships/profile",
       name: "memberships",
       meta: {
+        layout: Default,
         requiresAuth: true,
         isMember: true,
       },
@@ -66,6 +77,7 @@ const router = createRouter({
       path: "/mila/registration",
       name: "registration",
       meta: {
+        layout: Default,
         requiresAuth: true,
       },
       component: () => import("../components/mila/MilaRegistration.vue"),
@@ -74,6 +86,7 @@ const router = createRouter({
       path: "/emails/admin",
       name: "emailsAdmin",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/emails/EmailsAdmin.vue"),
@@ -81,20 +94,38 @@ const router = createRouter({
     {
       path: "/tags/admin",
       name: "tagsAdmin",
+      meta: {
+        layout: Default,
+        isMembersAdmin: true,
+      },
       component: () => import("../components/tags/TagsAdmin.vue"),
     },
     {
       path: "/payments/admin",
       name: "paymentsAdmin",
+      meta: {
+        layout: Default,
+        isMembersAdmin: true,
+      },
       component: () => import("../components/payments/PaymentsAdmin.vue"),
     },
     {
       path: "/extensions/admin",
       name: "extensionsAdmin",
       meta: {
+        layout: Default,
         isMembersAdmin: true,
       },
       component: () => import("../components/extensions/ExtensionsAdmin.vue"),
+    },
+    {
+      path: "/iframe/:menuItemId",
+      name: "iframe",
+      meta: {
+        layout: FullScreenLayout,
+        isMember: true,
+      },
+      component: () => import("@/views/IframeView.vue"),
     },
     // {
     //   path: "/:extension/:id",

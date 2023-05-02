@@ -5,23 +5,24 @@ export interface Version {
 export interface ExtensionMenu {
   menu: Array<ExtensionMenuItem>;
   loaded: boolean;
+  label: string;
 }
 
+// ExtensionMenuItem is the type of the menu items in the extension menu
 export interface ExtensionMenuItem {
-  item_id: string | null;
-  label: string;
-  action: string | null;
-  action_target: string | null;
-  component_name: string | null;
-  link_source: string | null;
-  order: number;
-  style: string;
-  required_role: string | null;
+  id: string | null;
+  component: string | null;
+  extension: string;
   icon_name: string | null;
   icon_path: string | null;
-  menu_id: string;
-  extension: string;
-  parent_item: string | null;
+  items: Array<ExtensionMenuItem>;
+  label: string;
+  link: string | null;
+  name: string | null;
+  order: number;
+  required_group: string | null;
+  style: string;
+  target: string | null;
 }
 export interface MicroFrontendJson {
   name: String;
