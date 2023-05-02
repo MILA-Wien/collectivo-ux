@@ -11,7 +11,7 @@ export function successToast(toast: any, message: String) {
 
 export function errorToast(toast: any, e: any) {
   try {
-    var detail = `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
+    const detail = `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
     (Request ID: ${e?.response?.headers["x-request-id"]})`;
     toast.add({
       severity: "error",
