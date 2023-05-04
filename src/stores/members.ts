@@ -52,6 +52,8 @@ export const useMembersStore = defineStore({
       membershipsMemberships: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsMembershipsShares: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsCreateInvoices: JSON.parse(JSON.stringify(DataTemplate)),
+
       membershipsTypes: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsStatuses: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
@@ -74,6 +76,8 @@ export const useMembersStore = defineStore({
       milaGroups: JSON.parse(JSON.stringify(DataTemplate)),
 
       lotzappSettings: JSON.parse(JSON.stringify(DataTemplate)),
+      lotzappInvoicesSync: JSON.parse(JSON.stringify(DataTemplate)),
+      lotzappAddressesSync: JSON.parse(JSON.stringify(DataTemplate)),
     } as membersStore),
 
   actions: {
@@ -122,7 +126,7 @@ export const useMembersStore = defineStore({
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
     },
-    async create(objectName: membersObject, payload: Object) {
+    async create(objectName: membersObject, payload?: Object) {
       const response = await API.post(objectName, payload);
       const object = this[objectName];
       object.list.push(response.data);

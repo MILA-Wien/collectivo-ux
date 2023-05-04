@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import ObjectList from "@/components/datatable/ObjectList.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import { errorToast, successToast } from "@/helpers/toasts";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
-import PrimePanel from "primevue/panel";
 import PrimeButton from "primevue/button";
+import PrimePanel from "primevue/panel";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
-import { useI18n } from "vue-i18n";
-import { API } from "@/api/api";
 import { useToast } from "primevue/usetoast";
-import { successToast, errorToast } from "@/helpers/toasts";
+import { useI18n } from "vue-i18n";
 const toast = useToast();
 const { t } = useI18n();
 const membersStore = useMembersStore();
@@ -19,7 +18,7 @@ menuStore.setTitle("Memberships");
 
 async function generate_invoices() {
   try {
-    await API.post("membershipsCreateInvoices", undefined);
+    await membersStore.create("membershipsCreateInvoices");
     successToast(toast, t("Addresses synchronized"));
   } catch (e) {
     errorToast(toast, e);

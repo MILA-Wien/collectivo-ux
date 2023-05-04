@@ -1,16 +1,15 @@
 <script setup lang="ts">
+import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import { errorToast, successToast } from "@/helpers/toasts";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
+import PrimeButton from "primevue/button";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
-import { useI18n } from "vue-i18n";
-import PrimeButton from "primevue/button";
 import { useToast } from "primevue/usetoast";
-import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
-import { API } from "@/api/api";
-import { successToast, errorToast } from "@/helpers/toasts";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const membersStore = useMembersStore();
@@ -22,7 +21,7 @@ const syncing_lotzapp_addresses = ref(false);
 async function sync_lotzapp_addresses() {
   syncing_lotzapp_addresses.value = true;
   try {
-    await API.post("lotzappAddressesSync", undefined);
+    await membersStore.create("lotzappAddressesSync");
     successToast(toast, t("Addresses synchronized"));
   } catch (e) {
     errorToast(toast, e);
@@ -34,7 +33,7 @@ const syncing_lotzapp_invoices = ref(false);
 async function sync_lotzapp_invoices() {
   syncing_lotzapp_invoices.value = true;
   try {
-    await API.post("lotzappInvoicesSync", undefined);
+    await membersStore.create("lotzappInvoicesSync");
     successToast(toast, t("Invoices synchronized"));
   } catch (e) {
     errorToast(toast, e);
