@@ -1,29 +1,10 @@
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
-import type { ToastServiceMethods } from "primevue/toastservice";
 import type { DataObject, DataSchema } from "./../api/types";
 import { DataTemplate } from "./../api/types";
 
 type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
-
-const successToast = (toast: any, message: String) => {
-  toast.add({
-    severity: "success",
-    summary: "Success",
-    detail: message,
-    life: 5000,
-  });
-};
-
-const errorToast = (toast: any, e: any) => {
-  toast.add({
-    severity: "error",
-    summary: "Error",
-    detail: `${JSON.stringify(e?.response?.data).substring(0, 200)} ...
-     (Request ID: ${e?.response?.headers["x-request-id"]})`,
-  });
-};
 
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
@@ -46,13 +27,18 @@ function extendSchema(schema: any) {
   return schema;
 }
 
-const DirectDetailEndpoints = new Set(["profilesProfilesSelf"]);
+const DirectDetailEndpoints = new Set([
+  "profilesProfilesSelf",
+  "lotzappSettings",
+]);
 
+// TODO: Typing so that all properties are DataSchema
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
       coreUsers: JSON.parse(JSON.stringify(DataTemplate)),
+      coreUsersExtended: JSON.parse(JSON.stringify(DataTemplate)),
       coreGroups: JSON.parse(JSON.stringify(DataTemplate)),
 
       extensionsExtensions: JSON.parse(JSON.stringify(DataTemplate)),
@@ -66,6 +52,8 @@ export const useMembersStore = defineStore({
       membershipsMemberships: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsMembershipsShares: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsCreateInvoices: JSON.parse(JSON.stringify(DataTemplate)),
+
       membershipsTypes: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsStatuses: JSON.parse(JSON.stringify(DataTemplate)),
       membershipsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
@@ -79,13 +67,17 @@ export const useMembersStore = defineStore({
 
       paymentsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
       paymentsProfilesSelf: JSON.parse(JSON.stringify(DataTemplate)),
-      paymentsPayments: JSON.parse(JSON.stringify(DataTemplate)),
+      paymentsInvoices: JSON.parse(JSON.stringify(DataTemplate)),
       paymentsSubscriptions: JSON.parse(JSON.stringify(DataTemplate)),
 
       milaRegister: JSON.parse(JSON.stringify(DataTemplate)),
       milaProfiles: JSON.parse(JSON.stringify(DataTemplate)),
       milaSkills: JSON.parse(JSON.stringify(DataTemplate)),
       milaGroups: JSON.parse(JSON.stringify(DataTemplate)),
+
+      lotzappSettings: JSON.parse(JSON.stringify(DataTemplate)),
+      lotzappInvoicesSync: JSON.parse(JSON.stringify(DataTemplate)),
+      lotzappAddressesSync: JSON.parse(JSON.stringify(DataTemplate)),
     } as membersStore),
 
   actions: {
@@ -134,29 +126,21 @@ export const useMembersStore = defineStore({
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
     },
-    async create(objectName: membersObject, payload: Object) {
+    async create(objectName: membersObject, payload?: Object) {
       const response = await API.post(objectName, payload);
       const object = this[objectName];
       object.list.push(response.data);
       object.detail = response.data;
       return response;
     },
-    async update(
-      objectName: membersObject,
-      payload: Object,
-      id?: Number,
-      toast?: ToastServiceMethods
-    ) {
+    async update(objectName: membersObject, payload: Object, id?: Number) {
       // Update object and save in store
-      let response: any = null;
-      try {
-        response = await API.patch(objectName, payload, id);
-        toast ? successToast(toast, "Object has been updated.") : null;
-      } catch (error) {
-        console.log(error);
-        toast ? errorToast(toast, error) : null;
-        return;
+      if (DirectDetailEndpoints.has(objectName)) {
+        id = undefined;
       }
+      let response: any = null;
+      response = await API.patch(objectName, payload, id);
+
       const object = this[objectName];
 
       const index = object.list.findIndex((m: DataObject) => {
@@ -179,7 +163,7 @@ export const useMembersStore = defineStore({
         throw `Object with id ${id} not found in store`;
       }
       if (index !== null && index !== undefined) {
-        object.detail.splice(index, 1);
+        object.list.splice(index, 1);
       }
       object.detail = { id: null };
 

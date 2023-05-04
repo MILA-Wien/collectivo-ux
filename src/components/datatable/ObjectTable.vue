@@ -284,6 +284,9 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
             {{ t(col.choices[data[col.field]]) }}
           </div>
         </template>
+        <template #body="{ data }" v-else-if="col.input_type == 'list'">
+          {{ data[col.field] }}
+        </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
 

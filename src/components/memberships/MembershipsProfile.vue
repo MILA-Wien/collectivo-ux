@@ -9,6 +9,7 @@ import PrimePanel from "primevue/panel";
 import { useToast } from "primevue/usetoast";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { successToast, errorToast } from "@/helpers/toasts";
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
@@ -38,7 +39,12 @@ const sharesDialog: any = ref({
     const data = {
       shares_signed: this.membership.shares_signed + this.additional_shares,
     };
-    await membersStore.update(objectName, data, this.membership.id, toast);
+    try {
+      await membersStore.update(objectName, data, this.membership.id);
+      successToast(toast, "Object has been created.");
+    } catch (error) {
+      errorToast(toast, error);
+    }
     this.is_submitting = false;
     this.is_open = false;
   },

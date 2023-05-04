@@ -3,9 +3,10 @@ import type { endpoints } from "@/api/api";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimePanel from "primevue/panel";
-import type { PropType } from "vue";
+import type { PropType, Ref } from "vue";
 import { ref } from "vue";
 import ObjectDetailEdit from "./ObjectDetailEdit.vue";
+import type { DataSchema } from "@/api/types";
 
 const props = defineProps({
   store: {
@@ -25,8 +26,7 @@ const props = defineProps({
 
 // Load data
 const error = ref<Object | null>(null);
-const data = storeToRefs(props.store)[props.name];
-data.value.loaded = false;
+const data = storeToRefs(props.store)[props.name] as Ref<DataSchema>;
 props.store.get(props.name, props.id).catch((e: any) => {
   error.value = e;
 });
@@ -34,7 +34,7 @@ const editActive = ref(false);
 </script>
 
 <template>
-  <div v-if="data.loaded || data.schemaLoaded">
+  <div v-if="data.detailLoaded || data.schemaLoaded">
     <PrimePanel :header="name">
       <template #icons>
         <button
@@ -50,8 +50,11 @@ const editActive = ref(false);
 
           <span class="bg-slate-200 px-1 pt-1 rounded">
             <span v-if="field.input_type == 'multiselect'">
-              <span v-for="(value, i) in data.detail[name]" :key="i">
-                {{ field.choices[value] }},
+              <span
+                v-for="(value, i) in data.detail[name] as Array<any>"
+                :key="i"
+              >
+                {{ field.choices![value] }},
               </span>
             </span>
             <span v-else>
@@ -63,7 +66,6 @@ const editActive = ref(false);
     </PrimePanel>
   </div>
 
-  <!-- TODO: Remove delete option -->
   <ObjectDetailEdit
     v-if="editActive"
     :object="data.detail"
@@ -71,6 +73,7 @@ const editActive = ref(false);
     :store="store"
     :name="name"
     :schema="data.schema"
+    :allow_delete="false"
     @close="editActive = false"
   />
 </template>
