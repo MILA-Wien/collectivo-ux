@@ -1,11 +1,11 @@
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
+import type { ToastServiceMethods } from "primevue/toastservice";
 import type { DataObject, DataSchema } from "./../api/types";
 import { DataTemplate } from "./../api/types";
 
 type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
-import type { ToastServiceMethods } from "primevue/toastservice";
 
 const successToast = (toast: any, message: String) => {
   toast.add({
