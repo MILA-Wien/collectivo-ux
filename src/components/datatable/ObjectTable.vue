@@ -119,7 +119,7 @@ function editObjectFn(event: any) {
 }
 const totalRecords = ref(0);
 watch(
-  () => props.store[props.name].totalRecords,
+  () => props.store[props.name].listTotalRecords,
   (val) => {
     totalRecords.value = val;
   },
@@ -244,21 +244,23 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       ></PrimeColumn>
 
       <!-- Edit column -->
-      <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
-        <template #header
-          ><PrimeButton
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm button-edit"
-            disabled="true"
-        /></template>
-        <template #body="slotProps">
-          <PrimeButton
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm button-edit"
-            @click="editObjectFn(slotProps.data)"
-          />
-        </template>
-      </PrimeColumn>
+      <slot name="action-column">
+        <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
+          <template #header
+            ><PrimeButton
+              icon="pi pi-pencil"
+              class="p-button-text p-button-sm button-edit"
+              disabled="true"
+          /></template>
+          <template #body="slotProps">
+            <PrimeButton
+              icon="pi pi-pencil"
+              class="p-button-text p-button-sm button-edit"
+              @click="editObjectFn(slotProps.data)"
+            />
+          </template>
+        </PrimeColumn>
+      </slot>
 
       <!-- Content columns -->
       <PrimeColumn

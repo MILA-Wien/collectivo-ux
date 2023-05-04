@@ -1,8 +1,11 @@
-import { API } from "@/api/api";
+import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
 import type { ToastServiceMethods } from "primevue/toastservice";
-import type { DataDetail, DataList, DataObject } from "./../api/types";
-import { DataDetailTemplate, DataListTemplate } from "./../api/types";
+import type { DataObject, DataSchema } from "./../api/types";
+import { DataTemplate } from "./../api/types";
+
+type membersObject = keyof typeof endpoints;
+type membersStore = { [index: string]: DataSchema };
 
 const successToast = (toast: any, message: String) => {
   toast.add({
@@ -21,43 +24,6 @@ const errorToast = (toast: any, e: any) => {
      (Request ID: ${e?.response?.headers["x-request-id"]})`,
   });
 };
-
-type membersStore = {
-  coreUsers: DataList;
-  coreGroups: DataList;
-
-  extensionsExtensions: DataList;
-
-  dashboardTiles: DataList;
-  dashboardTileButtons: DataList;
-
-  profilesProfiles: DataList;
-  profilesProfilesSelf: DataDetail;
-
-  membershipsMemberships: DataList;
-  membershipsMembershipsSelf: DataList;
-  membershipsMembershipsShares: DataDetail;
-  membershipsTypes: DataList;
-  membershipsStatuses: DataList;
-
-  paymentsProfiles: DataList;
-  paymentsProfilesSelf: DataDetail;
-  paymentsPayments: DataList;
-  paymentsSubscriptions: DataList;
-
-  tagsTags: DataList;
-
-  emailsCampaigns: DataList;
-  emailsTemplates: DataList;
-  emailsDesigns: DataList;
-
-  milaRegister: DataDetail;
-  milaProfiles: DataList;
-  milaSkills: DataList;
-  milaGroups: DataList;
-};
-
-type membersObject = keyof membersStore;
 
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
@@ -80,75 +46,87 @@ function extendSchema(schema: any) {
   return schema;
 }
 
+const DirectDetailEndpoints = new Set(["profilesProfilesSelf"]);
+
 export const useMembersStore = defineStore({
   id: "members",
   state: () =>
     ({
-      coreUsers: JSON.parse(JSON.stringify(DataListTemplate)),
-      coreGroups: JSON.parse(JSON.stringify(DataListTemplate)),
+      coreUsers: JSON.parse(JSON.stringify(DataTemplate)),
+      coreGroups: JSON.parse(JSON.stringify(DataTemplate)),
 
-      extensionsExtensions: JSON.parse(JSON.stringify(DataListTemplate)),
+      extensionsExtensions: JSON.parse(JSON.stringify(DataTemplate)),
 
-      dashboardTiles: JSON.parse(JSON.stringify(DataListTemplate)),
-      dashboardTileButtons: JSON.parse(JSON.stringify(DataListTemplate)),
+      dashboardTiles: JSON.parse(JSON.stringify(DataTemplate)),
+      dashboardTileButtons: JSON.parse(JSON.stringify(DataTemplate)),
 
-      profilesProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
-      profilesProfilesSelf: JSON.parse(JSON.stringify(DataDetailTemplate)),
+      profilesProfiles: JSON.parse(JSON.stringify(DataTemplate)),
+      profilesProfilesSelf: JSON.parse(JSON.stringify(DataTemplate)),
 
-      membershipsMemberships: JSON.parse(JSON.stringify(DataListTemplate)),
-      membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataListTemplate)),
-      membershipsMembershipsShares: JSON.parse(
-        JSON.stringify(DataDetailTemplate)
-      ),
-      membershipsTypes: JSON.parse(JSON.stringify(DataListTemplate)),
-      membershipsStatuses: JSON.parse(JSON.stringify(DataListTemplate)),
+      membershipsMemberships: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsMembershipsShares: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsTypes: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsStatuses: JSON.parse(JSON.stringify(DataTemplate)),
+      membershipsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
 
-      tagsTags: JSON.parse(JSON.stringify(DataListTemplate)),
+      tagsTags: JSON.parse(JSON.stringify(DataTemplate)),
+      tagsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
 
-      emailsCampaigns: JSON.parse(JSON.stringify(DataListTemplate)),
-      emailsTemplates: JSON.parse(JSON.stringify(DataListTemplate)),
-      emailsDesigns: JSON.parse(JSON.stringify(DataListTemplate)),
+      emailsCampaigns: JSON.parse(JSON.stringify(DataTemplate)),
+      emailsTemplates: JSON.parse(JSON.stringify(DataTemplate)),
+      emailsDesigns: JSON.parse(JSON.stringify(DataTemplate)),
 
-      paymentsProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
-      paymentsProfilesSelf: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      paymentsPayments: JSON.parse(JSON.stringify(DataListTemplate)),
-      paymentsSubscriptions: JSON.parse(JSON.stringify(DataListTemplate)),
+      paymentsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
+      paymentsProfilesSelf: JSON.parse(JSON.stringify(DataTemplate)),
+      paymentsPayments: JSON.parse(JSON.stringify(DataTemplate)),
+      paymentsSubscriptions: JSON.parse(JSON.stringify(DataTemplate)),
 
-      milaRegister: JSON.parse(JSON.stringify(DataDetailTemplate)),
-      milaProfiles: JSON.parse(JSON.stringify(DataListTemplate)),
-      milaSkills: JSON.parse(JSON.stringify(DataListTemplate)),
-      milaGroups: JSON.parse(JSON.stringify(DataListTemplate)),
+      milaRegister: JSON.parse(JSON.stringify(DataTemplate)),
+      milaProfiles: JSON.parse(JSON.stringify(DataTemplate)),
+      milaSkills: JSON.parse(JSON.stringify(DataTemplate)),
+      milaGroups: JSON.parse(JSON.stringify(DataTemplate)),
     } as membersStore),
 
   actions: {
-    async get(objectName: membersObject, id?: Number) {
-      this[objectName].loaded = false;
-      // Get schema and object(s) and save in store
+    async get(objectName: keyof typeof endpoints, id?: Number) {
+      if (id || DirectDetailEndpoints.has(objectName)) {
+        this[objectName].detailLoaded = false;
+        // Get schema and object(s) and save in store
+        const [schema, objects] = await Promise.all([
+          API.getSchema(objectName),
+          API.get(objectName, id),
+        ]);
+
+        // Throw error if response does not match store data type
+        if (objects.data.results instanceof Array) {
+          throw new Error("Receiving list, expecting detail.");
+        }
+        // Save detail in store
+        this[objectName].schema = extendSchema(schema.data);
+        this[objectName].schemaLoaded = true;
+        this[objectName].detail = objects.data;
+        this[objectName].detailLoaded = true;
+        return;
+      }
+
+      this[objectName].listLoaded = false;
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),
         API.get(objectName, id),
       ]);
 
       // Throw error if response does not match store data type
-      if (
-        (this[objectName].data instanceof Array &&
-          !(objects.data.results instanceof Array)) ||
-        (!(this[objectName].data instanceof Array) &&
-          objects.data instanceof Array)
-      ) {
-        throw new Error("API response does not match store data type.");
+      if (!(objects.data.results instanceof Array)) {
+        throw new Error("Receiving detail, expecting list.");
       }
+
       // Save data in store
-      if (objects.data.results instanceof Array) {
-        this[objectName].data = objects.data.results;
-      } else {
-        this[objectName].data = objects.data;
-      }
+      this[objectName].list = objects.data.results;
+      this[objectName].listLoaded = true;
+      this[objectName].listTotalRecords = parseInt(objects.data.count);
       this[objectName].schema = extendSchema(schema.data);
-      this[objectName].loaded = true;
       this[objectName].schemaLoaded = true;
-      //@ts-ignore
-      this[objectName].totalRecords = parseInt(objects.data.count);
     },
     async getSchema(objectName: membersObject) {
       // Get schema and save in store
@@ -159,12 +137,8 @@ export const useMembersStore = defineStore({
     async create(objectName: membersObject, payload: Object) {
       const response = await API.post(objectName, payload);
       const object = this[objectName];
-
-      if (object.data instanceof Array) {
-        object.data.push(response.data);
-      } else {
-        object.data = response.data;
-      }
+      object.list.push(response.data);
+      object.detail = response.data;
       return response;
     },
     async update(
@@ -184,39 +158,36 @@ export const useMembersStore = defineStore({
         return;
       }
       const object = this[objectName];
-      if (object.data instanceof Array) {
-        const index = object.data.findIndex((m: DataObject) => {
-          return m.id === response.data.id;
-        });
-        if (index !== null && index !== undefined) {
-          object.data[index] = response.data;
-        }
-      } else {
-        object.data = response.data;
+
+      const index = object.list.findIndex((m: DataObject) => {
+        return m.id === response.data.id;
+      });
+      if (index !== null && index !== undefined) {
+        object.list[index] = response.data;
       }
+      object.detail = response.data;
     },
     async delete(objectName: membersObject, id: Number) {
       // Delete object and remove from store
       const response = await API.delete(objectName, id);
       const object = this[objectName];
-      if (object.data instanceof Array) {
-        const index = object.data.findIndex((m: DataObject) => {
-          return m.id === id;
-        });
-        if (index == -1) {
-          throw `Object with id ${id} not found in store`;
-        }
-        if (index !== null && index !== undefined) {
-          object.data.splice(index, 1);
-        }
-      } else {
-        object.data = { id: null };
+
+      const index = object.list.findIndex((m: DataObject) => {
+        return m.id === id;
+      });
+      if (index == -1) {
+        throw `Object with id ${id} not found in store`;
       }
+      if (index !== null && index !== undefined) {
+        object.detail.splice(index, 1);
+      }
+      object.detail = { id: null };
+
       return response;
     },
     async getMilaMembershipNumber() {
       await this.get("membershipsMembershipsSelf");
-      const m = this.membershipsMembershipsSelf.data.filter(
+      const m = this.membershipsMembershipsSelf.list.filter(
         (e: any) => e.type.name == "MILA Mitmach-Supermarkt e. G."
       );
       if (m.length > 0) {
@@ -238,20 +209,20 @@ export const useMembersStore = defineStore({
 
       // Throw error if response does not match store data type
       if (
-        (this[objectName].data instanceof Array &&
+        (this[objectName].list instanceof Array &&
           !(objects.data.results instanceof Array)) ||
-        (!(this[objectName].data instanceof Array) &&
+        (!(this[objectName].list instanceof Array) &&
           objects.data instanceof Array)
       ) {
-        throw new Error("API response does not match store data type.");
+        throw new Error("API response does not match store list type.");
       }
-      // Save data in store
-      this[objectName].data = objects.data.results;
+      // Save list in store
+      this[objectName].list = objects.data.results;
       this[objectName].schema = extendSchema(schema.data);
-      this[objectName].loaded = true;
+      this[objectName].listLoaded = true;
       this[objectName].schemaLoaded = true;
       //@ts-ignore totalRecords exists on DataList
-      this[objectName].totalRecords = parseInt(objects.data.count);
+      this[objectName].listTotalRecords = parseInt(objects.data.results.count);
     },
   },
 });

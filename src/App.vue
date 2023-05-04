@@ -5,6 +5,7 @@ import { RouterView } from "vue-router";
 import { useUserStore } from "./stores/user";
 import HeaderView from "./views/HeaderView.vue";
 import MenuView from "./views/SidebarView.vue";
+
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 </script>

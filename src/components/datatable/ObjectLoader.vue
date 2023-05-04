@@ -57,19 +57,21 @@ if (emailsCampaigns.value.schemaLoaded === false) {
   <div v-if="error !== null">
     <p>There was an error loading the data.<br />{{ error }}</p>
   </div>
-  <div v-else-if="!data.loaded">
+  <div v-else-if="!data.listLoaded">
     <PrimeProgressSpinner />
   </div>
   <div v-else-if="displayType == 'table'" class="h-full">
     <ObjectTableFrame
       :store="store"
       :name="name"
-      :objects="data.data"
+      :objects="data.list"
       :schema="data.schema"
       :default-columns="defaultColumns"
       :emailButton="emailButton"
       :emailCampaignSchema="emailsCampaigns.schema"
-    />
+    >
+      <template #action-column><slot name="action-column"></slot></template>
+    </ObjectTableFrame>
   </div>
   <div v-else>
     <p>Invalid display type.</p>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { DashboardTile } from "@/api/types";
 import LoadingItem from "@/components/LoadingItem.vue";
+import ObjectMasonry from "@/components/datatable/ObjectMasonry.vue";
 import { useDashboardStore } from "@/stores/dashboard";
 import { useMenuStore } from "@/stores/menu";
-import MasonryWall from "@yeger/vue-masonry-wall";
 import { storeToRefs } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeCard from "primevue/card";
@@ -48,14 +48,8 @@ watch(
 
 <template>
   <div id="collectivo-dashboard">
-    <MasonryWall
-      v-if="tiles?.results"
-      :items="tiles.results"
-      :ssr-columns="1"
-      :column-width="300"
-      :gap="16"
-    >
-      <template #default="{ item }">
+    <ObjectMasonry v-if="tiles?.results" :items="tiles.results">
+      <template #item="{ item }">
         <PrimeCard>
           <template #title>
             {{ t(item.label ? item.label : "") }}
@@ -90,7 +84,7 @@ watch(
           </template>
         </PrimeCard>
       </template>
-    </MasonryWall>
+    </ObjectMasonry>
   </div>
 </template>
 

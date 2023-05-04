@@ -31,7 +31,7 @@ if (!data.value.loaded) {
   <div class="flex flex-col h-full">
     <div class="grow overflow-auto">
       <!-- Table will fill out full remaining height -->
-      <PrimeDataView dataKey="id" :value="data.data">
+      <PrimeDataView dataKey="id" :value="data.list">
         <template #list="slotProps">
           <slot name="item" v-bind="slotProps"></slot>
         </template>
@@ -41,7 +41,7 @@ if (!data.value.loaded) {
 </template>
 
 <style scoped>
-.p-dataview::v-deep .p-dataview-content {
+:deep(.p-dataview) .p-dataview-content {
   background: transparent;
 }
 </style>

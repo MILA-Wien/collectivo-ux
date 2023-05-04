@@ -21,6 +21,14 @@ const router = createRouter({
       component: () => import("../components/core/CoreUsers.vue"),
     },
     {
+      path: "/core/users/:id",
+      name: "coreUsersDetail",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () => import("../components/core/CoreUsersDetail.vue"),
+    },
+    {
       path: "/core/profile",
       name: "coreProfile",
       meta: {

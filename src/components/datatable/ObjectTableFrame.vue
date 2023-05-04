@@ -8,7 +8,7 @@ import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-import ObjectDetail from "./ObjectDetail.vue";
+import ObjectDetailEdit from "./ObjectDetailEdit.vue";
 import ObjectTable from "./ObjectTable.vue";
 
 import type { endpoints } from "@/api/api";
@@ -223,12 +223,14 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
-      />
+      >
+        <template #action-column><slot name="action-column"></slot></template>
+      </ObjectTable>
     </div>
   </div>
 
   <!-- Detail dialog -->
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
@@ -239,7 +241,7 @@ function sendEmails() {
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="editEmailsActive"
     :object="editEmailsObject"
     :create="editEmailsCreate"
