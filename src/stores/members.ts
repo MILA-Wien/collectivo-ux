@@ -201,12 +201,13 @@ export const useMembersStore = defineStore({
         throw new Error("API response does not match store list type.");
       }
       // Save list in store
+      console.log(objects.data);
       this[objectName].list = objects.data.results;
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].listLoaded = true;
       this[objectName].schemaLoaded = true;
       //@ts-ignore totalRecords exists on DataList
-      this[objectName].listTotalRecords = parseInt(objects.data.results.count);
+      this[objectName].listTotalRecords = parseInt(objects.data.count);
     },
   },
 });
