@@ -26,13 +26,11 @@ keycloakInstance
     // init view router
     app.use(router);
 
-    loadLocaleMessages(i18n, "en")
-      .then(() =>
-      // artificially wait 2s before loading german languange
-        setTimeout(() => loadLocaleMessages(i18n, "de"), 2000)
-      );
-    setI18nLanguage(i18n, "de");
     app.use(i18n);
+    loadLocaleMessages(i18n, "en");
+    loadLocaleMessages(i18n, "de");
+    setI18nLanguage(i18n, "de");
+
     // init PrimeVue
     app.use(PrimeVue);
     app.use(ToastService);
@@ -41,7 +39,7 @@ keycloakInstance
 
     //init the extensions
     shifts();
-    //setTimeout(() => {  app.mount("#app"); }, 3000);
+
     // Render app
     app.mount("#app");
   })

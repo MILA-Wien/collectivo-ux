@@ -10,20 +10,20 @@ describe("Login Succesfull", () => {
       .click();
     cy.get("#collectivo-backdrop").click();
     // TODO: Needs to be fixed
-    //cy.get("#tags-admin").should("exist");
-    // cy.get(
-    //   "#tags-admin > div > div.p-tabview-panels > div > div > div > div.grow.overflow-auto > div > div > div.p-datatable-wrapper > table > thead > tr > th.p-sortable-column.p-resizable-column.p-highlight"
-    // ).click();
-    // cy.get(
-    //   "div > div > .p-datatable-tbody > :nth-child(1) > :nth-child(4)"
-    // ).contains("Test tag 0");
+    cy.get("#tags-admin").should("exist");
+    cy.get(
+      "#tags-admin > div > div.p-tabview-panels > div > div > div > div.grow.overflow-auto > div > div > div.p-datatable-wrapper > table > thead > tr > th.p-sortable-column.p-resizable-column.p-highlight"
+    ).click();
+    cy.get(
+      "div > div > .p-datatable-tbody > :nth-child(1) > :nth-child(4)"
+    ).contains("Test tag 0");
 
-    // cy.get(
-    //   ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button > .pi"
-    // ).click();
-    // cy.get(
-    //   ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button"
-    // ).click();
-    //cy.get(".p-paginator-next").click();
+    cy.get(
+      ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button > .pi"
+    ).click();
+    cy.get(
+      ".p-highlight > .p-column-header-content > .p-column-filter > .p-column-filter-menu-button"
+    ).click();
+    cy.get(".p-paginator-next").click();
   });
 });
