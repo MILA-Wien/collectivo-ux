@@ -5,15 +5,15 @@ import App from "./App.vue";
 import "./assets/main.css";
 import { initKeycloak } from "./helpers/keycloak";
 import router from "./router";
-
 //PrimeVue imports
 import "primeicons/primeicons.css"; //icons
 import PrimeVue from "primevue/config";
 import ConfirmationService from "primevue/confirmationservice";
 import "primevue/resources/primevue.min.css"; //core css
-import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/themes/lara-light-indigo/theme.css";
 import ToastService from "primevue/toastservice";
 import PrimeTooltip from "primevue/tooltip";
+import shifts from "./extensions/shifts/shifts";
 
 // init vue app
 const app = createApp(App);
@@ -23,6 +23,9 @@ app.use(createPinia());
 const keycloakInstance = initKeycloak();
 keycloakInstance
   .then(() => {
+    // init view router
+    app.use(router);
+
     loadLocaleMessages(i18n, "en")
       .then(() =>
       // artificially wait 2s before loading german languange
@@ -36,8 +39,8 @@ keycloakInstance
     app.use(ConfirmationService);
     app.directive("tooltip", PrimeTooltip);
 
-    // init view router
-    app.use(router);
+    //init the extensions
+    shifts();
     //setTimeout(() => {  app.mount("#app"); }, 3000);
     // Render app
     app.mount("#app");

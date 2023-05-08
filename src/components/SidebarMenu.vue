@@ -1,8 +1,10 @@
 <template>
   <PrimeToast />
+
   <PrimePanelMenu
     :model="itemsMain[0].items"
     v-if="itemsMain.length > 0"
+    class="sidebar_menu"
     id="main_menu"
   >
     <template #item="{ item }">
@@ -11,7 +13,7 @@
         :to="item.to"
         :class="{ 'p-disabled': item.disabled }"
       >
-        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+        <div class="flex flex-row py-2 px-3 gap-2 items-center">
           <span class="flex p-menuitem-icon content-center" v-if="item.icon">
             <i :class="item.icon"></i>
           </span>
@@ -30,7 +32,7 @@
         :class="{ 'p-disabled': item.disabled }"
         target="_blank"
       >
-        <div class="flex flex-row py-1 px-2 gap-2 items-center">
+        <div class="flex flex-row py-2 px-3 gap-2 items-center">
           <span class="flex p-menuitem-icon content-center" v-if="item.icon">
             <i :class="item.icon"></i>
           </span>
@@ -45,62 +47,54 @@
       </a>
     </template>
   </PrimePanelMenu>
+  <div class="mt-5 text-left w-full" v-if="itemsAdmin[0]?.items.length > 0">
+    <span class="ml-5 text-sm font-semibold">{{ t("Admin Area") }}</span>
+    <PrimePanelMenu
+      :model="itemsAdmin[0].items"
+      class="sidebar_menu"
+      id="admin_menu"
+    >
+      <template #item="{ item }">
+        <router-link
+          v-if="item.to"
+          :to="item.to"
+          :class="{ 'p-disabled': item.disabled }"
+        >
+          <div class="flex flex-row py-2 px-3 gap-2 items-center">
+            <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+              <i :class="item.icon"></i>
+            </span>
 
-  <div
-    class="ml-5 mt-5 mb-1 text-sm text-left font-bold w-full"
-    v-if="itemsAdmin[0]?.items.length > 0"
-  >
-    {{ t("Admin Area") }}
+            <span class="pt-1 w-full">{{ item.label }}</span>
+
+            <span class="grow"></span>
+            <span v-if="item.items" class="flex content-center">
+              <i class="pi pi-fw pi-angle-down"></i>
+            </span>
+          </div>
+        </router-link>
+        <a
+          v-else
+          :href="item.url"
+          :class="{ 'p-disabled': item.disabled }"
+          target="_blank"
+        >
+          <div class="flex flex-row py-2 px-3 gap-2 items-center">
+            <span class="flex p-menuitem-icon content-center" v-if="item.icon">
+              <i :class="item.icon"></i>
+            </span>
+
+            <span class="pt-1 w-full">{{ item.label }}</span>
+
+            <span class="grow"></span>
+            <span v-if="item.items" class="flex content-center">
+              <i class="pi pi-fw pi-angle-down"></i>
+            </span>
+          </div>
+        </a>
+      </template>
+    </PrimePanelMenu>
   </div>
-  <PrimePanelMenu
-    :model="itemsAdmin[0].items"
-    v-if="itemsAdmin[0]?.items"
-    id="admin_menu"
-  >
-    <template #item="{ item }">
-      <router-link
-        v-if="item.to"
-        :to="item.to"
-        :class="{ 'p-disabled': item.disabled }"
-      >
-        <div class="flex flex-row py-1 px-2 gap-2 items-center">
-          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
-            <i :class="item.icon"></i>
-          </span>
-          <span class="pt-1 w-full">{{ item.label }}</span>
-
-          <span class="grow"></span>
-          <span v-if="item.items" class="flex content-center">
-            <i class="pi pi-fw pi-angle-down"></i>
-          </span>
-        </div>
-      </router-link>
-      <a
-        v-else
-        :href="item.url"
-        class=""
-        :class="{ 'p-disabled': item.disabled }"
-        target="_blank"
-      >
-        <div class="flex flex-row py-1 px-2 gap-2 items-center">
-          <span class="flex p-menuitem-icon content-center" v-if="item.icon">
-            <i :class="item.icon"></i>
-          </span>
-
-          <span class="pt-1 w-full">{{ item.label }}</span>
-
-          <span class="grow"></span>
-          <span v-if="item.items" class="flex content-center">
-            <i class="pi pi-fw pi-angle-down"></i>
-          </span>
-          <span v-if="item.target === 'blank'" class="flex content-center mr-1">
-            <!-- TODO: Improve styling rules: use em & class based -->
-            <i class="pi pi-fw pi-external-link" style="font-size: 12px"></i>
-          </span>
-        </div>
-      </a>
-    </template>
-  </PrimePanelMenu>
 </template>
 
 <script lang="ts" setup>
@@ -111,7 +105,6 @@ import PrimePanelMenu from "primevue/panelmenu";
 import PrimeToast from "primevue/toast";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-
 const { t } = useI18n();
 const menuStore = useMenuStore();
 const userStore = useUserStore();
@@ -181,43 +174,32 @@ watch(mainMenu, () => {
 });
 </script>
 
-<style>
-/* TODO: Switch to scoped styles */
-/* can't be scoped because we are overwriting prime styles */
-#main_menu {
+<style lang="scss">
+.sidebar_menu {
   border: none;
   width: 100%;
-}
-#admin_menu {
-  border: none;
-  width: 100%;
-}
-.p-panelmenu a {
-  color: #000;
-  font-size: 15px;
-  height: 20px;
-  text-decoration: none !important;
-}
-.p-panelmenu {
-  border-radius: 0px;
-}
-.p-panelmenu .p-menuitem-link {
-  padding: 0 !important;
-  align-items: center;
-  justify-content: center;
-}
-.p-panelmenu .p-menuitem-text {
-  font-size: 15px;
-  line-height: normal !important;
-}
-.p-panelmenu
-  .p-panelmenu-panel
-  .p-panelmenu-header
-  .p-panelmenu-header-content {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
-  border-radius: 0px !important;
+
+  &.p-panelmenu {
+    .p-panelmenu-panel {
+      margin: 5px;
+    }
+
+    .p-panelmenu-header .p-panelmenu-header-content {
+      border-radius: 5px !important;
+      background: none;
+      border: none;
+    }
+
+    .p-menuitem-text {
+      padding-top: 4px;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: 100;
+    font-size: 1rem;
+    color: rgb(73, 80, 87);
+  }
 }
 </style>

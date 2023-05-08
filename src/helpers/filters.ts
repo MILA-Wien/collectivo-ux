@@ -1,5 +1,4 @@
-import { FilterMatchMode } from "primevue/api";
-import { FilterService } from "primevue/api";
+import { FilterMatchMode, FilterService } from "primevue/api";
 
 function inListFilter(a: any, b: any) {
   if (a == undefined) {
@@ -28,8 +27,18 @@ export const matchModes: any = {
     { label: "Contains", value: FilterMatchMode.CONTAINS },
     // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
     { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
-    { label: "In List", value: "inList" },
+    // { label: "In List", value: "inList" },
     // { label: "Not In List", value: "notInList" },
+    { label: "Is Empty", value: "isNull" },
+  ],
+  textarea: [
+    { label: "Contains", value: FilterMatchMode.CONTAINS },
+    { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
+    { label: "Is Empty", value: "isNull" },
+  ],
+  email: [
+    { label: "Contains", value: FilterMatchMode.CONTAINS },
+    { label: "Starts With", value: FilterMatchMode.STARTS_WITH },
     { label: "Is Empty", value: "isNull" },
   ],
   date: [
@@ -46,8 +55,8 @@ export const matchModes: any = {
   multiselect: [
     // { label: "Contains", value: FilterMatchMode.CONTAINS },
     // { label: "Contains not", value: FilterMatchMode.NOT_CONTAINS },
-    { label: "Equals", value: FilterMatchMode.EQUALS },
-    { label: "Is Empty", value: "isNull" },
+    { label: "Contains", value: FilterMatchMode.EQUALS },
+    // { label: "Is Empty", value: "isNull" },
   ],
   select: [
     { label: "Equals", value: FilterMatchMode.EQUALS },

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { endpoints } from "@/api/api";
-import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
+import ObjectDetailEdit from "@/components/datatable/ObjectDetailEdit.vue";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import type { PropType } from "vue";
@@ -44,7 +44,7 @@ if (!props.create) {
 </script>
 
 <template>
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="data.loaded || data.schemaLoaded"
     :object="data.data"
     :create="create"

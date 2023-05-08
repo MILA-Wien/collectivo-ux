@@ -3,12 +3,12 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
+import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
+import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-
-import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
-import ObjectDetail from "./ObjectDetail.vue";
+import ObjectDetailEdit from "./ObjectDetailEdit.vue";
 import ObjectTable from "./ObjectTable.vue";
 
 import type { endpoints } from "@/api/api";
@@ -62,6 +62,11 @@ const selectedColumns = ref<any[]>([]);
 
 var column_index = 0;
 for (const [key, value] of Object.entries(props.schema)) {
+  // Skip ID column
+  if (key == "id") {
+    continue;
+  }
+
   columns.push({
     field: key,
     header: t(value.label),
@@ -73,6 +78,8 @@ for (const [key, value] of Object.entries(props.schema)) {
   filters.value[key] = {
     // Todo: Add support for OR operator in the backend
     // operator: FilterOperator.AND,
+    // Operator needed for clear filter function
+    operator: FilterOperator.AND,
     constraints: [
       { value: null, matchMode: getDefaultMatchMode(value.input_type) },
     ],
@@ -113,6 +120,7 @@ watch(selectedColumns, (val) => {
 
 // Datatable --------------------------------------------------------------- //
 const selectedObjects = ref([]);
+const table = ref<any>(null);
 
 // Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
@@ -130,7 +138,12 @@ const editEmailsObject = ref({});
 const editEmailsCreate = ref(false);
 function sendEmails() {
   editEmailsObject.value = {
-    recipients: selectedObjects.value.map((m: any) => m.id),
+    // Recipients should be a list of user id's
+    // If object has no user, it is assumed that it is the user object itself
+    // Set is used to remove duplicates (e.g. the same user is selected twice)
+    recipients: Array.from(
+      new Set(selectedObjects.value.map((m: any) => (m.user ? m.user : m.id)))
+    ),
   };
   editEmailsCreate.value = true;
   editEmailsActive.value = true;
@@ -138,16 +151,16 @@ function sendEmails() {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-white">
+  <div class="flex flex-col h-full">
     <!-- Toolbar -->
-    <PrimeToolbar class="mb-4">
+    <PrimeToolbar class="c-datatable-toolbar">
       <template #start>
         <div class="m-1 text-left">
           <!-- v-tooltip.top="t('Create new entry')" -->
           <PrimeButton
             icon="pi pi-plus"
+            class="c-icon-button p-button-sm"
             @click="createObjectFn()"
-            class="p-button-success"
           >
           </PrimeButton>
         </div>
@@ -164,6 +177,14 @@ function sendEmails() {
             class="w-26"
           />
         </div>
+        <div class="m-1">
+          <PrimeButton
+            icon="pi pi-refresh"
+            class="c-icon-button p-button-sm"
+            @click="table.refresh()"
+          >
+          </PrimeButton>
+        </div>
       </template>
       <template #end>
         <!-- TODO: Fix clear filters button  -->
@@ -176,6 +197,7 @@ function sendEmails() {
           <!--  v-tooltip.top="t('Send emails')" -->
           <PrimeButton
             icon="pi pi-send"
+            class="c-icon-button p-button-sm"
             :disabled="!(selectedObjects.length > 0)"
             @click="sendEmails"
           >
@@ -185,6 +207,7 @@ function sendEmails() {
           <!-- v-tooltip.top="t('Export')" -->
           <PrimeButton
             icon="pi pi-file-export"
+            class="c-icon-button p-button-sm"
             :disabled="!(selectedObjects?.length > 0)"
           >
             <JsonCSV
@@ -214,12 +237,15 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
-      />
+        ref="table"
+      >
+        <template #action-column><slot name="action-column"></slot></template>
+      </ObjectTable>
     </div>
   </div>
 
   <!-- Detail dialog -->
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
@@ -230,7 +256,7 @@ function sendEmails() {
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="editEmailsActive"
     :object="editEmailsObject"
     :create="editEmailsCreate"
@@ -240,3 +266,15 @@ function sendEmails() {
     @close="editEmailsActive = false"
   />
 </template>
+
+<style scoped>
+.c-datatable-toolbar {
+  border-bottom: 0;
+  padding: 0.5rem;
+  border-radius: 0px;
+}
+.c-icon-button {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+</style>

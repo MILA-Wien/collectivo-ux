@@ -3,10 +3,11 @@
   "No internet connection.": "Keine Internetverbindung.",
   "Server not reachable.": "Server nicht erreichbar.",
   "Request failed.": "Anfrage fehlgeschlagen.",
-
+  "Submit": "Absenden",
+  "Sign additional shares": "Weitere Anteile zeichnen",
   "Dashboard tiles": "Kacheln",
   "Tiles": "Kacheln",
-
+  "Description": "Beschreibung",
   "User": "Benutzer*in",
   "Users": "Benutzer*innen",
   "Profile": "Profil",
@@ -19,8 +20,11 @@
   "entry": "Eintrag",
   "entries": "Einträge",
   "This extension is still being developed.": "Diese Erweiterung befindet sich noch in Entwicklung.",
+
   "You are a member of": "Du bist Mitglied bei",
   "Your membership number is": "Deine Mitgliedsnummer ist",
+  "Indicate the amount of additional shares that you want to sign. Each share is worth ": "Gib die Anzahl der zusätzlichen Anteile an, die du zeichnen möchtest. Jeder Anteil beträgt ",
+
   "Show my data": "Zu meinen Daten",
   "Profile data": "Stammdaten",
   "Payment data": "Zahlungsdaten",
@@ -234,5 +238,39 @@
 
   "Click here to see your direct loans at MILA.": "Hier kannst du deine Direktkredite bei MILA einsehen.",
   "MILA Direct Loans System": "MILA Direktkredite",
-  "Direct loans": "Direktkredite"
+  "Direct loans": "Direktkredite",
+
+  "Monday": "Montag",
+  "Tuesday": "Dienstag",
+  "Wednesday": "Mittwoch",
+  "Thursday": "Donnerstag",
+  "Friday": "Freitag",
+  "Saturday": "Samstag",
+  "Sunday": "Sonntag",
+
+  "January": "Januar",
+  "February": "Februar",
+  "March": "März",
+  "April": "April",
+  "May": "Mai",
+  "June": "Juni",
+  "July": "Juli",
+  "August": "August",
+  "September": "September",
+  "October": "Oktober",
+  "November": "November",
+  "December": "Dezember",
+
+  "Jan": "Jan",
+  "Feb": "Feb",
+  "Mar": "Mär",
+  "Apr": "Apr",
+  "May": "Mai",
+  "Jun": "Jun",
+  "Jul": "Jul",
+  "Aug": "Aug",
+  "Sep": "Sep",
+  "Oct": "Okt",
+  "Nov": "Nov",
+  "Dec": "Dez"
 }

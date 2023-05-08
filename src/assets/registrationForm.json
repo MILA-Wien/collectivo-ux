@@ -662,7 +662,7 @@
               }
             ],
             "content": "",
-            "extId": "shares_number",
+            "extId": "membership_shares",
             "required": true,
             "validations": [
               {
@@ -689,8 +689,8 @@
                 "value": "more"
               }
             ],
-            "content": "shares_number*20",
-            "extId": "shares_number"
+            "content": "membership_shares*20",
+            "extId": "membership_shares"
           },
           "id": "warucmPWTOqEeE",
           "children": []

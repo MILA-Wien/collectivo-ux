@@ -8,6 +8,7 @@ import PrimeDropdown from "primevue/dropdown";
 import PrimeInputSwitch from "primevue/inputswitch";
 import PrimeInputText from "primevue/inputtext";
 import PrimeMultiSelect from "primevue/multiselect";
+import PrimeOverlayPanel from "primevue/overlaypanel";
 import type { PropType } from "vue";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -99,6 +100,17 @@ watch(filters, (val) => {
   emit("update:filters", val);
 });
 
+// Objects view overlay panel ---------------------------------------------- //
+const op = ref();
+const op_objects = ref([]);
+const op_choices = ref({});
+const op_toggle = (col: any, data: any, event: any) => {
+  op_choices.value = col.choices;
+  op_objects.value = data[col.field];
+  op.value.toggle(event);
+};
+// col.choices[slotProps.value]
+
 // Dialogues --------------------------------------------------------------- //
 function editObjectFn(event: any) {
   emit("update:editObject", event);
@@ -107,7 +119,7 @@ function editObjectFn(event: any) {
 }
 const totalRecords = ref(0);
 watch(
-  () => props.store[props.name].totalRecords,
+  () => props.store[props.name].listTotalRecords,
   (val) => {
     totalRecords.value = val;
   },
@@ -115,9 +127,12 @@ watch(
 );
 
 // Filter --------------------------------------------------------------- //
+const filterState = ref();
 function filter($event: any) {
+  filterState.value = $event;
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
   let filter = "";
+
   Object.keys($event.filters).forEach((key: any) => {
     if ($event.filters[key].constraints[0].value !== null) {
       if (
@@ -130,7 +145,6 @@ function filter($event: any) {
           $event.filters[key].constraints[0].matchMode
         )}=${$event.filters[key].constraints[0].value}`;
       } else {
-        console.log($event.filters[key].constraints[0].value);
         $event.filters[key].constraints[0].value.forEach((value: any) => {
           filter = `${filter}&${key}${dataTableFilterModesToDjangoFilter(
             $event.filters[key].constraints[0].matchMode
@@ -141,6 +155,17 @@ function filter($event: any) {
   });
   props.store.filter(props.name, $event, sort, filter);
 }
+function refresh() {
+  if (filterState.value) {
+    filter(filterState.value);
+  } else {
+    props.store.get(props.name);
+  }
+}
+
+defineExpose({
+  refresh,
+});
 
 function dataTableFilterModesToDjangoFilter(filterMode: string) {
   switch (filterMode) {
@@ -185,7 +210,14 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 </script>
 
 <template>
-  <div class="datatable" style="height: 100%; width: 100%">
+  <PrimeOverlayPanel ref="op">
+    <div class="c-datatable-op">
+      <div v-for="obj in op_objects" :key="obj" class="mb-2 tag">
+        {{ op_choices[obj] }}
+      </div>
+    </div>
+  </PrimeOverlayPanel>
+  <div class="datatable">
     <PrimeDataTable
       :value="objects"
       v-model:selection="selectedObjects"
@@ -205,12 +237,12 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
         t('of') +
         ' {totalRecords}'
       "
-      showGridlines
       class="p-datatable-sm object-table"
       filterDisplay="menu"
+      :striped-rows="true"
       v-model:filters="filters"
       :resizableColumns="true"
-      columnResizeMode="fit"
+      columnResizeMode="expand"
       :scrollable="true"
       scrollHeight="flex"
       @page="filter"
@@ -220,19 +252,29 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       <!-- Selection column -->
       <PrimeColumn
         selectionMode="multiple"
-        style="width: 50px; max-width: 50px"
+        style="padding-left: 13px; width: 40px; max-width: 40px"
         :frozen="true"
       ></PrimeColumn>
+
       <!-- Edit column -->
-      <PrimeColumn style="width: 50px; max-width: 50px" :frozen="true">
-        <template #body="slotProps">
-          <PrimeButton
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm"
-            @click="editObjectFn(slotProps.data)"
-          />
-        </template>
-      </PrimeColumn>
+      <slot name="action-column">
+        <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
+          <template #header
+            ><PrimeButton
+              icon="pi pi-pencil"
+              class="p-button-text p-button-sm button-edit"
+              disabled="true"
+          /></template>
+          <template #body="slotProps">
+            <PrimeButton
+              icon="pi pi-pencil"
+              class="p-button-text p-button-sm button-edit"
+              @click="editObjectFn(slotProps.data)"
+            />
+          </template>
+        </PrimeColumn>
+      </slot>
+
       <!-- Content columns -->
       <PrimeColumn
         v-for="col of selectedColumns"
@@ -241,6 +283,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
         :field="col.field"
         :sortable="true"
         :filterMatchModeOptions="matchModes[col.input_type]"
+        :show-filter-operator="false"
       >
         <!-- Custom bodies for different input types -->
         <template
@@ -254,9 +297,18 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
             {{ t(col.choices[data[col.field]]) }}
           </div>
         </template>
+        <template #body="{ data }" v-else-if="col.input_type == 'list'">
+          {{ data[col.field] }}
+        </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
-          {{ t(formatMultiSelect(data[col.field])) }}
+
+          <PrimeButton
+            type="button"
+            :label="t(formatMultiSelect(data[col.field]))"
+            class="p-button-text p-button-sm button-expand"
+            @click="op_toggle(col, data, $event)"
+          />
         </template>
         <template #body="{ data }" v-else>
           <!-- TODO: Inspect function to show objects -->
@@ -341,21 +393,12 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   </div>
 </template>
 
-<style lang="scss">
-.object-table.p-component {
-  font-size: 14px;
-}
-
-.p-datatable.p-datatable-gridlines .p-paginator-bottom {
-  border-width: 1px 1px 1px 1px;
-}
-
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td,
-.object-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > th {
-  padding: 5px 10px 5px 10px;
-  word-break: break-all;
-  // vertical-align: middle;
-  // white-space: normal;
+<style scoped lang="scss">
+.datatable {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border: 1px solid #e0e0e0;
 }
 
 .tag {
@@ -371,8 +414,27 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   width: fit-content;
 }
 
-.object-table.p-datatable .p-column-title {
-  max-width: 14ch;
-  overflow: hidden;
+.button-edit {
+  padding: 6px !important;
+  width: 30px !important;
+}
+
+.button-expand {
+  padding: 6px !important;
+}
+
+:global(.c-datatable-op) {
+  max-height: 20rem;
+  overflow: scroll;
+}
+
+// Hide filter-add-rule button until feature is available
+:global(.p-column-filter-add-rule) {
+  display: none;
+}
+
+// Hide filter-add-rule button until feature is available
+.p-column-filter-add-rule {
+  display: none;
 }
 </style>

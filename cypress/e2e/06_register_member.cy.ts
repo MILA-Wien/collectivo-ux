@@ -56,11 +56,8 @@ describe("register user_not_member", () => {
   });
   it("register as natural person", () => {
     cy.login("test_user_not_member@example.com");
-    cy.get("span[id='welcome-member-span']").should(
-      "contain.text",
-      "Willkommen auf der MILA Mitgliederplattform!"
-    );
-    cy.get(".p-card-body button")
+    cy.get("#collectivo-dashboard").should("exist");
+    cy.get("#mila-membership-tile button")
       .then(($btn) => {
         const txt = $btn.text();
         expect(txt).to.eq("Weiter");
@@ -74,7 +71,11 @@ describe("register user_not_member", () => {
     cy.get("#first-name-input > .textfield input").clear().type("Ötz1");
     cy.get("#last-name-input > .textfield input").clear().type("CABBAG3");
     cy.get('[type="radio"]').check("male");
-    cy.get("#birthdate-input > .date input").clear().type("01.01.1990").blur();
+    cy.get("#birthdate-input > .date input").click({ force: true });
+    // document.querySelector("#pv_id_1_panel > div > div > div.p-datepicker-calendar-container > table > tbody > tr:nth-child(5) > td.p-datepicker-today > span")
+    cy.get(
+      "#pv_id_1_panel > div > div > div.p-datepicker-calendar-container > table > tbody > tr > td.p-datepicker-today > span"
+    ).click({ force: true });
     cy.get("#occupation-input > .textfield input")
       .click({ force: true })
       .type("lazy cat");
@@ -131,11 +132,8 @@ describe("register user_not_member", () => {
 
   it("register as legal person", () => {
     cy.login("test_user_not_member@example.com");
-    cy.get("span[id ='welcome-member-span']").should(
-      "contain.text",
-      "Willkommen auf der MILA Mitgliederplattform!"
-    );
-    cy.get(".p-card-body button")
+    cy.get("#collectivo-dashboard").should("exist");
+    cy.get("#mila-membership-tile button")
       .then(($btn) => {
         const txt = $btn.text();
         expect(txt).to.eq("Weiter");
