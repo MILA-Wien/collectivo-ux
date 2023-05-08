@@ -76,8 +76,7 @@ export const useMembersStore = defineStore({
       milaGroups: JSON.parse(JSON.stringify(DataTemplate)),
 
       lotzappSettings: JSON.parse(JSON.stringify(DataTemplate)),
-      lotzappInvoicesSync: JSON.parse(JSON.stringify(DataTemplate)),
-      lotzappAddressesSync: JSON.parse(JSON.stringify(DataTemplate)),
+      lotzappSync: JSON.parse(JSON.stringify(DataTemplate)),
     } as membersStore),
 
   actions: {

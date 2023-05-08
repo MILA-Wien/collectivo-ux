@@ -127,7 +127,9 @@ watch(
 );
 
 // Filter --------------------------------------------------------------- //
+const filterState = ref();
 function filter($event: any) {
+  filterState.value = $event;
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
   let filter = "";
 
@@ -153,6 +155,17 @@ function filter($event: any) {
   });
   props.store.filter(props.name, $event, sort, filter);
 }
+function refresh() {
+  if (filterState.value) {
+    filter(filterState.value);
+  } else {
+    props.store.get(props.name);
+  }
+}
+
+defineExpose({
+  refresh,
+});
 
 function dataTableFilterModesToDjangoFilter(filterMode: string) {
   switch (filterMode) {

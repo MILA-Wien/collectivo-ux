@@ -120,6 +120,7 @@ watch(selectedColumns, (val) => {
 
 // Datatable --------------------------------------------------------------- //
 const selectedObjects = ref([]);
+const table = ref<any>(null);
 
 // Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
@@ -176,6 +177,14 @@ function sendEmails() {
             class="w-26"
           />
         </div>
+        <div class="m-1">
+          <PrimeButton
+            icon="pi pi-refresh"
+            class="c-icon-button p-button-sm"
+            @click="table.refresh()"
+          >
+          </PrimeButton>
+        </div>
       </template>
       <template #end>
         <!-- TODO: Fix clear filters button  -->
@@ -228,6 +237,7 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
+        ref="table"
       >
         <template #action-column><slot name="action-column"></slot></template>
       </ObjectTable>

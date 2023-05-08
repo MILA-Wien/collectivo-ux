@@ -121,8 +121,7 @@ export const endpoints = {
   milaProfiles: "/mila/profiles/",
   milaSkills: "/mila/skills/",
   milaGroups: "/mila/groups/",
-  lotzappAddressesSync: "/lotzapp/addresses/sync/",
-  lotzappInvoicesSync: "/lotzapp/invoices/sync/",
+  lotzappSync: "/lotzapp/sync/",
   lotzappSettings: "/lotzapp/settings/",
 
   shiftsShifts: "/shifts/shifts/",
