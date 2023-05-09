@@ -119,13 +119,22 @@ const router = createRouter({
       component: () => import("../components/extensions/ExtensionsAdmin.vue"),
     },
     {
-      path: "/iframe/:menuItemId",
+      path: "/iframe/:menuItemId(\\d+)",
       name: "iframe",
       meta: {
         layout: FullScreenLayout,
         isMember: true,
       },
       component: () => import("@/views/IframeView.vue"),
+    },
+    {
+      path: "/component/:extension/:componentName/:compoenentRoute*",
+      name: "component",
+      meta: {
+        layout: FullScreenLayout,
+        isMember: true,
+      },
+      component: () => import("@/views/ComponentView.vue"),
     },
     // {
     //   path: "/:extension/:id",

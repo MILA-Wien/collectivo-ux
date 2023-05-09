@@ -36,7 +36,7 @@ defineProps({
         <i :class="item.icon"></i>
       </span>
 
-      <span class="pt-1 w-full">iframe{{ item.label }}</span>
+      <span class="pt-1 w-full">{{ item.label }}</span>
 
       <span class="grow"></span>
       <span v-if="item.items" class="flex content-center">
@@ -56,7 +56,7 @@ defineProps({
         <i :class="item.icon"></i>
       </span>
 
-      <span class="pt-1 w-full">{{ item.target }}{{ item.label }}</span>
+      <span class="pt-1 w-full">{{ item.label }}</span>
 
       <span class="grow"></span>
       <span v-if="item.items" class="flex content-center">
