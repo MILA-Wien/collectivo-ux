@@ -3,7 +3,8 @@
   "No internet connection.": "Keine Internetverbindung.",
   "Server not reachable.": "Server nicht erreichbar.",
   "Request failed.": "Anfrage fehlgeschlagen.",
-
+  "Submit": "Absenden",
+  "Sign additional shares": "Weitere Anteile zeichnen",
   "Dashboard tiles": "Kacheln",
   "Tiles": "Kacheln",
   "Description": "Beschreibung",
@@ -19,8 +20,11 @@
   "entry": "Eintrag",
   "entries": "Einträge",
   "This extension is still being developed.": "Diese Erweiterung befindet sich noch in Entwicklung.",
+
   "You are a member of": "Du bist Mitglied bei",
   "Your membership number is": "Deine Mitgliedsnummer ist",
+  "Indicate the amount of additional shares that you want to sign. Each share is worth ": "Gib die Anzahl der zusätzlichen Anteile an, die du zeichnen möchtest. Jeder Anteil beträgt ",
+
   "Show my data": "Zu meinen Daten",
   "Profile data": "Stammdaten",
   "Payment data": "Zahlungsdaten",

@@ -1,16 +1,29 @@
 <script setup lang="ts">
+import ObjectList from "@/components/datatable/ObjectList.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import { errorToast, successToast } from "@/helpers/toasts";
 import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
+import PrimeButton from "primevue/button";
 import PrimePanel from "primevue/panel";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
+import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
-
+const toast = useToast();
 const { t } = useI18n();
 const membersStore = useMembersStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Memberships");
+
+async function generate_invoices() {
+  try {
+    await membersStore.create("membershipsCreateInvoices");
+    successToast(toast, t("Addresses synchronized"));
+  } catch (e) {
+    errorToast(toast, e);
+  }
+}
 </script>
 
 <template>
@@ -47,12 +60,7 @@ menuStore.setTitle("Memberships");
         />
       </TabPanel>
       <TabPanel :header="t('Statistics')">
-        <ObjectLoader
-          :store="membersStore"
-          :name="'membershipsTypes'"
-          :default-columns="['name']"
-          :display-type="'list'"
-        >
+        <ObjectList :store="membersStore" :name="'membershipsTypes'">
           <template #item="slotProps">
             <PrimePanel :header="slotProps.data.name" class="mb-5">
               <p
@@ -63,7 +71,12 @@ menuStore.setTitle("Memberships");
               </p>
             </PrimePanel>
           </template>
-        </ObjectLoader>
+        </ObjectList>
+      </TabPanel>
+      <TabPanel :header="t('Actions')">
+        <PrimeButton @click="generate_invoices()"
+          >Generate invoices</PrimeButton
+        >
       </TabPanel>
     </TabView>
   </div>

@@ -8,7 +8,7 @@ import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-import ObjectDetail from "./ObjectDetail.vue";
+import ObjectDetailEdit from "./ObjectDetailEdit.vue";
 import ObjectTable from "./ObjectTable.vue";
 
 import type { endpoints } from "@/api/api";
@@ -62,6 +62,11 @@ const selectedColumns = ref<any[]>([]);
 
 var column_index = 0;
 for (const [key, value] of Object.entries(props.schema)) {
+  // Skip ID column
+  if (key == "id") {
+    continue;
+  }
+
   columns.push({
     field: key,
     header: t(value.label),
@@ -115,6 +120,7 @@ watch(selectedColumns, (val) => {
 
 // Datatable --------------------------------------------------------------- //
 const selectedObjects = ref([]);
+const table = ref<any>(null);
 
 // Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
@@ -171,6 +177,14 @@ function sendEmails() {
             class="w-26"
           />
         </div>
+        <div class="m-1">
+          <PrimeButton
+            icon="pi pi-refresh"
+            class="c-icon-button p-button-sm"
+            @click="table.refresh()"
+          >
+          </PrimeButton>
+        </div>
       </template>
       <template #end>
         <!-- TODO: Fix clear filters button  -->
@@ -223,12 +237,15 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
-      />
+        ref="table"
+      >
+        <template #action-column><slot name="action-column"></slot></template>
+      </ObjectTable>
     </div>
   </div>
 
   <!-- Detail dialog -->
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
@@ -239,7 +256,7 @@ function sendEmails() {
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectDetail
+  <ObjectDetailEdit
     v-if="editEmailsActive"
     :object="editEmailsObject"
     :create="editEmailsCreate"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import PrimeToast from "primevue/toast";
 import { RouterView } from "vue-router";
 import { useUserStore } from "./stores/user";
 import HeaderView from "./views/HeaderView.vue";
@@ -16,6 +17,7 @@ const route = useRoute();
 </script>
 
 <template>
+  <PrimeToast />
   <div
     id="collectivo-frame"
     class="flex h-screen bg-mila font-sans"

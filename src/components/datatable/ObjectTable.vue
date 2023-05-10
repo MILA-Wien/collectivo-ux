@@ -119,7 +119,7 @@ function editObjectFn(event: any) {
 }
 const totalRecords = ref(0);
 watch(
-  () => props.store[props.name].totalRecords,
+  () => props.store[props.name].listTotalRecords,
   (val) => {
     totalRecords.value = val;
   },
@@ -127,7 +127,9 @@ watch(
 );
 
 // Filter --------------------------------------------------------------- //
+const filterState = ref();
 function filter($event: any) {
+  filterState.value = $event;
   const sort = `${$event.sortOrder === -1 ? "-" : ""}${$event.sortField}`;
   let filter = "";
 
@@ -153,6 +155,17 @@ function filter($event: any) {
   });
   props.store.filter(props.name, $event, sort, filter);
 }
+function refresh() {
+  if (filterState.value) {
+    filter(filterState.value);
+  } else {
+    props.store.get(props.name);
+  }
+}
+
+defineExpose({
+  refresh,
+});
 
 function dataTableFilterModesToDjangoFilter(filterMode: string) {
   switch (filterMode) {
@@ -244,21 +257,23 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
       ></PrimeColumn>
 
       <!-- Edit column -->
-      <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
-        <template #header
-          ><PrimeButton
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm button-edit"
-            disabled="true"
-        /></template>
-        <template #body="slotProps">
-          <PrimeButton
-            icon="pi pi-pencil"
-            class="p-button-text p-button-sm button-edit"
-            @click="editObjectFn(slotProps.data)"
-          />
-        </template>
-      </PrimeColumn>
+      <slot name="action-column">
+        <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
+          <template #header
+            ><PrimeButton
+              icon="pi pi-pencil"
+              class="p-button-text p-button-sm button-edit"
+              disabled="true"
+          /></template>
+          <template #body="slotProps">
+            <PrimeButton
+              icon="pi pi-pencil"
+              class="p-button-text p-button-sm button-edit"
+              @click="editObjectFn(slotProps.data)"
+            />
+          </template>
+        </PrimeColumn>
+      </slot>
 
       <!-- Content columns -->
       <PrimeColumn
@@ -281,6 +296,9 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
           <div v-if="data[col.field]" class="tag">
             {{ t(col.choices[data[col.field]]) }}
           </div>
+        </template>
+        <template #body="{ data }" v-else-if="col.input_type == 'list'">
+          {{ data[col.field] }}
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
