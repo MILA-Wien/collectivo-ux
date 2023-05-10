@@ -4,10 +4,14 @@ import { RouterView } from "vue-router";
 import { useUserStore } from "./stores/user";
 import HeaderView from "./views/HeaderView.vue";
 import MenuView from "./views/SidebarView.vue";
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
 import { useRoute } from "vue-router";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
+import { useSettingsStore } from "./stores/settings";
+
+const settingsStore = useSettingsStore();
+settingsStore.getExtensions();
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 const route = useRoute();
 </script>
 

@@ -53,6 +53,15 @@ function buildItem(data: any): any {
     if (data.extension.name === "core" && data.component === "logout") {
       item.url = userStore.user?.logoutUrl || "/";
     }
+    // set path for external components
+    else if (data.component && data.target === "component") {
+      var reg = new RegExp("^[0-9]$");
+      if (reg.test(data.component)) {
+        item.to = "/component/" + data.extension.name + "/" + data.component;
+      } else {
+        item.to = "/" + data.extension.name + "/" + data.component;
+      }
+    }
     // set path for internal links
     else if (data.component) {
       item.to = "/" + data.extension.name + "/" + data.component;

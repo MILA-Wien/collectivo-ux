@@ -128,7 +128,7 @@ const router = createRouter({
       component: () => import("@/views/IframeView.vue"),
     },
     {
-      path: "/component/:extension/:componentName/:compoenentRoute*",
+      path: "/component/:extension/:componentId/:componentRoute*",
       name: "component",
       meta: {
         layout: FullScreenLayout,
