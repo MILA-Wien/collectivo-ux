@@ -11,44 +11,19 @@ const menuStore = useMenuStore();
 
 let Component = LoadingItem;
 function loadItem() {
+  console.log("loading");
   if (route.params.extension && route.params.componentId) {
-    switch (route.params.componentId) {
-      case "1":
-        //@ts-ignore
-        Component = import("a/component"); // <-- this has to be defined prior to building.
-        break;
-      case "2":
-        //@ts-ignore
-        Component = import("b/component"); // <-- this has to be defined prior to building.
-        break;
-      case "3":
-        //@ts-ignore
-        Component = import("c/component"); // <-- this has to be defined prior to building.
-        break;
-      case "4":
-        //@ts-ignore
-        Component = import("d/component"); // <-- this has to be defined prior to building.
-        break;
-      case "5":
-        //@ts-ignore
-        Component = import("e/component"); // <-- this has to be defined prior to building.
-        break;
-      case "6":
-        //@ts-ignore
-        Component = import("f/component"); // <-- this has to be defined prior to building.
-        break;
-      case "7":
-        //@ts-ignore
-        Component = import("g/component"); // <-- this has to be defined prior to building.
-        break;
-      case "8":
-        //@ts-ignore
-        Component = import("h/component"); // <-- this has to be defined prior to building.
-        break;
-      default:
-        Component = ErrorItem;
-        break;
-    }
+    console.log("if", route.params.componentId);
+
+    // Fetch remote endpoint dynamically and put it into window
+    // @ts-ignore
+    window.RemoteURLs = {
+      a: `http://localhost:${route.params.extension}/assets/disposerv.js`,
+    };
+
+    // Import component that gets endpoint from window
+    //@ts-ignore
+    Component = import("a/component");
   } else {
     Component = ErrorItem;
   }
