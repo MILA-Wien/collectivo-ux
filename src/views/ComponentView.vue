@@ -5,7 +5,6 @@ import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import { useRoute } from "vue-router";
-import ErrorItem from "../components/ErrorItem.vue";
 import LoadingItem from "../components/LoadingItem.vue";
 
 const route = useRoute();
@@ -44,7 +43,7 @@ function loadItem() {
         console.log("remoteURL", window.RemoteURLs.a);
         // Import component via remote ID
         //@ts-ignore
-        Component = import(`a/component`);
+        Component = import(`a/component2`);
         // Component = import(`${remoteID}/${component.name}`);
         componentLoaded.value = true;
       } else {
@@ -81,15 +80,18 @@ watch(
 </script>
 
 <template>
-  <div v-if="error">
+  <div id="root">
+    <component :is="Component"></component>
+  </div>
+  <!-- <div v-if="error">
     <ErrorItem :error="error" />
   </div>
-  <div v-else-if="componentLoaded">
+  <div v-else-if="componentLoaded" id="root">
     <component :is="Component"></component>
   </div>
   <div v-else>
     <LoadingItem />
-  </div>
+  </div> -->
   <div class="extension-wrapper">
     <!-- <component :is="type" v-if="!isIframe"></component> -->
     <!-- <IframeItem v-if="isIframe" :src="iframeSrc" /> -->
