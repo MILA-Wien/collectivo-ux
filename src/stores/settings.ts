@@ -1,9 +1,11 @@
-import { defineStore } from "pinia";
 import { coreVersionFn } from "@/api/api";
 import type { Version } from "@/api/types";
+import { defineStore } from "pinia";
 
 export type SettingsStoreState = {
   version: Version | null;
+  components: any;
+  remoteIDs: any;
 };
 
 export const useSettingsStore = defineStore({
@@ -11,41 +13,65 @@ export const useSettingsStore = defineStore({
   state: () =>
     ({
       version: null,
+      components: {},
+      remoteIDs: {},
     } as SettingsStoreState),
 
   actions: {
     async getVersion() {
       this.version = await coreVersionFn();
     },
-    async getExtensions() {
-      // Todo: get this from the API
+    getRemoteID(component: any) {
+      // Get URL from component
+      const url = component.path;
+
+      // Return remote ID if already set
+      if (url in this.remoteIDs) {
+        return this.remoteIDs[url];
+      }
+
+      // Create window.RemoteURLs if not exists
       // @ts-ignore
-      window.RemoteURLs = {
-        a: import.meta.env.VITE_REMOTE_URL_A
-          ? import.meta.env.VITE_REMOTE_URL_A
-          : undefined,
-        b: import.meta.env.VITE_REMOTE_URL_B
-          ? import.meta.env.VITE_REMOTE_URL_B
-          : undefined,
-        c: import.meta.env.VITE_REMOTE_URL_C
-          ? import.meta.env.VITE_REMOTE_URL_C
-          : undefined,
-        d: import.meta.env.VITE_REMOTE_URL_D
-          ? import.meta.env.VITE_REMOTE_URL_D
-          : undefined,
-        e: import.meta.env.VITE_REMOTE_URL_E
-          ? import.meta.env.VITE_REMOTE_URL_E
-          : undefined,
-        f: import.meta.env.VITE_REMOTE_URL_F
-          ? import.meta.env.VITE_REMOTE_URL_F
-          : undefined,
-        g: import.meta.env.VITE_REMOTE_URL_G
-          ? import.meta.env.VITE_REMOTE_URL_G
-          : undefined,
-        h: import.meta.env.VITE_REMOTE_URL_H
-          ? import.meta.env.VITE_REMOTE_URL_H
-          : undefined,
-      };
+      if (window.RemoteURLs === undefined) {
+        // @ts-ignore
+        window.RemoteURLs = {
+          a: undefined,
+          b: undefined,
+          c: undefined,
+          d: undefined,
+          e: undefined,
+          f: undefined,
+          g: undefined,
+          h: undefined,
+          i: undefined,
+          j: undefined,
+          k: undefined,
+          l: undefined,
+          m: undefined,
+          n: undefined,
+          o: undefined,
+          p: undefined,
+          q: undefined,
+        };
+      }
+
+      // Get new remote ID from window.RemoteURLs
+      // @ts-ignore
+      const remoteID = Object.keys(window.RemoteURLs).find(
+        // @ts-ignore
+        (key) => window.RemoteURLs[key] === undefined
+      );
+
+      // Throw error if all remote IDs are taken
+      if (remoteID === undefined) {
+        throw new Error("No free slot for remote url");
+      }
+
+      // Set remote ID to window and store and return it
+      // @ts-ignore
+      window.RemoteURLs[remoteID] = url;
+      this.remoteIDs[url] = remoteID;
+      return remoteID;
     },
   },
   getters: {},

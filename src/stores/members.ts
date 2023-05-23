@@ -40,7 +40,7 @@ export const useMembersStore = defineStore({
       coreUsers: JSON.parse(JSON.stringify(DataTemplate)),
       coreUsersExtended: JSON.parse(JSON.stringify(DataTemplate)),
       coreGroups: JSON.parse(JSON.stringify(DataTemplate)),
-
+      componentsComponents: JSON.parse(JSON.stringify(DataTemplate)),
       extensionsExtensions: JSON.parse(JSON.stringify(DataTemplate)),
 
       dashboardTiles: JSON.parse(JSON.stringify(DataTemplate)),
@@ -88,7 +88,6 @@ export const useMembersStore = defineStore({
           API.getSchema(objectName),
           API.get(objectName, id),
         ]);
-
         // Throw error if response does not match store data type
         if (objects.data.results instanceof Array) {
           throw new Error("Receiving list, expecting detail.");

@@ -1,32 +1,57 @@
 <script setup lang="ts">
+import { useMembersStore } from "@/stores/members";
 import { useMenuStore } from "@/stores/menu";
-import { onMounted, shallowRef, watch } from "vue";
+import { useSettingsStore } from "@/stores/settings";
+import { storeToRefs } from "pinia";
+import { onMounted, ref, shallowRef, watch } from "vue";
 import { useRoute } from "vue-router";
 import ErrorItem from "../components/ErrorItem.vue";
 import LoadingItem from "../components/LoadingItem.vue";
+
 const route = useRoute();
 
 let type = shallowRef(LoadingItem);
 const menuStore = useMenuStore();
+const membersStore = useMembersStore();
+const settingsStore = useSettingsStore();
 
+// Load data
+const error = ref<Object | null>(null);
+const data = storeToRefs(membersStore)["componentsComponents"];
+const componentLoaded = ref(false);
 let Component = LoadingItem;
+
 function loadItem() {
-  console.log("loading");
-  if (route.params.extension && route.params.componentId) {
-    console.log("if", route.params.componentId);
-
-    // Fetch remote endpoint dynamically and put it into window
-    // @ts-ignore
-    window.RemoteURLs = {
-      a: `http://localhost:${route.params.extension}/assets/disposerv.js`,
-    };
-
-    // Import component that gets endpoint from window
-    //@ts-ignore
-    Component = import("a/component");
-  } else {
-    Component = ErrorItem;
-  }
+  membersStore
+    .get("componentsComponents")
+    .catch((e: any) => {
+      error.value = e;
+    })
+    .then(() => {
+      // Get component from URL parameters
+      const component = data.value.list.find(
+        (c: any) =>
+          c.extension.name === route.params.extension && // needs ID
+          c.name === route.params.component
+      );
+      console.log("component", component);
+      if (component) {
+        // Get remote ID for component
+        // @ts-ignore
+        const remoteID = settingsStore.getRemoteID(component);
+        console.log("remoteID", remoteID);
+        // @ts-ignore
+        console.log("remoteURL", window.RemoteURLs.a);
+        // Import component via remote ID
+        //@ts-ignore
+        Component = import(`a/component`);
+        // Component = import(`${remoteID}/${component.name}`);
+        componentLoaded.value = true;
+      } else {
+        console.log("Component not found");
+        error.value = "Component not found";
+      }
+    });
 }
 onMounted(() => {
   loadItem();
@@ -39,7 +64,6 @@ watch(
   }
 );
 // getUrlFromMenuItemId(route.params.menuItemId.toString());
-
 watch(
   () => route.params.extension,
   () => {
@@ -57,8 +81,14 @@ watch(
 </script>
 
 <template>
-  <div id="root">
+  <div v-if="error">
+    <ErrorItem :error="error" />
+  </div>
+  <div v-else-if="componentLoaded">
     <component :is="Component"></component>
+  </div>
+  <div v-else>
+    <LoadingItem />
   </div>
   <div class="extension-wrapper">
     <!-- <component :is="type" v-if="!isIframe"></component> -->

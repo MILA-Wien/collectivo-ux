@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import PrimeToast from "primevue/toast";
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
+import DefaultLayout from "./layouts/DefaultLayout.vue";
 import { useUserStore } from "./stores/user";
 import HeaderView from "./views/HeaderView.vue";
 import MenuView from "./views/SidebarView.vue";
-import { useRoute } from "vue-router";
-import DefaultLayout from "./layouts/DefaultLayout.vue";
-import { useSettingsStore } from "./stores/settings";
 
-const settingsStore = useSettingsStore();
-settingsStore.getExtensions();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();

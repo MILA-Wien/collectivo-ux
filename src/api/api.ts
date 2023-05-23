@@ -82,7 +82,7 @@ export const endpoints = {
   coreUsers: "/core/users/",
   coreUsersExtended: "/core/users-extended/",
   coreGroups: "/core/groups/",
-
+  componentsComponents: "/components/components/",
   extensionsExtensions: "/extensions/extensions/",
 
   dashboardTiles: "/dashboard/tiles/",
