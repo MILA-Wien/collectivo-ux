@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
 // line above solves error below: https://stackoverflow.com/a/72149404/19932351
+import federation from "@originjs/vite-plugin-federation";
+import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import federation from "@originjs/vite-plugin-federation";
 
 // https://vitejs.dev/config/
 export default defineConfig({

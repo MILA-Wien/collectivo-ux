@@ -27,59 +27,18 @@
 
 <script lang="ts" setup>
 import { useMenuStore } from "@/stores/menu";
-import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import PrimePanelMenu from "primevue/panelmenu";
 import PrimeToast from "primevue/toast";
-import SidebarMenuItem from "./SidebarMenuItem.vue";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import SidebarMenuItem from "./SidebarMenuItem.vue";
 const { t } = useI18n();
 const menuStore = useMenuStore();
-const userStore = useUserStore();
 const { mainMenu, adminMenu } = storeToRefs(menuStore);
-// TODO: Replace with prime menuitem type
+
 const itemsMain = ref<any[]>([]);
 const itemsAdmin = ref<any[]>([]);
-
-function buildItem(data: any): any {
-  if (data !== null) {
-    const item: any = {
-      label: t(data.label),
-      icon: "pi pi-fw " + (data.icon_name ? data.icon_name : ""),
-    };
-
-    // set link for logout
-    if (data.extension.name === "core" && data.component === "logout") {
-      item.url = userStore.user?.logoutUrl || "/";
-    }
-    // set path for external components
-    else if (data.component && data.target === "component") {
-      var reg = new RegExp("^[0-9]$");
-      if (reg.test(data.component)) {
-        item.to = "/component/" + data.extension.name + "/" + data.component;
-      } else {
-        item.to = "/" + data.extension.name + "/" + data.component;
-      }
-    }
-    // set path for internal links
-    else if (data.component) {
-      item.to = "/" + data.extension.name + "/" + data.component;
-    }
-    // set data for iframes
-    else if (data.target === "iframe") {
-      item.url = data.link;
-      item.to = `/iframe/${data.id}`;
-    }
-    // set link for external links
-    else if (data.link && data.target === "blank") {
-      item.url = data.link;
-      item.target = data.target;
-    }
-    // return item
-    return item;
-  }
-}
 
 function buildMenu(menu: any, items: any) {
   items.value = [
@@ -89,11 +48,11 @@ function buildMenu(menu: any, items: any) {
   ];
   if (menu !== null && menu !== null && menu.menu) {
     for (let i = 0; i < menu.menu.length; i++) {
-      const item = buildItem(menu.menu[i]);
+      const item = menu.menu[i];
       if (menu.menu[i].items && menu.menu[i].items.length > 0) {
         item.items = [];
         for (let j = 0; j < menu.menu[i].items.length; j++) {
-          const sub_item = buildItem(menu.menu[i].items[j]);
+          const sub_item = menu.menu[i].items[j];
           item.items.push(sub_item);
         }
       }

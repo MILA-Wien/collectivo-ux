@@ -1,26 +1,32 @@
 <script setup lang="ts">
+// Remote entry components are still an experimental feature
 import { useMembersStore } from "@/stores/members";
-import { useMenuStore } from "@/stores/menu";
 import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
-import { onMounted, ref, shallowRef, watch } from "vue";
+import { defineAsyncComponent, onMounted, ref, shallowRef, watch } from "vue";
 import { useRoute } from "vue-router";
+import IframeItem from "../components/IFrameItem.vue";
 import LoadingItem from "../components/LoadingItem.vue";
-
 const route = useRoute();
 
 let type = shallowRef(LoadingItem);
-const menuStore = useMenuStore();
 const membersStore = useMembersStore();
 const settingsStore = useSettingsStore();
-
-// Load data
 const error = ref<Object | null>(null);
 const data = storeToRefs(membersStore)["componentsComponents"];
-const componentLoaded = ref(false);
-let Component = LoadingItem;
+const iframe = ref("");
+const remoteID = ref("");
+let ComponentA = LoadingItem;
+let ComponentB = LoadingItem;
+let ComponentC = LoadingItem;
+let ComponentD = LoadingItem;
+let ComponentE = LoadingItem;
+let ComponentF = LoadingItem;
+let ComponentG = LoadingItem;
+let ComponentH = LoadingItem;
 
 function loadItem() {
+  iframe.value = "";
   membersStore
     .get("componentsComponents")
     .catch((e: any) => {
@@ -30,24 +36,54 @@ function loadItem() {
       // Get component from URL parameters
       const component = data.value.list.find(
         (c: any) =>
-          c.extension.name === route.params.extension && // needs ID
+          c.extension.name === route.params.extension &&
           c.name === route.params.component
       );
-      console.log("component", component);
-      if (component) {
+      if (component && component.type === "remote") {
         // Get remote ID for component
         // @ts-ignore
-        const remoteID = settingsStore.getRemoteID(component);
-        console.log("remoteID", remoteID);
-        // @ts-ignore
-        console.log("remoteURL", window.RemoteURLs.a);
+        remoteID.value = settingsStore.getRemoteID(component);
         // Import component via remote ID
         //@ts-ignore
-        Component = import(`a/component2`);
-        // Component = import(`${remoteID}/${component.name}`);
-        componentLoaded.value = true;
+        switch (remoteID.value) {
+          case "a":
+            //@ts-ignore
+            ComponentA = defineAsyncComponent(() => import("a/component"));
+            break;
+          case "b":
+            //@ts-ignore
+            ComponentB = defineAsyncComponent(() => import("b/component"));
+            break;
+          case "c":
+            //@ts-ignore
+            ComponentC = defineAsyncComponent(() => import("c/component"));
+            break;
+          case "d":
+            //@ts-ignore
+            ComponentD = defineAsyncComponent(() => import("d/component"));
+            break;
+          case "e":
+            //@ts-ignore
+            ComponentE = defineAsyncComponent(() => import("e/component"));
+            break;
+          case "f":
+            //@ts-ignore
+            ComponentF = defineAsyncComponent(() => import("f/component"));
+            break;
+          case "g":
+            //@ts-ignore
+            ComponentG = defineAsyncComponent(() => import("g/component"));
+            break;
+          case "h":
+            //@ts-ignore
+            ComponentH = defineAsyncComponent(() => import("h/component"));
+            break;
+          default:
+            break;
+        }
+      } else if (component && component.type === "iframe") {
+        iframe.value = component.path;
       } else {
-        console.log("Component not found");
         error.value = "Component not found";
       }
     });
@@ -55,14 +91,6 @@ function loadItem() {
 onMounted(() => {
   loadItem();
 });
-watch(
-  () => menuStore.mainMenu.loaded,
-  () => {
-    type.value = LoadingItem;
-    loadItem();
-  }
-);
-// getUrlFromMenuItemId(route.params.menuItemId.toString());
 watch(
   () => route.params.extension,
   () => {
@@ -80,27 +108,35 @@ watch(
 </script>
 
 <template>
-  <div id="root">
-    <component :is="Component"></component>
+  <div class="v-full h-full" v-if="error">
+    An error has occured: {{ error }}
   </div>
-  <!-- <div v-if="error">
-    <ErrorItem :error="error" />
+  <div class="v-full h-full" v-else-if="iframe != ''">
+    <IframeItem :src="iframe" />
   </div>
-  <div v-else-if="componentLoaded" id="root">
-    <component :is="Component"></component>
+  <div class="v-full h-full" id="remote_a" v-else-if="remoteID == 'a'">
+    <component :is="ComponentA"></component>
   </div>
-  <div v-else>
-    <LoadingItem />
-  </div> -->
-  <div class="extension-wrapper">
-    <!-- <component :is="type" v-if="!isIframe"></component> -->
-    <!-- <IframeItem v-if="isIframe" :src="iframeSrc" /> -->
+  <div class="v-full h-full" id="remote_b" v-else-if="remoteID == 'b'">
+    <component :is="ComponentB"></component>
   </div>
+  <div class="v-full h-full" id="remote_c" v-else-if="remoteID == 'c'">
+    <component :is="ComponentC"></component>
+  </div>
+  <div class="v-full h-full" id="remote_d" v-else-if="remoteID == 'd'">
+    <component :is="ComponentD"></component>
+  </div>
+  <div class="v-full h-full" id="remote_e" v-else-if="remoteID == 'e'">
+    <component :is="ComponentE"></component>
+  </div>
+  <div class="v-full h-full" id="remote_f" v-else-if="remoteID == 'f'">
+    <component :is="ComponentF"></component>
+  </div>
+  <div class="v-full h-full" id="remote_g" v-else-if="remoteID == 'g'">
+    <component :is="ComponentG"></component>
+  </div>
+  <div class="v-full h-full" id="remote_h" v-else-if="remoteID == 'h'">
+    <component :is="ComponentH"></component>
+  </div>
+  <div v-else>An error has occured: remoteID {{ remoteID }} not found</div>
 </template>
-
-<style scoped>
-.extension-wrapper {
-  width: 100%;
-  height: 100%;
-}
-</style>

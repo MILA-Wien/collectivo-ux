@@ -40,6 +40,7 @@ export const useMembersStore = defineStore({
       coreUsers: JSON.parse(JSON.stringify(DataTemplate)),
       coreUsersExtended: JSON.parse(JSON.stringify(DataTemplate)),
       coreGroups: JSON.parse(JSON.stringify(DataTemplate)),
+
       componentsComponents: JSON.parse(JSON.stringify(DataTemplate)),
       extensionsExtensions: JSON.parse(JSON.stringify(DataTemplate)),
 
