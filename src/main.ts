@@ -21,7 +21,7 @@ for (const extension of settings.extensions) {
   const extensionModule = import(`./extensions/${extension}/extension.ts`);
   extension_imports.push(extensionModule);
 }
-const extensions_promise = Promise.all(extension_imports);
+const extensions_promise = Promise.allSettled(extension_imports);
 
 // init vue app
 const app = createApp(App);
@@ -46,7 +46,9 @@ keycloakInstance
     //init the extensions
     extensions_promise.then((extensions) => {
       for (const extension of extensions) {
-        extension.default();
+        if (extension.status === "fulfilled") {
+          extension.value.default();
+        }
       }
 
       // init view router

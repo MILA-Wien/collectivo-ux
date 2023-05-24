@@ -76,6 +76,26 @@ export const dashboardTiles = async () => {
   return response;
 };
 
+// Import external endpoints from extensions
+const external_endpoints: { [index: string]: string } = {};
+const settings: any = await import("../collectivo.json");
+const extension_imports = [];
+for (const extension of settings.extensions) {
+  const extensionModule = import(`../extensions/${extension}/extension.json`);
+  extension_imports.push(extensionModule);
+}
+const extensions_promise = await Promise.allSettled(extension_imports);
+for (const extension of extensions_promise) {
+  if (
+    extension.status === "fulfilled" &&
+    extension.value.endpoints !== undefined
+  ) {
+    for (const key of Object.keys(extension.value.endpoints)) {
+      external_endpoints[key] = extension.value.endpoints[key];
+    }
+  }
+}
+
 // Endpoint dictionary
 export const endpoints = {
   coreAbout: "/core/about/",
@@ -130,6 +150,9 @@ export const endpoints = {
   shiftsShiftsUserSelf: "/shifts/user/self/",
   shiftsShiftsSelf: "/shifts/shifts/self/",
   shiftsOpenShifts: "/shifts/shifts/open/",
+
+  // unpack external endpoints
+  ...external_endpoints,
 };
 
 // Generic API functions

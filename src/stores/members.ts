@@ -6,6 +6,18 @@ import { DataTemplate } from "./../api/types";
 type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
 
+async function storeCreate(
+  store: any,
+  objectName: membersObject,
+  payload?: Object
+) {
+  const response = await API.post(objectName, payload);
+  const object = store[objectName];
+  object.list.push(response.data);
+  object.detail = response.data;
+  return response;
+}
+
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
   for (const value of Object.values(schema) as any) {
@@ -32,53 +44,15 @@ const DirectDetailEndpoints = new Set([
   "lotzappSettings",
 ]);
 
-// TODO: Typing so that all properties are DataSchema
 export const useMembersStore = defineStore({
   id: "members",
-  state: () =>
-    ({
-      coreUsers: JSON.parse(JSON.stringify(DataTemplate)),
-      coreUsersExtended: JSON.parse(JSON.stringify(DataTemplate)),
-      coreGroups: JSON.parse(JSON.stringify(DataTemplate)),
-
-      componentsComponents: JSON.parse(JSON.stringify(DataTemplate)),
-      extensionsExtensions: JSON.parse(JSON.stringify(DataTemplate)),
-
-      dashboardTiles: JSON.parse(JSON.stringify(DataTemplate)),
-      dashboardTileButtons: JSON.parse(JSON.stringify(DataTemplate)),
-
-      profilesProfiles: JSON.parse(JSON.stringify(DataTemplate)),
-      profilesProfilesSelf: JSON.parse(JSON.stringify(DataTemplate)),
-
-      membershipsMemberships: JSON.parse(JSON.stringify(DataTemplate)),
-      membershipsMembershipsSelf: JSON.parse(JSON.stringify(DataTemplate)),
-      membershipsMembershipsShares: JSON.parse(JSON.stringify(DataTemplate)),
-      membershipsCreateInvoices: JSON.parse(JSON.stringify(DataTemplate)),
-
-      membershipsTypes: JSON.parse(JSON.stringify(DataTemplate)),
-      membershipsStatuses: JSON.parse(JSON.stringify(DataTemplate)),
-      membershipsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
-
-      tagsTags: JSON.parse(JSON.stringify(DataTemplate)),
-      tagsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
-
-      emailsCampaigns: JSON.parse(JSON.stringify(DataTemplate)),
-      emailsTemplates: JSON.parse(JSON.stringify(DataTemplate)),
-      emailsDesigns: JSON.parse(JSON.stringify(DataTemplate)),
-
-      paymentsProfiles: JSON.parse(JSON.stringify(DataTemplate)),
-      paymentsProfilesSelf: JSON.parse(JSON.stringify(DataTemplate)),
-      paymentsInvoices: JSON.parse(JSON.stringify(DataTemplate)),
-      paymentsSubscriptions: JSON.parse(JSON.stringify(DataTemplate)),
-
-      milaRegister: JSON.parse(JSON.stringify(DataTemplate)),
-      milaProfiles: JSON.parse(JSON.stringify(DataTemplate)),
-      milaSkills: JSON.parse(JSON.stringify(DataTemplate)),
-      milaGroups: JSON.parse(JSON.stringify(DataTemplate)),
-
-      lotzappSettings: JSON.parse(JSON.stringify(DataTemplate)),
-      lotzappSync: JSON.parse(JSON.stringify(DataTemplate)),
-    } as membersStore),
+  state: () => {
+    const store = {} as membersStore;
+    for (const objectName of Object.keys(endpoints)) {
+      store[objectName] = JSON.parse(JSON.stringify(DataTemplate));
+    }
+    return store;
+  },
 
   actions: {
     async get(objectName: keyof typeof endpoints, id?: Number) {
@@ -126,11 +100,7 @@ export const useMembersStore = defineStore({
       this[objectName].schemaLoaded = true;
     },
     async create(objectName: membersObject, payload?: Object) {
-      const response = await API.post(objectName, payload);
-      const object = this[objectName];
-      object.list.push(response.data);
-      object.detail = response.data;
-      return response;
+      return storeCreate(this, objectName, payload);
     },
     async update(objectName: membersObject, payload: Object, id?: Number) {
       // Update object and save in store
