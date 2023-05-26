@@ -56,6 +56,9 @@ function buildMenu(menu: any, items: any) {
           item.items.push(sub_item);
         }
       }
+      if (item.items.length == 0) {
+        item.items = undefined;
+      }
       items.value[0].items.push(item);
     }
   }
