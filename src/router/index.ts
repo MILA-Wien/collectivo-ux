@@ -82,15 +82,6 @@ const router = createRouter({
         import("../components/memberships/MembershipsProfile.vue"),
     },
     {
-      path: "/mila/registration",
-      name: "registration",
-      meta: {
-        layout: Default,
-        requiresAuth: true,
-      },
-      component: () => import("../components/mila/MilaRegistration.vue"),
-    },
-    {
       path: "/emails/admin",
       name: "emailsAdmin",
       meta: {
@@ -126,16 +117,8 @@ const router = createRouter({
       },
       component: () => import("../components/extensions/ExtensionsAdmin.vue"),
     },
-    // {
-    //   path: "/iframe/:menuItemId(\\d+)",
-    //   name: "iframe",
-    //   meta: {
-    //     layout: FullScreenLayout,
-    //     isMember: true,
-    //   },
-    //   component: () => import("@/views/IframeView.vue"),
-    // },
     {
+      // Dynamic route that can load components defined by the backend
       path: "/:extension/:component/:componentRoute*",
       name: "component",
       meta: {
@@ -144,14 +127,6 @@ const router = createRouter({
       },
       component: () => import("@/views/ComponentView.vue"),
     },
-    // {
-    //   path: "/:extension/:id",
-    //   name: "notImplemented",
-    //   meta: {
-    //     isMembersAdmin: false,
-    //   },
-    //   component: () => import("../components/NotImplemented.vue"),
-    // },
   ],
 });
 

@@ -1,4 +1,5 @@
 import { baseURL } from "@/app.config";
+import { extensions } from "@/helpers/settings";
 import i18n from "@/locales/i18n";
 import { useUserStore } from "@/stores/user";
 import type { AxiosResponse } from "axios";
@@ -77,21 +78,12 @@ export const dashboardTiles = async () => {
 };
 
 // Import external endpoints from extensions
-const external_endpoints: { [index: string]: string } = {};
-const settings: any = await import("../collectivo.json");
-const extension_imports = [];
-for (const extension of settings.extensions) {
-  const extensionModule = import(`../extensions/${extension}/extension.json`);
-  extension_imports.push(extensionModule);
-}
-const extensions_promise = await Promise.allSettled(extension_imports);
-for (const extension of extensions_promise) {
-  if (
-    extension.status === "fulfilled" &&
-    extension.value.endpoints !== undefined
-  ) {
-    for (const key of Object.keys(extension.value.endpoints)) {
-      external_endpoints[key] = extension.value.endpoints[key];
+// const settingsStore = useSettingsStore();
+const external_endpoints: any = {};
+for (const extension of extensions) {
+  if (extension.endpoints !== undefined) {
+    for (const key of Object.keys(extension.endpoints)) {
+      external_endpoints[key] = extension.endpoints[key];
     }
   }
 }
@@ -136,13 +128,6 @@ export const endpoints = {
   paymentsProfilesSelf: "/payments/profiles/self/",
   paymentsInvoices: "/payments/invoices/",
   paymentsSubscriptions: "/payments/subscriptions/",
-
-  milaRegister: "/mila/register/",
-  milaProfiles: "/mila/profiles/",
-  milaSkills: "/mila/skills/",
-  milaGroups: "/mila/groups/",
-  lotzappSync: "/lotzapp/sync/",
-  lotzappSettings: "/lotzapp/settings/",
 
   shiftsShifts: "/shifts/shifts/",
   shiftsAssignments: "shifts/assignments/",

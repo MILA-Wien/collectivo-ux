@@ -1,13 +1,5 @@
 {
   "endpoints": {
     "exampleExample": "/whatever/you/want/it/to/be"
-  },
-  "profile_endpoints": [
-    "coreUsers",
-    "profilesProfiles",
-    "paymentsProfiles",
-    "milaProfiles",
-    "tagsProfiles",
-    "membershipsProfiles"
-  ]
+  }
 }

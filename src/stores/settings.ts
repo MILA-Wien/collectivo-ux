@@ -1,21 +1,20 @@
 import { coreVersionFn } from "@/api/api";
 import type { Version } from "@/api/types";
 import { defineStore } from "pinia";
-
 export type SettingsStoreState = {
   version: Version | null;
-  components: any;
+  extensions: any;
   remoteIDs: any;
 };
 
 export const useSettingsStore = defineStore({
   id: "settings",
-  state: () =>
-    ({
+  state: () => {
+    return {
       version: null,
-      components: {},
       remoteIDs: {},
-    } as SettingsStoreState),
+    } as SettingsStoreState;
+  },
 
   actions: {
     async getVersion() {
@@ -74,5 +73,4 @@ export const useSettingsStore = defineStore({
       return remoteID;
     },
   },
-  getters: {},
 });
