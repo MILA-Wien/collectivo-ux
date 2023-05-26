@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Payments");
 </script>
@@ -18,7 +18,7 @@ menuStore.setTitle("Payments");
     <TabView lazy>
       <TabPanel :header="t('Invoices')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'paymentsInvoices'"
           :default-columns="[
             'status',
@@ -31,7 +31,7 @@ menuStore.setTitle("Payments");
       </TabPanel>
       <TabPanel :header="t('Subscriptions')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'paymentsSubscriptions'"
           :default-columns="[
             'status',
@@ -45,13 +45,13 @@ menuStore.setTitle("Payments");
       <!-- TODO: This code is custom for MILA and should be moved -->
       <TabPanel :header="t('Lotzapp')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'lotzappSync'"
           :default-columns="['date', 'status', 'type', 'status_message']"
         />
       </TabPanel>
       <TabPanel :header="t('Lotzapp Settings')">
-        <ObjectDetail :store="membersStore" :name="'lotzappSettings'">
+        <ObjectDetail :store="mainStore" :name="'lotzappSettings'">
         </ObjectDetail>
       </TabPanel>
     </TabView>

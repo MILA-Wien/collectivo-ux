@@ -3,10 +3,10 @@ import type { endpoints } from "@/api/api";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectMasonry from "@/components/datatable/ObjectMasonry.vue";
 import { extensions } from "@/helpers/settings";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 const menuStore = useMenuStore();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 menuStore.setTitle("User");
 
 // Core profile endpoints
@@ -31,7 +31,7 @@ for (const extension of extensions) {
 <template>
   <ObjectMasonry :items="profile_endpoints">
     <template #item="{ item }">
-      <ObjectDetail :store="membersStore" :name="item" :id="$route.params.id">
+      <ObjectDetail :store="mainStore" :name="item" :id="$route.params.id">
       </ObjectDetail>
     </template>
   </ObjectMasonry>

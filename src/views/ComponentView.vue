@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Remote entry components are still an experimental feature
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useSettingsStore } from "@/stores/settings";
 import { storeToRefs } from "pinia";
 import { defineAsyncComponent, onMounted, ref, shallowRef, watch } from "vue";
@@ -10,10 +10,10 @@ import LoadingItem from "../components/LoadingItem.vue";
 const route = useRoute();
 
 let type = shallowRef(LoadingItem);
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 const settingsStore = useSettingsStore();
 const error = ref<Object | null>(null);
-const data = storeToRefs(membersStore)["componentsComponents"];
+const data = storeToRefs(mainStore)["componentsComponents"];
 const iframe = ref("");
 const remoteID = ref("");
 let ComponentA = LoadingItem;
@@ -27,7 +27,7 @@ let ComponentH = LoadingItem;
 
 function loadItem() {
   iframe.value = "";
-  membersStore
+  mainStore
     .get("componentsComponents")
     .catch((e: any) => {
       error.value = e;

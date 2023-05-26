@@ -2,7 +2,7 @@
 import ObjectList from "@/components/datatable/ObjectList.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { errorToast, successToast } from "@/helpers/toasts";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
 import PrimePanel from "primevue/panel";
@@ -12,13 +12,13 @@ import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 const toast = useToast();
 const { t } = useI18n();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Memberships");
 
 async function generate_invoices() {
   try {
-    await membersStore.create("membershipsCreateInvoices");
+    await mainStore.create("membershipsCreateInvoices");
     successToast(toast, t("Addresses synchronized"));
   } catch (e) {
     errorToast(toast, e);
@@ -31,7 +31,7 @@ async function generate_invoices() {
     <TabView lazy>
       <TabPanel :header="t('Memberships')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'membershipsMemberships'"
           :default-columns="[
             'user__first_name',
@@ -47,20 +47,20 @@ async function generate_invoices() {
       </TabPanel>
       <TabPanel :header="t('Types')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'membershipsTypes'"
           :default-columns="['name']"
         />
       </TabPanel>
       <TabPanel :header="t('Statuses')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'membershipsStatuses'"
           :default-columns="['name']"
         />
       </TabPanel>
       <TabPanel :header="t('Statistics')">
-        <ObjectList :store="membersStore" :name="'membershipsTypes'">
+        <ObjectList :store="mainStore" :name="'membershipsTypes'">
           <template #item="slotProps">
             <PrimePanel :header="slotProps.data.name" class="mb-5">
               <p

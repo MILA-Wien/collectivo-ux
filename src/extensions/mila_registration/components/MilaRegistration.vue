@@ -33,7 +33,7 @@
 import treeData from "@/assets/registrationForm.json";
 import FormView from "@/formviewer/components/FormView.vue";
 import { useFormViewerStore } from "@/stores/formviewer";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
 import { useVuelidate } from "@vuelidate/core";
@@ -55,15 +55,15 @@ const { tree } = storeToRefs(formViewerStore);
 // @ts-ignore
 tree.value = treeData;
 
-const membersStore = useMembersStore();
-membersStore.getSchema("milaRegister");
-const { milaRegister } = storeToRefs(membersStore);
+const mainStore = useMainStore();
+mainStore.getSchema("milaRegister");
+const { milaRegister } = storeToRefs(mainStore);
 const registrationSchema = milaRegister.value.schema;
 const registrationFinished = ref(false);
 const userStore = useUserStore();
 // check if user is already registered
 const has_mila_membership = ref<boolean | null>(null);
-membersStore
+mainStore
   .getMilaMembershipNumber()
   .catch(() => {})
   .then((res) => {
@@ -82,7 +82,7 @@ async function submit() {
     }
   }
   try {
-    await membersStore.create("milaRegister", registerData);
+    await mainStore.create("milaRegister", registerData);
     registrationFinished.value = true;
   } catch (e: any) {
     console.log(e);

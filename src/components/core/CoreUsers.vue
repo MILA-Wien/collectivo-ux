@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
 import PrimeColumn from "primevue/column";
@@ -8,7 +8,7 @@ import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Users");
 </script>
@@ -18,7 +18,7 @@ menuStore.setTitle("Users");
     <TabView lazy>
       <TabPanel :header="t('Users')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'coreUsersExtended'"
           :default-columns="['first_name', 'last_name', 'email', 'tags']"
           :email-button="true"

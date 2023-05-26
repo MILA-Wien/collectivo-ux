@@ -1,9 +1,9 @@
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
-import type { DataObject, DataSchema } from "./../api/types";
-import { DataTemplate } from "./../api/types";
+import type { DataObject, DataSchema } from "../api/types";
+import { DataTemplate } from "../api/types";
 
-type membersStore = { [index: string]: DataSchema };
+type mainStore = { [index: string]: DataSchema };
 
 async function storeCreate(store: any, objectName: any, payload?: Object) {
   const response = await API.post(objectName, payload);
@@ -39,10 +39,10 @@ const DirectDetailEndpoints = new Set([
   "lotzappSettings",
 ]);
 
-export const useMembersStore = defineStore({
+export const useMainStore = defineStore({
   id: "members",
   state: () => {
-    const store = {} as membersStore;
+    const store = {} as mainStore;
     for (const objectName of Object.keys(endpoints)) {
       store[objectName] = JSON.parse(JSON.stringify(DataTemplate));
     }
