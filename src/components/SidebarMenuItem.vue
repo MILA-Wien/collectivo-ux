@@ -8,13 +8,14 @@ const props = defineProps({
   },
 });
 
-const icon = "pi pi-fw " + (props.item.icon_name ? props.item.icon_name : "");
-if (props.item.extension.name === "core" && props.item.component === "logout") {
-  props.item.link = userStore.user?.logoutUrl || "/";
+const item = JSON.parse(JSON.stringify(props.item));
+const icon = "pi pi-fw " + (props.item.icon_name ? item.icon_name : "");
+if (item.extension.name === "core" && item.component === "logout") {
+  item.link = userStore.user?.logoutUrl || "/";
 }
-if (props.item.items.length == 0) {
-  // delete props.items.length
-  props.item.items = undefined;
+if (item.items.length == 0) {
+  // delete items.length
+  item.items = undefined;
 }
 </script>
 
