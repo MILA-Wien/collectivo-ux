@@ -4,7 +4,6 @@ import i18n from "@/locales/i18n";
 import { useUserStore } from "@/stores/user";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-
 const BASE_URL = baseURL + "/api/";
 const { t } = i18n.global;
 const api = axios.create({
@@ -78,12 +77,11 @@ export const dashboardTiles = async () => {
 };
 
 // Import external endpoints from extensions
-// const settingsStore = useSettingsStore();
-const external_endpoints: any = {};
+const external_endpoints: { [index: string]: string } = {};
 for (const extension of extensions) {
   if (extension.endpoints !== undefined) {
     for (const key of Object.keys(extension.endpoints)) {
-      external_endpoints[key] = extension.endpoints[key];
+      external_endpoints[key] = extension.endpoints[key] as string;
     }
   }
 }
