@@ -3,14 +3,9 @@ import { defineStore } from "pinia";
 import type { DataObject, DataSchema } from "./../api/types";
 import { DataTemplate } from "./../api/types";
 
-type membersObject = keyof typeof endpoints;
 type membersStore = { [index: string]: DataSchema };
 
-async function storeCreate(
-  store: any,
-  objectName: membersObject,
-  payload?: Object
-) {
+async function storeCreate(store: any, objectName: any, payload?: Object) {
   const response = await API.post(objectName, payload);
   const object = store[objectName];
   object.list.push(response.data);
@@ -93,16 +88,16 @@ export const useMembersStore = defineStore({
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
     },
-    async getSchema(objectName: membersObject) {
+    async getSchema(objectName: any) {
       // Get schema and save in store
       const schema = await API.getSchema(objectName);
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
     },
-    async create(objectName: membersObject, payload?: Object) {
+    async create(objectName: any, payload?: Object) {
       return storeCreate(this, objectName, payload);
     },
-    async update(objectName: membersObject, payload: Object, id?: Number) {
+    async update(objectName: any, payload: Object, id?: Number) {
       // Update object and save in store
       if (DirectDetailEndpoints.has(objectName)) {
         id = undefined;
@@ -120,7 +115,7 @@ export const useMembersStore = defineStore({
       }
       object.detail = response.data;
     },
-    async delete(objectName: membersObject, id: Number) {
+    async delete(objectName: any, id: Number) {
       // Delete object and remove from store
       const response = await API.delete(objectName, id);
       const object = this[objectName];
@@ -148,12 +143,7 @@ export const useMembersStore = defineStore({
       }
       return false;
     },
-    async filter(
-      objectName: membersObject,
-      page?: any,
-      order?: any,
-      filters?: any
-    ) {
+    async filter(objectName: any, page?: any, order?: any, filters?: any) {
       // Get schema and object(s) and save in store
       const [schema, objects] = await Promise.all([
         API.getSchema(objectName),

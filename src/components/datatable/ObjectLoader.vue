@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { endpoints } from "@/api/api";
 import { useMembersStore } from "@/stores/members";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
@@ -14,7 +13,7 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof endpoints>,
+    type: String,
     required: true,
   },
   defaultColumns: {

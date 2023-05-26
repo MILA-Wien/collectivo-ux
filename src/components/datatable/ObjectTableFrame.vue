@@ -11,7 +11,6 @@ import PrimeToolbar from "primevue/toolbar";
 import ObjectDetailEdit from "./ObjectDetailEdit.vue";
 import ObjectTable from "./ObjectTable.vue";
 
-import type { endpoints } from "@/api/api";
 import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
 
@@ -22,7 +21,7 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof endpoints>,
+    type: String,
     required: true,
   },
   objects: {
