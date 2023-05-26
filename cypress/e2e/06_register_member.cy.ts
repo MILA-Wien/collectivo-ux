@@ -16,7 +16,7 @@ describe("register user_not_member", () => {
   */
   beforeEach(() => {
     // authenticate as superuser
-    cy.request("POST", "http://collectivo.local:8000/api/dev/token/", {
+    cy.request("POST", "http://127.0.0.1:8000/api/dev/token/", {
       username: "test_superuser@example.com",
       password: "Test123!",
     }).then((response) => {

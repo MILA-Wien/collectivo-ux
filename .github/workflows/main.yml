@@ -74,7 +74,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Add hosts to /etc/hosts
         run: |
-          sudo echo "127.0.0.1 collectivo.local" | sudo tee -a /etc/hosts
+          sudo echo "127.0.0.1 127.0.0.1" | sudo tee -a /etc/hosts
           sudo echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
           cat /etc/hosts
           curl -v http://keycloak:8080
@@ -87,7 +87,7 @@ jobs:
           start: |
             cat /etc/hosts
             yarn preview
-          wait-on: "http://collectivo.local:4173"
+          wait-on: "http://127.0.0.1:4173"
       - uses: actions/upload-artifact@v2
         if: failure()
         with:

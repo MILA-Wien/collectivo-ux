@@ -34,7 +34,7 @@ docker compose up -d collectivo db keycloak
 ```
 2. Please edit your `/etc/hosts/` file and add the following line
 ```bash
-127.0.0.1 keycloak collectivo.local
+127.0.0.1 keycloak 127.0.0.1
 ```
 3. Add some CORS-disabler Add-On to your browser e.g. [CORS Everywhere](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/) for Firefox or [Allow CORS](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf) for Chrome and start it in development mode
 4. In your terminal run
@@ -43,7 +43,7 @@ yarn dev
 ```
 and now open the following link in your browser
 ```bash
-collectivo.local:5173
+127.0.0.1:5173
 ```
 
 5. Enter the user credentials mentioned below and start developing
@@ -93,7 +93,7 @@ yarn test:unit
 If not done yet, add the following to your `/etc/hosts` file:
 
 ```sh
-127.0.0.1 keycloak collectivo.local
+127.0.0.1 keycloak 127.0.0.1
 ```
 Then run the following command to test the app:
 
