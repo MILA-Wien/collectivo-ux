@@ -53,6 +53,16 @@ const props = defineProps({
 // Create temporary copy of the object
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
 
+// Upload callback
+const upload = ref();
+const onUpload = (event: any, name: any) => {
+  const data = URL.createObjectURL(event.target.files[0]);
+
+  upload.value = data;
+  object_temp.value[name] = event.target.files[0];
+  console.log("File for upload: ", event.target.files[0]);
+};
+
 // Reactive settings
 const isVisible = ref(true);
 const isSaving = ref(false);
@@ -83,12 +93,16 @@ async function createObject() {
 async function updateObject() {
   isSaving.value = true;
   formatDates();
+  // TODO: Generalize this
+  let submitData = new FormData();
+  for (const key of Object.keys(object_temp.value)) {
+    if (object_temp.value[key]) {
+      submitData.append(key, object_temp.value[key]);
+    }
+  }
+  console.log(submitData);
   try {
-    await props.store.update(
-      props.name,
-      object_temp.value,
-      object_temp.value["id"]
-    );
+    await props.store.update(props.name, submitData, object_temp.value["id"]);
     successToast(toast, "Object has been updated.");
     emit("close");
   } catch (error) {
@@ -175,7 +189,7 @@ function isFiltered(name: string, field: any) {
                   <span v-if="field.required" class="text-red-600">*</span>
                 </label>
               </div>
-
+              {{ field.input_type }}
               <div v-if="field.input_type === 'select'">
                 <PrimeDropdown
                   v-model="object_temp[name]"
@@ -239,6 +253,20 @@ function isFiltered(name: string, field: any) {
 
               <div v-else-if="field.input_type === 'html'">
                 <object-editor v-model="object_temp[name]"></object-editor>
+              </div>
+
+              <div v-else-if="field.input_type === 'image'">
+                <!-- <PrimeFileUpload
+                  mode="basic"
+                  name="demo[]"
+                  accept="image/*"
+                  :maxFileSize="1000000"
+                  :custom-upload="true"
+                  @uploader="(event) => onUpload(event, name)"
+                /> -->
+                <input type="file" @change="(event) => onUpload(event, name)" />
+                <img :src="upload" alt="" />
+                {{ object_temp[name] }}
               </div>
 
               <div v-else>

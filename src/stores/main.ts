@@ -34,9 +34,11 @@ function extendSchema(schema: any) {
   return schema;
 }
 
+// TODO: Better way to determine this
 const DirectDetailEndpoints = new Set([
   "profilesProfilesSelf",
   "lotzappSettings",
+  "coreSettings",
 ]);
 
 export const useMainStore = defineStore({
