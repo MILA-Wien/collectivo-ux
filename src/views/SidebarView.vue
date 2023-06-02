@@ -19,8 +19,9 @@
       <div class="flex flex-col h-full items-center">
         <RouterLink to="/" class="w-100 flex justify-center">
           <img
-            src="../assets/mila_logo_subline.png"
-            alt="MILA Logo"
+            v-if="getLogo()"
+            :src="getLogo()"
+            alt="Project Logo"
             class="md:w-2/3 w-1/2 pt-10 pb-4"
           />
         </RouterLink>
@@ -36,15 +37,30 @@
 </template>
 
 <script setup lang="ts">
+import { useMainStore } from "@/stores/main";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 import { version } from "../../package.json";
 import MenuMain from "../components/SidebarMenu.vue";
 import VersionItem from "../components/VersionItem.vue";
 import { useMenuStore } from "../stores/menu";
+const mainStore = useMainStore();
 const menuStore = useMenuStore();
 const { getSideBarOpen } = storeToRefs(menuStore);
+const { coreSettings } = storeToRefs(mainStore);
 function toggleSideBar() {
   menuStore.setSideBarOpen(getSideBarOpen.value ? false : true);
+}
+const error = ref<any>(null);
+mainStore.get("coreSettings").catch((e: any) => {
+  error.value = e;
+});
+function getLogo() {
+  if (coreSettings.value.detail.project_logo) {
+    return coreSettings.value.detail.project_logo;
+  } else if (coreSettings.value.detail.project_logo_url) {
+    return coreSettings.value.detail.project_logo_url;
+  }
 }
 </script>
 

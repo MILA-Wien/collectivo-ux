@@ -54,13 +54,16 @@ const props = defineProps({
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
 
 // Upload callback
-const upload = ref();
+const pending_uploads = <any>ref({});
 const onUpload = (event: any, name: any) => {
-  const data = URL.createObjectURL(event.target.files[0]);
-
-  upload.value = data;
+  pending_uploads.value[name] = URL.createObjectURL(event.target.files[0]);
   object_temp.value[name] = event.target.files[0];
-  console.log("File for upload: ", event.target.files[0]);
+};
+const removeUpload = (name: any) => {
+  if (pending_uploads[name] != undefined) {
+    pending_uploads.value[name] = null;
+  }
+  object_temp.value[name] = "";
 };
 
 // Reactive settings
@@ -96,8 +99,20 @@ async function updateObject() {
   // TODO: Generalize this
   let submitData = new FormData();
   for (const key of Object.keys(object_temp.value)) {
-    if (object_temp.value[key]) {
-      submitData.append(key, object_temp.value[key]);
+    if (object_temp.value[key] !== undefined) {
+      // Submit image only if changed or removed
+      if (props.schema[key].input_type == "image") {
+        if (object_temp.value[key] instanceof File) {
+          submitData.append(key, object_temp.value[key]);
+        } else if (object_temp.value[key] == "") {
+          submitData.append(key, object_temp.value[key]);
+        }
+      }
+
+      // Submit other fields
+      else {
+        submitData.append(key, object_temp.value[key]);
+      }
     }
   }
   console.log(submitData);
@@ -256,17 +271,17 @@ function isFiltered(name: string, field: any) {
               </div>
 
               <div v-else-if="field.input_type === 'image'">
-                <!-- <PrimeFileUpload
-                  mode="basic"
-                  name="demo[]"
-                  accept="image/*"
-                  :maxFileSize="1000000"
-                  :custom-upload="true"
-                  @uploader="(event) => onUpload(event, name)"
-                /> -->
                 <input type="file" @change="(event) => onUpload(event, name)" />
-                <img :src="upload" alt="" />
+                <img
+                  :src="
+                    pending_uploads[name]
+                      ? pending_uploads[name]
+                      : object_temp[name]
+                  "
+                  alt="Project logo"
+                />
                 {{ object_temp[name] }}
+                <PrimeButton @click="removeUpload(name)">Remove</PrimeButton>
               </div>
 
               <div v-else>
