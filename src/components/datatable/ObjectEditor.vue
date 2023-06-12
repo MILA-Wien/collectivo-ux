@@ -55,17 +55,20 @@ const props = defineProps({
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
 
 // Upload callback
-const pending_uploads = <any>ref({});
-const onUpload = (event: any, name: any) => {
-  pending_uploads.value[name] = URL.createObjectURL(event.target.files[0]);
-  object_temp.value[name] = event.target.files[0];
-};
-const removeUpload = (name: any) => {
+const pending_uploads = ref<any>({});
+
+function prepareUpload(event: any, name: any) {
+  const file = event.target.files[0];
+  pending_uploads.value[name] = URL.createObjectURL(file);
+  object_temp.value[name] = file;
+}
+
+function removeUpload(name: any) {
   if (pending_uploads[name] != undefined) {
     pending_uploads.value[name] = null;
   }
   object_temp.value[name] = "";
-};
+}
 
 // Reactive settings
 const isVisible = ref(true);
@@ -283,7 +286,7 @@ function isFiltered(name: string, field: any) {
                   <input
                     type="file"
                     class=""
-                    @change="(event:any) => onUpload(event, name)"
+                    @change="(event:any) => prepareUpload(event, name)"
                   />
                   <input
                     v-if="object_temp[name]"

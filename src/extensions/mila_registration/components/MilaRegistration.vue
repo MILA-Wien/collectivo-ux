@@ -4,8 +4,8 @@
       <PrimeMessage v-if="registrationSchema" severity="error">
         {{
           t(
-            registrationSchema[error.$propertyPath]
-              ? registrationSchema[error.$propertyPath].label
+            registrationSchema.fields[error.$propertyPath]
+              ? registrationSchema.fields[error.$propertyPath].label
               : ""
           )
         }}:

@@ -4,8 +4,7 @@ import ObjectMasonry from "@/components/datatable/ObjectMasonry.vue";
 import { extensions } from "@/helpers/settings";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+
 const menuStore = useMenuStore();
 const mainStore = useMainStore();
 menuStore.setTitle("Settings");

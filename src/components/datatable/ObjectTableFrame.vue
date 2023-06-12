@@ -11,6 +11,7 @@ import PrimeToolbar from "primevue/toolbar";
 import ObjectEditor from "./ObjectEditor.vue";
 import ObjectTable from "./ObjectTable.vue";
 
+import type { Schema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
 
@@ -29,7 +30,7 @@ const props = defineProps({
     required: true,
   },
   schema: {
-    type: Object,
+    type: Object as PropType<Schema>,
     required: true,
   },
   defaultColumns: {
@@ -41,7 +42,7 @@ const props = defineProps({
     required: false,
   },
   emailCampaignSchema: {
-    type: Object,
+    type: Object as PropType<Schema>,
     required: true,
   },
 });
