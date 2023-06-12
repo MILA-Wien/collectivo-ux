@@ -4,7 +4,7 @@ A vue.js based web application for [collectivo](https://github.com/MILA-Wien/col
 
 ## Run collectivo-ux
 
-Run the following command to start the app (it needs docker and docker-compose to be installed):
+First start the backend from the [collectivo](https://github.com/MILA-Wien/collectivo) repository, then run the following command to start the app (it needs docker and docker-compose to be installed):
 
 ```bash
 
@@ -93,7 +93,7 @@ yarn test:unit
 If not done yet, add the following to your `/etc/hosts` file:
 
 ```sh
-127.0.0.1 keycloak 127.0.0.1
+127.0.0.1 keycloak
 ```
 Then run the following command to test the app:
 
