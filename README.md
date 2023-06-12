@@ -34,7 +34,7 @@ docker compose up -d collectivo db keycloak
 ```
 2. Please edit your `/etc/hosts/` file and add the following line
 ```bash
-127.0.0.1 keycloak 127.0.0.1
+127.0.0.1 keycloak
 ```
 3. Add some CORS-disabler Add-On to your browser e.g. [CORS Everywhere](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/) for Firefox or [Allow CORS](https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf) for Chrome and start it in development mode
 4. In your terminal run

@@ -42,15 +42,6 @@ export const useSettingsStore = defineStore({
           f: undefined,
           g: undefined,
           h: undefined,
-          i: undefined,
-          j: undefined,
-          k: undefined,
-          l: undefined,
-          m: undefined,
-          n: undefined,
-          o: undefined,
-          p: undefined,
-          q: undefined,
         };
       }
 

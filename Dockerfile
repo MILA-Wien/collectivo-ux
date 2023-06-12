@@ -11,11 +11,11 @@ COPY . .
 RUN  yarn install --frozen-lockfile
 
 # If you are building your code for production
-# RUN yarn build
+RUN yarn build
 
-# # Running
-# FROM nginx:alpine
-# COPY --from=build-env /app/dist /usr/share/nginx/html
-# COPY ./docker/nginx/nginx.conf /etc/nginx/conf.d/custom.conf
+# Running
+FROM nginx:alpine
+COPY --from=build-env /app/dist /usr/share/nginx/html
+COPY ./docker/nginx/nginx.conf /etc/nginx/conf.d/custom.conf
 
-# COPY ./docker/collectivo-entrypoint.sh /docker-entrypoint.d/10-collectivo-entrypoint.sh
+COPY ./docker/collectivo-entrypoint.sh /docker-entrypoint.d/10-collectivo-entrypoint.sh
