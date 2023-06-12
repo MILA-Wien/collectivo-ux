@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import PrimeButton from "primevue/button";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 
 const { t } = useI18n();
 
 const has_mila_membership = ref<boolean | null>(null);
-membersStore
+mainStore
   .getMilaMembershipNumber()
   .catch(() => {})
   .then((res) => {

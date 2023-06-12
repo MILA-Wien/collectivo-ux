@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectList from "@/components/datatable/ObjectList.vue";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
@@ -11,7 +11,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { successToast, errorToast } from "@/helpers/toasts";
 const { t } = useI18n();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 const menuStore = useMenuStore();
 const toast = useToast();
 const objectName = "membershipsMembershipsSelf";
@@ -40,7 +40,7 @@ const sharesDialog: any = ref({
       shares_signed: this.membership.shares_signed + this.additional_shares,
     };
     try {
-      await membersStore.update(objectName, data, this.membership.id);
+      await mainStore.update(objectName, data, this.membership.id);
       successToast(toast, "Object has been created.");
     } catch (error) {
       errorToast(toast, error);
@@ -53,7 +53,7 @@ const sharesDialog: any = ref({
 
 <template>
   <div class="h-full tabview-full-height" id="memberships-profile">
-    <ObjectList :store="membersStore" :name="'membershipsMembershipsSelf'">
+    <ObjectList :store="mainStore" :name="'membershipsMembershipsSelf'">
       <template #item="slotProps">
         <PrimePanel :header="slotProps.data.type.name" class="mb-5">
           <p v-html="slotProps.data.type.description" class="mb-3"></p>

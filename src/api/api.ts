@@ -1,9 +1,9 @@
 import { baseURL } from "@/app.config";
+import { extensions } from "@/helpers/settings";
 import i18n from "@/locales/i18n";
 import { useUserStore } from "@/stores/user";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-
 const BASE_URL = baseURL + "/api/";
 const { t } = i18n.global;
 const api = axios.create({
@@ -76,13 +76,23 @@ export const dashboardTiles = async () => {
   return response;
 };
 
+// Import external endpoints from extensions
+const external_endpoints: { [index: string]: string } = {};
+for (const extension of extensions) {
+  if (extension.endpoints !== undefined) {
+    for (const key of Object.keys(extension.endpoints)) {
+      external_endpoints[key] = extension.endpoints[key] as string;
+    }
+  }
+}
+
 // Endpoint dictionary
 export const endpoints = {
   coreAbout: "/core/about/",
   coreUsers: "/core/users/",
   coreUsersExtended: "/core/users-extended/",
   coreGroups: "/core/groups/",
-
+  componentsComponents: "/components/components/",
   extensionsExtensions: "/extensions/extensions/",
 
   dashboardTiles: "/dashboard/tiles/",
@@ -117,19 +127,15 @@ export const endpoints = {
   paymentsInvoices: "/payments/invoices/",
   paymentsSubscriptions: "/payments/subscriptions/",
 
-  milaRegister: "/mila/register/",
-  milaProfiles: "/mila/profiles/",
-  milaSkills: "/mila/skills/",
-  milaGroups: "/mila/groups/",
-  lotzappSync: "/lotzapp/sync/",
-  lotzappSettings: "/lotzapp/settings/",
-
   shiftsShifts: "/shifts/shifts/",
   shiftsAssignments: "shifts/assignments/",
   shiftsShiftsUser: "/shifts/user/",
   shiftsShiftsUserSelf: "/shifts/user/self/",
   shiftsShiftsSelf: "/shifts/shifts/self/",
   shiftsOpenShifts: "/shifts/shifts/open/",
+
+  // unpack external endpoints
+  ...external_endpoints,
 };
 
 // Generic API functions

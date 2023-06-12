@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
 import { useVuelidate } from "@vuelidate/core";
@@ -18,7 +18,7 @@ const { user } = storeToRefs(userStore);
 const { t } = useI18n();
 const toast = useToast();
 const submitted = ref(false);
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 
 // Set page title
 const menuStore = useMenuStore();
@@ -139,7 +139,7 @@ async function save() {
     return;
   } else if (membership.value) {
     try {
-      await membersStore.update("profilesProfilesSelf", membership.value);
+      await mainStore.update("profilesProfilesSelf", membership.value);
       toast.add({
         severity: "success",
         summary: t("Profile updated"),

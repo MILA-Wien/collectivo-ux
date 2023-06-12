@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
 import PrimeButton from "primevue/button";
@@ -11,11 +11,11 @@ const { t } = useI18n();
 const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
-const membersStore = useMembersStore();
-membersStore.get("profilesProfilesSelf").catch((e: any) => {
+const mainStore = useMainStore();
+mainStore.get("profilesProfilesSelf").catch((e: any) => {
   error.value = e;
 });
-const { profilesProfilesSelf } = storeToRefs(membersStore);
+const { profilesProfilesSelf } = storeToRefs(mainStore);
 </script>
 
 <template>

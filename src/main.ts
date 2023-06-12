@@ -13,7 +13,15 @@ import "primevue/resources/primevue.min.css"; //core css
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 import ToastService from "primevue/toastservice";
 import PrimeTooltip from "primevue/tooltip";
-import shifts from "./extensions/shifts/shifts";
+
+// Import settings and extensions
+const settings: any = await import("./collectivo.json");
+const extension_imports = [];
+for (const extension of settings.extensions) {
+  const extensionModule = import(`./extensions/${extension}/extension.ts`);
+  extension_imports.push(extensionModule);
+}
+const extensions_promise = Promise.allSettled(extension_imports);
 
 // init vue app
 const app = createApp(App);
@@ -23,9 +31,7 @@ app.use(createPinia());
 const keycloakInstance = initKeycloak();
 keycloakInstance
   .then(() => {
-    // init view router
-    app.use(router);
-
+    // init i18n (translations)
     app.use(i18n);
     loadLocaleMessages(i18n, "en");
     loadLocaleMessages(i18n, "de");
@@ -38,10 +44,19 @@ keycloakInstance
     app.directive("tooltip", PrimeTooltip);
 
     //init the extensions
-    shifts();
+    extensions_promise.then((extensions) => {
+      for (const extension of extensions) {
+        if (extension.status === "fulfilled") {
+          extension.value.default();
+        }
+      }
 
-    // Render app
-    app.mount("#app");
+      // init view router
+      app.use(router);
+
+      // Render app
+      app.mount("#app");
+    });
   })
   .catch((e) => {
     console.log("error", e);

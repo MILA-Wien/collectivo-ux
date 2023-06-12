@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import PrimeToast from "primevue/toast";
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
+import DefaultLayout from "./layouts/DefaultLayout.vue";
 import { useUserStore } from "./stores/user";
 import HeaderView from "./views/HeaderView.vue";
 import MenuView from "./views/SidebarView.vue";
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
+const route = useRoute();
 </script>
 
 <template>
@@ -18,14 +20,14 @@ const { user } = storeToRefs(userStore);
     v-if="user?.authenticated"
   >
     <MenuView />
-    <div id="collectivo-main" class="flex-1 flex flex-col overflow-hidden">
-      <HeaderView />
-      <main class="flex-1 overflow-x-hidden overflow-y-auto">
-        <div class="mx-auto px-10 pb-10 pt-5 h-full">
-          <RouterView />
-        </div>
-      </main>
-    </div>
+    <component :is="route.meta.layout || DefaultLayout">
+      <template #header>
+        <HeaderView />
+      </template>
+      <template #main>
+        <RouterView />
+      </template>
+    </component>
   </div>
 </template>
 

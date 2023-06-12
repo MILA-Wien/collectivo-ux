@@ -23,6 +23,7 @@ export const useUserStore = defineStore({
     setToken(token: string | undefined) {
       if (token) {
         this.user!.token = token;
+        localStorage.setItem("token", token);
       }
     },
     setRefreshToken(refreshToken: string | undefined) {

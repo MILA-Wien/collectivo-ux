@@ -13,8 +13,16 @@ export const useMenuStore = defineStore({
   id: "menu",
   state: () =>
     ({
-      mainMenu: { menu: [], loaded: false } as ExtensionMenu,
-      adminMenu: { menu: [], loaded: false } as ExtensionMenu,
+      mainMenu: {
+        menu: [],
+        loaded: false,
+        label: "Main Menu",
+      } as ExtensionMenu,
+      adminMenu: {
+        menu: [],
+        loaded: false,
+        label: "Admin Area",
+      } as ExtensionMenu,
       sideBarOpen: false,
       title: "",
     } as MenuStoreState),
@@ -51,10 +59,22 @@ export const useMenuStore = defineStore({
       return (extension: string, component: string) => {
         return state.mainMenu?.menu?.find(
           (item: ExtensionMenuItem) =>
-            (item.extension === extension &&
-              item.component_name === component) ||
-            (item.extension === extension && item.item_id === component)
+            (item.extension === extension && item.component === component) ||
+            (item.extension === extension && item.id === component)
         );
+      };
+    },
+    getMenuItemById: (state) => {
+      return (id: string) => {
+        let item = state.mainMenu?.menu?.find(
+          (item: ExtensionMenuItem) => item.id == id
+        );
+        if (item == undefined) {
+          item = state.adminMenu?.menu?.find(
+            (item: ExtensionMenuItem) => item.id == id
+          );
+        }
+        return item;
       };
     },
   },

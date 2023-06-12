@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { endpoints } from "@/api/api";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimeProgressSpinner from "primevue/progressspinner";
@@ -14,7 +13,7 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof endpoints>,
+    type: String,
     required: true,
   },
   defaultColumns: {
@@ -44,10 +43,10 @@ if (!data.value.loaded) {
 }
 
 // Optional emails schema
-const membersStore = useMembersStore();
-const { emailsCampaigns } = storeToRefs(membersStore);
+const mainStore = useMainStore();
+const { emailsCampaigns } = storeToRefs(mainStore);
 if (emailsCampaigns.value.schemaLoaded === false) {
-  membersStore.getSchema("emailsCampaigns").catch((e: any) => {
+  mainStore.getSchema("emailsCampaigns").catch((e: any) => {
     error.value = e;
   });
 }

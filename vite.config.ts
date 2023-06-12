@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
 // line above solves error below: https://stackoverflow.com/a/72149404/19932351
+import federation from "@originjs/vite-plugin-federation";
+import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import federation from "@originjs/vite-plugin-federation";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,9 +13,46 @@ export default defineConfig({
       name: "layout",
       filename: "remoteEntry.js",
       remotes: {
-        test_extension:
-          "http://collectivo.local:8000/static/test_extension/remoteEntry.js",
-        members: "http://collectivo.local:8000/static/members/remoteEntry.js",
+        a: {
+          external: `Promise.resolve(window.RemoteURLs.a)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        b: {
+          external: `Promise.resolve(window.RemoteURLs.b)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        c: {
+          external: `Promise.resolve(window.RemoteURLs.c)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        d: {
+          external: `Promise.resolve(window.RemoteURLs.d)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        e: {
+          external: `Promise.resolve(window.RemoteURLs.e)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        f: {
+          external: `Promise.resolve(window.RemoteURLs.f)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        g: {
+          external: `Promise.resolve(window.RemoteURLs.g)`,
+          from: "vite",
+          externalType: "promise",
+        },
+        h: {
+          external: `Promise.resolve(window.RemoteURLs.h)`,
+          from: "vite",
+          externalType: "promise",
+        },
       },
       shared: ["vue", "pinia"],
     }),

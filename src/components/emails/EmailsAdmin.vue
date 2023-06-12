@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
-import { useMembersStore } from "@/stores/members";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Member Emails");
 </script>
@@ -16,21 +16,21 @@ menuStore.setTitle("Member Emails");
     <TabView lazy>
       <TabPanel :header="t('Campaigns')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'emailsCampaigns'"
           :defaultColumns="['status', 'template', 'recipients', 'automation']"
         />
       </TabPanel>
       <TabPanel :header="t('Templates')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'emailsTemplates'"
           :defaultColumns="['name', 'subject', 'design']"
         />
       </TabPanel>
       <TabPanel :header="t('Designs')">
         <ObjectLoader
-          :store="membersStore"
+          :store="mainStore"
           :name="'emailsDesigns'"
           :defaultColumns="['name', 'body']"
         />

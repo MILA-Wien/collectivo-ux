@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { endpoints } from "@/api/api";
 import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeColumn from "primevue/column";
@@ -19,7 +18,7 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof endpoints>,
+    type: String,
     required: true,
   },
   objects: {

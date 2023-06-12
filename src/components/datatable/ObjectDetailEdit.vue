@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { endpoints } from "@/api/api";
 import ObjectEditor from "@/components/datatable/ObjectEditor.vue";
+import { errorToast, successToast } from "@/helpers/toasts";
 import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeCalendar from "primevue/calendar";
@@ -16,7 +16,6 @@ import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { successToast, errorToast } from "@/helpers/toasts";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
@@ -30,7 +29,7 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof endpoints>,
+    type: String,
     required: true,
   },
   object: {

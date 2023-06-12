@@ -20,7 +20,7 @@ function getComponent(extension: string, component: string) {
       menuStore.setTitle(item?.label);
     }
     if (item !== null && item) {
-      if (item.action === "component") {
+      if (item.component !== null) {
         isIframe.value = false;
         import(componentName /* @vite-ignore */) // vite-ignore is required for dynamic imports
           .then((module) => {
@@ -29,8 +29,8 @@ function getComponent(extension: string, component: string) {
           .catch(() => {
             type.value = ErrorItem;
           });
-      } else if (item.action === "link" && item.link_source) {
-        iframeSrc.value = item.link_source;
+      } else if (item.target === "link" && item.link) {
+        iframeSrc.value = item.link;
         isIframe.value = true;
       }
     } else {

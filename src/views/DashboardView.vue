@@ -24,7 +24,10 @@ function getComponentForTile(tile: DashboardTile) {
   } else {
     tileComponents[tile.id] = LoadingItem;
     const component = defineAsyncComponent(
-      () => import(`../extensions/${tile.extension_name}/${tile.component}.ts`)
+      () =>
+        import(
+          `../extensions/${tile.extension_name}/components/${tile.component}.ts`
+        )
     );
     tileComponents[tile.id] = component;
     return component;

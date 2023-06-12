@@ -1,0 +1,9 @@
+{
+  "endpoints": {
+    "milaRegister": "/mila/register/",
+    "milaProfiles": "/mila/profiles/",
+    "milaSkills": "/mila/skills/",
+    "milaGroups": "/mila/groups/"
+  },
+  "profile_admin_endpoints": ["milaProfiles"]
+}

@@ -1,30 +1,37 @@
 <script setup lang="ts">
+import type { endpoints } from "@/api/api";
 import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectMasonry from "@/components/datatable/ObjectMasonry.vue";
-import { useMembersStore } from "@/stores/members";
+import { extensions } from "@/helpers/settings";
+import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
-import type { endpoints } from "@/api/api";
-
 const menuStore = useMenuStore();
-const membersStore = useMembersStore();
+const mainStore = useMainStore();
 menuStore.setTitle("User");
-// TODO: Load username from store
-// TODO: Add memberships and tags
-// TODO: Make profile list dynamic (based on extensions)
+
+// Core profile endpoints
 const profile_endpoints: Array<keyof typeof endpoints> = [
   "coreUsers",
   "profilesProfiles",
   "paymentsProfiles",
-  "milaProfiles",
   "tagsProfiles",
   "membershipsProfiles",
 ];
+
+// Import additional profile endpoints from extensions
+for (const extension of extensions) {
+  if (extension.profile_admin_endpoints !== undefined) {
+    for (const key of extension.profile_admin_endpoints) {
+      profile_endpoints.push(key);
+    }
+  }
+}
 </script>
 
 <template>
   <ObjectMasonry :items="profile_endpoints">
     <template #item="{ item }">
-      <ObjectDetail :store="membersStore" :name="item" :id="$route.params.id">
+      <ObjectDetail :store="mainStore" :name="item" :id="$route.params.id">
       </ObjectDetail>
     </template>
   </ObjectMasonry>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { endpoints } from "@/api/api";
+import type { DataSchema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimePanel from "primevue/panel";
 import type { PropType, Ref } from "vue";
 import { ref } from "vue";
 import ObjectDetailEdit from "./ObjectDetailEdit.vue";
-import type { DataSchema } from "@/api/types";
 
 const props = defineProps({
   store: {
@@ -14,7 +13,7 @@ const props = defineProps({
     required: true,
   },
   name: {
-    type: String as PropType<keyof typeof endpoints>,
+    type: String,
     required: true,
   },
   id: {
