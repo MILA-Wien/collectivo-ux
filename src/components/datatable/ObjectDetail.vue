@@ -6,7 +6,7 @@ import PrimePanel from "primevue/panel";
 import type { PropType, Ref } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import ObjectDetailEdit from "./ObjectDetailEdit.vue";
+import ObjectEditor from "./ObjectEditor.vue";
 const { t } = useI18n();
 const props = defineProps({
   store: {
@@ -69,7 +69,7 @@ const editActive = ref(false);
     </PrimePanel>
   </div>
 
-  <ObjectDetailEdit
+  <ObjectEditor
     v-if="editActive"
     :object="data.detail"
     :create="false"

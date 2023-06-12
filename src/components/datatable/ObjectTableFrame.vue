@@ -8,7 +8,7 @@ import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-import ObjectDetailEdit from "./ObjectDetailEdit.vue";
+import ObjectEditor from "./ObjectEditor.vue";
 import ObjectTable from "./ObjectTable.vue";
 
 import type { StoreGeneric } from "pinia";
@@ -60,7 +60,7 @@ const columns: any[] = [];
 const selectedColumns = ref<any[]>([]);
 
 var column_index = 0;
-for (const [key, value] of Object.entries(props.schema)) {
+for (const [key, value] of Object.entries(props.schema.fields)) {
   // Skip ID column
   if (key == "id") {
     continue;
@@ -244,7 +244,7 @@ function sendEmails() {
   </div>
 
   <!-- Detail dialog -->
-  <ObjectDetailEdit
+  <ObjectEditor
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
@@ -255,7 +255,7 @@ function sendEmails() {
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectDetailEdit
+  <ObjectEditor
     v-if="editEmailsActive"
     :object="editEmailsObject"
     :create="editEmailsCreate"

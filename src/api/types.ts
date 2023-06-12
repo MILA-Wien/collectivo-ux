@@ -117,6 +117,8 @@ export interface SchemaField {
   write_only: boolean;
   choices?: Array<SchemaChoiceItem>;
   condition?: SchemaCondition;
+  options?: any;
+  help_text?: string;
 }
 
 export interface Schema {
