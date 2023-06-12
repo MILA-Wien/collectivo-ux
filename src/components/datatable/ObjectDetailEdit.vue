@@ -74,18 +74,41 @@ const isSaving = ref(false);
 function closeModal() {
   emit("close");
 }
-function formatDates() {
+
+function createSubmitData() {
+  // Format dates
   for (const [key, value] of Object.entries(object_temp.value)) {
     if (value instanceof Date) {
       object_temp.value[key] = value.toISOString().split("T")[0];
     }
   }
+
+  // Generate form data (needed for files)
+  let submitData = new FormData();
+  for (const key of Object.keys(object_temp.value)) {
+    if (object_temp.value[key] !== undefined) {
+      // Special case for images
+      if (props.schema[key].input_type == "image") {
+        // Submit image only if changed or removed
+        if (object_temp.value[key] instanceof File) {
+          submitData.append(key, object_temp.value[key]);
+        } else if (object_temp.value[key] == "") {
+          submitData.append(key, object_temp.value[key]);
+        }
+      }
+      // Other fields
+      else {
+        submitData.append(key, object_temp.value[key]);
+      }
+    }
+  }
+  return submitData;
 }
+
 async function createObject() {
   isSaving.value = true;
-  formatDates();
   try {
-    await props.store.create(props.name, object_temp.value);
+    await props.store.create(props.name, createSubmitData());
     successToast(toast, "Object has been created.");
     emit("close");
   } catch (error) {
@@ -93,31 +116,15 @@ async function createObject() {
   }
   isSaving.value = false;
 }
+
 async function updateObject() {
   isSaving.value = true;
-  formatDates();
-  // TODO: Generalize this
-  let submitData = new FormData();
-  for (const key of Object.keys(object_temp.value)) {
-    if (object_temp.value[key] !== undefined) {
-      // Submit image only if changed or removed
-      if (props.schema[key].input_type == "image") {
-        if (object_temp.value[key] instanceof File) {
-          submitData.append(key, object_temp.value[key]);
-        } else if (object_temp.value[key] == "") {
-          submitData.append(key, object_temp.value[key]);
-        }
-      }
-
-      // Submit other fields
-      else {
-        submitData.append(key, object_temp.value[key]);
-      }
-    }
-  }
-  console.log(submitData);
   try {
-    await props.store.update(props.name, submitData, object_temp.value["id"]);
+    await props.store.update(
+      props.name,
+      createSubmitData(),
+      object_temp.value["id"]
+    );
     successToast(toast, "Object has been updated.");
     emit("close");
   } catch (error) {
@@ -271,17 +278,29 @@ function isFiltered(name: string, field: any) {
               </div>
 
               <div v-else-if="field.input_type === 'image'">
-                <input type="file" @change="(event) => onUpload(event, name)" />
+                <div class="pb-2">
+                  <input
+                    type="file"
+                    class=""
+                    @change="(event:any) => onUpload(event, name)"
+                  />
+                  <input
+                    v-if="object_temp[name]"
+                    type="button"
+                    value="Remove image"
+                    @click="removeUpload(name)"
+                  />
+                </div>
                 <img
                   :src="
                     pending_uploads[name]
                       ? pending_uploads[name]
                       : object_temp[name]
                   "
+                  v-if="object_temp[name] || pending_uploads[name]"
                   alt="Project logo"
+                  class="max-w-xs max-h-xs"
                 />
-                {{ object_temp[name] }}
-                <PrimeButton @click="removeUpload(name)">Remove</PrimeButton>
               </div>
 
               <div v-else>
