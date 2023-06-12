@@ -16,14 +16,16 @@ const error = ref<Object | null>(null);
 const data = storeToRefs(mainStore)["componentsComponents"];
 const iframe = ref("");
 const remoteID = ref("");
-let ComponentA = LoadingItem;
-let ComponentB = LoadingItem;
-let ComponentC = LoadingItem;
-let ComponentD = LoadingItem;
-let ComponentE = LoadingItem;
-let ComponentF = LoadingItem;
-let ComponentG = LoadingItem;
-let ComponentH = LoadingItem;
+const components = {
+  A: LoadingItem,
+  B: LoadingItem,
+  C: LoadingItem,
+  D: LoadingItem,
+  E: LoadingItem,
+  F: LoadingItem,
+  G: LoadingItem,
+  H: LoadingItem,
+};
 
 function loadItem() {
   iframe.value = "";
@@ -48,35 +50,35 @@ function loadItem() {
         switch (remoteID.value) {
           case "a":
             //@ts-ignore
-            ComponentA = defineAsyncComponent(() => import("a/component"));
+            components.A = defineAsyncComponent(() => import("a/component"));
             break;
           case "b":
             //@ts-ignore
-            ComponentB = defineAsyncComponent(() => import("b/component"));
+            components.B = defineAsyncComponent(() => import("b/component"));
             break;
           case "c":
             //@ts-ignore
-            ComponentC = defineAsyncComponent(() => import("c/component"));
+            components.C = defineAsyncComponent(() => import("c/component"));
             break;
           case "d":
             //@ts-ignore
-            ComponentD = defineAsyncComponent(() => import("d/component"));
+            components.D = defineAsyncComponent(() => import("d/component"));
             break;
           case "e":
             //@ts-ignore
-            ComponentE = defineAsyncComponent(() => import("e/component"));
+            components.E = defineAsyncComponent(() => import("e/component"));
             break;
           case "f":
             //@ts-ignore
-            ComponentF = defineAsyncComponent(() => import("f/component"));
+            components.F = defineAsyncComponent(() => import("f/component"));
             break;
           case "g":
             //@ts-ignore
-            ComponentG = defineAsyncComponent(() => import("g/component"));
+            components.G = defineAsyncComponent(() => import("g/component"));
             break;
           case "h":
             //@ts-ignore
-            ComponentH = defineAsyncComponent(() => import("h/component"));
+            components.H = defineAsyncComponent(() => import("h/component"));
             break;
           default:
             break;
@@ -115,28 +117,28 @@ watch(
     <IframeItem :src="iframe" />
   </div>
   <div class="v-full h-full" id="remote_a" v-else-if="remoteID == 'a'">
-    <component :is="ComponentA"></component>
+    <component :is="components.A"></component>
   </div>
   <div class="v-full h-full" id="remote_b" v-else-if="remoteID == 'b'">
-    <component :is="ComponentB"></component>
+    <component :is="components.B"></component>
   </div>
   <div class="v-full h-full" id="remote_c" v-else-if="remoteID == 'c'">
-    <component :is="ComponentC"></component>
+    <component :is="components.C"></component>
   </div>
   <div class="v-full h-full" id="remote_d" v-else-if="remoteID == 'd'">
-    <component :is="ComponentD"></component>
+    <component :is="components.D"></component>
   </div>
   <div class="v-full h-full" id="remote_e" v-else-if="remoteID == 'e'">
-    <component :is="ComponentE"></component>
+    <component :is="components.E"></component>
   </div>
   <div class="v-full h-full" id="remote_f" v-else-if="remoteID == 'f'">
-    <component :is="ComponentF"></component>
+    <component :is="components.F"></component>
   </div>
   <div class="v-full h-full" id="remote_g" v-else-if="remoteID == 'g'">
-    <component :is="ComponentG"></component>
+    <component :is="components.G"></component>
   </div>
   <div class="v-full h-full" id="remote_h" v-else-if="remoteID == 'h'">
-    <component :is="ComponentH"></component>
+    <component :is="components.H"></component>
   </div>
   <div v-else>An error has occured: remoteID {{ remoteID }} not found</div>
 </template>

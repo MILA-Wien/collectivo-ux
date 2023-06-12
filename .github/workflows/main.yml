@@ -74,7 +74,6 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Add hosts to /etc/hosts
         run: |
-          sudo echo "127.0.0.1 127.0.0.1" | sudo tee -a /etc/hosts
           sudo echo "127.0.0.1 keycloak" | sudo tee -a /etc/hosts
           cat /etc/hosts
           curl -v http://keycloak:8080
