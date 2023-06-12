@@ -120,7 +120,9 @@ export interface SchemaField {
 }
 
 export interface Schema {
-  [key: string]: SchemaField;
+  label: string;
+  description: string;
+  fields: { [key: string]: SchemaField };
 }
 export interface SchemaChoiceItem {
   [key: string]: string;

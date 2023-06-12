@@ -5,8 +5,9 @@ import { storeToRefs } from "pinia";
 import PrimePanel from "primevue/panel";
 import type { PropType, Ref } from "vue";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import ObjectDetailEdit from "./ObjectDetailEdit.vue";
-
+const { t } = useI18n();
 const props = defineProps({
   store: {
     type: Object as PropType<StoreGeneric>,
@@ -34,7 +35,7 @@ const editActive = ref(false);
 
 <template>
   <div v-if="data.detailLoaded || data.schemaLoaded">
-    <PrimePanel :header="name">
+    <PrimePanel :header="t(data.schema.label)">
       <template #icons>
         <button
           class="p-panel-header-icon p-link mr-2"
@@ -43,9 +44,9 @@ const editActive = ref(false);
           <span class="pi pi-pencil"></span>
         </button>
       </template>
-      <div v-for="(field, name, i) in data.schema" :key="i">
+      <div v-for="(field, name, i) in data.schema.fields" :key="i">
         <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
-          {{ field.label }}:
+          {{ t(field.label) }}:
 
           <span class="bg-slate-200 px-1 pt-1 rounded">
             <span v-if="field.input_type == 'multiselect'">
@@ -56,9 +57,12 @@ const editActive = ref(false);
                 {{ field.choices![value] }},
               </span>
             </span>
-            <span v-else>
-              {{ data.detail[name] ? data.detail[name] : "undefined" }}</span
-            >
+            <span v-else-if="data.detail[name]">
+              {{ data.detail[name] }}
+            </span>
+            <span v-else class="text-gray-400">
+              {{ t("No content") }}
+            </span>
           </span>
         </div>
       </div>
