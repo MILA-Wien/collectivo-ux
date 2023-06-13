@@ -33,7 +33,7 @@ const { profilesProfilesSelf } = storeToRefs(mainStore);
   <div v-else id="core-profile">
     <CoreProfile
       :membership="profilesProfilesSelf.detail"
-      :membershipSchema="profilesProfilesSelf.schema"
+      :membershipSchema="profilesProfilesSelf.schema.fields"
       id="members-profile"
     />
   </div>
