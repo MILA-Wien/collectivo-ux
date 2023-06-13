@@ -50,19 +50,26 @@ const editActive = ref(false);
         <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
           {{ t(field.label) }}:
 
-          <span class="bg-slate-200 px-1 pt-1 rounded" v-if="data.detailLoaded">
+          <span v-if="data.detailLoaded">
             <span v-if="field.input_type == 'multiselect'">
               <span
                 v-for="(value, i) in data.detail[name] as Array<any>"
                 :key="i"
+                class="bg-slate-200 my-1 mr-1 pt-1 rounded inline-block px-1"
               >
-                {{ field.choices![value] }},
+                {{ field.choices![value] }}
               </span>
             </span>
-            <span v-else-if="data.detail[name]">
+            <span
+              v-else-if="data.detail[name]"
+              class="bg-slate-200 mr-1 pt-1 px-1 h-6 rounded inline-block"
+            >
               {{ data.detail[name] }}
             </span>
-            <span v-else class="text-gray-400 inline-block w-20"></span>
+            <span
+              v-else
+              class="text-gray-400 inline-block w-20 h-6 bg-slate-200 rounded align-middle"
+            ></span>
           </span>
           <span v-else class="text-gray-400 inline-block w-20">
             <PrimeSkeleton class="inline-block"></PrimeSkeleton>

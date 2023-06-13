@@ -156,11 +156,19 @@ export const useMainStore = defineStore({
       return false;
     },
     async filter(objectName: any, page?: any, order?: any, filters?: any) {
+      // Get schema if not already loaded
+      this.getSchema(objectName);
+      this[objectName].listLoaded = false;
+
       // Get schema and object(s) and save in store
-      const [schema, objects] = await Promise.all([
-        API.getSchema(objectName),
-        API.get(objectName, undefined, page.page, page.rows, order, filters),
-      ]);
+      const objects = await API.get(
+        objectName,
+        undefined,
+        page.page,
+        page.rows,
+        order,
+        filters
+      );
 
       // Throw error if response does not match store data type
       if (
@@ -173,9 +181,7 @@ export const useMainStore = defineStore({
       }
       // Save list in store
       this[objectName].list = objects.data.results;
-      this[objectName].schema = extendSchema(schema.data);
       this[objectName].listLoaded = true;
-      this[objectName].schemaLoaded = true;
       this[objectName].listTotalRecords = parseInt(objects.data.count);
     },
   },
