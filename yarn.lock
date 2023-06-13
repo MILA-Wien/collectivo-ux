@@ -750,6 +750,25 @@
   dependencies:
     vue-demi "^0.13.11"
 
+"@yeger/vue-lib-adapter@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@yeger/vue-lib-adapter/-/vue-lib-adapter-1.0.0.tgz#bea0e7db5fa28a4ff639e109500551d905e77ab8"
+  integrity sha512-KPJc8HpYa0AYFwsSzTkfn0v0w6LlRJOp9uomwajOvcoc3+yqBUCalyo9d9/yqpiwC+Kp/mpG83sCVa6dveOWcQ==
+
+"@yeger/vue-masonry-wall-core@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@yeger/vue-masonry-wall-core/-/vue-masonry-wall-core-4.0.2.tgz#9b386371d7420cebcc88e34c5de73d9edb42fe26"
+  integrity sha512-DJtoBgT3nD1zqHmdm1nghTIi01mkNNKXmA2jsLNvm4qmwWOXXs/1GUjM1nTsidGClJiFg5qWAYETq693LCg9pw==
+  dependencies:
+    "@yeger/vue-lib-adapter" "1.0.0"
+
+"@yeger/vue-masonry-wall@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@yeger/vue-masonry-wall/-/vue-masonry-wall-4.0.2.tgz#7f005ef213737acc48e218d7c95e9cd6ea12d05e"
+  integrity sha512-ZsG3wRO+6UXC9Ua9UfdAeZQW6RTOJGNxunIRQNdUt5+U26LJipjuCfTBLCB59/jY7ji3newohlAZchVbHTEOnQ==
+  dependencies:
+    "@yeger/vue-masonry-wall-core" "4.0.2"
+
 abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
