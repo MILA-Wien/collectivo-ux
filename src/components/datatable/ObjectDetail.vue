@@ -3,6 +3,7 @@ import type { DataSchema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimePanel from "primevue/panel";
+import PrimeSkeleton from "primevue/skeleton";
 import type { PropType, Ref } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -28,14 +29,14 @@ const props = defineProps({
 // Load data
 const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name] as Ref<DataSchema>;
-props.store.get(props.name, props.id).catch((e: any) => {
+props.store.get(props.name, props.id, true).catch((e: any) => {
   error.value = e;
 });
 const editActive = ref(false);
 </script>
 
 <template>
-  <div v-if="data.detailLoaded || data.schemaLoaded">
+  <div v-if="data.schemaLoaded && error == null">
     <PrimePanel :header="t(data.schema.label)">
       <template #icons>
         <button
@@ -49,7 +50,7 @@ const editActive = ref(false);
         <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
           {{ t(field.label) }}:
 
-          <span class="bg-slate-200 px-1 pt-1 rounded">
+          <span class="bg-slate-200 px-1 pt-1 rounded" v-if="data.detailLoaded">
             <span v-if="field.input_type == 'multiselect'">
               <span
                 v-for="(value, i) in data.detail[name] as Array<any>"
@@ -61,13 +62,17 @@ const editActive = ref(false);
             <span v-else-if="data.detail[name]">
               {{ data.detail[name] }}
             </span>
-            <span v-else class="text-gray-400">
-              {{ t("No content") }}
-            </span>
+            <span v-else class="text-gray-400 inline-block w-20"></span>
+          </span>
+          <span v-else class="text-gray-400 inline-block w-20">
+            <PrimeSkeleton class="inline-block"></PrimeSkeleton>
           </span>
         </div>
       </div>
     </PrimePanel>
+  </div>
+  <div v-else-if="error == null">
+    <PrimeSkeleton height="3rem"></PrimeSkeleton>
   </div>
 
   <ObjectEditor

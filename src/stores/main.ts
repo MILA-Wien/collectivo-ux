@@ -52,31 +52,38 @@ export const useMainStore = defineStore({
   },
 
   actions: {
-    async get(objectName: keyof typeof endpoints, id?: Number) {
+    async get(
+      objectName: keyof typeof endpoints,
+      id?: Number,
+      force?: boolean
+    ) {
+      // Get schema if not already loaded
+      this.getSchema(objectName);
+
+      // Case 1 - Get detail
       if (id || DirectDetailEndpoints.has(objectName)) {
+        if (!force && this[objectName].detailLoaded) {
+          return;
+        }
+
+        // Get object and save in store
         this[objectName].detailLoaded = false;
-        // Get schema and object(s) and save in store
-        const [schema, objects] = await Promise.all([
-          API.getSchema(objectName),
-          API.get(objectName, id),
-        ]);
+        const objects = await API.get(objectName, id);
+
         // Throw error if response does not match store data type
         if (objects.data.results instanceof Array) {
           throw new Error("Receiving list, expecting detail.");
         }
-        // Save detail in store
-        this[objectName].schema = extendSchema(schema.data);
-        this[objectName].schemaLoaded = true;
+
+        // Save object in store
         this[objectName].detail = objects.data;
         this[objectName].detailLoaded = true;
         return;
       }
 
+      // Case 2 - Get list
       this[objectName].listLoaded = false;
-      const [schema, objects] = await Promise.all([
-        API.getSchema(objectName),
-        API.get(objectName, id),
-      ]);
+      const objects = await API.get(objectName, id);
 
       // Throw error if response does not match store data type
       if (!(objects.data.results instanceof Array)) {
@@ -87,11 +94,14 @@ export const useMainStore = defineStore({
       this[objectName].list = objects.data.results;
       this[objectName].listLoaded = true;
       this[objectName].listTotalRecords = parseInt(objects.data.count);
-      this[objectName].schema = extendSchema(schema.data);
-      this[objectName].schemaLoaded = true;
     },
-    async getSchema(objectName: any) {
-      // Get schema and save in store
+
+    // Get schema and save in store
+    async getSchema(objectName: any, force?: boolean) {
+      if (!force && this[objectName].schemaLoaded) {
+        return;
+      }
+      this[objectName].schemaLoaded = false;
       const schema = await API.getSchema(objectName);
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
