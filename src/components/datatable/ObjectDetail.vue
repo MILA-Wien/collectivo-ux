@@ -1,3 +1,4 @@
+<!-- A panel that displays the data of an object and an edit button. -->
 <script setup lang="ts">
 import type { DataSchema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
@@ -29,9 +30,11 @@ const props = defineProps({
 // Load data
 const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name] as Ref<DataSchema>;
-props.store.get(props.name, props.id, true).catch((e: any) => {
+props.store.getDetail(props.name, props.id, true).catch((e: any) => {
   error.value = e;
 });
+
+// Editor state
 const editActive = ref(false);
 </script>
 

@@ -37,6 +37,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  id: {
+    validator: (prop) =>
+      typeof prop === "number" || typeof prop === "string" || prop === null,
+    required: false,
+  },
   create: {
     type: Boolean,
     required: true,
@@ -90,7 +95,10 @@ function createSubmitData() {
   // Generate form data (needed for files)
   let submitData = new FormData();
   for (const key of Object.keys(object_temp.value)) {
-    if (object_temp.value[key] !== undefined) {
+    if (
+      object_temp.value[key] !== undefined &&
+      object_temp.value[key] !== null
+    ) {
       // Special case for images
       if (props.schema.fields[key].input_type == "image") {
         // Submit image only if changed or removed
@@ -106,6 +114,7 @@ function createSubmitData() {
       }
     }
   }
+
   return submitData;
 }
 

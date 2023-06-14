@@ -1,3 +1,4 @@
+// Main store to handle CRUD requests for all registered endpoints
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
 import type { DataObject, DataSchema } from "../api/types";
@@ -15,7 +16,7 @@ async function storeCreate(store: any, objectName: any, payload?: Object) {
 
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
-  for (const value of Object.values(schema) as any) {
+  for (const value of Object.values(schema.fields) as any) {
     if (value.choices == undefined) {
       continue;
     }
@@ -34,13 +35,6 @@ function extendSchema(schema: any) {
   return schema;
 }
 
-// TODO: Better way to determine this
-const DirectDetailEndpoints = new Set([
-  "profilesProfilesSelf",
-  "lotzappSettings",
-  "coreSettings",
-]);
-
 export const useMainStore = defineStore({
   id: "members",
   state: () => {
@@ -52,16 +46,21 @@ export const useMainStore = defineStore({
   },
 
   actions: {
+    async getDetail(objectName: any, id?: Number, force?: boolean) {
+      return this.get(objectName, id, force, true);
+    },
+
     async get(
       objectName: keyof typeof endpoints,
-      id?: Number,
-      force?: boolean
+      id?: Number, // Get detail with given id, otherwise get list
+      force?: boolean, // Reload data even if already loaded
+      detail?: boolean // Get detail even if no id is given
     ) {
       // Get schema if not already loaded
       this.getSchema(objectName);
 
       // Case 1 - Get detail
-      if (id || DirectDetailEndpoints.has(objectName)) {
+      if (id || detail) {
         if (!force && this[objectName].detailLoaded) {
           return;
         }
@@ -111,9 +110,6 @@ export const useMainStore = defineStore({
     },
     async update(objectName: any, payload: Object, id?: Number) {
       // Update object and save in store
-      if (DirectDetailEndpoints.has(objectName)) {
-        id = undefined;
-      }
       let response: any = null;
       response = await API.patch(objectName, payload, id);
 

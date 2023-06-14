@@ -12,7 +12,7 @@ const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
 const mainStore = useMainStore();
-mainStore.get("profilesProfilesSelf").catch((e: any) => {
+mainStore.getDetail("profilesProfilesSelf").catch((e: any) => {
   error.value = e;
 });
 const { profilesProfilesSelf } = storeToRefs(mainStore);
