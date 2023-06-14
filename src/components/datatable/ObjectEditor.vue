@@ -99,7 +99,7 @@ function createSubmitData() {
       object_temp.value[key] !== undefined &&
       object_temp.value[key] !== null
     ) {
-      // Special case for images
+      // Field is image
       if (props.schema.fields[key].input_type == "image") {
         // Submit image only if changed or removed
         if (object_temp.value[key] instanceof File) {
@@ -108,13 +108,21 @@ function createSubmitData() {
           submitData.append(key, object_temp.value[key]);
         }
       }
+      // Field is array
+      // See https://stackoverflow.com/questions/60754544/
+      else if (Array.isArray(object_temp.value[key])) {
+        for (const item of object_temp.value[key]) {
+          submitData.append(key, item);
+        }
+      }
       // Other fields
       else {
+        console.log(key, object_temp.value[key]);
         submitData.append(key, object_temp.value[key]);
       }
     }
   }
-
+  console.log(submitData);
   return submitData;
 }
 

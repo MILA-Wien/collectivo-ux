@@ -63,16 +63,20 @@ const editActive = ref(false);
                 {{ field.choices![value] }}
               </span>
             </span>
-            <span
-              v-else-if="data.detail[name]"
-              class="bg-slate-200 mr-1 pt-1 px-1 h-6 rounded inline-block"
-            >
+            <!-- Booleans -->
+            <span v-else-if="field.input_type == 'checkbox'">
+              <i
+                v-if="data.detail[name] == true"
+                class="pi pi-check bg-green-200 p-1 rounded"
+              ></i>
+              <i v-else class="pi pi-times bg-red-200 p-1 rounded"></i>
+            </span>
+            <!-- All other cases with content -->
+            <span v-else-if="data.detail[name]" class="data">
               {{ data.detail[name] }}
             </span>
-            <span
-              v-else
-              class="text-gray-400 inline-block w-20 h-6 bg-slate-200 rounded align-middle"
-            ></span>
+            <!-- No content -->
+            <span v-else class="inline-block w-20 h-6 data"></span>
           </span>
           <span v-else class="text-gray-400 inline-block w-20">
             <PrimeSkeleton class="inline-block"></PrimeSkeleton>
@@ -96,3 +100,9 @@ const editActive = ref(false);
     @close="editActive = false"
   />
 </template>
+
+<style lang="scss" scoped>
+.data {
+  @apply bg-slate-200 mr-1 pt-1 px-1 h-6 rounded whitespace-pre-wrap leading-7;
+}
+</style>
