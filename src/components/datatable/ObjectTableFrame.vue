@@ -126,6 +126,10 @@ function createObjectFn() {
   editCreate.value = true;
   editActive.value = true;
 }
+function closeEditor() {
+  editActive.value = false;
+  table.value.refresh();
+}
 
 // Send emails ------------------------------------------------------------- //
 const editEmailsActive = ref(false);
@@ -247,7 +251,7 @@ function sendEmails() {
     :store="store"
     :name="name"
     :schema="schema"
-    @close="editActive = false"
+    @close="closeEditor()"
   />
 
   <!-- Dialogue for email campaign details -->

@@ -112,11 +112,11 @@ export interface SchemaField {
   input_type: string;
   label: string;
   max_length: number;
-  read_only: boolean;
+  read_only: boolean | SchemaCondition;
   required: boolean;
   write_only: boolean;
   choices?: Array<SchemaChoiceItem>;
-  condition?: SchemaCondition;
+  visible?: boolean | SchemaCondition;
   options?: any;
   help_text?: string;
 }
@@ -131,8 +131,8 @@ export interface SchemaChoiceItem {
 }
 export interface SchemaCondition {
   field: string;
-  condition: string;
-  value: string;
+  condition: "equals" | "empty" | "not_empty";
+  value?: string;
 }
 
 // Store attributes

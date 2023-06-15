@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Schema } from "@/api/types";
+import type { Schema, SchemaCondition } from "@/api/types";
 import { errorToast, successToast } from "@/helpers/toasts";
 import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
@@ -117,12 +117,11 @@ function createSubmitData() {
       }
       // Other fields
       else {
-        console.log(key, object_temp.value[key]);
         submitData.append(key, object_temp.value[key]);
       }
     }
   }
-  console.log(submitData);
+
   return submitData;
 }
 
@@ -177,34 +176,37 @@ const confirmDelete = () => {
 
 function getHeader() {
   if (props.create) {
-    return t("Create") + ": " + t(props.name);
+    return t("Create") + ": " + t(props.schema.label);
   } else {
-    return t("Edit") + ": " + t(props.name);
+    return (
+      t("Edit") + ": " + t(props.schema.label) + " #" + object_temp.value.id
+    );
   }
 }
 
-const filterValue = ref("");
-function _isFiltered(name: string, field: any) {
-  if (props.create && field.read_only) {
-    return false;
-  }
-  if (filterValue.value === "") {
-    return true;
-  }
-  return t(props.schema.fields[name].label)
-    .toLowerCase()
-    .includes(filterValue.value.toLowerCase());
-}
 // Check if a schema condition is true
-function checkCondition(condition: any) {
-  if (condition == null) {
+function checkCondition(condition: undefined | boolean | SchemaCondition) {
+  if (condition == null || condition == undefined) {
     return true;
   }
-  let cond = object_temp.value[condition.field] == condition.value;
-  return cond;
-}
-function isFiltered(name: string, field: any) {
-  return _isFiltered(name, field) && checkCondition(field.condition);
+  if (typeof condition == "boolean") {
+    return condition;
+  }
+  if (condition.condition == "not_empty") {
+    if (object_temp.value[condition.field]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  if (condition.condition == "empty") {
+    return !object_temp.value[condition.field];
+  }
+  if (condition.condition == "equals") {
+    return object_temp.value[condition.field] == condition.value;
+  }
+  console.log("Unknown condition: " + condition.condition);
+  return false;
 }
 </script>
 
@@ -225,7 +227,13 @@ function isFiltered(name: string, field: any) {
         <!-- Editable fields based on input type -->
         <div v-for="(field, name, i) in schema.fields" :key="i">
           <div class="my-4">
-            <div v-if="isFiltered(name as string, field) && name != 'id'">
+            <div
+              v-if="
+                name != 'id' &&
+                checkCondition(field.visible) &&
+                !(checkCondition(field.read_only) && create)
+              "
+            >
               <div class="mb-1">
                 <label for="attr-{{name}}">
                   {{ t(field.label) }}
@@ -243,7 +251,7 @@ function isFiltered(name: string, field: any) {
                   :placeholder="t('Select a choice')"
                   :showClear="true"
                   class="w-full"
-                  :disabled="field.read_only"
+                  :disabled="checkCondition(field.read_only)"
                 />
               </div>
 
@@ -258,7 +266,7 @@ function isFiltered(name: string, field: any) {
                   :filter="true"
                   :placeholder="t('Select multiple choices')"
                   class="w-full"
-                  :disabled="field.read_only"
+                  :disabled="checkCondition(field.read_only)"
                 />
               </div>
 
@@ -268,7 +276,7 @@ function isFiltered(name: string, field: any) {
               >
                 <PrimeInputSwitch
                   v-model="object_temp[name]"
-                  :disabled="field.read_only"
+                  :disabled="checkCondition(field.read_only)"
                   class="flex-none mr-2"
                 />
                 <small
@@ -283,14 +291,14 @@ function isFiltered(name: string, field: any) {
                 <PrimeCalendar
                   v-model="object_temp[name]"
                   dateFormat="dd.mm.yy"
-                  :disabled="field.read_only"
+                  :disabled="checkCondition(field.read_only)"
                 />
               </div>
 
               <div v-else-if="field.input_type === 'textarea'">
                 <PrimeTextarea
                   v-model="object_temp[name]"
-                  :disabled="field.read_only"
+                  :disabled="checkCondition(field.read_only)"
                 />
               </div>
 
@@ -330,7 +338,7 @@ function isFiltered(name: string, field: any) {
                   type="text"
                   aria-describedby="attr-{{value}}-help"
                   v-model="object_temp[name]"
-                  :disabled="field.read_only"
+                  :disabled="checkCondition(field.read_only)"
                   class="w-full"
                 />
               </div>
@@ -351,14 +359,6 @@ function isFiltered(name: string, field: any) {
         <div
           class="object-detail-filter flex flex-row flex-wrap mt-5 items-center gap-3"
         >
-          <i class="pi pi-filter m-auto" style="font-size: 1.2rem"></i>
-          <PrimeInputText
-            id="filter"
-            v-model="filterValue"
-            placeholder="Filter"
-            type="text"
-            class="flex-grow h-11"
-          />
           <div class="flex flex-row flex-wrap gap-3">
             <PrimeButton
               v-if="create"

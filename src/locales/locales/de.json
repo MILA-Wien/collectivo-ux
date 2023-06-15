@@ -188,7 +188,7 @@
   "Update failed": "Aktualisierung abgebrochen",
 
   "Main menu": "Hauptmenü",
-
+  "Invoices": "Rechnungen",
   "Person type": "Typ Person",
   "Address postcode": "PLZ",
   "Address city": "Stadt",
@@ -197,7 +197,7 @@
   "Address stair": "Stiege",
   "Address door": "Tür",
   "Address country": "Land",
-  "Membership type": "Status",
+  "Membership type": "Mitgliedschaftstyp",
   "Membership start": "Beitritt",
   "Membership end": "Austritt",
   "Membership cancelled": "Kündigung",
