@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="mb-10">
     <MasonryWall :items="items" :ssr-columns="1" :column-width="300" :gap="16">
-      <template #default="{ item, index }">
+      <template #default="{ item }">
         <slot name="item" v-bind="{ item }"></slot>
       </template>
     </MasonryWall>
