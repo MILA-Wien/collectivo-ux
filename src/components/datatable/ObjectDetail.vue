@@ -84,6 +84,8 @@ const editActive = ref(false);
               {{ data.detail[name] }}
             </span>
             <!-- No content -->
+            <span v-else-if="field.write_only" class="data">********</span>
+
             <span v-else class="inline-block w-20 h-6 data"></span>
           </span>
           <span v-else class="text-gray-400 inline-block w-20">

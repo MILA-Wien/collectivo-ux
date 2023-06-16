@@ -11,6 +11,7 @@ menuStore.setTitle("My data");
 
 // Core profile endpoints
 const profile_endpoints: Array<keyof typeof endpoints> = [
+  "coreProfile",
   "profilesProfilesSelf",
 ];
 

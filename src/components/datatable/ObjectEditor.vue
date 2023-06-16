@@ -387,13 +387,13 @@ async function validate() {
                   class="max-w-xs max-h-xs"
                 />
               </div>
-
               <div v-else>
                 <PrimeInputText
                   id="attr-{{name}}"
                   type="text"
                   aria-describedby="attr-{{value}}-help"
                   v-model="object_temp[name]"
+                  :placeholder="field.write_only ? '********' : ''"
                   :disabled="checkCondition(object_temp, field.read_only)"
                   :class="{ 'p-invalid': isInvalid(name) }"
                   class="w-full"
