@@ -1,6 +1,7 @@
 <!-- A panel that displays the data of an object and an edit button. -->
 <script setup lang="ts">
 import type { DataSchema } from "@/api/types";
+import { checkCondition } from "@/helpers/schema";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimePanel from "primevue/panel";
@@ -50,7 +51,14 @@ const editActive = ref(false);
         </button>
       </template>
       <div v-for="(field, name, i) in data.schema.fields" :key="i">
-        <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
+        <div
+          v-if="
+            String(name) != 'id' &&
+            String(name) != 'user' &&
+            checkCondition(data.detail, field.visible)
+          "
+          class="pb-3"
+        >
           {{ t(field.label) }}:
 
           <span v-if="data.detailLoaded">

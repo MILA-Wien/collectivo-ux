@@ -41,7 +41,7 @@ const router = createRouter({
         layout: Default,
         isMembersAdmin: true,
       },
-      component: () => import("../components/core/CoreProfileLoader.vue"),
+      component: () => import("../components/core/CoreProfile.vue"),
     },
     {
       path: "/core/settings",

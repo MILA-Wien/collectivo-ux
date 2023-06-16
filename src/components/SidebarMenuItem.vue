@@ -17,7 +17,6 @@ if (item_.extension.name === "core" && item_.name === "logout") {
   item_.target = "link";
   item_.link = userStore.user?.logoutUrl || "/";
 }
-console.log(item_);
 </script>
 
 <template>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import type { Schema, SchemaCondition } from "@/api/types";
+import type { Schema } from "@/api/types";
+import { checkCondition } from "@/helpers/schema";
 import { errorToast, successToast } from "@/helpers/toasts";
+import { useVuelidate } from "@vuelidate/core";
+import { required, requiredIf } from "@vuelidate/validators";
 import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeCalendar from "primevue/calendar";
@@ -59,15 +62,33 @@ const props = defineProps({
 // Create temporary copy of the object
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
 
-// Upload callback
-const pending_uploads = ref<any>({});
+// Modal state ----------------------------------------------------------------
+const isVisible = ref(true);
+const isSaving = ref(false);
 
+function getHeader() {
+  if (props.create) {
+    return t("Create") + ": " + t(props.schema.label);
+  } else {
+    var header = t("Edit") + ": " + t(props.schema.label);
+    if (object_temp.value.id) {
+      header = header + " #" + object_temp.value.id;
+    }
+    return header;
+  }
+}
+
+function closeModal() {
+  emit("close");
+}
+
+// Format data ----------------------------------------------------------------
+const pending_uploads = ref<any>({});
 function prepareUpload(event: any, name: any) {
   const file = event.target.files[0];
   pending_uploads.value[name] = URL.createObjectURL(file);
   object_temp.value[name] = file;
 }
-
 function removeUpload(name: any) {
   if (pending_uploads[name] != undefined) {
     pending_uploads.value[name] = null;
@@ -75,20 +96,17 @@ function removeUpload(name: any) {
   object_temp.value[name] = "";
 }
 
-// Reactive settings
-const isVisible = ref(true);
-const isSaving = ref(false);
-
-// Functions
-function closeModal() {
-  emit("close");
+function formatDate(value: Date): string {
+  // See https://stackoverflow.com/a/69399448/14396787
+  var timestamp = value.getTime() - value.getTimezoneOffset() * 60000;
+  var correctDate = new Date(timestamp);
+  return correctDate.toISOString().split("T")[0];
 }
 
 function createSubmitData() {
-  // Format dates
   for (const [key, value] of Object.entries(object_temp.value)) {
     if (value instanceof Date) {
-      object_temp.value[key] = value.toISOString().split("T")[0];
+      object_temp.value[key] = formatDate(value);
     }
   }
 
@@ -125,8 +143,13 @@ function createSubmitData() {
   return submitData;
 }
 
+// CRUD commands --------------------------------------------------------------
 async function createObject() {
   isSaving.value = true;
+  if (!(await validate())) {
+    isSaving.value = false;
+    return;
+  }
   try {
     await props.store.create(props.name, createSubmitData());
     successToast(toast, "Object has been created.");
@@ -139,6 +162,10 @@ async function createObject() {
 
 async function updateObject() {
   isSaving.value = true;
+  if (!(await validate())) {
+    isSaving.value = false;
+    return;
+  }
   try {
     await props.store.update(
       props.name,
@@ -174,39 +201,63 @@ const confirmDelete = () => {
   });
 };
 
-function getHeader() {
-  if (props.create) {
-    return t("Create") + ": " + t(props.schema.label);
-  } else {
-    return (
-      t("Edit") + ": " + t(props.schema.label) + " #" + object_temp.value.id
-    );
+// Validation -----------------------------------------------------------------
+
+const rules: any = {};
+for (var key in props.schema.fields) {
+  const schemaField = props.schema.fields[key];
+  if (schemaField.required) {
+    if (schemaField.visible == null) {
+      rules[key] = { required };
+    } else {
+      // Required only if field is visible
+      rules[key] = {
+        requiredIfCondition: requiredIf(() => {
+          return checkCondition(object_temp.value, schemaField.visible);
+        }),
+      };
+    }
   }
 }
 
-// Check if a schema condition is true
-function checkCondition(condition: undefined | boolean | SchemaCondition) {
-  if (condition == null || condition == undefined) {
-    return true;
+const v$ = useVuelidate(rules, object_temp.value);
+
+function returnErrorMessage(key: any) {
+  if (Object.keys(rules).includes(key)) {
+    if (v$.value[key].requiredIfCondition) {
+      return t(v$.value[key].requiredIfCondition.$message || "");
+    }
+    return t(v$.value[key].required?.$message || "");
+  } else {
+    return false;
   }
-  if (typeof condition == "boolean") {
-    return condition;
+}
+
+function isInvalid(key: any) {
+  if (Object.keys(rules).includes(key)) {
+    return v$.value[key].$invalid || v$.value[key].$pending.$response;
+  } else {
+    return false;
   }
-  if (condition.condition == "not_empty") {
-    if (object_temp.value[condition.field]) {
-      return true;
-    } else {
-      return false;
+}
+
+async function validate() {
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) {
+    console.log(v$.value.$errors);
+    for (let err of v$.value.$errors) {
+      toast.add({
+        severity: "error",
+        summary: t("Error"),
+        detail:
+          (typeof err.$property === "string" ? t(err.$property) : "") +
+          ": " +
+          (typeof err.$message === "string" ? t(err.$message) : ""),
+        life: 5000,
+      });
     }
   }
-  if (condition.condition == "empty") {
-    return !object_temp.value[condition.field];
-  }
-  if (condition.condition == "equals") {
-    return object_temp.value[condition.field] == condition.value;
-  }
-  console.log("Unknown condition: " + condition.condition);
-  return false;
+  return isFormCorrect;
 }
 </script>
 
@@ -230,8 +281,8 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
             <div
               v-if="
                 name != 'id' &&
-                checkCondition(field.visible) &&
-                !(checkCondition(field.read_only) && create)
+                checkCondition(object_temp, field.visible) &&
+                !(checkCondition(object_temp, field.read_only) && create)
               "
             >
               <div class="mb-1">
@@ -251,7 +302,8 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
                   :placeholder="t('Select a choice')"
                   :showClear="true"
                   class="w-full"
-                  :disabled="checkCondition(field.read_only)"
+                  :class="{ 'p-invalid': isInvalid(name) }"
+                  :disabled="checkCondition(object_temp, field.read_only)"
                 />
               </div>
 
@@ -265,8 +317,9 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
                   :selectedItemsLabel="`${object_temp[name]?.length} selected`"
                   :filter="true"
                   :placeholder="t('Select multiple choices')"
+                  :class="{ 'p-invalid': isInvalid(name) }"
                   class="w-full"
-                  :disabled="checkCondition(field.read_only)"
+                  :disabled="checkCondition(object_temp, field.read_only)"
                 />
               </div>
 
@@ -276,7 +329,8 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
               >
                 <PrimeInputSwitch
                   v-model="object_temp[name]"
-                  :disabled="checkCondition(field.read_only)"
+                  :disabled="checkCondition(object_temp, field.read_only)"
+                  :class="{ 'p-invalid': isInvalid(name) }"
                   class="flex-none mr-2"
                 />
                 <small
@@ -290,15 +344,17 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
               <div v-else-if="field.input_type === 'date'">
                 <PrimeCalendar
                   v-model="object_temp[name]"
-                  dateFormat="dd.mm.yy"
-                  :disabled="checkCondition(field.read_only)"
+                  dateFormat="yy-mm-dd"
+                  :disabled="checkCondition(object_temp, field.read_only)"
+                  :class="{ 'p-invalid': isInvalid(name) }"
                 />
               </div>
 
               <div v-else-if="field.input_type === 'textarea'">
                 <PrimeTextarea
                   v-model="object_temp[name]"
-                  :disabled="checkCondition(field.read_only)"
+                  :disabled="checkCondition(object_temp, field.read_only)"
+                  :class="{ 'p-invalid': isInvalid(name) }"
                 />
               </div>
 
@@ -338,17 +394,24 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
                   type="text"
                   aria-describedby="attr-{{value}}-help"
                   v-model="object_temp[name]"
-                  :disabled="checkCondition(field.read_only)"
+                  :disabled="checkCondition(object_temp, field.read_only)"
+                  :class="{ 'p-invalid': isInvalid(name) }"
                   class="w-full"
                 />
               </div>
-
-              <small
-                v-if="field.help_text && field.input_type !== 'checkbox'"
-                id="user-attr-{{value}}-help"
-                class="p-info"
-                >{{ t(field.help_text) }}</small
-              >
+              <div>
+                <small v-if="isInvalid(name)" class="p-error">{{
+                  returnErrorMessage(name)
+                }}</small>
+              </div>
+              <div>
+                <small
+                  v-if="field.help_text && field.input_type !== 'checkbox'"
+                  id="user-attr-{{value}}-help"
+                  class="p-info"
+                  >{{ t(field.help_text) }}</small
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -359,6 +422,7 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
         <div
           class="object-detail-filter flex flex-row flex-wrap mt-5 items-center gap-3"
         >
+          <div class="flex-grow"></div>
           <div class="flex flex-row flex-wrap gap-3">
             <PrimeButton
               v-if="create"
@@ -400,22 +464,5 @@ function checkCondition(condition: undefined | boolean | SchemaCondition) {
 <style scoped>
 label {
   font-weight: bold;
-}
-</style>
-
-<style lang="scss">
-.object-detail.p-dialog .p-dialog-header,
-.object-detail.p-dialog .p-dialog-footer {
-  background-color: rgb(236, 236, 236);
-}
-.object-detail.p-dialog .p-inputtextarea {
-  height: 40px;
-  width: 100%;
-}
-.object-detail.p-dialog .p-calendar {
-  width: 100%;
-}
-.object-detail.p-dialog .p-dialog-footer button {
-  margin-right: 0px;
 }
 </style>
