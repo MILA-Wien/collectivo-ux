@@ -11,6 +11,7 @@ const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Users");
+const view_groups = mainStore.hasPermission("view_groups", "core");
 </script>
 
 <template>
@@ -44,11 +45,11 @@ menuStore.setTitle("Users");
           </template>
         </ObjectLoader>
       </TabPanel>
-      <TabPanel :header="t('Groups')">
+      <TabPanel :header="t('Groups')" v-if="view_groups">
         <ObjectLoader
           :store="mainStore"
           :name="'coreGroups'"
-          :default-columns="['name', 'permissions', 'users']"
+          :default-columns="['name', 'permissions', 'extension', 'users']"
         >
         </ObjectLoader>
       </TabPanel>

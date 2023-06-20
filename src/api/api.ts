@@ -111,6 +111,7 @@ export const endpoints = {
   profilesProfilesSelf: "/profiles/profiles/self/",
 
   membershipsMemberships: "/memberships/memberships/",
+  membershipsRegister: "/memberships/register/",
   membershipsMembershipsSelf: "/memberships/memberships/self/",
   membershipsMembershipsShares: "/memberships/memberships/self/sign-shares/",
   membershipsTypes: "/memberships/types/",
@@ -125,6 +126,7 @@ export const endpoints = {
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
+  emailsAutomations: "/emails/automations/",
 
   paymentsProfiles: "/payments/profiles/",
   paymentsProfilesSelf: "/payments/profiles/self/",

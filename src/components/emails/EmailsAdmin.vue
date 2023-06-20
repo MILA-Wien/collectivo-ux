@@ -9,7 +9,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();
-menuStore.setTitle("Member Emails");
+menuStore.setTitle("Emails");
 </script>
 <template>
   <div class="h-full tabview-full-height">
@@ -33,6 +33,13 @@ menuStore.setTitle("Member Emails");
           :store="mainStore"
           :name="'emailsDesigns'"
           :defaultColumns="['name', 'body']"
+        />
+      </TabPanel>
+      <TabPanel :header="t('Automations')">
+        <ObjectLoader
+          :store="mainStore"
+          :name="'emailsAutomations'"
+          :defaultColumns="['name', 'extension', 'is_active']"
         />
       </TabPanel>
     </TabView>

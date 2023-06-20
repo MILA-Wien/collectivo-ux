@@ -3,13 +3,19 @@ import { storeToRefs } from "pinia";
 import PrimeToast from "primevue/toast";
 import { RouterView, useRoute } from "vue-router";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
+import { useMainStore } from "./stores/main";
 import { useUserStore } from "./stores/user";
 import HeaderView from "./views/HeaderView.vue";
 import MenuView from "./views/SidebarView.vue";
 
 const userStore = useUserStore();
+const mainStore = useMainStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
+
+mainStore.getDetail("coreProfile").catch((error) => {
+  console.log(error);
+});
 </script>
 
 <template>

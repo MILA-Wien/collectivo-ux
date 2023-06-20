@@ -8,12 +8,12 @@ import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-import ObjectEditor from "./ObjectEditor.vue";
 import ObjectTable from "./ObjectTable.vue";
 
 import type { Schema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
+import ObjectModal from "./ObjectModal.vue";
 
 const { t } = useI18n();
 const props = defineProps({
@@ -244,7 +244,7 @@ function sendEmails() {
   </div>
 
   <!-- Detail dialog -->
-  <ObjectEditor
+  <ObjectModal
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
@@ -255,7 +255,7 @@ function sendEmails() {
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectEditor
+  <ObjectModal
     v-if="editEmailsActive"
     :object="editEmailsObject"
     :create="editEmailsCreate"

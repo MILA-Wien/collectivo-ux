@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ObjectList from "@/components/datatable/ObjectList.vue";
+import { errorToast, successToast } from "@/helpers/toasts";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
@@ -9,7 +10,6 @@ import PrimePanel from "primevue/panel";
 import { useToast } from "primevue/usetoast";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { successToast, errorToast } from "@/helpers/toasts";
 const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();
@@ -66,7 +66,7 @@ const sharesDialog: any = ref({
             <span class="">{{ slotProps.data.date_started }}</span>
             <br />
             {{ t("Status") }}:
-            <span class="">{{ slotProps.data.status.name }}</span>
+            <span class="">{{ slotProps.data.status?.name }}</span>
           </p>
           <p v-if="slotProps.data.type.has_shares">
             {{ t("Signed shares") }}: {{ slotProps.data.shares_signed }}

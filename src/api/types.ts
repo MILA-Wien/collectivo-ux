@@ -119,11 +119,14 @@ export interface SchemaField {
   visible?: boolean | SchemaCondition;
   options?: any;
   help_text?: string;
+  schema?: Schema;
 }
 
 export interface Schema {
   label: string;
   description: string;
+  actions?: Array<string>;
+  structure?: any;
   fields: { [key: string]: SchemaField };
 }
 export interface SchemaChoiceItem {

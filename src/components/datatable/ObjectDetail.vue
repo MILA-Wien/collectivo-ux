@@ -9,7 +9,7 @@ import PrimeSkeleton from "primevue/skeleton";
 import type { PropType, Ref } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import ObjectEditor from "./ObjectEditor.vue";
+import ObjectModal from "./ObjectModal.vue";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -99,7 +99,7 @@ const editActive = ref(false);
     <PrimeSkeleton height="3rem"></PrimeSkeleton>
   </div>
 
-  <ObjectEditor
+  <ObjectModal
     v-if="editActive"
     :object="data.detail"
     :create="false"

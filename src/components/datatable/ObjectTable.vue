@@ -8,6 +8,7 @@ import PrimeInputSwitch from "primevue/inputswitch";
 import PrimeInputText from "primevue/inputtext";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeOverlayPanel from "primevue/overlaypanel";
+import PrimeTriStateCheckbox from "primevue/tristatecheckbox";
 import type { PropType } from "vue";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -25,7 +26,6 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-
   schema: {
     type: Object,
     required: true,
@@ -213,6 +213,8 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
 </script>
 
 <template>
+  <div style="display: None"><PrimeTriStateCheckbox /></div>
+
   <PrimeOverlayPanel ref="op">
     <div class="c-datatable-op">
       <div v-for="obj in op_objects" :key="obj" class="mb-2 tag">
@@ -306,12 +308,19 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
         </template>
         <template #body="{ data }" v-else-if="col.input_type == 'multiselect'">
           <!-- TODO: Inspect function to show objects -->
-
           <PrimeButton
             type="button"
             :label="t(formatMultiSelect(data[col.field]))"
             class="p-button-text p-button-sm button-expand"
             @click="op_toggle(col, data, $event)"
+          />
+        </template>
+        <!-- checkbox -->
+        <template #body="{ data }" v-else-if="col.input_type == 'checkbox'">
+          <PrimeTriStateCheckbox
+            v-model="data[col.field]"
+            :disabled="true"
+            class="p-checkbox-sm"
           />
         </template>
         <template #body="{ data }" v-else>

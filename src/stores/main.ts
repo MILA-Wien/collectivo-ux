@@ -1,6 +1,7 @@
 // Main store to handle CRUD requests for all registered endpoints
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
+import { computed } from "vue";
 import type { DataObject, DataSchema } from "../api/types";
 import { DataTemplate } from "../api/types";
 
@@ -17,9 +18,13 @@ async function storeCreate(store: any, objectName: any, payload?: Object) {
 function extendSchema(schema: any) {
   // Transform choices dict into an options list
   for (const value of Object.values(schema.fields) as any) {
+    if (value.schema != undefined) {
+      value.schema = extendSchema(value.schema);
+    }
     if (value.choices == undefined) {
       continue;
     }
+
     value.options = [];
     let i = 0;
     for (const [key2, value2] of Object.entries(value.choices) as any) {
@@ -48,6 +53,14 @@ export const useMainStore = defineStore({
   actions: {
     async getDetail(objectName: any, id?: Number, force?: boolean) {
       return this.get(objectName, id, force, true);
+    },
+
+    hasPermission(permission: string, extension: string) {
+      return computed(() => {
+        return this.coreProfile.detail.permissions[extension]?.includes(
+          permission
+        );
+      });
     },
 
     async get(
