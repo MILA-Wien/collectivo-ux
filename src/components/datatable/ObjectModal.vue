@@ -49,9 +49,9 @@ const props = defineProps({
   },
 });
 
-const deleteButton = ref(true);
-if (!props.schema.actions?.includes("delete") || !props.allow_delete) {
-  deleteButton.value = false;
+const deleteButton = ref(false);
+if (props.schema.actions?.includes("delete") || props.allow_delete) {
+  deleteButton.value = true;
 }
 
 // Create temporary copy of the object

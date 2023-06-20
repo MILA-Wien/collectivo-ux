@@ -117,6 +117,8 @@ function removeUpload(name: any) {
       :manualInput="true"
       :disabled="disabled"
       :class="{ 'p-invalid': isInvalid }"
+      style="width: 100%"
+      showIcon
     />
   </div>
 

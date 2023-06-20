@@ -235,62 +235,64 @@ defineExpose({
   <!-- Structure given in schema -->
   <div class="mt-5" v-if="schema.structure">
     <div v-for="(section, i) in schema.structure" :key="i" class="">
-      <div v-if="section.hr">
-        <hr class="my-2" />
-      </div>
-      <div v-if="section.title">
-        <h3 class="mb-0 pb-1">{{ section.title }}</h3>
-      </div>
-      <div v-if="section.description">
-        {{ section.description }}
-      </div>
-      <div v-if="section.title || section.description" class="pb-4"></div>
-
-      <!-- Read only section -->
-      <div v-if="section.style == 'read_only'">
-        <div v-for="(field, j) in section.fields" class="pb-1">
-          <span class="font-bold">{{ t(schema.fields[field].label) }}: </span>
-          <span v-if="schema.fields[field].input_type == 'select'">
-            {{ schema.fields[field].choices![object_temp[field]] }}
-          </span>
-          <span v-else>{{ t(object_temp[field]) }}</span>
+      <div v-if="checkCondition(object_temp, section.visible)">
+        <div v-if="section.hr">
+          <hr class="my-2" />
         </div>
-      </div>
-
-      <!-- Flex row section -->
-      <div
-        v-else-if="section.style == 'col'"
-        class="flex flex-row flex-wrap gap-x-5"
-      >
-        <div v-for="(field, j) in section.fields" class="flex-auto w-72 pb-4">
-          <ObjectField
-            :name="field"
-            :field="schema.fields[field]"
-            v-model="object_temp[field]"
-            :isInvalid="isInvalid(field)"
-            :disabled="
-              checkCondition(object_temp, schema.fields[field].read_only) &&
-              !create
-            "
-            :returnErrorMessage="returnErrorMessage(field)"
-          />
+        <div v-if="section.label">
+          <h3 class="mb-0 pb-1">{{ section.label }}</h3>
         </div>
-      </div>
+        <div v-if="section.description">
+          {{ section.description }}
+        </div>
+        <div v-if="section.label || section.description" class="pb-4"></div>
 
-      <!-- Normal section -->
-      <div v-else>
-        <div v-for="(field, j) in section.fields" class="pb-4">
-          <ObjectField
-            :name="field"
-            :field="schema.fields[field]"
-            v-model="object_temp[field]"
-            :isInvalid="isInvalid(field)"
-            :disabled="
-              checkCondition(object_temp, schema.fields[field].read_only) &&
-              !create
-            "
-            :returnErrorMessage="returnErrorMessage(field)"
-          />
+        <!-- Read only section -->
+        <div v-if="section.style == 'read_only'">
+          <div v-for="(field, j) in section.fields" class="pb-1">
+            <span class="font-bold">{{ t(schema.fields[field].label) }}: </span>
+            <span v-if="schema.fields[field].input_type == 'select'">
+              {{ schema.fields[field].choices![object_temp[field]] }}
+            </span>
+            <span v-else>{{ t(object_temp[field]) }}</span>
+          </div>
+        </div>
+
+        <!-- Flex row section -->
+        <div
+          v-else-if="section.style == 'row'"
+          class="flex flex-row flex-wrap gap-x-5"
+        >
+          <div v-for="(field, j) in section.fields" class="flex-auto w-72 pb-4">
+            <ObjectField
+              :name="field"
+              :field="schema.fields[field]"
+              v-model="object_temp[field]"
+              :isInvalid="isInvalid(field)"
+              :disabled="
+                checkCondition(object_temp, schema.fields[field].read_only) &&
+                !create
+              "
+              :returnErrorMessage="returnErrorMessage(field)"
+            />
+          </div>
+        </div>
+
+        <!-- Normal section -->
+        <div v-else>
+          <div v-for="(field, j) in section.fields" class="pb-4">
+            <ObjectField
+              :name="field"
+              :field="schema.fields[field]"
+              v-model="object_temp[field]"
+              :isInvalid="isInvalid(field)"
+              :disabled="
+                checkCondition(object_temp, schema.fields[field].read_only) &&
+                !create
+              "
+              :returnErrorMessage="returnErrorMessage(field)"
+            />
+          </div>
         </div>
       </div>
     </div>
