@@ -24,11 +24,9 @@ menuStore.setTitle("Memberships");
           :default-columns="[
             'user__first_name',
             'user__last_name',
-            'user__tags',
+            'stage',
             'type',
-            'number',
             'status',
-            'shares_signed',
           ]"
           :email-button="true"
         />
