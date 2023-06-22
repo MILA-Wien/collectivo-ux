@@ -7,8 +7,9 @@ ENV TZ=Europe/Vienna
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install app dependencies
-COPY . .
+COPY package.json yarn.lock ./
 RUN  yarn install --frozen-lockfile
+COPY . .
 
 # If you are building your code for production
 RUN yarn build
@@ -17,5 +18,4 @@ RUN yarn build
 FROM nginx:alpine
 COPY --from=build-env /app/dist /usr/share/nginx/html
 COPY ./docker/nginx/nginx.conf /etc/nginx/conf.d/custom.conf
-
-COPY ./docker/collectivo-entrypoint.sh /docker-entrypoint.d/10-collectivo-entrypoint.sh
+COPY ./docker/collectivo-ux-entrypoint.sh /docker-entrypoint.d/10-collectivo-ux-entrypoint.sh
