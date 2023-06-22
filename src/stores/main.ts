@@ -1,7 +1,7 @@
 // Main store to handle CRUD requests for all registered endpoints
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
-import type { DataObject, DataSchema } from "../api/types";
+import type { DataObject, DataSchema, Schema } from "../api/types";
 import { DataTemplate } from "../api/types";
 
 type mainStore = { [index: string]: DataSchema };
@@ -14,9 +14,9 @@ async function storeCreate(store: any, objectName: any, payload?: Object) {
   return response;
 }
 
-function extendSchema(schema: any) {
+function extendSchema(schema: Schema) {
   // Transform choices dict into an options list
-  for (const value of Object.values(schema.fields) as any) {
+  for (const value of Object.values(schema.fields)) {
     if (value.choices == undefined) {
       continue;
     }
