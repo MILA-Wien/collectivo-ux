@@ -24,16 +24,7 @@ export interface ExtensionMenuItem {
   style: string;
   target: string | null;
 }
-export interface MicroFrontendJson {
-  name: String;
-  path: String;
-  type: String;
-  extension: String;
-}
-export interface LoginData {
-  username: string;
-  password: string;
-}
+
 export interface User {
   id: number;
   username: string;
@@ -55,31 +46,7 @@ export interface User {
   redirectUri: string | undefined;
   profile: any;
 }
-export interface Member {
-  id?: string;
-  email?: string;
-  first_name?: string;
-  last_name?: string;
-  gender?: Array<String>;
-  occupation?: string;
-  address_street?: string;
-  address_number?: string;
-  address_stair?: string;
-  address_door?: string;
-  address_postcode?: string;
-  address_city?: string;
-  address_country?: string;
-  phone?: string;
-  membership_start?: Date;
-  shares_number?: string;
-  person_type?: string;
-}
-export interface DataListResponse {
-  count?: number;
-  next?: string;
-  previous?: string;
-  results: Array<any>;
-}
+
 export interface DashboardTiles {
   count?: number;
   next?: string;
@@ -115,9 +82,9 @@ export interface SchemaField {
   read_only: boolean | SchemaCondition;
   required: boolean;
   write_only: boolean;
-  choices?: Array<SchemaChoiceItem>;
+  choices?: { [key: string]: SchemaChoiceItem };
   visible?: boolean | SchemaCondition;
-  options?: any;
+  options?: Array<SchemaFieldOption>;
   help_text?: string;
   schema?: Schema;
 }
@@ -129,9 +96,17 @@ export interface Schema {
   structure?: any;
   fields: { [key: string]: SchemaField };
 }
+
 export interface SchemaChoiceItem {
-  [key: string]: string;
+  [key: string]: string | number;
 }
+
+export interface SchemaFieldOption {
+  label: string;
+  value: string | number;
+  key: number;
+}
+
 export interface SchemaCondition {
   field: string;
   condition: "equals" | "empty" | "not_empty";
