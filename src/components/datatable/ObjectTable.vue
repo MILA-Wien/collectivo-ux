@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { StoreGeneric } from "pinia";
+import { storeToRefs, type StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeColumn from "primevue/column";
 import PrimeDataTable from "primevue/datatable";
@@ -25,6 +25,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+
   schema: {
     type: Object,
     required: true,
@@ -67,6 +68,9 @@ const emit = defineEmits([
   "update:selectedColumns",
   "update:filters",
 ]);
+
+// Get data from store ----------------------------------------------------- //
+const data = storeToRefs(props.store)[props.name];
 
 // Formatting functions for data view in table ----------------------------- //
 function formatDateTime(date: string) {
@@ -218,6 +222,7 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
   </PrimeOverlayPanel>
   <div class="datatable">
     <PrimeDataTable
+      :loading="!data.listLoaded"
       :value="objects"
       v-model:selection="selectedObjects"
       dataKey="id"

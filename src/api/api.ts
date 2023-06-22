@@ -90,8 +90,10 @@ for (const extension of extensions) {
 export const endpoints = {
   coreAbout: "/core/about/",
   coreUsers: "/core/users/",
+  coreSettings: "/core/settings/",
   coreUsersExtended: "/core/users-extended/",
   coreGroups: "/core/groups/",
+  corePermissions: "/core/permissions/",
   componentsComponents: "/components/components/",
   extensionsExtensions: "/extensions/extensions/",
 
@@ -118,6 +120,7 @@ export const endpoints = {
   tagsTags: "/tags/tags/",
   tagsProfiles: "/tags/profiles/",
 
+  emailProfiles: "/emails/profiles/",
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",

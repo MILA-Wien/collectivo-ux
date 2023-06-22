@@ -12,7 +12,7 @@ const menuStore = useMenuStore();
 menuStore.setTitle("Membership");
 const error = ref<Object | null>(null);
 const mainStore = useMainStore();
-mainStore.get("profilesProfilesSelf").catch((e: any) => {
+mainStore.getDetail("profilesProfilesSelf").catch((e: any) => {
   error.value = e;
 });
 const { profilesProfilesSelf } = storeToRefs(mainStore);
@@ -33,7 +33,7 @@ const { profilesProfilesSelf } = storeToRefs(mainStore);
   <div v-else id="core-profile">
     <CoreProfile
       :membership="profilesProfilesSelf.detail"
-      :membershipSchema="profilesProfilesSelf.schema"
+      :membershipSchema="profilesProfilesSelf.schema.fields"
       id="members-profile"
     />
   </div>

@@ -1,6 +1,0 @@
-{
-  "endpoints": {
-    "lotzappSync": "/lotzapp/sync/",
-    "lotzappSettings": "/lotzapp/settings/"
-  }
-}

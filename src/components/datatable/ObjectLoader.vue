@@ -36,7 +36,7 @@ const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name];
 
 // Load data
-if (!data.value.loaded) {
+if (!data.value.listLoaded) {
   props.store.get(props.name).catch((e: any) => {
     error.value = e;
   });
@@ -56,7 +56,7 @@ if (emailsCampaigns.value.schemaLoaded === false) {
   <div v-if="error !== null">
     <p>There was an error loading the data.<br />{{ error }}</p>
   </div>
-  <div v-else-if="!data.listLoaded">
+  <div v-else-if="!data.schemaLoaded">
     <PrimeProgressSpinner />
   </div>
   <div v-else-if="displayType == 'table'" class="h-full">

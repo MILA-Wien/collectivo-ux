@@ -8,9 +8,10 @@ import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-import ObjectDetailEdit from "./ObjectDetailEdit.vue";
+import ObjectEditor from "./ObjectEditor.vue";
 import ObjectTable from "./ObjectTable.vue";
 
+import type { Schema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
 
@@ -29,7 +30,7 @@ const props = defineProps({
     required: true,
   },
   schema: {
-    type: Object,
+    type: Object as PropType<Schema>,
     required: true,
   },
   defaultColumns: {
@@ -41,7 +42,7 @@ const props = defineProps({
     required: false,
   },
   emailCampaignSchema: {
-    type: Object,
+    type: Object as PropType<Schema>,
     required: true,
   },
 });
@@ -60,12 +61,7 @@ const columns: any[] = [];
 const selectedColumns = ref<any[]>([]);
 
 var column_index = 0;
-for (const [key, value] of Object.entries(props.schema)) {
-  // Skip ID column
-  if (key == "id") {
-    continue;
-  }
-
+for (const [key, value] of Object.entries(props.schema.fields)) {
   columns.push({
     field: key,
     header: t(value.label),
@@ -129,6 +125,10 @@ function createObjectFn() {
   editObject.value = {};
   editCreate.value = true;
   editActive.value = true;
+}
+function closeEditor() {
+  editActive.value = false;
+  table.value.refresh();
 }
 
 // Send emails ------------------------------------------------------------- //
@@ -244,18 +244,18 @@ function sendEmails() {
   </div>
 
   <!-- Detail dialog -->
-  <ObjectDetailEdit
+  <ObjectEditor
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
     :store="store"
     :name="name"
     :schema="schema"
-    @close="editActive = false"
+    @close="closeEditor()"
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectDetailEdit
+  <ObjectEditor
     v-if="editEmailsActive"
     :object="editEmailsObject"
     :create="editEmailsCreate"

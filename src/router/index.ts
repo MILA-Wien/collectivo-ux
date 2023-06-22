@@ -50,7 +50,7 @@ const router = createRouter({
         layout: Default,
         isMembersAdmin: true,
       },
-      component: () => import("../components/NotImplemented.vue"),
+      component: () => import("../components/core/CoreSettings.vue"),
     },
     {
       path: "/dashboard/admin",

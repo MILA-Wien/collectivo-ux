@@ -33,6 +33,7 @@ import PrimeToast from "primevue/toast";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import SidebarMenuItem from "./SidebarMenuItem.vue";
+
 const { t } = useI18n();
 const menuStore = useMenuStore();
 const { mainMenu, adminMenu } = storeToRefs(menuStore);

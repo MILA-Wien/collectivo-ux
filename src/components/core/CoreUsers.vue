@@ -44,6 +44,14 @@ menuStore.setTitle("Users");
           </template>
         </ObjectLoader>
       </TabPanel>
+      <TabPanel :header="t('Groups')">
+        <ObjectLoader
+          :store="mainStore"
+          :name="'coreGroups'"
+          :default-columns="['name', 'permissions', 'users']"
+        >
+        </ObjectLoader>
+      </TabPanel>
     </TabView>
   </div>
 </template>

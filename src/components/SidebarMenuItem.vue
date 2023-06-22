@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/stores/user";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 const userStore = useUserStore();
 const props = defineProps({
   item: {
@@ -10,7 +13,8 @@ const props = defineProps({
 
 const item_ = JSON.parse(JSON.stringify(props.item));
 const icon = "pi pi-fw " + (props.item.icon_name ? item_.icon_name : "");
-if (item_.extension.name === "core" && item_.component === "logout") {
+if (item_.extension.name === "core" && item_.name === "logout") {
+  item_.target = "link";
   item_.link = userStore.user?.logoutUrl || "/";
 }
 </script>
@@ -26,7 +30,7 @@ if (item_.extension.name === "core" && item_.component === "logout") {
         <i :class="icon"></i>
       </span>
 
-      <span class="pt-1 w-full">{{ item_.label }}</span>
+      <span class="pt-1 w-full">{{ t(item_.label) }}</span>
 
       <span class="grow"></span>
       <span v-if="item_.items" class="flex content-center">
@@ -36,7 +40,7 @@ if (item_.extension.name === "core" && item_.component === "logout") {
   </router-link>
   <a
     v-else
-    :href="item_.url"
+    :href="item_.link"
     :class="{ 'p-disabled': item_.disabled }"
     :target="item_.target === 'link_blank' ? '_blank' : ''"
   >
@@ -45,7 +49,7 @@ if (item_.extension.name === "core" && item_.component === "logout") {
         <i :class="icon"></i>
       </span>
 
-      <span class="pt-1 w-full">{{ item_.label }}</span>
+      <span class="pt-1 w-full">{{ t(item_.label) }}</span>
 
       <span class="grow"></span>
       <span v-if="item_.items > 0" class="flex content-center">

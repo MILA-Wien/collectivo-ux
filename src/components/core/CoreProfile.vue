@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SchemaCondition } from "@/api/types";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import { useUserStore } from "@/stores/user";
@@ -46,12 +47,24 @@ async function openKeycloakAccount() {
 }
 
 // Check if a schema condition is true
-function checkCondition(condition: any) {
+function checkCondition(condition: boolean | SchemaCondition) {
   if (condition == null) {
     return true;
   }
-  let cond = membership.value[condition.field] == condition.value;
-  return cond;
+  if (typeof condition == "boolean") {
+    return condition;
+  }
+  if (condition.condition == "not_empty") {
+    return membership.value[condition.field];
+  }
+  if (condition.condition == "empty") {
+    return !membership.value[condition.field];
+  }
+  if (condition.condition == "equals") {
+    return membership.value[condition.field] == condition.value;
+  }
+  console.log("Unknown condition: " + condition.condition);
+  return false;
 }
 
 // Set validation rules
@@ -185,7 +198,7 @@ function schemaToPrime(choices: any) {
             <h3>{{ t(value?.label) }}</h3>
             <div v-if="value.input_type === 'date'">
               <InputText
-                disabled
+                :disabled="checkCondition(value.read_only)"
                 :value="membership ? membership[key as keyof typeof membership] ? convertDate(membership[key as keyof typeof membership] as string) : '' : ''"
               />
             </div>

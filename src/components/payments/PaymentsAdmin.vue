@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ObjectDetail from "@/components/datatable/ObjectDetail.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
@@ -41,18 +40,6 @@ menuStore.setTitle("Payments");
             'items',
           ]"
         />
-      </TabPanel>
-      <!-- TODO: This code is custom for MILA and should be moved -->
-      <TabPanel :header="t('Lotzapp')">
-        <ObjectLoader
-          :store="mainStore"
-          :name="'lotzappSync'"
-          :default-columns="['date', 'status', 'type', 'status_message']"
-        />
-      </TabPanel>
-      <TabPanel :header="t('Lotzapp Settings')">
-        <ObjectDetail :store="mainStore" :name="'lotzappSettings'">
-        </ObjectDetail>
       </TabPanel>
     </TabView>
   </div>

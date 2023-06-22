@@ -1,29 +1,17 @@
 <script setup lang="ts">
 import ObjectList from "@/components/datatable/ObjectList.vue";
 import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
-import { errorToast, successToast } from "@/helpers/toasts";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
-import PrimeButton from "primevue/button";
 import PrimePanel from "primevue/panel";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
-import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
-const toast = useToast();
+
 const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Memberships");
-
-async function generate_invoices() {
-  try {
-    await mainStore.create("membershipsCreateInvoices");
-    successToast(toast, t("Addresses synchronized"));
-  } catch (e) {
-    errorToast(toast, e);
-  }
-}
 </script>
 
 <template>
@@ -72,11 +60,6 @@ async function generate_invoices() {
             </PrimePanel>
           </template>
         </ObjectList>
-      </TabPanel>
-      <TabPanel :header="t('Actions')">
-        <PrimeButton @click="generate_invoices()"
-          >Generate invoices</PrimeButton
-        >
       </TabPanel>
     </TabView>
   </div>

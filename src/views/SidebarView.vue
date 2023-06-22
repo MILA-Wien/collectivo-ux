@@ -1,3 +1,32 @@
+<!-- The left sidebar of the main interface. -->
+<script setup lang="ts">
+import { useMainStore } from "@/stores/main";
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import { version } from "../../package.json";
+import MenuMain from "../components/SidebarMenu.vue";
+import VersionItem from "../components/VersionItem.vue";
+import { useMenuStore } from "../stores/menu";
+const mainStore = useMainStore();
+const menuStore = useMenuStore();
+const { getSideBarOpen } = storeToRefs(menuStore);
+const { coreSettings } = storeToRefs(mainStore);
+const error = ref<any>(null);
+mainStore.getDetail("coreSettings").catch((e: any) => {
+  error.value = e;
+});
+function getLogo() {
+  if (coreSettings.value.detail.project_logo) {
+    return coreSettings.value.detail.project_logo;
+  } else if (coreSettings.value.detail.project_logo_url) {
+    return coreSettings.value.detail.project_logo_url;
+  }
+}
+function toggleSideBar() {
+  menuStore.setSideBarOpen(getSideBarOpen.value ? false : true);
+}
+</script>
+
 <template>
   <div class="flex">
     <!-- Backdrop -->
@@ -16,14 +45,39 @@
       class="fixed inset-y-0 left-0 z-30 w-60 overflow-y-auto scrollbar-hide transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0"
       id="collectivo-sidebar"
     >
-      <div class="flex flex-col h-full items-center">
-        <RouterLink to="/" class="w-100 flex justify-center">
-          <img
-            src="../assets/mila_logo_subline.png"
-            alt="MILA Logo"
-            class="md:w-2/3 w-1/2 pt-10 pb-4"
-          />
-        </RouterLink>
+      <div class="flex flex-col h-full items-center pt-3">
+        <div
+          v-if="coreSettings.detail.display_project_name"
+          class="w-full px-4"
+          id="collectivo-sidebar-title"
+        >
+          <h2 class="break-words mt-0 mb-4">
+            {{ coreSettings.detail.project_name }}
+          </h2>
+        </div>
+        <div
+          v-if="coreSettings.detail.display_project_description"
+          class="w-full px-4 pb-4"
+          id="collectivo-sidebar-description"
+        >
+          <span>
+            {{ coreSettings.detail.project_description }}
+          </span>
+        </div>
+        <div
+          v-if="coreSettings.detail.display_project_logo"
+          class="w-full pb-4"
+          id="collectivo-sidebar-logo"
+        >
+          <RouterLink to="/" class="w-full px-4 flex justify-center">
+            <img
+              v-if="getLogo()"
+              :src="getLogo()"
+              alt="Project Logo"
+              class="w-full"
+            />
+          </RouterLink>
+        </div>
         <MenuMain />
         <span class="grow"></span>
         <span class="p-4 text-xs w-full text-gray-800" id="version">
@@ -34,19 +88,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { version } from "../../package.json";
-import MenuMain from "../components/SidebarMenu.vue";
-import VersionItem from "../components/VersionItem.vue";
-import { useMenuStore } from "../stores/menu";
-const menuStore = useMenuStore();
-const { getSideBarOpen } = storeToRefs(menuStore);
-function toggleSideBar() {
-  menuStore.setSideBarOpen(getSideBarOpen.value ? false : true);
-}
-</script>
 
 <style scoped>
 #collectivo-sidebar {

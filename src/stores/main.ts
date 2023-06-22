@@ -1,6 +1,7 @@
+// Main store to handle CRUD requests for all registered endpoints
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
-import type { DataObject, DataSchema } from "../api/types";
+import type { DataObject, DataSchema, Schema } from "../api/types";
 import { DataTemplate } from "../api/types";
 
 type mainStore = { [index: string]: DataSchema };
@@ -13,9 +14,9 @@ async function storeCreate(store: any, objectName: any, payload?: Object) {
   return response;
 }
 
-function extendSchema(schema: any) {
+function extendSchema(schema: Schema) {
   // Transform choices dict into an options list
-  for (const value of Object.values(schema) as any) {
+  for (const value of Object.values(schema.fields)) {
     if (value.choices == undefined) {
       continue;
     }
@@ -34,11 +35,6 @@ function extendSchema(schema: any) {
   return schema;
 }
 
-const DirectDetailEndpoints = new Set([
-  "profilesProfilesSelf",
-  "lotzappSettings",
-]);
-
 export const useMainStore = defineStore({
   id: "members",
   state: () => {
@@ -50,31 +46,43 @@ export const useMainStore = defineStore({
   },
 
   actions: {
-    async get(objectName: keyof typeof endpoints, id?: Number) {
-      if (id || DirectDetailEndpoints.has(objectName)) {
+    async getDetail(objectName: any, id?: Number, force?: boolean) {
+      return this.get(objectName, id, force, true);
+    },
+
+    async get(
+      objectName: keyof typeof endpoints,
+      id?: Number, // Get detail with given id, otherwise get list
+      force?: boolean, // Reload data even if already loaded
+      detail?: boolean // Get detail even if no id is given
+    ) {
+      // Get schema if not already loaded
+      this.getSchema(objectName);
+
+      // Case 1 - Get detail
+      if (id || detail) {
+        if (!force && this[objectName].detailLoaded) {
+          return;
+        }
+
+        // Get object and save in store
         this[objectName].detailLoaded = false;
-        // Get schema and object(s) and save in store
-        const [schema, objects] = await Promise.all([
-          API.getSchema(objectName),
-          API.get(objectName, id),
-        ]);
+        const objects = await API.get(objectName, id);
+
         // Throw error if response does not match store data type
         if (objects.data.results instanceof Array) {
           throw new Error("Receiving list, expecting detail.");
         }
-        // Save detail in store
-        this[objectName].schema = extendSchema(schema.data);
-        this[objectName].schemaLoaded = true;
+
+        // Save object in store
         this[objectName].detail = objects.data;
         this[objectName].detailLoaded = true;
         return;
       }
 
+      // Case 2 - Get list
       this[objectName].listLoaded = false;
-      const [schema, objects] = await Promise.all([
-        API.getSchema(objectName),
-        API.get(objectName, id),
-      ]);
+      const objects = await API.get(objectName, id);
 
       // Throw error if response does not match store data type
       if (!(objects.data.results instanceof Array)) {
@@ -85,11 +93,14 @@ export const useMainStore = defineStore({
       this[objectName].list = objects.data.results;
       this[objectName].listLoaded = true;
       this[objectName].listTotalRecords = parseInt(objects.data.count);
-      this[objectName].schema = extendSchema(schema.data);
-      this[objectName].schemaLoaded = true;
     },
-    async getSchema(objectName: any) {
-      // Get schema and save in store
+
+    // Get schema and save in store
+    async getSchema(objectName: any, force?: boolean) {
+      if (!force && this[objectName].schemaLoaded) {
+        return;
+      }
+      this[objectName].schemaLoaded = false;
       const schema = await API.getSchema(objectName);
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
@@ -99,9 +110,6 @@ export const useMainStore = defineStore({
     },
     async update(objectName: any, payload: Object, id?: Number) {
       // Update object and save in store
-      if (DirectDetailEndpoints.has(objectName)) {
-        id = undefined;
-      }
       let response: any = null;
       response = await API.patch(objectName, payload, id);
 
@@ -144,11 +152,19 @@ export const useMainStore = defineStore({
       return false;
     },
     async filter(objectName: any, page?: any, order?: any, filters?: any) {
+      // Get schema if not already loaded
+      this.getSchema(objectName);
+      this[objectName].listLoaded = false;
+
       // Get schema and object(s) and save in store
-      const [schema, objects] = await Promise.all([
-        API.getSchema(objectName),
-        API.get(objectName, undefined, page.page, page.rows, order, filters),
-      ]);
+      const objects = await API.get(
+        objectName,
+        undefined,
+        page.page,
+        page.rows,
+        order,
+        filters
+      );
 
       // Throw error if response does not match store data type
       if (
@@ -161,9 +177,7 @@ export const useMainStore = defineStore({
       }
       // Save list in store
       this[objectName].list = objects.data.results;
-      this[objectName].schema = extendSchema(schema.data);
       this[objectName].listLoaded = true;
-      this[objectName].schemaLoaded = true;
       this[objectName].listTotalRecords = parseInt(objects.data.count);
     },
   },
