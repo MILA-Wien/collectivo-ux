@@ -4,7 +4,7 @@ import i18n from "@/locales/i18n";
 import { useUserStore } from "@/stores/user";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-const BASE_URL = baseURL + "/api/";
+const BASE_URL = baseURL.trim() + "/api/";
 const { t } = i18n.global;
 const api = axios.create({
   baseURL: BASE_URL,
