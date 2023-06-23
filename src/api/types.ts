@@ -86,6 +86,7 @@ export interface SchemaField {
   visible?: boolean | SchemaCondition;
   options?: Array<SchemaFieldOption>;
   help_text?: string;
+  validators?: { [key: string]: any };
   schema?: Schema;
 }
 

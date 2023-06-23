@@ -213,12 +213,16 @@
   "Skills": "Umfrage Fähigkeiten",
   "Groups interested": "Umfrage Arbeitsgruppe",
   "User id": "Benutzer ID (Keycloak)",
-
+  "Transfer": "Überweisung",
+  "Direct debit": "Lastschrift",
   "natural": "Person",
   "legal": "Organisation",
   "active": "Aktiv",
   "investing": "Investierend",
-
+  "Personal details": "Persönliche Daten",
+  "Organization details": "Organisationsdaten",
+  "Contact person": "Ansprechperson",
+  "Payment method": "Zahlungsmethode",
   "Columns": "Spalten",
   "Export CSV": "CSV exportieren",
   "Copy emails": "E-Mails kopieren",

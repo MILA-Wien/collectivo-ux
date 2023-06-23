@@ -3,7 +3,8 @@ import type { Schema } from "@/api/types";
 import { checkCondition } from "@/helpers/schema";
 import { errorToast, successToast } from "@/helpers/toasts";
 import { useVuelidate } from "@vuelidate/core";
-import { required, requiredIf } from "@vuelidate/validators";
+import { helpers, required, requiredIf } from "@vuelidate/validators";
+import { electronicFormatIBAN, isValidIBAN } from "ibantools";
 import type { StoreGeneric } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -11,7 +12,6 @@ import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ObjectField from "./ObjectField.vue";
-
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
 
@@ -29,11 +29,6 @@ const props = defineProps({
   },
   object: {
     type: Object,
-    required: false,
-  },
-  id: {
-    validator: (prop) =>
-      typeof prop === "number" || typeof prop === "string" || prop === null,
     required: false,
   },
   create: {
@@ -164,34 +159,43 @@ const deleteObject = () => {
 
 // Validation -----------------------------------------------------------------
 
+const iban = helpers.withMessage("Invalid IBAN", (value: any) => {
+  const iban = electronicFormatIBAN(value);
+  return isValidIBAN(iban || "");
+});
+
 const rules: any = {};
-for (var key in props.schema.fields) {
-  const schemaField = props.schema.fields[key];
+for (var field_name in props.schema.fields) {
+  const schemaField = props.schema.fields[field_name];
   if (schemaField.required) {
     if (schemaField.visible == null) {
-      rules[key] = { required };
+      rules[field_name] = { required };
     } else {
       // Required only if field is visible
-      rules[key] = {
+      rules[field_name] = {
         requiredIfCondition: requiredIf(() => {
           return checkCondition(object_temp.value, schemaField.visible);
         }),
       };
     }
+    if (schemaField.validators?.includes("iban")) {
+      rules[field_name].iban = iban;
+    }
   }
 }
 
 const v$ = useVuelidate(rules, object_temp.value);
+v$.value.$validate();
 
-function returnErrorMessage(key: any) {
-  if (Object.keys(rules).includes(key)) {
-    if (v$.value[key].requiredIfCondition) {
-      return t(v$.value[key].requiredIfCondition.$message || "");
-    }
-    return t(v$.value[key].required?.$message || "");
-  } else {
+function fieldError(key: any) {
+  if (v$.value[key]?.$errors.length == 0) {
     return false;
   }
+  const err = v$.value[key]?.$errors[0].$message;
+  if (typeof err === "string") {
+    return t(err);
+  }
+  return false;
 }
 
 function isInvalid(key: any) {
@@ -240,10 +244,10 @@ defineExpose({
           <hr class="my-2" />
         </div>
         <div v-if="section.label">
-          <h3 class="mb-0 pb-1">{{ section.label }}</h3>
+          <h3 class="mb-0 pb-1">{{ t(section.label) }}</h3>
         </div>
         <div v-if="section.description">
-          {{ section.description }}
+          {{ t(section.description) }}
         </div>
         <div v-if="section.label || section.description" class="pb-4"></div>
 
@@ -273,7 +277,7 @@ defineExpose({
                 checkCondition(object_temp, schema.fields[field].read_only) &&
                 !create
               "
-              :returnErrorMessage="returnErrorMessage(field)"
+              :returnErrorMessage="fieldError(field)"
             />
           </div>
         </div>
@@ -290,7 +294,7 @@ defineExpose({
                 checkCondition(object_temp, schema.fields[field].read_only) &&
                 !create
               "
-              :returnErrorMessage="returnErrorMessage(field)"
+              :returnErrorMessage="fieldError(field)"
             />
           </div>
         </div>
@@ -315,7 +319,7 @@ defineExpose({
             v-model="object_temp[name]"
             :isInvalid="isInvalid(name)"
             :disabled="checkCondition(object_temp, field.read_only) && !create"
-            :returnErrorMessage="returnErrorMessage(name)"
+            :returnErrorMessage="fieldError(name)"
           />
         </div>
       </div>

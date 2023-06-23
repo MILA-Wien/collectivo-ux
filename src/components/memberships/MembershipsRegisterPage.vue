@@ -7,6 +7,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import ObjectEditor from "../datatable/ObjectEditor.vue";
+import MembershipsRegisterEditor from "./MembershipsRegisterEditor.vue";
 
 const { t } = useI18n();
 const mainStore = useMainStore();
@@ -46,7 +47,18 @@ async function submit(emit_value: "next-page" | "prev-page" | "complete") {
 <template>
   <div class="grow overflow-auto p-5 bg-white">
     <div class="flex flex-col h-full">
-      <div class="grow overflow-auto">
+      <div class="grow overflow-auto" v-if="step_schema.label == 'Membership'">
+        <MembershipsRegisterEditor
+          :object="step_data"
+          :create="false"
+          :store="mainStore"
+          :name="current_step_name"
+          :schema="step_schema"
+          ref="editor"
+          :key="current_step_name"
+        />
+      </div>
+      <div class="grow overflow-auto" v-else>
         <ObjectEditor
           :object="step_data"
           :create="false"

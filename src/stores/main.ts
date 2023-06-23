@@ -17,7 +17,10 @@ async function storeCreate(store: any, objectName: any, payload?: Object) {
 
 function extendSchema(schema: Schema) {
   // Transform choices dict into an options list
-  for (const value of Object.values(schema.fields)) {
+  for (const value of Object.values(schema.fields) as any) {
+    if (value.schema != undefined) {
+      value.schema = extendSchema(value.schema);
+    }
     if (value.choices == undefined) {
       continue;
     }
