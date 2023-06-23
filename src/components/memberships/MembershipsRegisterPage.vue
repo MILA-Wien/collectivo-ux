@@ -3,7 +3,7 @@ import type { DataSchema } from "@/api/types";
 import { useMainStore } from "@/stores/main";
 import PrimeButton from "primevue/button";
 import type { PropType } from "vue";
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import ObjectEditor from "../datatable/ObjectEditor.vue";
@@ -20,12 +20,13 @@ const props = defineProps({
   },
 });
 
+const data = toRef(props, "data");
 const emit = defineEmits(["next-page", "prev-page", "complete"]);
 
-const step_names = Object.keys(props.data.schema.fields);
+const step_names = Object.keys(data.value.schema.fields);
 const current_step = Number(route.params.step);
 const current_step_name = step_names[current_step - 1];
-const step_data = props.data.detail[current_step_name];
+const step_data = data.value.detail[current_step_name];
 const step_schema = props.data.schema.fields[current_step_name].schema!;
 const first = current_step == 1;
 const final = step_names.length == current_step;

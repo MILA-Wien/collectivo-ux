@@ -4,8 +4,6 @@ import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeConfirmDialog from "primevue/confirmdialog";
 import PrimeDialog from "primevue/dialog";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -13,9 +11,6 @@ import ObjectEditor from "./ObjectEditor.vue";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
-
-const confirm = useConfirm();
-const toast = useToast();
 
 const props = defineProps({
   store: {

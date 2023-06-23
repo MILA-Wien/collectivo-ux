@@ -8,7 +8,6 @@ import { required, requiredIf } from "@vuelidate/validators";
 import { storeToRefs, type StoreGeneric } from "pinia";
 import PrimeDropdown from "primevue/dropdown";
 import PrimeInputNumber from "primevue/inputnumber";
-import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
 import { ref } from "vue";
@@ -16,9 +15,8 @@ import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
 const { t } = useI18n();
-const emit = defineEmits(["change", "close"]);
+defineEmits(["change", "close"]);
 
-const confirm = useConfirm();
 const toast = useToast();
 
 const props = defineProps({
@@ -56,8 +54,8 @@ if (props.object != undefined) {
 
 // Load membership type
 const route = useRoute();
-const error = ref<any>(null);
 const mainStore = useMainStore();
+const data = storeToRefs(props.store)[props.name];
 const { membershipsTypes } = storeToRefs(mainStore);
 object_temp.value.type = route.params.id;
 
@@ -65,7 +63,7 @@ object_temp.value.type = route.params.id;
 
 const rules: any = {};
 for (var field_name in props.schema.fields) {
-  const schemaField = props.schema.fields[field_name];
+  const schemaField = data.value.schema.fields[field_name];
   if (schemaField.required) {
     if (schemaField.visible == null) {
       rules[field_name] = { required };

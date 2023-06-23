@@ -5,7 +5,7 @@ import { errorToast, successToast } from "@/helpers/toasts";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, requiredIf } from "@vuelidate/validators";
 import { electronicFormatIBAN, isValidIBAN } from "ibantools";
-import type { StoreGeneric } from "pinia";
+import { storeToRefs, type StoreGeneric } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
@@ -50,7 +50,7 @@ const object_temp = ref<any>({});
 if (props.object != undefined) {
   object_temp.value = JSON.parse(JSON.stringify(props.object));
 }
-
+const data = storeToRefs(props.store)[props.name];
 const isSaving = ref(false);
 
 // Format data ----------------------------------------------------------------
@@ -166,7 +166,7 @@ const iban = helpers.withMessage("Invalid IBAN", (value: any) => {
 
 const rules: any = {};
 for (var field_name in props.schema.fields) {
-  const schemaField = props.schema.fields[field_name];
+  const schemaField = data.value.schema.fields[field_name];
   if (schemaField.required) {
     if (schemaField.visible == null) {
       rules[field_name] = { required };
@@ -253,7 +253,7 @@ defineExpose({
 
         <!-- Read only section -->
         <div v-if="section.style == 'read_only'">
-          <div v-for="(field, j) in section.fields" class="pb-1">
+          <div v-for="(field, j) in section.fields" class="pb-1" :key="j">
             <span class="font-bold">{{ t(schema.fields[field].label) }}: </span>
             <span v-if="schema.fields[field].input_type == 'select'">
               {{ schema.fields[field].choices![object_temp[field]] }}
@@ -267,7 +267,11 @@ defineExpose({
           v-else-if="section.style == 'row'"
           class="flex flex-row flex-wrap gap-x-5"
         >
-          <div v-for="(field, j) in section.fields" class="flex-auto w-72 pb-4">
+          <div
+            v-for="(field, j) in section.fields"
+            class="flex-auto w-72 pb-4"
+            :key="j"
+          >
             <ObjectField
               :name="field"
               :field="schema.fields[field]"
@@ -284,7 +288,7 @@ defineExpose({
 
         <!-- Normal section -->
         <div v-else>
-          <div v-for="(field, j) in section.fields" class="pb-4">
+          <div v-for="(field, j) in section.fields" class="pb-4" :key="j">
             <ObjectField
               :name="field"
               :field="schema.fields[field]"
