@@ -46,9 +46,11 @@ export const useMenuStore = defineStore({
       const coreSettings = useMainStore();
       const project_name = coreSettings.coreSettings?.detail?.project_name;
       if (project_name == undefined) {
-        document.title = `${title} - Collectivo`;
+        // @ts-ignore
+        document.title = `${window.translate(title)} - Collectivo`;
       } else {
-        document.title = `${title} - ${coreSettings.coreSettings?.detail?.project_name} - Collectivo`;
+        // @ts-ignore
+        document.title = `${window.translate(title)} - ${coreSettings.coreSettings?.detail?.project_name} - Collectivo`;
       }
       this.title = title;
     },
