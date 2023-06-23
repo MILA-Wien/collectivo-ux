@@ -1,6 +1,7 @@
 import { API } from "@/api/api";
 import type { ExtensionMenu, ExtensionMenuItem } from "@/api/types";
 import { defineStore } from "pinia";
+import { useMainStore } from "./main";
 
 export type MenuStoreState = {
   mainMenu: ExtensionMenu;
@@ -42,6 +43,13 @@ export const useMenuStore = defineStore({
       this.sideBarOpen = open;
     },
     setTitle(title: string) {
+      const coreSettings = useMainStore();
+      const project_name = coreSettings.coreSettings?.detail?.project_name;
+      if (project_name == undefined) {
+        document.title = `${title} - Collectivo`;
+      } else {
+        document.title = `${title} - ${coreSettings.coreSettings?.detail?.project_name} - Collectivo`;
+      }
       this.title = title;
     },
   },
