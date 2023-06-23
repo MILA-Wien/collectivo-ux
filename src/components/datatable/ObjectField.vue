@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { SchemaField } from "@/api/types";
 import PrimeCalendar from "primevue/calendar";
 import PrimeDropdown from "primevue/dropdown";
 import PrimeInputSwitch from "primevue/inputswitch";
@@ -16,8 +17,8 @@ const props = defineProps({
     required: false,
   },
   field: {
-    type: Object as PropType<any>,
-    required: false,
+    type: Object as PropType<SchemaField>,
+    required: true,
   },
   modelValue: {
     type: null as any as PropType<any>,

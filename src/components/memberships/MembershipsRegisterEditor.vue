@@ -1,3 +1,4 @@
+<!-- Special editor for membership registration that depends on the details of the respective membership type. -->
 <script setup lang="ts">
 import type { Schema } from "@/api/types";
 import { checkCondition } from "@/helpers/schema";
@@ -6,12 +7,14 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, requiredIf } from "@vuelidate/validators";
 import { storeToRefs, type StoreGeneric } from "pinia";
 import PrimeDropdown from "primevue/dropdown";
+import PrimeInputNumber from "primevue/inputnumber";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
 
@@ -56,9 +59,7 @@ const route = useRoute();
 const error = ref<any>(null);
 const mainStore = useMainStore();
 const { membershipsTypes } = storeToRefs(mainStore);
-mainStore.get("membershipsTypes", Number(route.params.id)).catch((e: any) => {
-  error.value = e;
-});
+object_temp.value.type = route.params.id;
 
 // Validation -----------------------------------------------------------------
 
@@ -77,6 +78,9 @@ for (var field_name in props.schema.fields) {
       };
     }
   }
+}
+if (membershipsTypes.value.detail.has_shares) {
+  rules.shares_signed = { required };
 }
 
 const v$ = useVuelidate(rules, object_temp.value);
@@ -104,7 +108,6 @@ function isInvalid(key: any) {
 async function validate() {
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) {
-    console.log(v$.value.$errors);
     for (let err of v$.value.$errors) {
       toast.add({
         severity: "error",
@@ -124,24 +127,53 @@ defineExpose({
   validate,
   object_temp,
 });
+
+function getStatusOptionsForMembershipType() {
+  const options: any[] = [];
+  if (props.schema.fields["status"]?.choices) {
+    for (const status of membershipsTypes.value.detail.statuses) {
+      let i = 0;
+      const x = props.schema.fields["status"].choices[status];
+      options.push({
+        label: x,
+        value: status,
+        key: ++i,
+      });
+    }
+  } else {
+    console.log("No choices for status");
+  }
+  return options;
+}
 </script>
 
 <template>
-  Membership type: {{ membershipsTypes.detail }}
   <!-- Structure given in schema -->
-  <div class="mt-5">
-    STATUS SHOULD ONLY BE THAT OF MEMBERSHIP TYPE
-    <PrimeDropdown
-      v-model="object_temp['status']"
-      :options="[{ label: 'custom' }]"
-      :optionLabel="(option:any) => t(option.label)"
-      optionValue="value"
-      :filter="true"
-      :placeholder="t('Select a choice')"
-      :showClear="true"
-      class="w-full"
-      :class="{ 'p-invalid': isInvalid }"
-    />
+  <div class="mt-5" v-if="membershipsTypes.detailLoaded">
+    <div class="my-4">
+      <span class="font-bold">{{ t("Type of membership") }}: </span>
+      <PrimeDropdown
+        v-model="object_temp['status']"
+        :options="getStatusOptionsForMembershipType()"
+        :optionLabel="(option:any) => t(option.label)"
+        optionValue="value"
+        :filter="true"
+        :placeholder="t('Select a choice')"
+        :showClear="true"
+        class="w-full"
+        :class="{ 'p-invalid': isInvalid('status') }"
+      />
+    </div>
+    <div class="my-4" v-if="membershipsTypes.detail.has_shares">
+      <span class="font-bold">{{ t("Number of shares") }}: </span>
+      <PrimeInputNumber
+        v-model="object_temp['shares_signed']"
+        optionValue="value"
+        showButtons
+        class="w-full"
+        :class="{ 'p-invalid': isInvalid('shares_signed') }"
+      />
+    </div>
     <!-- <ObjectField
       :name="'status'"
       :field="schema.fields['status']"

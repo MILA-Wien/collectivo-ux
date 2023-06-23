@@ -30,6 +30,11 @@ mainStore
     error.value = e;
   });
 
+const { membershipsTypes } = storeToRefs(mainStore);
+mainStore.get("membershipsTypes", Number(route.params.id)).catch((e: any) => {
+  error.value = e;
+});
+
 function getRoute(step: Number | String): RouteLocationRaw {
   return "/memberships/register/" + route.params.id + "/" + String(step) + "/";
 }
@@ -61,7 +66,6 @@ function formatDate(value: Date): string {
   return correctDate.toISOString().split("T")[0];
 }
 function createSubmitData(object_temp: any) {
-  console.log("object_temp", object_temp);
   if (object_temp === undefined) {
     return object_temp;
   }
@@ -74,20 +78,20 @@ function createSubmitData(object_temp: any) {
 }
 
 async function nextPage(event: any) {
-  submitData[event.name] = createSubmitData(event.data);
+  submitData.value[event.name] = createSubmitData(event.data);
   router.push(getRoute(event.step + 1));
 }
 const prevPage = (event: any) => {
-  submitData[event.name] = createSubmitData(event.data);
+  submitData.value[event.name] = createSubmitData(event.data);
   router.push(getRoute(event.step - 1));
 };
 const isSaving = ref(false);
 
 async function complete(event: any) {
-  submitData[event.name] = createSubmitData(event.data);
+  submitData.value[event.name] = createSubmitData(event.data);
   isSaving.value = true;
   try {
-    await mainStore.create("membershipsRegister", submitData);
+    await mainStore.create("membershipsRegister", submitData.value);
     successToast(toast, "Registration successful.");
     router.push(getRoute("complete"));
   } catch (error) {
@@ -100,7 +104,9 @@ async function complete(event: any) {
 <template>
   <div
     class="flex flex-col h-full"
-    v-if="data.schemaLoaded && data.detailLoaded"
+    v-if="
+      data.schemaLoaded && data.detailLoaded && membershipsTypes.detailLoaded
+    "
   >
     <PrimeCard>
       <template #content>
