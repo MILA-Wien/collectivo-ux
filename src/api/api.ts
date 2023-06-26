@@ -111,10 +111,12 @@ export const endpoints = {
   profilesProfilesSelf: "/profiles/profiles/self/",
 
   membershipsMemberships: "/memberships/memberships/",
+  membershipsMembershipsHistory: "/memberships/memberships-history/",
   membershipsRegister: "/memberships/register/",
   membershipsMembershipsSelf: "/memberships/memberships/self/",
   membershipsMembershipsShares: "/memberships/memberships/self/sign-shares/",
   membershipsTypes: "/memberships/types/",
+  membershipsTypesHistory: "/memberships/types-history/",
   membershipsStatuses: "/memberships/statuses/",
   membershipsProfiles: "/memberships/profiles/",
   membershipsCreateInvoices: "/memberships/memberships/create_invoices/",

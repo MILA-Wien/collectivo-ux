@@ -6,6 +6,7 @@ import PrimeColumn from "primevue/column";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
+import ObjectTable from "../datatable/ObjectTable.vue";
 const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();

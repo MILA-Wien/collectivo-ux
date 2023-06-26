@@ -97,7 +97,7 @@ export interface SchemaStore {
 export interface Schema {
   label: string;
   description: string;
-  actions: Array<string>;
+  actions: Array<"create" | "retrieve" | "update" | "delete" | "list">;
   structure?: any;
   fields: { [key: string]: SchemaField };
 }

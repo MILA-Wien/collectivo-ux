@@ -33,20 +33,11 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  allow_delete: {
-    type: Boolean,
-    default: true,
-  },
   schema: {
     type: Object as PropType<Schema>,
     required: true,
   },
 });
-
-const deleteButton = ref(false);
-if (props.schema.actions?.includes("delete") || props.allow_delete) {
-  deleteButton.value = true;
-}
 
 // Create temporary copy of the object
 const object_temp = ref(JSON.parse(JSON.stringify(props.object)));
@@ -124,7 +115,7 @@ const editor = ref<any>(null);
             />
             <PrimeButton
               :label="t('Delete')"
-              v-if="!create && deleteButton"
+              v-if="schema.actions.includes('delete')"
               icon="pi pi-trash"
               @click="editor.deleteObject()"
               style="margin-right: 0px"
