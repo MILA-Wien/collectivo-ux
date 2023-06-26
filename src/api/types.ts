@@ -90,10 +90,14 @@ export interface SchemaField {
   schema?: Schema;
 }
 
+export interface SchemaStore {
+  [index: string]: DataSchema;
+}
+
 export interface Schema {
   label: string;
   description: string;
-  actions?: Array<string>;
+  actions: Array<string>;
   structure?: any;
   fields: { [key: string]: SchemaField };
 }
@@ -129,6 +133,8 @@ export interface DataSchema {
   listTotalRecords: number;
   detail: DataObject;
   detailLoaded: boolean;
+  history: Array<DataObject>;
+  historyLoaded: boolean;
 }
 
 // Store templates

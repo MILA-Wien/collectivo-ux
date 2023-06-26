@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import TabPanel from "primevue/tabpanel";
@@ -15,7 +15,7 @@ menuStore.setTitle("Tags");
   <div class="h-full tabview-full-height" id="tags-admin">
     <TabView lazy>
       <TabPanel :header="t('Tags')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           name="tagsTags"
           :default-columns="['name', 'description']"

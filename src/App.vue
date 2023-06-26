@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import PrimeConfirmDialog from "primevue/confirmdialog";
 import PrimeToast from "primevue/toast";
 import { RouterView, useRoute } from "vue-router";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
@@ -20,6 +21,7 @@ mainStore.getDetail("coreProfile").catch((error) => {
 
 <template>
   <PrimeToast />
+  <PrimeConfirmDialog></PrimeConfirmDialog>
   <div
     id="collectivo-frame"
     class="flex h-screen bg-mila font-sans"

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
@@ -18,7 +17,7 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
   <div class="h-full tabview-full-height" id="core-users">
     <TabView lazy>
       <TabPanel :header="t('Users')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'coreUsersExtended'"
           :default-columns="['first_name', 'last_name', 'email', 'tags']"
@@ -43,15 +42,15 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
               </template>
             </PrimeColumn>
           </template>
-        </ObjectLoader>
+        </ObjectTable>
       </TabPanel>
       <TabPanel :header="t('Groups')" v-if="view_groups">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'coreGroups'"
           :default-columns="['name', 'permissions', 'extension', 'users']"
         >
-        </ObjectLoader>
+        </ObjectTable>
       </TabPanel>
     </TabView>
   </div>

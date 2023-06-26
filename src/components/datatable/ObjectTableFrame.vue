@@ -8,8 +8,10 @@ import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
 import PrimeToolbar from "primevue/toolbar";
-import ObjectTable from "./ObjectTable.vue";
+import ObjectHistory from "./ObjectHistory.vue";
+import ObjectTable from "./ObjectTableInner.vue";
 
+import { endpoints } from "@/api/api";
 import type { Schema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
@@ -43,7 +45,11 @@ const props = defineProps({
   },
   emailCampaignSchema: {
     type: Object as PropType<Schema>,
-    required: true,
+    required: false,
+  },
+  allowSelection: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -121,6 +127,9 @@ const table = ref<any>(null);
 const editActive = ref(false);
 const editObject = ref({});
 const editCreate = ref(false);
+const historyName = props.name + "History";
+const historyExists = historyName in endpoints;
+const historyActive = ref(false);
 function createObjectFn() {
   editObject.value = {};
   editCreate.value = true;
@@ -128,6 +137,10 @@ function createObjectFn() {
 }
 function closeEditor() {
   editActive.value = false;
+  table.value.refresh();
+}
+function closeHistory() {
+  historyActive.value = false;
   table.value.refresh();
 }
 
@@ -155,15 +168,6 @@ function sendEmails() {
     <PrimeToolbar class="c-datatable-toolbar">
       <template #start>
         <div class="m-1 text-left">
-          <!-- v-tooltip.top="t('Create new entry')" -->
-          <PrimeButton
-            icon="pi pi-plus"
-            class="c-icon-button p-button-sm"
-            @click="createObjectFn()"
-          >
-          </PrimeButton>
-        </div>
-        <div class="m-1 text-left">
           <PrimeMultiSelect
             v-model="selectedColumns"
             :options="columns"
@@ -176,16 +180,36 @@ function sendEmails() {
             class="w-26"
           />
         </div>
+      </template>
+      <template #end>
+        <div class="m-1" v-if="schema.actions.includes('create')">
+          <PrimeButton
+            icon="pi pi-plus"
+            class="p-button-sm"
+            @click="createObjectFn()"
+            :label="t('New')"
+          >
+          </PrimeButton>
+        </div>
         <div class="m-1">
           <PrimeButton
             icon="pi pi-refresh"
-            class="c-icon-button p-button-sm"
+            class="p-button-sm"
+            :label="t('Refresh')"
             @click="table.refresh()"
           >
           </PrimeButton>
         </div>
-      </template>
-      <template #end>
+        <div class="m-1" v-if="historyExists">
+          <PrimeButton
+            icon="pi pi-history"
+            class="p-button-sm"
+            @click="historyActive = true"
+            :label="t('History')"
+          >
+          </PrimeButton>
+        </div>
+
         <!-- TODO: Fix clear filters button  -->
         <!-- <div class="m-1">
                   <PrimeButton type="button" icon="pi pi-filter-slash" :label="t('Clear')" class="p-button-outlined"
@@ -193,32 +217,31 @@ function sendEmails() {
                   </PrimeButton>
             </div> -->
         <div class="m-1" v-if="emailButton">
-          <!--  v-tooltip.top="t('Send emails')" -->
           <PrimeButton
             icon="pi pi-send"
-            class="c-icon-button p-button-sm"
+            class="p-button-sm"
             :disabled="!(selectedObjects.length > 0)"
             @click="sendEmails"
+            :label="t('Send emails')"
           >
           </PrimeButton>
         </div>
         <div class="m-1">
-          <!-- v-tooltip.top="t('Export')" -->
-          <PrimeButton
+          <JsonCSV
             icon="pi pi-file-export"
-            class="c-icon-button p-button-sm"
-            :disabled="!(selectedObjects?.length > 0)"
+            :data="selectedObjects"
+            name="export.csv"
           >
-            <JsonCSV
-              v-if="selectedObjects?.length > 0"
+            <PrimeButton
               icon="pi pi-file-export"
-              :data="selectedObjects"
-              name="export.csv"
+              class="p-button-sm"
+              :disabled="!(selectedObjects?.length > 0)"
+              :label="t('Export')"
             >
-              <i class="pi pi-file-export"></i>
-            </JsonCSV>
-          </PrimeButton>
+            </PrimeButton
+          ></JsonCSV>
         </div>
+        <slot name="toolbar"></slot>
       </template>
     </PrimeToolbar>
 
@@ -236,12 +259,22 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
+        :allow-selection="allowSelection"
         ref="table"
       >
         <template #action-column><slot name="action-column"></slot></template>
       </ObjectTable>
     </div>
   </div>
+
+  <!-- Detail dialog -->
+  <ObjectHistory
+    v-if="historyActive"
+    :store="store"
+    :name="historyName"
+    :schema="schema"
+    @close="closeHistory()"
+  />
 
   <!-- Detail dialog -->
   <ObjectModal
@@ -256,7 +289,7 @@ function sendEmails() {
 
   <!-- Dialogue for email campaign details -->
   <ObjectModal
-    v-if="editEmailsActive"
+    v-if="editEmailsActive && emailCampaignSchema"
     :object="editEmailsObject"
     :create="editEmailsCreate"
     :store="props.store"

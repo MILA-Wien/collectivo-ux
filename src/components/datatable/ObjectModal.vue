@@ -2,7 +2,6 @@
 import type { Schema } from "@/api/types";
 import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
-import PrimeConfirmDialog from "primevue/confirmdialog";
 import PrimeDialog from "primevue/dialog";
 import type { PropType } from "vue";
 import { ref } from "vue";
@@ -76,7 +75,6 @@ const editor = ref<any>(null);
 
 <template>
   <div>
-    <PrimeConfirmDialog></PrimeConfirmDialog>
     <PrimeDialog
       :header="getHeader()"
       class="object-detail"

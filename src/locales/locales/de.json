@@ -232,7 +232,9 @@
   "failure": "Fehler",
   "Sent": "Gesendet",
   "Export": "Exportieren",
-
+  "New": "Neu",
+  "Refresh": "Aktualisieren",
+  "History": "Verlauf",
   "Campaigns": "Kampagnen",
   "Templates": "Vorlagen",
   "Template": "Vorlage",

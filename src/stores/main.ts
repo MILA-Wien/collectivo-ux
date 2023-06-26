@@ -6,6 +6,7 @@ import type { DataObject, DataSchema, Schema } from "../api/types";
 import { DataTemplate } from "../api/types";
 
 type mainStore = { [index: string]: DataSchema };
+type endpointName = keyof typeof endpoints;
 
 async function storeCreate(store: any, objectName: any, payload?: Object) {
   const response = await API.post(objectName, payload);
@@ -99,6 +100,9 @@ export const useMainStore = defineStore({
 
       // Throw error if response does not match store data type
       if (!(objects.data.results instanceof Array)) {
+        if (!objects.data.results) {
+          throw new Error("Invalid data format (no results).");
+        }
         throw new Error("Receiving detail, expecting list.");
       }
 
@@ -153,6 +157,9 @@ export const useMainStore = defineStore({
       object.detail = { id: null };
 
       return response;
+    },
+    async revert(objectName: endpointName, history_id: Number) {
+      return await API.revert(objectName, history_id);
     },
     async getMilaMembershipNumber() {
       await this.get("membershipsMembershipsSelf");

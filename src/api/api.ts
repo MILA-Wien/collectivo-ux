@@ -120,6 +120,7 @@ export const endpoints = {
   membershipsCreateInvoices: "/memberships/memberships/create_invoices/",
 
   tagsTags: "/tags/tags/",
+  tagsTagsHistory: "/tags/tags-history/",
   tagsProfiles: "/tags/profiles/",
 
   emailProfiles: "/emails/profiles/",
@@ -146,8 +147,8 @@ export const endpoints = {
 
 // Generic API functions
 export const API = {
-  get: async function (
-    endpoint: keyof typeof endpoints,
+  _get: async function (
+    path: string,
     id?: Number,
     page?: Number,
     rowsPerPage?: Number,
@@ -156,10 +157,10 @@ export const API = {
   ): Promise<AxiosResponse<any, any>> {
     if (id !== undefined && id !== null) {
       // return a detail single object
-      return await api.get(`${endpoints[endpoint]}${id}/`);
+      return await api.get(`${path}${id}/`);
     }
     // return a paginated endpoint
-    let api_endpoint = endpoints[endpoint];
+    let api_endpoint = path;
     let offset = 0;
     let limit = 50;
     if (page !== undefined && rowsPerPage !== undefined) {
@@ -177,11 +178,24 @@ export const API = {
     }
     return await api.get(api_endpoint);
   },
+  get: async function (
+    endpoint: keyof typeof endpoints,
+    id?: Number,
+    page?: Number,
+    rowsPerPage?: Number,
+    order?: String,
+    filter?: String
+  ): Promise<AxiosResponse<any, any>> {
+    return this._get(endpoints[endpoint], id, page, rowsPerPage, order, filter);
+  },
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
   },
   post: async function (endpoint: keyof typeof endpoints, payload?: Object) {
     return await api.post(endpoints[endpoint], payload);
+  },
+  revert: async function (endpoint: keyof typeof endpoints, id: Number) {
+    return await api.post(`${endpoints[endpoint]}${id}/revert/`);
   },
   patch: async function (
     endpoint: keyof typeof endpoints,

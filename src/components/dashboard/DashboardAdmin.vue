@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import TabPanel from "primevue/tabpanel";
@@ -15,14 +15,14 @@ menuStore.setTitle("Tiles");
   <div class="h-full tabview-full-height" id="dashboard-admin">
     <TabView lazy>
       <TabPanel :header="t('Tiles')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           name="dashboardTiles"
           :default-columns="['name', 'content']"
         />
       </TabPanel>
       <TabPanel :header="t('Buttons')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           name="dashboardTileButtons"
           :default-columns="['label']"
