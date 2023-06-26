@@ -3,19 +3,18 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
+import { endpoints } from "@/api/api";
+import type { Schema } from "@/api/types";
 import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
+import type { StoreGeneric } from "pinia";
 import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
-import PrimeToolbar from "primevue/toolbar";
-import ObjectHistory from "./ObjectHistory.vue";
-import ObjectTable from "./ObjectTableInner.vue";
-
-import { endpoints } from "@/api/api";
-import type { Schema } from "@/api/types";
-import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
+import ObjectBulkEdit from "./ObjectBulkEdit.vue";
+import ObjectHistory from "./ObjectHistory.vue";
 import ObjectModal from "./ObjectModal.vue";
+import ObjectTable from "./ObjectTableInner.vue";
 
 const { t } = useI18n();
 const props = defineProps({
@@ -125,6 +124,8 @@ const table = ref<any>(null);
 
 // Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
+const bulkEditActive = ref(false);
+const selectedIds = ref<Number[]>([]);
 const editObject = ref({});
 const editCreate = ref(false);
 const historyName = props.name + "History";
@@ -142,6 +143,12 @@ function closeEditor() {
 function closeHistory() {
   historyActive.value = false;
   table.value.refresh();
+}
+function startBulkEdit() {
+  selectedIds.value = Array.from(
+    new Set(selectedObjects.value.map((m: any) => (m.user ? m.user : m.id)))
+  );
+  bulkEditActive.value = true;
 }
 
 // Send emails ------------------------------------------------------------- //
@@ -165,9 +172,10 @@ function sendEmails() {
 <template>
   <div class="flex flex-col h-full">
     <!-- Toolbar -->
-    <PrimeToolbar class="c-datatable-toolbar">
-      <template #start>
-        <div class="m-1 text-left">
+    <div class="c-datatable-toolbar">
+      <!-- <template #start> -->
+      <div class="flex flex-wrap">
+        <div class="m-1">
           <PrimeMultiSelect
             v-model="selectedColumns"
             :options="columns"
@@ -180,8 +188,7 @@ function sendEmails() {
             class="w-26"
           />
         </div>
-      </template>
-      <template #end>
+
         <div class="m-1" v-if="schema.actions.includes('create')">
           <PrimeButton
             icon="pi pi-plus"
@@ -191,6 +198,7 @@ function sendEmails() {
           >
           </PrimeButton>
         </div>
+
         <div class="m-1">
           <PrimeButton
             icon="pi pi-refresh"
@@ -216,9 +224,19 @@ function sendEmails() {
                     @click="clearFilters()">
                   </PrimeButton>
             </div> -->
+        <div class="m-1" v-if="schema.actions.includes('update-bulk')">
+          <PrimeButton
+            icon="pi pi-pencil"
+            class="p-button-sm"
+            :disabled="!(selectedObjects.length > 0)"
+            @click="startBulkEdit()"
+            :label="t('Bulk edit')"
+          >
+          </PrimeButton>
+        </div>
         <div class="m-1" v-if="emailButton">
           <PrimeButton
-            icon="pi pi-send"
+            icon="pi pi-envelope"
             class="p-button-sm"
             :disabled="!(selectedObjects.length > 0)"
             @click="sendEmails"
@@ -242,8 +260,9 @@ function sendEmails() {
           ></JsonCSV>
         </div>
         <slot name="toolbar"></slot>
-      </template>
-    </PrimeToolbar>
+      </div>
+      <!-- </template> -->
+    </div>
 
     <div class="grow overflow-auto">
       <!-- Table will fill out full remaining height -->
@@ -267,13 +286,27 @@ function sendEmails() {
     </div>
   </div>
 
-  <!-- Detail dialog -->
+  <!-- History dialog -->
   <ObjectHistory
     v-if="historyActive"
     :store="store"
     :name="historyName"
     :schema="schema"
     @close="closeHistory()"
+  />
+
+  <!-- Bulk edit dialog -->
+  <ObjectBulkEdit
+    v-if="bulkEditActive"
+    :store="store"
+    :name="name"
+    :schema="schema"
+    :columns="columns"
+    :objects="selectedObjects"
+    @close="
+      bulkEditActive = false;
+      table.refresh();
+    "
   />
 
   <!-- Detail dialog -->
@@ -304,6 +337,8 @@ function sendEmails() {
   border-bottom: 0;
   padding: 0.5rem;
   border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
 }
 .c-icon-button {
   width: 2.8rem;

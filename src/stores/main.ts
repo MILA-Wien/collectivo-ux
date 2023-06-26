@@ -140,6 +140,9 @@ export const useMainStore = defineStore({
       }
       object.detail = response.data;
     },
+    async updateBulk(objectName: any, payload: Object[]) {
+      return await API.patchBulk(objectName, payload);
+    },
     async delete(objectName: any, id: Number) {
       // Delete object and remove from store
       const response = await API.delete(objectName, id);

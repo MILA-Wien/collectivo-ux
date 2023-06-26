@@ -209,6 +209,12 @@ export const API = {
     }
     return await api.patch(`${endpoints[endpoint]}${id}/`, payload);
   },
+  patchBulk: async function (
+    endpoint: keyof typeof endpoints,
+    payload: Object[]
+  ) {
+    return await api.patch(`${endpoints[endpoint]}bulk_update/`, payload);
+  },
   delete: async function (endpoint: keyof typeof endpoints, id?: Number) {
     if (id === undefined) {
       return await api.delete(endpoints[endpoint]);

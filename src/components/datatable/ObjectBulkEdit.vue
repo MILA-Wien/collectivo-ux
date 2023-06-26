@@ -1,86 +1,96 @@
 <script setup lang="ts">
-import { useMainStore } from "@/stores/main";
+import type { Schema } from "@/api/types";
+import { checkCondition } from "@/helpers/schema";
+import { errorToast, successToast } from "@/helpers/toasts";
+import type { StoreGeneric } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeDialog from "primevue/dialog";
 import PrimeDropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
+import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const emit = defineEmits(["change", "close"]);
 
-const mainStore = useMainStore();
-
-const toast = useToast();
-const successToast = () => {
-  toast.add({
-    severity: "success",
-    summary: "Success",
-    detail: "User has been updated.",
-    life: 5000,
-  });
-};
-const errorToast = (e: any) => {
-  toast.add({
-    severity: "error",
-    summary: "Error",
-    detail: `Update failed. Request-id: "${
-      e?.response?.headers["x-request-id"]
-    }" Response: "${JSON.stringify(e?.response?.data)}"`,
-  });
-};
-
 const props = defineProps({
-  members: {
-    type: Object,
+  store: {
+    type: Object as PropType<StoreGeneric>,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  objects: {
+    type: Array,
+    required: true,
+  },
+  columns: {
+    type: Array as PropType<any>,
     required: true,
   },
   schema: {
-    type: Object,
+    type: Object as PropType<Schema>,
     required: true,
   },
 });
 
-const displayModal = ref(true);
+// Modal state ----------------------------------------------------------------
+const isVisible = ref(true);
+
+function getHeader() {
+  return (
+    t("Bulk edit") +
+    ": " +
+    t(props.schema.label) +
+    " (" +
+    String(props.objects.length) +
+    " " +
+    t("selected") +
+    ")"
+  );
+}
+
+function closeModal() {
+  emit("close");
+}
+
 const isSaving = ref(false);
+
+function addObject(member: any, field: any, object: any) {
+  // TODO: Figure out why a conversion is necessary here
+  object = Number(object);
+  if (member[field].includes(object)) {
+    return;
+  }
+  member[field].push(object);
+}
+
+function removeObject(member: any, field: any, object: any) {
+  object = Number(object);
+  member[field] = member[field].filter((item: any) => item != object);
+}
 
 const actions = {
   "Add an object": addObject,
   "Remove an object": removeObject,
 };
 
+const allowed_columns = ref<any>([]);
+for (const column of props.columns) {
+  if (!checkCondition(column, props.schema.fields[column.field]?.read_only)) {
+    allowed_columns.value.push(column);
+  }
+}
+const toast = useToast();
 const chosenAction = ref<keyof typeof actions | null>(null);
 const chosenColumn = ref<any>(null);
 const chosenContent = ref<any>(null);
 
 // Create temporary copy of the object
-const members_temp = ref(JSON.parse(JSON.stringify(props.members)));
-
-const columns: any[] = [];
-for (const [key, value] of Object.entries(props.schema)) {
-  columns.push({
-    field: key,
-    header: t(value.label),
-    input_type: value.input_type,
-  });
-
-  // Add choices to column
-  if (value.choices == undefined) {
-    continue;
-  }
-  columns[columns.length - 1].choices = [];
-
-  // TODO: Change from i to index
-  var i = 0;
-  for (const [key2, value2] of Object.entries(value.choices) as any) {
-    columns[columns.length - 1].choices.push({
-      label: t(value2),
-      value: key2,
-      key: ++i,
-    });
-  }
-}
+const objects_temp = ref(JSON.parse(JSON.stringify(props.objects)));
 
 function getActions(input_type: any): (keyof typeof actions)[] {
   if (input_type == "multiselect") {
@@ -90,38 +100,20 @@ function getActions(input_type: any): (keyof typeof actions)[] {
 }
 
 function getOptions(column: any) {
-  return column.choices;
-}
-
-function closeModal() {
-  emit("close");
-}
-
-function addObject(member: any, field: any, object: any) {
-  if (member[field].includes(object)) {
-    return;
-  }
-  member[field].push(object);
-}
-
-function removeObject(member: any, field: any, object: any) {
-  member[field] = member[field].filter((item: any) => item != object);
+  return column.choice_list;
 }
 
 async function save() {
   isSaving.value = true;
   try {
-    const promises: any[] = [];
     const actionFn = actions[chosenAction.value!];
-    for (const member of members_temp.value) {
+    for (const member of objects_temp.value) {
       actionFn(member, chosenColumn.value.field, chosenContent.value);
-      promises.push(mainStore.update("profilesProfiles", member, member.id));
     }
-    await Promise.all(promises);
-    successToast();
+    await props.store.updateBulk(props.name, objects_temp.value);
+    successToast(toast, "Object has been updated.");
   } catch (error) {
-    errorToast(error);
-    console.log(error);
+    errorToast(toast, error);
   }
   emit("close");
   isSaving.value = false;
@@ -131,13 +123,13 @@ async function save() {
 <template>
   <div>
     <PrimeDialog
-      :header="
-        t('Bulk edit selected') + ' ' + members.length + ' ' + t('members')
-      "
-      v-model:visible="displayModal"
+      :header="getHeader()"
+      class="object-detail"
+      v-model:visible="isVisible"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
-      :style="{ width: '50vw' }"
+      :style="{ width: '80vw' }"
       :modal="true"
+      :maximizable="true"
       @hide="closeModal"
     >
       <div class="modal-content">
@@ -145,7 +137,7 @@ async function save() {
         <h3>{{ t("Attribute") }}</h3>
         <PrimeDropdown
           v-model="chosenColumn"
-          :options="columns"
+          :options="allowed_columns"
           optionLabel="header"
           class="p-column-filter"
           placeholder="Select an attribute"
@@ -163,10 +155,16 @@ async function save() {
         </PrimeDropdown>
 
         <!-- Choose action -->
-        <div v-if="chosenColumn">
+        <div>
           <h3>{{ t("Action type") }}</h3>
           <PrimeDropdown
-            v-if="getActions(chosenColumn.input_type).length > 0"
+            v-if="!chosenColumn"
+            :disabled="true"
+            placeholder="Select an action"
+          >
+          </PrimeDropdown>
+          <PrimeDropdown
+            v-else-if="getActions(chosenColumn.input_type).length > 0"
             v-model="chosenAction"
             :options="getActions(chosenColumn.input_type)"
             class="p-column-filter"
@@ -179,10 +177,16 @@ async function save() {
         </div>
 
         <!-- Choose data -->
-        <div v-if="chosenAction">
+        <div>
           <h3>{{ t("Action data") }}</h3>
           <PrimeDropdown
-            v-if="chosenColumn.input_type == 'multiselect'"
+            v-if="!chosenAction"
+            :disabled="true"
+            placeholder="Select data for this action"
+          >
+          </PrimeDropdown>
+          <PrimeDropdown
+            v-else-if="chosenColumn.input_type == 'multiselect'"
             v-model="chosenContent"
             :options="getOptions(chosenColumn)"
             class="p-column-filter"
@@ -197,36 +201,33 @@ async function save() {
         </div>
       </div>
 
+      <!-- Footer -->
       <template #footer>
-        <PrimeButton
-          :label="t('Cancel')"
-          icon="pi pi-times"
-          @click="closeModal"
-          class="p-button-text"
-        />
-        <PrimeButton
-          :label="t('Save')"
-          :loading="isSaving"
-          :disabled="!chosenContent"
-          icon="pi pi-check"
-          @click="save()"
-          autofocus
-        />
+        <div
+          class="object-detail-filter flex flex-row flex-wrap mt-5 items-center gap-3"
+        >
+          <div class="flex-grow"></div>
+          <div class="flex flex-row flex-wrap gap-3">
+            <PrimeButton
+              :label="t('Save')"
+              icon="pi pi-check"
+              class="flex-none"
+              @click="save"
+            />
+            <PrimeButton
+              :label="t('Cancel')"
+              icon="pi pi-times"
+              @click="closeModal"
+              class="p-button-secondary flex-none"
+            />
+          </div>
+        </div>
       </template>
     </PrimeDialog>
   </div>
 </template>
+
 <style scoped>
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
 label {
   font-weight: bold;
 }
