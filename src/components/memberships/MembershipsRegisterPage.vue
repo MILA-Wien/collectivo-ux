@@ -27,7 +27,7 @@ const step_names = Object.keys(data.value.schema.fields);
 const current_step = Number(route.params.step);
 const current_step_name = step_names[current_step - 1];
 const step_data = data.value.detail[current_step_name];
-const step_schema = props.data.schema.fields[current_step_name].schema!;
+const step_schema = props.data.schema.fields[current_step_name]?.schema!;
 const first = current_step == 1;
 const final = step_names.length == current_step;
 
@@ -47,7 +47,10 @@ async function submit(emit_value: "next-page" | "prev-page" | "complete") {
 
 <template>
   <div class="grow overflow-auto p-5 bg-white">
-    <div class="flex flex-col h-full">
+    <div v-if="!step_schema">
+      There was an error setting up the registration form.
+    </div>
+    <div v-else class="flex flex-col h-full">
       <div class="grow overflow-auto" v-if="step_schema.label == 'Membership'">
         <MembershipsRegisterEditor
           :object="step_data"

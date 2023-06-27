@@ -10,7 +10,7 @@ import PrimeDropdown from "primevue/dropdown";
 import PrimeInputNumber from "primevue/inputnumber";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
@@ -51,11 +51,11 @@ const object_temp = ref<any>({});
 if (props.object != undefined) {
   object_temp.value = JSON.parse(JSON.stringify(props.object));
 }
+const schema = toRef(props, "schema");
 
 // Load membership type
 const route = useRoute();
 const mainStore = useMainStore();
-const data = storeToRefs(props.store)[props.name];
 const { membershipsTypes } = storeToRefs(mainStore);
 object_temp.value.type = route.params.id;
 
@@ -63,7 +63,7 @@ object_temp.value.type = route.params.id;
 
 const rules: any = {};
 for (var field_name in props.schema.fields) {
-  const schemaField = data.value.schema.fields[field_name];
+  const schemaField = schema.value.fields[field_name];
   if (schemaField.required) {
     if (schemaField.visible == null) {
       rules[field_name] = { required };
@@ -83,17 +83,6 @@ if (membershipsTypes.value.detail.has_shares) {
 
 const v$ = useVuelidate(rules, object_temp.value);
 v$.value.$validate();
-
-function fieldError(key: any) {
-  if (v$.value[key]?.$errors.length == 0) {
-    return false;
-  }
-  const err = v$.value[key]?.$errors[0].$message;
-  if (typeof err === "string") {
-    return t(err);
-  }
-  return false;
-}
 
 function isInvalid(key: any) {
   if (Object.keys(rules).includes(key)) {
@@ -172,17 +161,6 @@ function getStatusOptionsForMembershipType() {
         :class="{ 'p-invalid': isInvalid('shares_signed') }"
       />
     </div>
-    <!-- <ObjectField
-      :name="'status'"
-      :field="schema.fields['status']"
-      v-model="object_temp['status']"
-      :isInvalid="isInvalid('status')"
-      :disabled="
-        checkCondition(object_temp, schema.fields['status'].read_only) &&
-        !create
-      "
-      :returnErrorMessage="fieldError('status')"
-    /> -->
   </div>
 </template>
 

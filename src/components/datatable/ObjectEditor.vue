@@ -5,11 +5,11 @@ import { errorToast, successToast } from "@/helpers/toasts";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, requiredIf } from "@vuelidate/validators";
 import { electronicFormatIBAN, isValidIBAN } from "ibantools";
-import { storeToRefs, type StoreGeneric } from "pinia";
+import { type StoreGeneric } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 import ObjectField from "./ObjectField.vue";
 const { t } = useI18n();
@@ -50,7 +50,7 @@ const object_temp = ref<any>({});
 if (props.object != undefined) {
   object_temp.value = JSON.parse(JSON.stringify(props.object));
 }
-const data = storeToRefs(props.store)[props.name];
+const schema = toRef(props, "schema");
 const isSaving = ref(false);
 
 // Format data ----------------------------------------------------------------
@@ -166,7 +166,7 @@ const iban = helpers.withMessage("Invalid IBAN", (value: any) => {
 
 const rules: any = {};
 for (var field_name in props.schema.fields) {
-  const schemaField = data.value.schema.fields[field_name];
+  const schemaField = schema.value.fields[field_name];
   if (schemaField.required) {
     if (schemaField.visible == null) {
       rules[field_name] = { required };
