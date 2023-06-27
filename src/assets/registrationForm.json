@@ -733,7 +733,7 @@
           "type": "singleChoice",
           "properties": {
             "label": "Payment type",
-            "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. Erst wenn der Firmenbucheintrag von MILA Mitmach-Supermarkt e.G. erfolgt ist, können wir das Genossenschaftskonto eröffnen und Zahlung per Überweisung ermöglichen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
+            "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
             "conditions": [],
             "content": "",
             "extId": "payment_method",
@@ -954,7 +954,7 @@
             "htmlType": "checkbox",
             "conditions": [],
             "label": "Satzung",
-            "description": "Ich habe die Satzung gelesen und erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an. Link zur Satzung: https://wolke.mila.wien/s/RomRixR2xb5LGNK",
+            "description": "Mir steht die Satzung unter https://wolke.mila.wien/s/RomRixR2xb5LGNK zur Verfügung und ich erkenne die Bestimmungen und Beschlüsse der Generalversammlung in vollem Umfang an.",
             "extId": "statutes_approved",
             "required": true,
             "validations": [
@@ -973,7 +973,7 @@
             "htmlType": "p",
             "conditions": [],
             "label": "Haftung",
-            "content": "Im Fall der Insolvenz der Genossenschaft haften die Mitglieder der Genossenschaft deren Gläubigern mit ihren Geschäftsanteilen und zusätzlich mit einem Betrag in der Höhe ihrer Geschäftsanteile (Nachschusspflicht in der einfachen Höhe der Geschäftsanteile). ",
+            "content": "Im Fall der Insolvenz und/oder Auflösung der Genossenschaft haften die Mitglieder der Genossenschaft deren Gläubigern mit ihren Geschäftsanteilen und zusätzlich mit einem Betrag in der Höhe ihrer Geschäftsanteile (Nachschusspflicht in der einfachen Höhe der Geschäftsanteile).",
             "extId": "g45gtrg"
           },
           "id": "g45gtrg",
