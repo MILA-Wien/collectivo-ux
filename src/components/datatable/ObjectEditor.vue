@@ -5,7 +5,7 @@ import { errorToast, successToast } from "@/helpers/toasts";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, requiredIf } from "@vuelidate/validators";
 import { electronicFormatIBAN, isValidIBAN } from "ibantools";
-import { type StoreGeneric } from "pinia";
+import type { StoreGeneric } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
@@ -262,16 +262,9 @@ defineExpose({
           </div>
         </div>
 
-        <!-- Flex row section -->
-        <div
-          v-else-if="section.style == 'row'"
-          class="flex flex-row flex-wrap gap-x-5"
-        >
-          <div
-            v-for="(field, j) in section.fields"
-            class="flex-auto w-72 pb-4"
-            :key="j"
-          >
+        <!-- Cokumn section -->
+        <div v-else-if="section.style == 'col'">
+          <div v-for="(field, j) in section.fields" class="pb-4" :key="j">
             <ObjectField
               :name="field"
               :field="schema.fields[field]"
@@ -286,9 +279,13 @@ defineExpose({
           </div>
         </div>
 
-        <!-- Normal section -->
-        <div v-else>
-          <div v-for="(field, j) in section.fields" class="pb-4" :key="j">
+        <!-- Flex row section (default) -->
+        <div v-else class="flex flex-row flex-wrap gap-x-5">
+          <div
+            v-for="(field, j) in section.fields"
+            class="flex-auto w-72 pb-4"
+            :key="j"
+          >
             <ObjectField
               :name="field"
               :field="schema.fields[field]"
