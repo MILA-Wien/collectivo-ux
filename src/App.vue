@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import PrimeConfirmDialog from "primevue/confirmdialog";
 import PrimeToast from "primevue/toast";
+import { watch } from "vue";
 import { RouterView, useRoute } from "vue-router";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
 import { useMainStore } from "./stores/main";
@@ -14,8 +15,13 @@ const mainStore = useMainStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
 
-mainStore.getDetail("coreProfile").catch((error) => {
-  console.log(error);
+// watch user
+watch(user, (newUser) => {
+  if (newUser?.token) {
+    mainStore.getDetail("coreProfile").catch((error) => {
+      console.log(error);
+    });
+  }
 });
 </script>
 
