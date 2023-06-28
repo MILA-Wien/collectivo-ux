@@ -36,7 +36,7 @@ function extendSchema(schema: Schema) {
 }
 
 export const useMainStore = defineStore({
-  id: "members",
+  id: "mainStore",
   state: () => {
     const store = {} as mainStore;
     for (const objectName of Object.keys(endpoints)) {
