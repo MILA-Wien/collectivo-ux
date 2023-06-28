@@ -149,8 +149,8 @@ export const endpoints = {
 
 // Generic API functions
 export const API = {
-  _get: async function (
-    path: string,
+  get: async function (
+    endpoint: keyof typeof endpoints,
     id?: Number,
     page?: Number,
     rowsPerPage?: Number,
@@ -159,10 +159,10 @@ export const API = {
   ): Promise<AxiosResponse<any, any>> {
     if (id !== undefined && id !== null) {
       // return a detail single object
-      return await api.get(`${path}${id}/`);
+      return await api.get(`${endpoints[endpoint]}${id}/`);
     }
     // return a paginated endpoint
-    let api_endpoint = path;
+    let api_endpoint = endpoints[endpoint];
     let offset = 0;
     let limit = 50;
     if (page !== undefined && rowsPerPage !== undefined) {
@@ -179,16 +179,6 @@ export const API = {
       api_endpoint = `${api_endpoint}&ordering=${order}`;
     }
     return await api.get(api_endpoint);
-  },
-  get: async function (
-    endpoint: keyof typeof endpoints,
-    id?: Number,
-    page?: Number,
-    rowsPerPage?: Number,
-    order?: String,
-    filter?: String
-  ): Promise<AxiosResponse<any, any>> {
-    return this._get(endpoints[endpoint], id, page, rowsPerPage, order, filter);
   },
   getSchema: async function (endpoint: keyof typeof endpoints) {
     return await api.get(`${endpoints[endpoint]}schema/`);
