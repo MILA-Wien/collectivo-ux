@@ -78,7 +78,7 @@ jobs:
           cat /etc/hosts
           curl -v http://keycloak:8080
       - name: Setup collectivo
-        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=admin" -e "DB_PASS=badpassword" -e "DB_NAME=collectivo_db" -e "DB_HOST=collectivo-db" -e "SECRET_KEY=test-key-not-good" -e "GITHUB_ACTIONS=true" -e "CI=true" -e "ALLOWED_ORIGINS=http://127.0.0.1:4173" -e "KEYCLOAK_URL=http://keycloak:8080" -e "KEYCLOAK_CLIENT_SECRET=**********" --entrypoint "/bin/sh" milawien/collectivo:latest -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+        run: /usr/bin/docker run -d -p 8000:8000 --network collectivo --name collectivo -e "DB_USER=admin" -e "DB_PASS=badpassword" -e "DB_NAME=collectivo_db" -e "DB_HOST=collectivo-db" -e "SECRET_KEY=test-key-not-good" -e "GITHUB_ACTIONS=true" -e "CI=true" -e "ALLOWED_HOSTS=http://127.0.0.1:8000" -e "ALLOWED_ORIGINS=http://127.0.0.1:4173" -e "KEYCLOAK_URL=http://keycloak:8080" -e "KEYCLOAK_CLIENT_SECRET=**********" --entrypoint "/bin/sh" milawien/collectivo:latest -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
