@@ -2,15 +2,19 @@
   <div class="editor-wrapper">
     <PrimeButton
       v-if="html"
-      :label="t('Html editor')"
+      :label="t('Visual editor')"
+      severity="secondary"
       @click="html = !html"
       class="html-toogle"
+      size="small"
     />
     <PrimeButton
       v-if="!html"
-      :label="t('Visual editor')"
+      :label="t('Raw editor')"
+      severity="secondary"
       @click="html = !html"
       class="html-toogle"
+      size="small"
     />
     <PrimeTextarea
       v-if="html"
@@ -29,9 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import PrimeTextarea from "primevue/textarea";
 import PrimeButton from "primevue/button";
 import PrimeEditor from "primevue/editor";
+import PrimeTextarea from "primevue/textarea";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 

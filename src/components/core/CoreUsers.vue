@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimeButton from "primevue/button";
@@ -7,17 +6,19 @@ import PrimeColumn from "primevue/column";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
 import { useI18n } from "vue-i18n";
+import ObjectTable from "../datatable/ObjectTable.vue";
 const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();
 menuStore.setTitle("Users");
+const view_groups = mainStore.hasPermission("view_groups", "core");
 </script>
 
 <template>
   <div class="h-full tabview-full-height" id="core-users">
     <TabView lazy>
       <TabPanel :header="t('Users')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'coreUsersExtended'"
           :default-columns="['first_name', 'last_name', 'email', 'tags']"
@@ -42,15 +43,15 @@ menuStore.setTitle("Users");
               </template>
             </PrimeColumn>
           </template>
-        </ObjectLoader>
+        </ObjectTable>
       </TabPanel>
-      <TabPanel :header="t('Groups')">
-        <ObjectLoader
+      <TabPanel :header="t('Groups')" v-if="view_groups">
+        <ObjectTable
           :store="mainStore"
           :name="'coreGroups'"
-          :default-columns="['name', 'permissions', 'users']"
+          :default-columns="['name', 'permissions', 'extension', 'users']"
         >
-        </ObjectLoader>
+        </ObjectTable>
       </TabPanel>
     </TabView>
   </div>

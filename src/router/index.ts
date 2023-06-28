@@ -41,7 +41,7 @@ const router = createRouter({
         layout: Default,
         isMembersAdmin: true,
       },
-      component: () => import("../components/core/CoreProfileLoader.vue"),
+      component: () => import("../components/core/CoreProfile.vue"),
     },
     {
       path: "/core/settings",
@@ -80,6 +80,27 @@ const router = createRouter({
       },
       component: () =>
         import("../components/memberships/MembershipsProfile.vue"),
+    },
+    {
+      path: "/memberships/register/:id",
+      name: "membershipsRegistration",
+      meta: {
+        isMembersAdmin: true,
+      },
+      component: () =>
+        import("../components/memberships/MembershipsRegister.vue"),
+      children: [
+        {
+          path: ":step",
+          component: () =>
+            import("../components/memberships/MembershipsRegisterPage.vue"),
+        },
+        {
+          path: "complete",
+          component: () =>
+            import("../components/memberships/MembershipsRegisterComplete.vue"),
+        },
+      ],
     },
     {
       path: "/emails/admin",

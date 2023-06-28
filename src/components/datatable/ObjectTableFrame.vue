@@ -3,17 +3,18 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JsonCSV from "vue-json-csv";
 
+import { endpoints } from "@/api/api";
+import type { Schema } from "@/api/types";
 import { getDefaultMatchMode, matchModes } from "@/helpers/filters";
+import type { StoreGeneric } from "pinia";
 import { FilterOperator } from "primevue/api";
 import PrimeButton from "primevue/button";
 import PrimeMultiSelect from "primevue/multiselect";
-import PrimeToolbar from "primevue/toolbar";
-import ObjectEditor from "./ObjectEditor.vue";
-import ObjectTable from "./ObjectTable.vue";
-
-import type { Schema } from "@/api/types";
-import type { StoreGeneric } from "pinia";
 import type { PropType } from "vue";
+import ObjectBulkEdit from "./ObjectBulkEdit.vue";
+import ObjectHistory from "./ObjectHistory.vue";
+import ObjectModal from "./ObjectModal.vue";
+import ObjectTable from "./ObjectTableInner.vue";
 
 const { t } = useI18n();
 const props = defineProps({
@@ -43,7 +44,11 @@ const props = defineProps({
   },
   emailCampaignSchema: {
     type: Object as PropType<Schema>,
-    required: true,
+    required: false,
+  },
+  allowSelection: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -119,8 +124,13 @@ const table = ref<any>(null);
 
 // Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
+const bulkEditActive = ref(false);
+const selectedIds = ref<Number[]>([]);
 const editObject = ref({});
 const editCreate = ref(false);
+const historyName = props.name + "History";
+const historyExists = historyName in endpoints;
+const historyActive = ref(false);
 function createObjectFn() {
   editObject.value = {};
   editCreate.value = true;
@@ -129,6 +139,16 @@ function createObjectFn() {
 function closeEditor() {
   editActive.value = false;
   table.value.refresh();
+}
+function closeHistory() {
+  historyActive.value = false;
+  table.value.refresh();
+}
+function startBulkEdit() {
+  selectedIds.value = Array.from(
+    new Set(selectedObjects.value.map((m: any) => (m.user ? m.user : m.id)))
+  );
+  bulkEditActive.value = true;
 }
 
 // Send emails ------------------------------------------------------------- //
@@ -152,18 +172,9 @@ function sendEmails() {
 <template>
   <div class="flex flex-col h-full">
     <!-- Toolbar -->
-    <PrimeToolbar class="c-datatable-toolbar">
-      <template #start>
-        <div class="m-1 text-left">
-          <!-- v-tooltip.top="t('Create new entry')" -->
-          <PrimeButton
-            icon="pi pi-plus"
-            class="c-icon-button p-button-sm"
-            @click="createObjectFn()"
-          >
-          </PrimeButton>
-        </div>
-        <div class="m-1 text-left">
+    <div class="c-datatable-toolbar">
+      <div class="flex flex-wrap">
+        <div class="m-1">
           <PrimeMultiSelect
             v-model="selectedColumns"
             :options="columns"
@@ -176,51 +187,80 @@ function sendEmails() {
             class="w-26"
           />
         </div>
+
+        <div class="m-1" v-if="schema.actions.includes('create')">
+          <PrimeButton
+            icon="pi pi-plus"
+            class="p-button-sm"
+            @click="createObjectFn()"
+            :label="t('New')"
+          >
+          </PrimeButton>
+        </div>
+
         <div class="m-1">
           <PrimeButton
             icon="pi pi-refresh"
-            class="c-icon-button p-button-sm"
+            class="p-button-sm"
+            :label="t('Refresh')"
             @click="table.refresh()"
           >
           </PrimeButton>
         </div>
-      </template>
-      <template #end>
+        <div class="m-1" v-if="historyExists">
+          <PrimeButton
+            icon="pi pi-history"
+            class="p-button-sm"
+            @click="historyActive = true"
+            :label="t('History')"
+          >
+          </PrimeButton>
+        </div>
+
         <!-- TODO: Fix clear filters button  -->
         <!-- <div class="m-1">
                   <PrimeButton type="button" icon="pi pi-filter-slash" :label="t('Clear')" class="p-button-outlined"
                     @click="clearFilters()">
                   </PrimeButton>
             </div> -->
-        <div class="m-1" v-if="emailButton">
-          <!--  v-tooltip.top="t('Send emails')" -->
+        <div class="m-1" v-if="schema.actions.includes('update-bulk')">
           <PrimeButton
-            icon="pi pi-send"
-            class="c-icon-button p-button-sm"
+            icon="pi pi-pencil"
+            class="p-button-sm"
+            :disabled="!(selectedObjects.length > 0)"
+            @click="startBulkEdit()"
+            :label="t('Bulk edit')"
+          >
+          </PrimeButton>
+        </div>
+        <div class="m-1" v-if="emailButton">
+          <PrimeButton
+            icon="pi pi-envelope"
+            class="p-button-sm"
             :disabled="!(selectedObjects.length > 0)"
             @click="sendEmails"
+            :label="t('Send emails')"
           >
           </PrimeButton>
         </div>
         <div class="m-1">
-          <!-- v-tooltip.top="t('Export')" -->
-          <PrimeButton
+          <JsonCSV
             icon="pi pi-file-export"
-            class="c-icon-button p-button-sm"
-            :disabled="!(selectedObjects?.length > 0)"
+            :data="selectedObjects"
+            name="export.csv"
           >
-            <JsonCSV
-              v-if="selectedObjects?.length > 0"
+            <PrimeButton
               icon="pi pi-file-export"
-              :data="selectedObjects"
-              name="export.csv"
+              class="p-button-sm"
+              :disabled="!(selectedObjects?.length > 0)"
+              :label="t('Export')"
             >
-              <i class="pi pi-file-export"></i>
-            </JsonCSV>
-          </PrimeButton>
+            </PrimeButton
+          ></JsonCSV>
         </div>
-      </template>
-    </PrimeToolbar>
+        <slot name="toolbar"></slot>
+      </div>
+    </div>
 
     <div class="grow overflow-auto">
       <!-- Table will fill out full remaining height -->
@@ -236,6 +276,7 @@ function sendEmails() {
         v-model:editObject="editObject"
         v-model:editActive="editActive"
         v-model:editCreate="editCreate"
+        :allow-selection="allowSelection"
         ref="table"
       >
         <template #action-column><slot name="action-column"></slot></template>
@@ -243,8 +284,31 @@ function sendEmails() {
     </div>
   </div>
 
+  <!-- History dialog -->
+  <ObjectHistory
+    v-if="historyActive"
+    :store="store"
+    :name="historyName"
+    :schema="schema"
+    @close="closeHistory()"
+  />
+
+  <!-- Bulk edit dialog -->
+  <ObjectBulkEdit
+    v-if="bulkEditActive"
+    :store="store"
+    :name="name"
+    :schema="schema"
+    :columns="columns"
+    :objects="selectedObjects"
+    @close="
+      bulkEditActive = false;
+      table.refresh();
+    "
+  />
+
   <!-- Detail dialog -->
-  <ObjectEditor
+  <ObjectModal
     v-if="editActive"
     :object="editObject"
     :create="editCreate"
@@ -255,8 +319,8 @@ function sendEmails() {
   />
 
   <!-- Dialogue for email campaign details -->
-  <ObjectEditor
-    v-if="editEmailsActive"
+  <ObjectModal
+    v-if="editEmailsActive && emailCampaignSchema"
     :object="editEmailsObject"
     :create="editEmailsCreate"
     :store="props.store"
@@ -271,6 +335,8 @@ function sendEmails() {
   border-bottom: 0;
   padding: 0.5rem;
   border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 221, 221);
 }
 .c-icon-button {
   width: 2.8rem;

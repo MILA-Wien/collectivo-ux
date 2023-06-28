@@ -90,6 +90,7 @@ for (const extension of extensions) {
 export const endpoints = {
   coreAbout: "/core/about/",
   coreUsers: "/core/users/",
+  coreProfile: "/core/profile/",
   coreSettings: "/core/settings/",
   coreUsersExtended: "/core/users-extended/",
   coreGroups: "/core/groups/",
@@ -110,20 +111,25 @@ export const endpoints = {
   profilesProfilesSelf: "/profiles/profiles/self/",
 
   membershipsMemberships: "/memberships/memberships/",
+  membershipsMembershipsHistory: "/memberships/memberships-history/",
+  membershipsRegister: "/memberships/register/",
   membershipsMembershipsSelf: "/memberships/memberships/self/",
   membershipsMembershipsShares: "/memberships/memberships/self/sign-shares/",
   membershipsTypes: "/memberships/types/",
+  membershipsTypesHistory: "/memberships/types-history/",
   membershipsStatuses: "/memberships/statuses/",
   membershipsProfiles: "/memberships/profiles/",
   membershipsCreateInvoices: "/memberships/memberships/create_invoices/",
 
   tagsTags: "/tags/tags/",
+  tagsTagsHistory: "/tags/tags-history/",
   tagsProfiles: "/tags/profiles/",
 
   emailProfiles: "/emails/profiles/",
   emailsDesigns: "/emails/designs/",
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
+  emailsAutomations: "/emails/automations/",
 
   paymentsProfiles: "/payments/profiles/",
   paymentsProfilesSelf: "/payments/profiles/self/",
@@ -180,6 +186,9 @@ export const API = {
   post: async function (endpoint: keyof typeof endpoints, payload?: Object) {
     return await api.post(endpoints[endpoint], payload);
   },
+  revert: async function (endpoint: keyof typeof endpoints, id: Number) {
+    return await api.post(`${endpoints[endpoint]}${id}/revert/`);
+  },
   patch: async function (
     endpoint: keyof typeof endpoints,
     payload: Object,
@@ -189,6 +198,12 @@ export const API = {
       return await api.patch(endpoints[endpoint], payload);
     }
     return await api.patch(`${endpoints[endpoint]}${id}/`, payload);
+  },
+  patchBulk: async function (
+    endpoint: keyof typeof endpoints,
+    payload: Object[]
+  ) {
+    return await api.patch(`${endpoints[endpoint]}bulk_update/`, payload);
   },
   delete: async function (endpoint: keyof typeof endpoints, id?: Number) {
     if (id === undefined) {

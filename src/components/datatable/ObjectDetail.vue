@@ -1,6 +1,7 @@
 <!-- A panel that displays the data of an object and an edit button. -->
 <script setup lang="ts">
 import type { DataSchema } from "@/api/types";
+import { checkCondition } from "@/helpers/schema";
 import type { StoreGeneric } from "pinia";
 import { storeToRefs } from "pinia";
 import PrimePanel from "primevue/panel";
@@ -8,7 +9,7 @@ import PrimeSkeleton from "primevue/skeleton";
 import type { PropType, Ref } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import ObjectEditor from "./ObjectEditor.vue";
+import ObjectModal from "./ObjectModal.vue";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -50,7 +51,14 @@ const editActive = ref(false);
         </button>
       </template>
       <div v-for="(field, name, i) in data.schema.fields" :key="i">
-        <div v-if="String(name) != 'id' && String(name) != 'user'" class="pb-3">
+        <div
+          v-if="
+            String(name) != 'id' &&
+            String(name) != 'user' &&
+            checkCondition(data.detail, field.visible)
+          "
+          class="pb-3"
+        >
           {{ t(field.label) }}:
 
           <span v-if="data.detailLoaded">
@@ -76,6 +84,8 @@ const editActive = ref(false);
               {{ data.detail[name] }}
             </span>
             <!-- No content -->
+            <span v-else-if="field.write_only" class="data">********</span>
+
             <span v-else class="inline-block w-20 h-6 data"></span>
           </span>
           <span v-else class="text-gray-400 inline-block w-20">
@@ -89,7 +99,7 @@ const editActive = ref(false);
     <PrimeSkeleton height="3rem"></PrimeSkeleton>
   </div>
 
-  <ObjectEditor
+  <ObjectModal
     v-if="editActive"
     :object="data.detail"
     :create="false"

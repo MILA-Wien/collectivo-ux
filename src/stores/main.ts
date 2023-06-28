@@ -1,10 +1,12 @@
 // Main store to handle CRUD requests for all registered endpoints
 import { API, endpoints } from "@/api/api";
 import { defineStore } from "pinia";
+import { computed } from "vue";
 import type { DataObject, DataSchema, Schema } from "../api/types";
 import { DataTemplate } from "../api/types";
 
 type mainStore = { [index: string]: DataSchema };
+type endpointName = keyof typeof endpoints;
 
 async function storeCreate(store: any, objectName: any, payload?: Object) {
   const response = await API.post(objectName, payload);
@@ -16,10 +18,14 @@ async function storeCreate(store: any, objectName: any, payload?: Object) {
 
 function extendSchema(schema: Schema) {
   // Transform choices dict into an options list
-  for (const value of Object.values(schema.fields)) {
+  for (const value of Object.values(schema.fields) as any) {
+    if (value.schema != undefined) {
+      value.schema = extendSchema(value.schema);
+    }
     if (value.choices == undefined) {
       continue;
     }
+
     value.options = [];
     let i = 0;
     for (const [key2, value2] of Object.entries(value.choices) as any) {
@@ -48,6 +54,14 @@ export const useMainStore = defineStore({
   actions: {
     async getDetail(objectName: any, id?: Number, force?: boolean) {
       return this.get(objectName, id, force, true);
+    },
+
+    hasPermission(permission: string, extension: string) {
+      return computed(() => {
+        return this.coreProfile.detail.permissions[extension]?.includes(
+          permission
+        );
+      });
     },
 
     async get(
@@ -86,6 +100,9 @@ export const useMainStore = defineStore({
 
       // Throw error if response does not match store data type
       if (!(objects.data.results instanceof Array)) {
+        if (!objects.data.results) {
+          throw new Error("Invalid data format (no results).");
+        }
         throw new Error("Receiving detail, expecting list.");
       }
 
@@ -123,6 +140,9 @@ export const useMainStore = defineStore({
       }
       object.detail = response.data;
     },
+    async updateBulk(objectName: any, payload: Object[]) {
+      return await API.patchBulk(objectName, payload);
+    },
     async delete(objectName: any, id: Number) {
       // Delete object and remove from store
       const response = await API.delete(objectName, id);
@@ -140,6 +160,9 @@ export const useMainStore = defineStore({
       object.detail = { id: null };
 
       return response;
+    },
+    async revert(objectName: endpointName, history_id: Number) {
+      return await API.revert(objectName, history_id);
     },
     async getMilaMembershipNumber() {
       await this.get("membershipsMembershipsSelf");

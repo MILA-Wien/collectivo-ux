@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import TabPanel from "primevue/tabpanel";
@@ -16,7 +16,7 @@ menuStore.setTitle("Payments");
   <div class="h-full tabview-full-height">
     <TabView lazy>
       <TabPanel :header="t('Invoices')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'paymentsInvoices'"
           :default-columns="[
@@ -29,7 +29,7 @@ menuStore.setTitle("Payments");
         />
       </TabPanel>
       <TabPanel :header="t('Subscriptions')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'paymentsSubscriptions'"
           :default-columns="[

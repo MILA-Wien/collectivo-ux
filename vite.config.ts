@@ -67,9 +67,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
   },
-  optimizeDeps: {
-    include: ["vue-flex-waterfall"],
-  },
+
   build: {
     target: "esnext",
     rollupOptions: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectList from "@/components/datatable/ObjectList.vue";
-import ObjectLoader from "@/components/datatable/ObjectLoader.vue";
+import ObjectTable from "@/components/datatable/ObjectTable.vue";
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
 import PrimePanel from "primevue/panel";
@@ -18,30 +18,28 @@ menuStore.setTitle("Memberships");
   <div class="h-full tabview-full-height" id="members-admin">
     <TabView lazy>
       <TabPanel :header="t('Memberships')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'membershipsMemberships'"
           :default-columns="[
             'user__first_name',
             'user__last_name',
-            'user__tags',
+            'stage',
             'type',
-            'number',
             'status',
-            'shares_signed',
           ]"
           :email-button="true"
         />
       </TabPanel>
       <TabPanel :header="t('Types')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'membershipsTypes'"
           :default-columns="['name']"
         />
       </TabPanel>
       <TabPanel :header="t('Statuses')">
-        <ObjectLoader
+        <ObjectTable
           :store="mainStore"
           :name="'membershipsStatuses'"
           :default-columns="['name']"
