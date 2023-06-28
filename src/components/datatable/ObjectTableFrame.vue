@@ -173,7 +173,6 @@ function sendEmails() {
   <div class="flex flex-col h-full">
     <!-- Toolbar -->
     <div class="c-datatable-toolbar">
-      <!-- <template #start> -->
       <div class="flex flex-wrap">
         <div class="m-1">
           <PrimeMultiSelect
@@ -261,7 +260,6 @@ function sendEmails() {
         </div>
         <slot name="toolbar"></slot>
       </div>
-      <!-- </template> -->
     </div>
 
     <div class="grow overflow-auto">

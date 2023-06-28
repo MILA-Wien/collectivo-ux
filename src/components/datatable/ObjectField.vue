@@ -106,7 +106,7 @@ function removeUpload(name: any) {
       v-if="field.help_text"
       id="user-attr-{{value}}-help"
       class="p-info"
-      >{{ field.help_text }}</small
+      >{{ t(field.help_text) }}</small
     >
   </div>
 
@@ -157,7 +157,7 @@ function removeUpload(name: any) {
     <img
       :src="pending_uploads[name] ? pending_uploads[name] : modelValue"
       v-if="modelValue || pending_uploads[name]"
-      alt="Project logo"
+      alt="Uploaded image"
       class="max-w-xs max-h-xs"
     />
   </div>

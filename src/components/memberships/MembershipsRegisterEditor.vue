@@ -127,8 +127,6 @@ function getStatusOptionsForMembershipType() {
         key: ++i,
       });
     }
-  } else {
-    console.log("No choices for status");
   }
   return options;
 }

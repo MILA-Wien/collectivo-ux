@@ -57,7 +57,9 @@ function revert(history_id: any) {
 
 const callRevert = (data: any) => {
   confirm.require({
-    message: `Are you sure you want to revert ${props.schema.label} ${data.data.id} to the version from ${data.data.history_date}?`,
+    message: `${t("Are you sure you want to revert")} ${props.schema.label} ${
+      data.data.id
+    } ${t("to the version from")} ${data.data.history_date}?`,
     header: "Confirmation",
     icon: "pi pi-exclamation-triangle",
     accept: () => {

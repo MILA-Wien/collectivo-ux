@@ -59,23 +59,23 @@ function closeModal() {
 
 const isSaving = ref(false);
 
-function addObject(member: any, field: any, object: any) {
+function addEntry(object: any, field: any, entry: any) {
   // TODO: Figure out why a conversion is necessary here
-  object = Number(object);
-  if (member[field].includes(object)) {
+  entry = Number(entry);
+  if (object[field].includes(entry)) {
     return;
   }
-  member[field].push(object);
+  object[field].push(entry);
 }
 
-function removeObject(member: any, field: any, object: any) {
-  object = Number(object);
-  member[field] = member[field].filter((item: any) => item != object);
+function removeEntry(object: any, field: any, entry: any) {
+  entry = Number(entry);
+  object[field] = object[field].filter((item: any) => item != entry);
 }
 
 const actions = {
-  "Add an object": addObject,
-  "Remove an object": removeObject,
+  "Add an object": addEntry,
+  "Remove an object": removeEntry,
 };
 
 const allowed_columns = ref<any>([]);
@@ -107,11 +107,11 @@ async function save() {
   isSaving.value = true;
   try {
     const actionFn = actions[chosenAction.value!];
-    for (const member of objects_temp.value) {
-      actionFn(member, chosenColumn.value.field, chosenContent.value);
+    for (const object of objects_temp.value) {
+      actionFn(object, chosenColumn.value.field, chosenContent.value);
     }
     await props.store.updateBulk(props.name, objects_temp.value);
-    successToast(toast, "Object has been updated.");
+    successToast(toast, "Changes have been saved.");
   } catch (error) {
     errorToast(toast, error);
   }

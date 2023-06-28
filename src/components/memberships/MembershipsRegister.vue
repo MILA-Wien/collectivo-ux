@@ -92,7 +92,7 @@ async function complete(event: any) {
   isSaving.value = true;
   try {
     await mainStore.create("membershipsRegister", submitData.value);
-    successToast(toast, "Registration successful.");
+    successToast(toast, t("Registration successful."));
     router.push(getRoute("complete"));
   } catch (error) {
     errorToast(toast, error);
