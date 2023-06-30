@@ -39,7 +39,7 @@ menuStore.setTitle("Emails");
         <ObjectTable
           :store="mainStore"
           :name="'emailsAutomations'"
-          :defaultColumns="['name', 'extension', 'is_active']"
+          :defaultColumns="['label', 'extension', 'is_active']"
         />
       </TabPanel>
     </TabView>
