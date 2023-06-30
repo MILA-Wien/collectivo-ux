@@ -34,8 +34,8 @@ keycloakInstance
     // init i18n (translations)
     //@ts-ignore
     window.translate = (key) => {
-      return i18n.global.t(key)
-    }
+      return i18n.global.t(key);
+    };
     app.use(i18n);
     loadLocaleMessages(i18n, "en");
     loadLocaleMessages(i18n, "de");

@@ -2,54 +2,18 @@
 import { storeToRefs } from "pinia";
 import PrimeConfirmDialog from "primevue/confirmdialog";
 import PrimeToast from "primevue/toast";
-import { watch } from "vue";
-import { RouterView, useRoute } from "vue-router";
-import DefaultLayout from "./layouts/DefaultLayout.vue";
-import { useMainStore } from "./stores/main";
 import { useUserStore } from "./stores/user";
-import HeaderView from "./views/HeaderView.vue";
-import MenuView from "./views/SidebarView.vue";
+import LayoutView from "./views/LayoutView.vue";
 
 const userStore = useUserStore();
-const mainStore = useMainStore();
 const { user } = storeToRefs(userStore);
-const route = useRoute();
-
-// watch user
-watch(user, (newUser) => {
-  if (newUser?.token) {
-    mainStore.getDetail("coreProfile").catch((error) => {
-      console.log(error);
-    });
-  }
-});
 </script>
 
 <template>
   <PrimeToast />
   <PrimeConfirmDialog></PrimeConfirmDialog>
-  <div
-    id="collectivo-frame"
-    class="flex h-screen bg-mila font-sans"
-    v-if="user?.authenticated"
-  >
-    <MenuView />
-    <component :is="route.meta.layout || DefaultLayout">
-      <template #header>
-        <HeaderView />
-      </template>
-      <template #main>
-        <RouterView />
-      </template>
-    </component>
-  </div>
+  <LayoutView v-if="user?.authenticated" />
 </template>
-
-<style scoped>
-#collectivo-frame {
-  background-color: #f7f6edce;
-}
-</style>
 
 <style lang="scss">
 html {
