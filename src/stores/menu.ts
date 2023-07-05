@@ -63,7 +63,6 @@ export const useMenuStore = defineStore({
       }
     },
     setTitle(title: string) {
-      const coreSettings = useMainStore();
       this.setDocumentTitle(title);
       this.title = title;
     },
