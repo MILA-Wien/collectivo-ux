@@ -42,18 +42,29 @@ export const useMenuStore = defineStore({
     setSideBarOpen(open: boolean) {
       this.sideBarOpen = open;
     },
-    setTitle(title: string) {
-      const coreSettings = useMainStore();
-      const project_name = coreSettings.coreSettings?.detail?.project_name;
-      if (project_name == undefined) {
+    async setDocumentTitle(title: string) {
+      const mainStore = useMainStore();
+      if (mainStore.coreSettings.detailLoaded == false) {
+        await mainStore.get("coreSettings");
+      }
+      const project_name = mainStore.coreSettings.detail?.project_name;
+      if (
+        project_name == undefined ||
+        project_name == null ||
+        project_name == ""
+      ) {
         // @ts-ignore
         document.title = `${window.translate(title)} - Collectivo`;
       } else {
         // @ts-ignore
         document.title = `${window.translate(title)} - ${
-          coreSettings.coreSettings?.detail?.project_name
+          mainStore.coreSettings?.detail?.project_name
         }`;
       }
+    },
+    setTitle(title: string) {
+      const coreSettings = useMainStore();
+      this.setDocumentTitle(title);
       this.title = title;
     },
   },
