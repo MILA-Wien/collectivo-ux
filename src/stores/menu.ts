@@ -50,7 +50,9 @@ export const useMenuStore = defineStore({
         document.title = `${window.translate(title)} - Collectivo`;
       } else {
         // @ts-ignore
-        document.title = `${window.translate(title)} - ${coreSettings.coreSettings?.detail?.project_name}`;
+        document.title = `${window.translate(title)} - ${
+          coreSettings.coreSettings?.detail?.project_name
+        }`;
       }
       this.title = title;
     },

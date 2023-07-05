@@ -58,6 +58,9 @@ export const useMainStore = defineStore({
 
     hasPermission(permission: string, extension: string) {
       return computed(() => {
+        if (!this.coreProfile.detail.permissions) {
+          return false;
+        }
         return this.coreProfile.detail.permissions[extension]?.includes(
           permission
         );
