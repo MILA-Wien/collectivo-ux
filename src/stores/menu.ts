@@ -45,7 +45,7 @@ export const useMenuStore = defineStore({
     async setDocumentTitle(title: string) {
       const mainStore = useMainStore();
       if (mainStore.coreSettings.detailLoaded == false) {
-        await mainStore.get("coreSettings");
+        await mainStore.getDetail("coreSettings");
       }
       const project_name = mainStore.coreSettings.detail?.project_name;
       if (
