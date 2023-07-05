@@ -49,7 +49,7 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
         <ObjectTable
           :store="mainStore"
           :name="'coreGroups'"
-          :default-columns="['name', 'permissions', 'extension', 'users']"
+          :default-columns="['label', 'permissions', 'extension', 'users']"
         >
         </ObjectTable>
       </TabPanel>
