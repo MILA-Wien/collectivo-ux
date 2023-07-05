@@ -62,6 +62,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  cropLongText: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emit = defineEmits([
@@ -85,12 +89,15 @@ function formatMultiSelect(data: any) {
   const str = len !== 1 ? t("entries") : t("entry");
   return `${len} ${t(str)}`;
 }
-function formatGeneric(data: string | null) {
+function formatGeneric(data: any) {
   // Shorten strings that are longer than 30 characters
   if (data == undefined) {
     return "";
   }
-  if (data.length > 30) {
+  if (typeof data != "string") {
+    return data;
+  }
+  if (props.cropLongText && data.length > 30) {
     return data.substring(0, 30) + "...";
   }
   return data;
@@ -328,9 +335,12 @@ function dataTableFilterModesToDjangoFilter(filterMode: string) {
             class="p-checkbox-sm"
           />
         </template>
+        <template #body="{ data }" v-else-if="col.input_type == 'display_html'">
+          <div v-html="data[col.field]"></div>
+        </template>
         <template #body="{ data }" v-else>
           <!-- TODO: Inspect function to show objects -->
-          {{ t(formatGeneric(data[col.field])) }}
+          {{ formatGeneric(data[col.field]) }}
         </template>
 
         <!-- Custom filters for different input types -->
