@@ -62,8 +62,11 @@ const sharesDialog: any = ref({
             {{ t("Membership number") }}:
             <span class="">{{ slotProps.data.number }}</span>
             <br />
-            {{ t("Date joined") }}:
-            <span class="">{{ slotProps.data.date_started }}</span>
+            <span v-if="slotProps.data.date_accepted">
+              {{ t("Date joined") }}:
+              <span class="">{{ slotProps.data }}</span>
+            </span>
+
             <br />
             {{ t("Status") }}:
             <span class="">{{ slotProps.data.status?.name }}</span>
