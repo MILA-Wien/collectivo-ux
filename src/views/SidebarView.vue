@@ -66,7 +66,7 @@ function toggleSideBar() {
         </div>
         <div
           v-if="coreSettings.detail.display_project_logo"
-          class="w-full pb-4"
+          class="w-full pb-4 pt-2"
           id="collectivo-sidebar-logo"
         >
           <RouterLink to="/" class="w-full px-4 flex justify-center">
@@ -76,13 +76,24 @@ function toggleSideBar() {
               alt="Project Logo"
               class="w-full"
             />
+            <img
+              v-else
+              src="../assets/collectivo_rgb.png"
+              alt="Project Logo"
+              class="w-full"
+            />
           </RouterLink>
         </div>
         <MenuMain />
         <span class="grow"></span>
         <span class="p-4 text-xs w-full text-gray-800" id="version">
-          collectivo <VersionItem /> <br />
-          collectivo-ux v{{ version }}
+          <a
+            href="https://collectivo.io/"
+            target="blank"
+            class="no-underline"
+            style="color: #3b2476"
+            >collectivo <VersionItem /> / ux v{{ version }}</a
+          >
         </span>
       </div>
     </div>
