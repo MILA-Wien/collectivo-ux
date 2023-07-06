@@ -65,8 +65,12 @@ watch(
             ></component>
             <div v-else>
               <div v-html="item.content" class="pb-4"></div>
-              <div v-for="button in item.buttons" :key="button.id">
-                <div v-if="button.link_type === 'internal'">
+              <div
+                v-for="button in item.buttons"
+                :key="button.id"
+                class="mb-2 mr-2"
+              >
+                <div v-if="button.link_type === 'internal' && button.link">
                   <RouterLink :to="button.link">
                     <PrimeButton>
                       {{ t(button.label) }}
