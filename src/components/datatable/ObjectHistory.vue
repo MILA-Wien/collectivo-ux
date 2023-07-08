@@ -99,7 +99,6 @@ const callRestore = (data: any) => {
           <PrimeColumn :frozen="true">
             <template #header>{{ t("Restore") }}</template>
             <template #body="slotProps">
-              <!-- TODO Do not display for latest -->
               <PrimeButton
                 :disabled="slotProps.data.history_is_latest"
                 icon="pi pi-history"
