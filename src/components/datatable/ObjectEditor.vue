@@ -55,7 +55,7 @@ const isSaving = ref(false);
 
 // Simple safe calculator
 // https://stackoverflow.com/questions/40433498/
-function calculate(expression: any) {
+function calculate(expression: string) {
   try {
     ("strict mode");
     var allowedChars = "1234567890%^*()-+/. ";
@@ -201,12 +201,16 @@ const deleteObject = () => {
 // Validation -----------------------------------------------------------------
 
 const validators: { [key: string]: any } = {
-  iban: (_: any) =>
+  iban: (param: boolean) =>
     helpers.withMessage("Invalid IBAN", (value: any) => {
-      const iban = electronicFormatIBAN(value);
-      return isValidIBAN(iban || "");
+      if (param) {
+        const iban = electronicFormatIBAN(value);
+        return isValidIBAN(iban || "");
+      } else {
+        return false;
+      }
     }),
-  min: (param: any) =>
+  min: (param: number) =>
     helpers.withMessage("Value is too small", (value: any) => {
       if (param == undefined) {
         return true;
@@ -217,7 +221,7 @@ const validators: { [key: string]: any } = {
       }
       return value >= param;
     }),
-  max: (param: any) =>
+  max: (param: number) =>
     helpers.withMessage("Value is too large", (value: any) => {
       if (param == undefined) {
         return true;
