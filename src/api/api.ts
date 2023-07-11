@@ -184,8 +184,11 @@ export const API = {
     }
     return await api.get(api_endpoint);
   },
-  getSchema: async function (endpoint: keyof typeof endpoints) {
-    return await api.get(`${endpoints[endpoint]}schema/`);
+  getSchema: async function (endpoint: keyof typeof endpoints, id?: Number) {
+    if (id === undefined) {
+      return await api.get(`${endpoints[endpoint]}schema/`);
+    }
+    return await api.get(`${endpoints[endpoint]}${id}/schema/`);
   },
   post: async function (endpoint: keyof typeof endpoints, payload?: Object) {
     return await api.post(endpoints[endpoint], payload);

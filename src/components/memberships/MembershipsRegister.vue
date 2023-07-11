@@ -25,7 +25,7 @@ const data = storeToRefs(mainStore)["membershipsRegister"];
 const submitData = ref<any>({});
 
 mainStore
-  .get("membershipsRegister", Number(route.params.id))
+  .get("membershipsRegister", Number(route.params.id), false, false, true)
   .catch((e: any) => {
     error.value = e;
   });

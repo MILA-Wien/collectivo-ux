@@ -53,6 +53,18 @@ if (props.object != undefined) {
 const schema = toRef(props, "schema");
 const isSaving = ref(false);
 
+// Fill out fixed and default values
+for (const [key, value] of Object.entries(schema.value.fields)) {
+  if (value.value != undefined) {
+    object_temp.value[key] = value.value;
+  } else if (
+    value.default != undefined &&
+    object_temp.value[key] == undefined
+  ) {
+    object_temp.value[key] = value.default;
+  }
+}
+
 // Format data ----------------------------------------------------------------
 
 function formatDate(value: Date): string {
@@ -159,10 +171,38 @@ const deleteObject = () => {
 
 // Validation -----------------------------------------------------------------
 
-const iban = helpers.withMessage("Invalid IBAN", (value: any) => {
-  const iban = electronicFormatIBAN(value);
-  return isValidIBAN(iban || "");
-});
+const validators: { [key: string]: any } = {
+  iban: (param: any) =>
+    helpers.withMessage("Invalid IBAN", (value: any) => {
+      const iban = electronicFormatIBAN(value);
+      console.log("checking iban");
+      return isValidIBAN(iban || "");
+    }),
+  min: (param: any) =>
+    helpers.withMessage("Value is too small", (value: any) => {
+      if (param == undefined) {
+        return true;
+      }
+      if (typeof param == "string") {
+        // Get value from other field
+        param = object_temp.value[param];
+      }
+      console.log("checking min", value, param);
+      return value >= param;
+    }),
+  max: (param: any) =>
+    helpers.withMessage("Value is too large", (value: any) => {
+      if (param == undefined) {
+        return true;
+      }
+      if (typeof param == "string") {
+        // Get value from other field
+        param = object_temp.value[param];
+      }
+      console.log("checking max", value, param);
+      return value <= param;
+    }),
+};
 
 const rules: any = {};
 for (var field_name in props.schema.fields) {
@@ -178,8 +218,16 @@ for (var field_name in props.schema.fields) {
         }),
       };
     }
-    if (schemaField.validators?.includes("iban")) {
-      rules[field_name].iban = iban;
+    if (schemaField.validators) {
+      console.log("checking validators", schemaField.validators);
+      for (const validator in schemaField.validators) {
+        console.log("checking validator", validator);
+        if (validators[validator]) {
+          rules[field_name][validator] = validators[validator](
+            schemaField.validators[validator]
+          );
+        }
+      }
     }
   }
 }
@@ -236,6 +284,7 @@ defineExpose({
 </script>
 
 <template>
+  {{ schema }}
   <!-- Structure given in schema -->
   <div class="mt-5" v-if="schema.structure">
     <div v-for="(section, i) in schema.structure" :key="i" class="">
