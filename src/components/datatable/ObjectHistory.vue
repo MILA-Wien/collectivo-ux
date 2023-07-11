@@ -43,11 +43,11 @@ function closeModal() {
   emit("close");
 }
 
-function revert(history_id: any) {
+function restore(history_id: any) {
   props.store
     .revert(props.name, history_id)
     .then(() => {
-      successToast(toast, "Object has been created.");
+      successToast(toast, "Object has been restored.");
       closeModal();
     })
     .catch((error: any) => {
@@ -55,15 +55,15 @@ function revert(history_id: any) {
     });
 }
 
-const callRevert = (data: any) => {
+const callRestore = (data: any) => {
   confirm.require({
-    message: `${t("Are you sure you want to revert")} ${props.schema.label} ${
-      data.data.id
-    } ${t("to the version from")} ${data.data.history_date}?`,
+    message: `${t("Are you sure you want to restore the following object: ")} ${
+      props.schema.label
+    } ${data.data.id} ${data.data.history_date}`,
     header: "Confirmation",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
-      revert(data.data.history_id);
+      restore(data.data.history_id);
     },
   });
 };
@@ -89,17 +89,21 @@ const callRevert = (data: any) => {
           'history_date',
           'history_user',
           'history_type',
+          'history_changes',
+          'history_changed_fields',
         ]"
         :allow-selection="false"
+        :crop-long-text="false"
       >
         <template #action-column>
           <PrimeColumn :frozen="true">
-            <template #header>Revert</template>
+            <template #header>{{ t("Restore") }}</template>
             <template #body="slotProps">
               <PrimeButton
+                :disabled="slotProps.data.history_is_latest"
                 icon="pi pi-history"
                 class="p-button-text p-button-sm button-edit"
-                @click="callRevert(slotProps)"
+                @click="callRestore(slotProps)"
               />
             </template>
           </PrimeColumn>

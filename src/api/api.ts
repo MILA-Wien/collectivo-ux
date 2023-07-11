@@ -130,6 +130,10 @@ export const endpoints = {
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
   emailsAutomations: "/emails/automations/",
+  emailsDesignsHistory: "/emails/designs-history/",
+  emailsTemplatesHistory: "/emails/templates-history/",
+  emailsCampaignsHistory: "/emails/campaigns-history/",
+  emailsAutomationsHistory: "/emails/automations-history/",
 
   paymentsProfiles: "/payments/profiles/",
   paymentsProfilesSelf: "/payments/profiles/self/",
