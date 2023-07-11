@@ -90,6 +90,7 @@ export interface SchemaField {
   schema?: Schema;
   value?: any;
   default?: any;
+  calculate?: string;
 }
 
 export interface SchemaStore {

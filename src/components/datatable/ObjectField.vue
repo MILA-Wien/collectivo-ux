@@ -13,7 +13,7 @@ import { useI18n } from "vue-i18n";
 import FieldRichText from "./FieldRichText.vue";
 
 const { t } = useI18n();
-defineProps({
+const props = defineProps({
   name: {
     type: String as PropType<any>,
     required: false,

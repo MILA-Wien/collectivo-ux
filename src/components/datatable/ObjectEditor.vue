@@ -9,7 +9,7 @@ import type { StoreGeneric } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
-import { ref, toRef } from "vue";
+import { ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import ObjectField from "./ObjectField.vue";
 const { t } = useI18n();
@@ -53,6 +53,25 @@ if (props.object != undefined) {
 const schema = toRef(props, "schema");
 const isSaving = ref(false);
 
+// Simple safe calculator
+// https://stackoverflow.com/questions/40433498/
+function calculate(expression: any) {
+  try {
+    ("strict mode");
+    var allowedChars = "1234567890%^*()-+/. ";
+    for (var i = 0; i < expression.length; i++)
+      if (allowedChars.indexOf(expression.charAt(i)) < 0) {
+        return undefined;
+      }
+    return eval(expression);
+  } catch (e) {
+    return undefined;
+  }
+}
+
+const replace = (string: String, object: any) =>
+  string.replaceAll(/\{([^}]+)\}/gi, (_, a: any) => object[a]);
+
 // Fill out fixed and default values
 for (const [key, value] of Object.entries(schema.value.fields)) {
   if (value.value != undefined) {
@@ -62,6 +81,15 @@ for (const [key, value] of Object.entries(schema.value.fields)) {
     object_temp.value[key] == undefined
   ) {
     object_temp.value[key] = value.default;
+  }
+}
+
+for (const [key, value] of Object.entries(schema.value.fields)) {
+  if (value.calculate) {
+    watch(
+      () => calculate(replace(value.calculate!, object_temp.value)),
+      (newValue) => (object_temp.value[key] = newValue)
+    );
   }
 }
 
@@ -175,7 +203,6 @@ const validators: { [key: string]: any } = {
   iban: (param: any) =>
     helpers.withMessage("Invalid IBAN", (value: any) => {
       const iban = electronicFormatIBAN(value);
-      console.log("checking iban");
       return isValidIBAN(iban || "");
     }),
   min: (param: any) =>
@@ -187,7 +214,6 @@ const validators: { [key: string]: any } = {
         // Get value from other field
         param = object_temp.value[param];
       }
-      console.log("checking min", value, param);
       return value >= param;
     }),
   max: (param: any) =>
@@ -199,7 +225,6 @@ const validators: { [key: string]: any } = {
         // Get value from other field
         param = object_temp.value[param];
       }
-      console.log("checking max", value, param);
       return value <= param;
     }),
 };
@@ -219,9 +244,7 @@ for (var field_name in props.schema.fields) {
       };
     }
     if (schemaField.validators) {
-      console.log("checking validators", schemaField.validators);
       for (const validator in schemaField.validators) {
-        console.log("checking validator", validator);
         if (validators[validator]) {
           rules[field_name][validator] = validators[validator](
             schemaField.validators[validator]
@@ -284,8 +307,7 @@ defineExpose({
 </script>
 
 <template>
-  {{ schema }}
-  <!-- Structure given in schema -->
+  <!-- Case 1: Structure is given in schema -->
   <div class="mt-5" v-if="schema.structure">
     <div v-for="(section, i) in schema.structure" :key="i" class="">
       <div v-if="checkCondition(object_temp, section.visible)">
@@ -352,7 +374,7 @@ defineExpose({
     </div>
   </div>
 
-  <!-- No structure given in schema -->
+  <!-- Case 2: No structure is given in schema -->
   <div class="mt-5" v-else>
     <div v-for="(field, name, i) in schema.fields" :key="i">
       <div class="my-4">
