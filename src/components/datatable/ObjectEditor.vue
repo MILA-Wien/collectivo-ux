@@ -70,7 +70,8 @@ function calculate(expression: any) {
 }
 
 const replace = (string: String, object: any) =>
-  string.replaceAll(/\{([^}]+)\}/gi, (_, a: any) => object[a]);
+  // @ts-ignore (typescript does not now this method)
+  string.replaceAll(/\{([^}]+)\}/gi, (_: any, a: any) => object[a]);
 
 // Fill out fixed and default values
 for (const [key, value] of Object.entries(schema.value.fields)) {
@@ -200,7 +201,7 @@ const deleteObject = () => {
 // Validation -----------------------------------------------------------------
 
 const validators: { [key: string]: any } = {
-  iban: (param: any) =>
+  iban: (_: any) =>
     helpers.withMessage("Invalid IBAN", (value: any) => {
       const iban = electronicFormatIBAN(value);
       return isValidIBAN(iban || "");
