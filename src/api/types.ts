@@ -88,6 +88,9 @@ export interface SchemaField {
   help_text?: string;
   validators?: { [key: string]: any };
   schema?: Schema;
+  value?: any;
+  default?: any;
+  calculate?: string;
 }
 
 export interface SchemaStore {

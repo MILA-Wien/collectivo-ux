@@ -2,6 +2,7 @@
 import type { SchemaField } from "@/api/types";
 import PrimeCalendar from "primevue/calendar";
 import PrimeDropdown from "primevue/dropdown";
+import PrimeInputNumber from "primevue/inputnumber";
 import PrimeInputSwitch from "primevue/inputswitch";
 import PrimeInputText from "primevue/inputtext";
 import PrimeMultiSelect from "primevue/multiselect";
@@ -10,6 +11,7 @@ import type { PropType } from "vue";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import FieldRichText from "./FieldRichText.vue";
+
 const { t } = useI18n();
 defineProps({
   name: {
@@ -133,6 +135,28 @@ function removeUpload(name: any) {
     />
   </div>
 
+  <div v-else-if="field.input_type === 'integer'">
+    <PrimeInputNumber
+      :modelValue="modelValue"
+      @update:modelValue="(val:any) => $emit('update:modelValue', val)"
+      :disabled="disabled"
+      :class="{ 'p-invalid': isInvalid }"
+      style="width: 100%"
+      showButtons
+    />
+  </div>
+
+  <div v-else-if="field.input_type === 'number'">
+    <PrimeInputNumber
+      :modelValue="modelValue"
+      @update:modelValue="(val:any) => $emit('update:modelValue', val)"
+      :disabled="disabled"
+      :class="{ 'p-invalid': isInvalid }"
+      style="width: 100%"
+      :maxFractionDigits="5"
+    />
+  </div>
+
   <div v-else-if="field.input_type === 'html'">
     <FieldRichText
       :modelValue="modelValue"
@@ -162,6 +186,7 @@ function removeUpload(name: any) {
     />
   </div>
   <div v-else>
+    <!-- Catch all input field -->
     <PrimeInputText
       id="attr-{{name}}"
       type="text"

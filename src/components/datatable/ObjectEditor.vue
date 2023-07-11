@@ -9,7 +9,7 @@ import type { StoreGeneric } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import type { PropType } from "vue";
-import { ref, toRef } from "vue";
+import { ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import ObjectField from "./ObjectField.vue";
 const { t } = useI18n();
@@ -52,6 +52,47 @@ if (props.object != undefined) {
 }
 const schema = toRef(props, "schema");
 const isSaving = ref(false);
+
+// Simple safe calculator
+// https://stackoverflow.com/questions/40433498/
+function calculate(expression: string) {
+  try {
+    ("strict mode");
+    var allowedChars = "1234567890%^*()-+/. ";
+    for (var i = 0; i < expression.length; i++)
+      if (allowedChars.indexOf(expression.charAt(i)) < 0) {
+        return undefined;
+      }
+    return eval(expression);
+  } catch (e) {
+    return undefined;
+  }
+}
+
+const replace = (string: String, object: any) =>
+  // @ts-ignore (typescript does not now this method)
+  string.replaceAll(/\{([^}]+)\}/gi, (_: any, a: any) => object[a]);
+
+// Fill out fixed and default values
+for (const [key, value] of Object.entries(schema.value.fields)) {
+  if (value.value != undefined) {
+    object_temp.value[key] = value.value;
+  } else if (
+    value.default != undefined &&
+    object_temp.value[key] == undefined
+  ) {
+    object_temp.value[key] = value.default;
+  }
+}
+
+for (const [key, value] of Object.entries(schema.value.fields)) {
+  if (value.calculate) {
+    watch(
+      () => calculate(replace(value.calculate!, object_temp.value)),
+      (newValue) => (object_temp.value[key] = newValue)
+    );
+  }
+}
 
 // Format data ----------------------------------------------------------------
 
@@ -159,10 +200,39 @@ const deleteObject = () => {
 
 // Validation -----------------------------------------------------------------
 
-const iban = helpers.withMessage("Invalid IBAN", (value: any) => {
-  const iban = electronicFormatIBAN(value);
-  return isValidIBAN(iban || "");
-});
+const validators: { [key: string]: any } = {
+  iban: (param: boolean) =>
+    helpers.withMessage("Invalid IBAN", (value: any) => {
+      if (param) {
+        const iban = electronicFormatIBAN(value);
+        return isValidIBAN(iban || "");
+      } else {
+        return false;
+      }
+    }),
+  min: (param: number) =>
+    helpers.withMessage("Value is too small", (value: any) => {
+      if (param == undefined) {
+        return true;
+      }
+      if (typeof param == "string") {
+        // Get value from other field
+        param = object_temp.value[param];
+      }
+      return value >= param;
+    }),
+  max: (param: number) =>
+    helpers.withMessage("Value is too large", (value: any) => {
+      if (param == undefined) {
+        return true;
+      }
+      if (typeof param == "string") {
+        // Get value from other field
+        param = object_temp.value[param];
+      }
+      return value <= param;
+    }),
+};
 
 const rules: any = {};
 for (var field_name in props.schema.fields) {
@@ -178,8 +248,14 @@ for (var field_name in props.schema.fields) {
         }),
       };
     }
-    if (schemaField.validators?.includes("iban")) {
-      rules[field_name].iban = iban;
+    if (schemaField.validators) {
+      for (const validator in schemaField.validators) {
+        if (validators[validator]) {
+          rules[field_name][validator] = validators[validator](
+            schemaField.validators[validator]
+          );
+        }
+      }
     }
   }
 }
@@ -236,7 +312,7 @@ defineExpose({
 </script>
 
 <template>
-  <!-- Structure given in schema -->
+  <!-- Case 1: Structure is given in schema -->
   <div class="mt-5" v-if="schema.structure">
     <div v-for="(section, i) in schema.structure" :key="i" class="">
       <div v-if="checkCondition(object_temp, section.visible)">
@@ -303,7 +379,7 @@ defineExpose({
     </div>
   </div>
 
-  <!-- No structure given in schema -->
+  <!-- Case 2: No structure is given in schema -->
   <div class="mt-5" v-else>
     <div v-for="(field, name, i) in schema.fields" :key="i">
       <div class="my-4">

@@ -71,10 +71,15 @@ export const useMainStore = defineStore({
       objectName: keyof typeof endpoints,
       id?: Number, // Get detail with given id, otherwise get list
       force?: boolean, // Reload data even if already loaded
-      detail?: boolean // Get detail even if no id is given
+      detail?: boolean, // Get detail even if no id is given
+      schemaDetail?: boolean // Get schema specific to detail
     ) {
       // Get schema if not already loaded
-      this.getSchema(objectName);
+      if (schemaDetail) {
+        this.getSchema(objectName, force, id);
+      } else {
+        this.getSchema(objectName, force);
+      }
 
       // Case 1 - Get detail
       if (id || detail) {
@@ -116,12 +121,12 @@ export const useMainStore = defineStore({
     },
 
     // Get schema and save in store
-    async getSchema(objectName: any, force?: boolean) {
+    async getSchema(objectName: any, force?: boolean, id?: Number) {
       if (!force && this[objectName].schemaLoaded) {
         return;
       }
       this[objectName].schemaLoaded = false;
-      const schema = await API.getSchema(objectName);
+      const schema = await API.getSchema(objectName, id);
       this[objectName].schema = extendSchema(schema.data);
       this[objectName].schemaLoaded = true;
     },
