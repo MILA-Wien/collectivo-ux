@@ -45,7 +45,7 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
           </template>
         </ObjectTable>
       </TabPanel>
-      <TabPanel :header="t('Groups')" v-if="view_groups">
+      <TabPanel :header="t('Permission groups')" v-if="view_groups">
         <ObjectTable
           :store="mainStore"
           :name="'coreGroups'"
