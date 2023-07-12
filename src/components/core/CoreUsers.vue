@@ -53,6 +53,13 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
         >
         </ObjectTable>
       </TabPanel>
+      <TabPanel :header="t('Tags')">
+        <ObjectTable
+          :store="mainStore"
+          name="tagsTags"
+          :default-columns="['name', 'description']"
+        />
+      </TabPanel>
     </TabView>
   </div>
 </template>
