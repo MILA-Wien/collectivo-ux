@@ -167,6 +167,10 @@ function sendEmails() {
   editEmailsCreate.value = true;
   editEmailsActive.value = true;
 }
+
+defineExpose({
+  table,
+});
 </script>
 
 <template>
@@ -187,6 +191,8 @@ function sendEmails() {
             class="w-26"
           />
         </div>
+
+        <slot name="toolbar-before"></slot>
 
         <div class="m-1" v-if="schema.actions.includes('create')">
           <PrimeButton
@@ -258,7 +264,7 @@ function sendEmails() {
             </PrimeButton
           ></JsonCSV>
         </div>
-        <slot name="toolbar"></slot>
+        <slot name="toolbar-after"></slot>
       </div>
     </div>
 
