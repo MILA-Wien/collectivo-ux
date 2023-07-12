@@ -21,8 +21,6 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
 
 // Dialogs ----------------------------------------------------------------- //
 const editActive = ref(false);
-const bulkEditActive = ref(false);
-const selectedIds = ref<Number[]>([]);
 const editObject = ref({});
 const editCreate = ref(false);
 const table = ref();
