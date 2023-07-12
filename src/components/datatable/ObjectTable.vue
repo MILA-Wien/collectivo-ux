@@ -35,7 +35,7 @@ const props = defineProps({
     default: true,
   },
 });
-
+const table = ref();
 const error = ref<Object | null>(null);
 const data = storeToRefs(props.store)[props.name];
 
@@ -54,6 +54,10 @@ if (emailsCampaigns.value.schemaLoaded === false) {
     error.value = e;
   });
 }
+
+defineExpose({
+  table,
+});
 </script>
 
 <template>
@@ -65,6 +69,7 @@ if (emailsCampaigns.value.schemaLoaded === false) {
   </div>
   <div v-else-if="displayType == 'table'" class="h-full">
     <ObjectTableFrame
+      ref="table"
       :store="store"
       :name="name"
       :objects="data.list"
@@ -75,6 +80,8 @@ if (emailsCampaigns.value.schemaLoaded === false) {
       :allowSelection="allowSelection"
     >
       <template #action-column><slot name="action-column"></slot></template>
+      <template #toolbar-before><slot name="toolbar-before"></slot></template>
+      <template #toolbar-after><slot name="toolbar-after"></slot></template>
     </ObjectTableFrame>
   </div>
   <div v-else>

@@ -1,17 +1,40 @@
 <script setup lang="ts">
 import { useMainStore } from "@/stores/main";
 import { useMenuStore } from "@/stores/menu";
+import { storeToRefs } from "pinia";
 import PrimeButton from "primevue/button";
 import PrimeColumn from "primevue/column";
 import TabPanel from "primevue/tabpanel";
 import TabView from "primevue/tabview";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import ObjectModal from "../datatable/ObjectModal.vue";
 import ObjectTable from "../datatable/ObjectTable.vue";
+
 const { t } = useI18n();
 const mainStore = useMainStore();
 const menuStore = useMenuStore();
+const { coreUsers } = storeToRefs(mainStore);
+mainStore.getSchema("coreUsers");
 menuStore.setTitle("Users");
 const view_groups = mainStore.hasPermission("view_groups", "core");
+
+// Dialogs ----------------------------------------------------------------- //
+const editActive = ref(false);
+const bulkEditActive = ref(false);
+const selectedIds = ref<Number[]>([]);
+const editObject = ref({});
+const editCreate = ref(false);
+const table = ref();
+function createObjectFn() {
+  editObject.value = {};
+  editCreate.value = true;
+  editActive.value = true;
+}
+function closeEditor() {
+  editActive.value = false;
+  table.value.table.table.refresh();
+}
 </script>
 
 <template>
@@ -23,6 +46,7 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
           :name="'coreUsersExtended'"
           :default-columns="['first_name', 'last_name', 'email', 'tags']"
           :email-button="true"
+          ref="table"
         >
           <template #action-column>
             <PrimeColumn style="width: 45px; max-width: 45px" :frozen="true">
@@ -42,6 +66,27 @@ const view_groups = mainStore.hasPermission("view_groups", "core");
                 />
               </template>
             </PrimeColumn>
+          </template>
+          <template #toolbar-before>
+            <div class="m-1" v-if="coreUsers.schemaLoaded">
+              <PrimeButton
+                icon="pi pi-plus"
+                class="p-button-sm"
+                @click="createObjectFn()"
+                :label="t('New')"
+              >
+              </PrimeButton>
+            </div>
+            <!-- Detail dialog -->
+            <ObjectModal
+              v-if="editActive"
+              :object="editObject"
+              :create="editCreate"
+              :store="mainStore"
+              :name="'coreUsers'"
+              :schema="coreUsers.schema"
+              @close="closeEditor()"
+            />
           </template>
         </ObjectTable>
       </TabPanel>
