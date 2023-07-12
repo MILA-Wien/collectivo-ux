@@ -13,6 +13,7 @@ menuStore.setTitle("My data");
 const profile_endpoints: Array<keyof typeof endpoints> = [
   "coreProfile",
   "profilesProfilesSelf",
+  "paymentsProfilesSelf",
 ];
 
 // Import additional profile endpoints from extensions
