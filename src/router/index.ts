@@ -53,15 +53,6 @@ const router = createRouter({
       component: () => import("../components/core/CoreSettings.vue"),
     },
     {
-      path: "/dashboard/admin",
-      name: "dashboardAdmin",
-      meta: {
-        layout: Default,
-        isMembersAdmin: true,
-      },
-      component: () => import("../components/dashboard/DashboardAdmin.vue"),
-    },
-    {
       path: "/memberships/admin",
       name: "membershipsAdmin",
       meta: {
@@ -128,15 +119,6 @@ const router = createRouter({
         isMembersAdmin: true,
       },
       component: () => import("../components/payments/PaymentsAdmin.vue"),
-    },
-    {
-      path: "/extensions/admin",
-      name: "extensionsAdmin",
-      meta: {
-        layout: Default,
-        isMembersAdmin: true,
-      },
-      component: () => import("../components/extensions/ExtensionsAdmin.vue"),
     },
     {
       // Dynamic route that can load components defined by the backend
