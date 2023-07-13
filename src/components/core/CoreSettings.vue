@@ -17,7 +17,7 @@ const mainStore = useMainStore();
 menuStore.setTitle("Settings");
 
 // Core profile endpoints
-const settings_endpoints: Array<String> = ["coreSettings"];
+const settings_endpoints: Array<String> = ["coreSettings", "profilesSettings"];
 
 // Import additional profile endpoints from extensions
 for (const extension of extensions) {
