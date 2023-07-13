@@ -12,6 +12,14 @@ import { useI18n } from "vue-i18n";
 import ObjectModal from "./ObjectModal.vue";
 const { t } = useI18n();
 
+function tt(key: any) {
+  try {
+    return t(key);
+  } catch {
+    return key;
+  }
+}
+
 const props = defineProps({
   store: {
     type: Object as PropType<StoreGeneric>,
@@ -60,7 +68,7 @@ const editActive = ref(false);
           class="pb-3 flex flex-row w-full"
         >
           <div class="w-48 font-semibold flex-none break-words pr-2">
-            {{ t(field.label) }}
+            {{ tt(field.label) }}
           </div>
           <div class="flex-auto break-words overflow-hidden">
             <div v-if="data.detailLoaded" class="w-full">
@@ -70,7 +78,7 @@ const editActive = ref(false);
                   :key="i"
                   class="bg-gray-200 text-gray-700 px-1.5 pt-1.5 pb-0.5 mb-1.5 whitespace-pre-wrap"
                 >
-                  {{ field.choices![value] }}
+                  {{ tt(field.choices![value]) }}
                 </div>
               </div>
               <!-- Booleans -->
@@ -86,7 +94,7 @@ const editActive = ref(false);
                 v-else-if="typeof data.detail[name] == 'string'"
                 class="data break-words"
               >
-                {{ data.detail[name] }}
+                {{ tt(data.detail[name]) }}
               </div>
 
               <div v-else-if="data.detail[name]" class="data break-words">
