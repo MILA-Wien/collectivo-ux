@@ -44,10 +44,10 @@ for (const extension of extensions) {
           <template #item="slotProps">
             <PrimePanel :header="slotProps.data.label" class="mb-5">
               <p class="pb-3">{{ slotProps.data.description }}</p>
-              <p>Active: {{ slotProps.data.active }}</p>
-              <p>Built-in: {{ slotProps.data.built_in }}</p>
+              <p>{{ t("Active") }}: {{ slotProps.data.active }}</p>
+              <p>{{ t("Built-in") }}: {{ slotProps.data.built_in }}</p>
               <p v-if="slotProps.data.version">
-                Version: {{ slotProps.data.version }}
+                {{ t("Version") }}: {{ slotProps.data.version }}
               </p>
             </PrimePanel>
           </template>

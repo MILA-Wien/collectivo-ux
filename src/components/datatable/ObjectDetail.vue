@@ -121,9 +121,3 @@ const editActive = ref(false);
     @close="editActive = false"
   />
 </template>
-
-<style lang="scss" scoped>
-// .data {
-//   @apply bg-slate-200 mr-1 pt-1 px-1 h-6 rounded whitespace-pre-wrap leading-7;
-// }
-</style>
