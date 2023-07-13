@@ -110,6 +110,7 @@ export const endpoints = {
 
   profilesProfiles: "/profiles/profiles/",
   profilesProfilesSelf: "/profiles/profiles/self/",
+  profilesSettings: "/profiles/settings/",
 
   membershipsMemberships: "/memberships/memberships/",
   membershipsMembershipsHistory: "/memberships/memberships-history/",
