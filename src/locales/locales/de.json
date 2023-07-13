@@ -64,7 +64,7 @@
   "Legal name": "Organisation Name",
   "Legal id": "Organisation ID",
   "Legal type": "Organisation Form",
-
+  "Permission groups": "Berechtigungsgruppen",
   "Memberships": "Mitgliedschaften",
   "My memberships": "Meine Mitgliedschaften",
   "Membership number": "Mitgliedsnummer",
@@ -267,7 +267,6 @@
   "February": "Februar",
   "March": "März",
   "April": "April",
-  "May": "Mai",
   "June": "Juni",
   "July": "Juli",
   "August": "August",
@@ -287,5 +286,7 @@
   "Sep": "Sep",
   "Oct": "Okt",
   "Nov": "Nov",
-  "Dec": "Dez"
+  "Dec": "Dez",
+
+  "Built-in": "Eingebaut"
 }

@@ -12,6 +12,14 @@ import { useI18n } from "vue-i18n";
 import ObjectModal from "./ObjectModal.vue";
 const { t } = useI18n();
 
+function tt(key: any) {
+  try {
+    return t(key);
+  } catch {
+    return key;
+  }
+}
+
 const props = defineProps({
   store: {
     type: Object as PropType<StoreGeneric>,
@@ -57,40 +65,51 @@ const editActive = ref(false);
             String(name) != 'user' &&
             checkCondition(data.detail, field.visible)
           "
-          class="pb-3"
+          class="pb-3 flex flex-row w-full"
         >
-          {{ t(field.label) }}:
-
-          <span v-if="data.detailLoaded">
-            <span v-if="field.input_type == 'multiselect'">
-              <span
-                v-for="(value, i) in data.detail[name] as Array<any>"
-                :key="i"
-                class="bg-slate-200 my-1 mr-1 pt-1 rounded inline-block px-1"
+          <div class="w-48 font-semibold flex-none break-words pr-2">
+            {{ tt(field.label) }}
+          </div>
+          <div class="flex-auto break-words overflow-hidden">
+            <div v-if="data.detailLoaded" class="w-full">
+              <div v-if="field.input_type == 'multiselect'">
+                <div
+                  v-for="(value, i) in data.detail[name]"
+                  :key="i"
+                  class="bg-gray-200 text-gray-700 px-1.5 pt-1.5 pb-0.5 mb-1.5 whitespace-pre-wrap"
+                >
+                  {{ tt(field.choices![value]) }}
+                </div>
+              </div>
+              <!-- Booleans -->
+              <div v-else-if="field.input_type == 'checkbox'">
+                <i
+                  v-if="data.detail[name] == true"
+                  class="pi pi-check bg-green-200 p-1 rounded"
+                ></i>
+                <i v-else class="pi pi-times bg-red-200 p-1 rounded"></i>
+              </div>
+              <!-- Strings (generic) -->
+              <div
+                v-else-if="typeof data.detail[name] == 'string'"
+                class="data break-words"
               >
-                {{ field.choices![value] }}
-              </span>
-            </span>
-            <!-- Booleans -->
-            <span v-else-if="field.input_type == 'checkbox'">
-              <i
-                v-if="data.detail[name] == true"
-                class="pi pi-check bg-green-200 p-1 rounded"
-              ></i>
-              <i v-else class="pi pi-times bg-red-200 p-1 rounded"></i>
-            </span>
-            <!-- All other cases with content -->
-            <span v-else-if="data.detail[name]" class="data">
-              {{ data.detail[name] }}
-            </span>
-            <!-- No content -->
-            <span v-else-if="field.write_only" class="data">********</span>
+                {{ tt(data.detail[name]) }}
+              </div>
 
-            <span v-else class="inline-block w-20 h-6 data"></span>
-          </span>
-          <span v-else class="text-gray-400 inline-block w-20">
-            <PrimeSkeleton class="inline-block"></PrimeSkeleton>
-          </span>
+              <div v-else-if="data.detail[name]" class="data break-words">
+                {{ data.detail[name] }}
+              </div>
+
+              <!-- No content -->
+              <div v-else-if="field.write_only" class="data">********</div>
+
+              <div v-else class="inline-block w-20 h-6 data"></div>
+            </div>
+            <div v-else class="text-gray-400 inline-block w-20">
+              <PrimeSkeleton class="inline-block"></PrimeSkeleton>
+            </div>
+          </div>
         </div>
       </div>
     </PrimePanel>
@@ -110,9 +129,3 @@ const editActive = ref(false);
     @close="editActive = false"
   />
 </template>
-
-<style lang="scss" scoped>
-.data {
-  @apply bg-slate-200 mr-1 pt-1 px-1 h-6 rounded whitespace-pre-wrap leading-7;
-}
-</style>

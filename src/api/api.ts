@@ -94,6 +94,7 @@ export const endpoints = {
   coreSettings: "/core/settings/",
   coreUsersExtended: "/core/users-extended/",
   coreGroups: "/core/groups/",
+  coreGroupsHistory: "/core/groups-history/",
   corePermissions: "/core/permissions/",
   componentsComponents: "/components/components/",
   extensionsExtensions: "/extensions/extensions/",
