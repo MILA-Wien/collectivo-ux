@@ -16,6 +16,7 @@ const error = ref<Object | null>(null);
 const data = storeToRefs(mainStore)["componentsComponents"];
 const iframe = ref("");
 const remoteID = ref("");
+const componentId = ref("");
 const components = {
   A: LoadingItem,
   B: LoadingItem,
@@ -41,6 +42,8 @@ function loadItem() {
           c.extension.name === route.params.extension &&
           c.name === route.params.component
       );
+      // Set component ID
+      componentId.value = component?.name;
       if (component && component.type === "remote") {
         // Get remote ID for component
         // @ts-ignore
@@ -117,27 +120,35 @@ watch(
     <IframeItem :src="iframe" />
   </div>
   <div class="v-full h-full" id="remote_a" v-else-if="remoteID == 'a'">
+    <div :id="componentId"></div>
     <component :is="components.A"></component>
   </div>
   <div class="v-full h-full" id="remote_b" v-else-if="remoteID == 'b'">
+    <div :id="componentId"></div>
     <component :is="components.B"></component>
   </div>
   <div class="v-full h-full" id="remote_c" v-else-if="remoteID == 'c'">
+    <div :id="componentId"></div>
     <component :is="components.C"></component>
   </div>
   <div class="v-full h-full" id="remote_d" v-else-if="remoteID == 'd'">
+    <div :id="componentId"></div>
     <component :is="components.D"></component>
   </div>
   <div class="v-full h-full" id="remote_e" v-else-if="remoteID == 'e'">
+    <div :id="componentId"></div>
     <component :is="components.E"></component>
   </div>
   <div class="v-full h-full" id="remote_f" v-else-if="remoteID == 'f'">
+    <div :id="componentId"></div>
     <component :is="components.F"></component>
   </div>
   <div class="v-full h-full" id="remote_g" v-else-if="remoteID == 'g'">
+    <div :id="componentId"></div>
     <component :is="components.G"></component>
   </div>
   <div class="v-full h-full" id="remote_h" v-else-if="remoteID == 'h'">
+    <div :id="componentId"></div>
     <component :is="components.H"></component>
   </div>
   <div v-else>An error has occured: remoteID {{ remoteID }} not found</div>

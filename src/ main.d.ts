@@ -7,3 +7,4 @@ declare module "d/*" {}
 declare module "e/*" {}
 declare module "f/*" {}
 declare module "g/*" {}
+declare module "h/*" {}
