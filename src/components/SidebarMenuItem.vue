@@ -21,7 +21,7 @@ if (item_.extension.name === "core" && item_.name === "logout") {
 
 <template>
   <router-link
-    v-if="item_.target === 'route'"
+    v-if="item_.target === 'route' || item_.target === 'component'"
     :to="'/' + item_.route"
     :class="{ 'p-disabled': item_.disabled }"
   >
