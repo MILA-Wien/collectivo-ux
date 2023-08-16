@@ -42,6 +42,13 @@ menuStore.setTitle("Emails");
           :defaultColumns="['label', 'extension', 'is_active']"
         />
       </TabPanel>
+      <TabPanel :header="t('Senders')">
+        <ObjectTable
+          :store="mainStore"
+          :name="'emailsSenderConfigs'"
+          :defaultColumns="['name', 'from_email']"
+        />
+      </TabPanel>
     </TabView>
   </div>
 </template>
