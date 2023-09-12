@@ -132,10 +132,12 @@ export const endpoints = {
   emailsTemplates: "/emails/templates/",
   emailsCampaigns: "/emails/campaigns/",
   emailsAutomations: "/emails/automations/",
+  emailsSenderConfigs: "/emails/senderconfigs/",
   emailsDesignsHistory: "/emails/designs-history/",
   emailsTemplatesHistory: "/emails/templates-history/",
   emailsCampaignsHistory: "/emails/campaigns-history/",
   emailsAutomationsHistory: "/emails/automations-history/",
+  emailsSenderConfigsHistory: "/emails/senderconfigs-history/",
 
   paymentsProfiles: "/payments/profiles/",
   paymentsProfilesSelf: "/payments/profiles/self/",
