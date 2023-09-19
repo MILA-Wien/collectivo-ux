@@ -368,10 +368,11 @@ defineExpose({
               v-model="object_temp[field]"
               :isInvalid="isInvalid(field)"
               :disabled="
-                checkCondition(object_temp, schema.fields[field].read_only) &&
+                checkCondition(object_temp, schema.fields[field]?.read_only) &&
                 !create
               "
               :returnErrorMessage="fieldError(field)"
+              v-if="schema.fields[field]"
             />
           </div>
         </div>
