@@ -733,13 +733,16 @@
           "type": "singleChoice",
           "properties": {
             "label": "Payment type",
-            "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
+            "description": "SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
             "conditions": [],
             "content": "",
             "extId": "payment_method",
             "required": true,
-            "options": ["Jetzt SEPA Bankeinzug genehmigen!"],
-            "values": ["sepa"]
+            "options": [
+              "Jetzt SEPA Bankeinzug genehmigen!",
+              "Den Betrag selbst überweisen"
+            ],
+            "values": ["sepa", "transfer"]
           },
           "id": "kDFmPWTOqEeE",
           "children": []
