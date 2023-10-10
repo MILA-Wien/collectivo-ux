@@ -733,7 +733,7 @@
           "type": "singleChoice",
           "properties": {
             "label": "Payment type",
-            "description": "SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
+            "description": "Du kannst entweder durch SEPA-Bankeinzug oder durch Direktüberweisung deine Anteile bezahlen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen. Auch bei Direktüberweisung brauchen wir deine IBAN, um dir bei einem Ausstieg das Geld zurücküberweisen zu können.",
             "conditions": [],
             "content": "",
             "extId": "payment_method",
