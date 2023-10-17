@@ -637,7 +637,7 @@
             "label": "How many shares do you want?",
             "conditions": [],
             "content": "",
-            "description": "Mit den Genossenschaftsanteilen bauen wir Eigenkapital auf, das wir für die Eröffnung unseres Supermarkts benötigen. Der Genossenschaftsanteil bei MILA ist sozial gestaffelt: Der Regelanteil ist € 180, der Sozialanteil € 20. Wir empfehlen mehr als den Regelanteil zu zeichnen, gemäß deiner finanziellen Möglichkeiten.",
+            "description": "Mit den Genossenschaftsanteilen bauen wir Eigenkapital auf, das wir für die Eröffnung unseres Supermarkts benötigen. Der Genossenschaftsanteil bei MILA ist sozial gestaffelt: Der Regelanteil ist € 180, der Sozialanteil € 20. Wir empfehlen mehr als den Regelanteil zu zeichnen, gemäß deiner finanziellen Möglichkeiten (2-8 Anteile können nicht gewählt werden).",
             "htmlType": "radio",
             "required": true,
             "options": [
@@ -733,13 +733,16 @@
           "type": "singleChoice",
           "properties": {
             "label": "Payment type",
-            "description": "Aktuell ist nur Zahlung durch SEPA-Bankeinzug möglich. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen.",
+            "description": "Du kannst entweder durch SEPA-Bankeinzug oder durch Direktüberweisung deine Anteile bezahlen. SEPA-Bankeinzug ist eine der sichersten Zahlungsarten: Denn du hast 8 Wochen lang das bedingungslose Recht dir den abgebuchten Geldbetrag auf dein Konto zurück erstatten zu lassen. Auch bei Direktüberweisung brauchen wir deine IBAN, um dir bei einem Ausstieg das Geld zurücküberweisen zu können.",
             "conditions": [],
             "content": "",
             "extId": "payment_method",
             "required": true,
-            "options": ["Jetzt SEPA Bankeinzug genehmigen!"],
-            "values": ["sepa"]
+            "options": [
+              "Jetzt SEPA Bankeinzug genehmigen!",
+              "Den Betrag selbst überweisen"
+            ],
+            "values": ["sepa", "transfer"]
           },
           "id": "kDFmPWTOqEeE",
           "children": []
@@ -758,12 +761,7 @@
               "type": "textfield",
               "properties": {
                 "htmlType": "text",
-                "conditions": [
-                  {
-                    "target": "payment_method",
-                    "value": "sepa"
-                  }
-                ],
+                "conditions": [],
                 "label": "Bank account number (IBAN)",
                 "required": true,
                 "validations": [
@@ -781,12 +779,7 @@
               "type": "textfield",
               "properties": {
                 "htmlType": "text",
-                "conditions": [
-                  {
-                    "target": "payment_method",
-                    "value": "sepa"
-                  }
-                ],
+                "conditions": [],
                 "label": "Bank account owner",
                 "required": true,
                 "extId": "bank_account_owner"
