@@ -34,6 +34,9 @@ import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import { isValidIBAN, electronicFormatIBAN } from "ibantools";
 const { t } = useI18n();
+const europeanIBAN = [
+  "AD", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK",
+]
 
 const formViewerStore = useFormViewerStore();
 const props = defineProps({
@@ -60,7 +63,10 @@ const validAccountNumber = helpers.withParams(
   { type: "validValue" },
   (value: string) => {
     const iban = electronicFormatIBAN(value);
-    return isValidIBAN(iban || "");
+    if (iban && europeanIBAN.includes(iban.substring(0, 2))) {
+      return isValidIBAN(iban || "");
+    }
+    return false;
   }
 );
 for (let i = 0; i < allElements.value.length; i++) {
@@ -120,7 +126,7 @@ for (let i = 0; i < allElements.value.length; i++) {
             rules[selector].$autoDirty = true;
           } else if (validation.type === "isValidIBAN") {
             rules[selector].isValidIBAN = helpers.withMessage(
-              "The provided IBAN is wrong, please check again.",
+              "The provided IBAN is wrong or the IBAN is regsitered outside of Europe, please check again.",
               validAccountNumber
             );
           }

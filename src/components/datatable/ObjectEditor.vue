@@ -199,13 +199,18 @@ const deleteObject = () => {
 };
 
 // Validation -----------------------------------------------------------------
-
+const europeanIBAN = [
+  "AD", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GI", "GR", "HR", "HU", "IE", "IS", "IT", "LI", "LT", "LU", "LV", "MC", "MT", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK",
+]
 const validators: { [key: string]: any } = {
   iban: (param: boolean) =>
-    helpers.withMessage("Invalid IBAN", (value: any) => {
+    helpers.withMessage("Invalid IBAN or IBAN is not valid for SEPA.", (value: any) => {
       if (param) {
         const iban = electronicFormatIBAN(value);
-        return isValidIBAN(iban || "");
+        if (iban && europeanIBAN.includes(iban.substring(0, 2))) {
+          return isValidIBAN(iban || "");
+        }
+        return false;
       } else {
         return false;
       }
@@ -341,39 +346,20 @@ defineExpose({
         <!-- Cokumn section -->
         <div v-else-if="section.style == 'col'">
           <div v-for="(field, j) in section.fields" class="pb-4" :key="j">
-            <ObjectField
-              :name="field"
-              :field="schema.fields[field]"
-              v-model="object_temp[field]"
-              :isInvalid="isInvalid(field)"
-              :disabled="
-                checkCondition(object_temp, schema.fields[field].read_only) &&
+            <ObjectField :name="field" :field="schema.fields[field]" v-model="object_temp[field]"
+              :isInvalid="isInvalid(field)" :disabled="checkCondition(object_temp, schema.fields[field].read_only) &&
                 !create
-              "
-              :returnErrorMessage="fieldError(field)"
-            />
+                " :returnErrorMessage="fieldError(field)" />
           </div>
         </div>
 
         <!-- Flex row section (default) -->
         <div v-else class="flex flex-row flex-wrap gap-x-5">
-          <div
-            v-for="(field, j) in section.fields"
-            class="flex-auto w-72 pb-4"
-            :key="j"
-          >
-            <ObjectField
-              :name="field"
-              :field="schema.fields[field]"
-              v-model="object_temp[field]"
-              :isInvalid="isInvalid(field)"
-              :disabled="
-                checkCondition(object_temp, schema.fields[field]?.read_only) &&
+          <div v-for="(field, j) in section.fields" class="flex-auto w-72 pb-4" :key="j">
+            <ObjectField :name="field" :field="schema.fields[field]" v-model="object_temp[field]"
+              :isInvalid="isInvalid(field)" :disabled="checkCondition(object_temp, schema.fields[field]?.read_only) &&
                 !create
-              "
-              :returnErrorMessage="fieldError(field)"
-              v-if="schema.fields[field]"
-            />
+                " :returnErrorMessage="fieldError(field)" v-if="schema.fields[field]" />
           </div>
         </div>
       </div>
@@ -384,21 +370,12 @@ defineExpose({
   <div class="mt-5" v-else>
     <div v-for="(field, name, i) in schema.fields" :key="i">
       <div class="my-4">
-        <div
-          v-if="
-            name != 'id' &&
-            checkCondition(object_temp, field.visible) &&
-            !(checkCondition(object_temp, field.read_only) && create)
-          "
-        >
-          <ObjectField
-            :name="name"
-            :field="field"
-            v-model="object_temp[name]"
-            :isInvalid="isInvalid(name)"
-            :disabled="checkCondition(object_temp, field.read_only) && !create"
-            :returnErrorMessage="fieldError(name)"
-          />
+        <div v-if="name != 'id' &&
+          checkCondition(object_temp, field.visible) &&
+          !(checkCondition(object_temp, field.read_only) && create)
+          ">
+          <ObjectField :name="name" :field="field" v-model="object_temp[name]" :isInvalid="isInvalid(name)"
+            :disabled="checkCondition(object_temp, field.read_only) && !create" :returnErrorMessage="fieldError(name)" />
         </div>
       </div>
     </div>
