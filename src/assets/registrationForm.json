@@ -761,12 +761,7 @@
               "type": "textfield",
               "properties": {
                 "htmlType": "text",
-                "conditions": [
-                  {
-                    "target": "payment_method",
-                    "value": "sepa"
-                  }
-                ],
+                "conditions": [],
                 "label": "Bank account number (IBAN)",
                 "required": true,
                 "validations": [
@@ -784,12 +779,7 @@
               "type": "textfield",
               "properties": {
                 "htmlType": "text",
-                "conditions": [
-                  {
-                    "target": "payment_method",
-                    "value": "sepa"
-                  }
-                ],
+                "conditions": [],
                 "label": "Bank account owner",
                 "required": true,
                 "extId": "bank_account_owner"
